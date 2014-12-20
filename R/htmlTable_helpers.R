@@ -12,8 +12,8 @@
 #' @keywords internal
 #' @family hidden helper functions for \code{\link{htmlTable}}
 prTblNo <- function (caption) {
-  tc <- getOption("table_counter")
-  if (is.null(tc)){
+  tc <- getOption("table_counter", FALSE)
+  if (tc == FALSE){
     if (missing(caption))
       return("")
     else
