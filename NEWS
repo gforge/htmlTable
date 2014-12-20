@@ -1,0 +1,25 @@
+NEWS for the Gmisc package
+
+Changes for 1.0
+-----------------
+* The htmlTable and associated txt-functions are now separated from Gmisc
+* Argument name changes for htmlTable for better consistency and logic:
+    rowname -> rnames
+    headings -> header
+    halign -> align.header
+    cgroup.just -> align.cgroup
+    rgroupCSSstyle -> css.rgroup
+    rgroupCSSseparator -> css.rgroup.sep
+    tspannerCSSstyle -> css.tspanner
+    tspannerCSSseparator -> css.tspanner.sep
+    tableCSSclass -> css.table.class
+    rowlabel.pos -> pos.rowlabel
+    caption.loc -> pos.caption
+    altcol -> col.rgroup
+* htmlTable can now handle rnames = FALSE in order to surpress rownames
+* htmlTable now defaults to the layout of ctable as this is the more commonly found layout among medical papers
+* htmlTable rgroup has the additional padding.rgroup for those that want to change the no-breaking space padding
+* Renamed splitLines4Table to txtMergeLines, outputInt to txtInt, pvalueFormatter to txtPval and these follow now the argument style of htmlTable
+* Added txtRound for rounding matrices. The problem with round() is that 1.01 rounds to 1
+  instead of "1.0" that is wanted for output.
+* Multiple bug-fixes

@@ -1,0 +1,23 @@
+```{r }
+if (is.function(options()$device)){
+  ls(envir = environment(options()$device), pattern="^knit$")
+}
+
+ls()
+objects()
+
+```
+
+```{r, message=FALSE, warning=FALSE}
+library(htmlTable)
+
+```
+
+
+```{r, results='asis'}
+
+mx <- matrix(1:6, ncol=3) 
+htmlTable(mx)
+
+```
+
