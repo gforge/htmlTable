@@ -3,8 +3,9 @@
 \alias{prGetCgroupHeader}
 \title{Retrieve a header row}
 \usage{
-prGetCgroupHeader(x, cgroup_vec, n.cgroup_vec, cgroup_vec.just, row_no,
-  top_row_style, rnames, rowlabel, pos.rowlabel, cgroup_spacer_cells, css.cell)
+prGetCgroupHeader(x, cgroup_vec, n.cgroup_vec, cgroup_vec.just, css.cgroup_vec,
+  row_no, top_row_style, rnames, rowlabel, pos.rowlabel, cgroup_spacer_cells,
+  css.cell)
 }
 \arguments{
   \item{x}{The matrix/data.frame with the data}
@@ -17,6 +18,9 @@ prGetCgroupHeader(x, cgroup_vec, n.cgroup_vec, cgroup_vec.just, row_no,
 
   \item{cgroup_vec.just}{The same as above bot for the
   justificaiton}
+
+  \item{css.cgroup_vec}{The CSS row corresponding to the
+  current row}
 
   \item{row_no}{The row number within the header group.
   Useful for multirow headers when we need to output the

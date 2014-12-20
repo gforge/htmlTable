@@ -128,6 +128,7 @@
 #'  directly at all instances of that class. \emph{Note:} unfortunately the
 #'  CSS is frequently ignored by word processors. This option
 #'  is mostly inteded for web-presentations.
+#' @param css.cgroup The same as \code{css.class} but for cgroup formatting.
 #'
 #' @param pos.rowlabel Where the rowlabel should be positioned. This value can be \code{"top"},
 #'  \code{"bottom"}, \code{"header"}, or a integer between \code{1} and \code{nrow(cgroup) + 1}. The options
@@ -208,6 +209,7 @@ htmlTable.default <- function(x,
                               css.tspanner.sep = "border-top: 1px solid grey;",
 
                               css.cell = "",
+                              css.cgroup = "",
 
                               css.class = "gmisc_table",
 
@@ -423,14 +425,17 @@ htmlTable.default <- function(x,
   # Sanity check for cgroup
   if (!missing(cgroup)){
     ret <- prPrepareCgroup(x = x,
-                             cgroup = cgroup,
-                             n.cgroup = n.cgroup,
-                             align.cgroup = align.cgroup)
+                           cgroup = cgroup,
+                           n.cgroup = n.cgroup,
+                           align.cgroup = align.cgroup,
+                           css.cgroup = css.cgroup)
 
+    # TODO: use attach/environment recoding
     cgroup <- ret$cgroup
     n.cgroup <- ret$n.cgroup
     align.cgroup <- ret$align.cgroup
     cgroup_spacer_cells <- ret$cgroup_spacer_cells
+    css.cgroup <- ret$css.cgroup
   }
 
   pos.rowlabel <- prGetRowlabelPos(cgroup, pos.rowlabel, header)
@@ -464,8 +469,8 @@ htmlTable.default <- function(x,
     }
   }
 
-  css.cell <- prPrepareCellStyles(x, css.cell = css.cell,
-                                    rnames = rnames, header = header)
+  css.cell <- prPrepareCss(x, css = css.cell,
+                           rnames = rnames, header = header)
 
   ###############################
   # Start building table string #
@@ -527,16 +532,17 @@ htmlTable.default <- function(x,
 
     for (i in 1:nrow(cgroup)){
       cgrp_str <- prGetCgroupHeader(x = x,
-                                     cgroup_vec = cgroup[i,],
-                                     n.cgroup_vec = n.cgroup[i,],
-                                     cgroup_vec.just = align.cgroup[i, ],
-                                     row_no = i,
-                                     top_row_style = top_row_style,
-                                     rnames = rnames,
-                                     rowlabel = rowlabel,
-                                     pos.rowlabel = pos.rowlabel,
-                                     cgroup_spacer_cells = cgroup_spacer_cells,
-                                     css.cell = css.cell)
+                                    cgroup_vec = cgroup[i,],
+                                    n.cgroup_vec = n.cgroup[i,],
+                                    cgroup_vec.just = align.cgroup[i, ],
+                                    css.cgroup_vec = css.cgroup[i,],
+                                    row_no = i,
+                                    top_row_style = top_row_style,
+                                    rnames = rnames,
+                                    rowlabel = rowlabel,
+                                    pos.rowlabel = pos.rowlabel,
+                                    cgroup_spacer_cells = cgroup_spacer_cells,
+                                    css.cell = css.cell)
       table_str %<>%
         paste0(cgrp_str)
     }

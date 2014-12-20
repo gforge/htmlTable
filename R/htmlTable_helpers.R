@@ -195,6 +195,7 @@ prAddSemicolon2StrEnd <- function(my_str){
 #' @param row_no The row number within the header group. Useful for multirow
 #'  headers when we need to output the rowlabel at the \code{pos.rowlabel}
 #'  level.
+#' @param css.cgroup_vec The CSS row corresponding to the current row
 #' @param top_row_style The top row has a special style depending on
 #'  the \code{ctable} option in the \code{htmlTable} call.
 #' @param cgroup_spacer_cells The spacer cells due to the multiple cgroup levels.
@@ -206,12 +207,15 @@ prAddSemicolon2StrEnd <- function(my_str){
 #' @inheritParams htmlTable
 #' @family hidden helper functions for \code{\link{htmlTable}}
 prGetCgroupHeader <- function(x,
-                                cgroup_vec, n.cgroup_vec, cgroup_vec.just,
-                                row_no, top_row_style,
-                                rnames,
-                                rowlabel, pos.rowlabel,
-                                cgroup_spacer_cells,
-                                css.cell){
+                              cgroup_vec,
+                              n.cgroup_vec,
+                              cgroup_vec.just,
+                              css.cgroup_vec,
+                              row_no, top_row_style,
+                              rnames,
+                              rowlabel, pos.rowlabel,
+                              cgroup_spacer_cells,
+                              css.cell){
 
   header_str <- "\n\t<tr>"
   if (row_no == 1)
@@ -261,16 +265,18 @@ prGetCgroupHeader <- function(x,
                                 .,
                                 colspan,
                                 prGetStyle(c(`font-weight`=900),
-                                             ts,
-                                             align=prGetAlign(cgroup_vec.just, i)))
+                                           ts,
+                                           align=prGetAlign(cgroup_vec.just, i),
+                                           css.cgroup_vec[i]))
       else
         header_str %<>% sprintf("%s\n\t\t<th colspan='%d' style='%s'>%s</th>",
                                 .,
                                 colspan,
                                 prGetStyle(c(`font-weight`=900,
-                                               `border-bottom`="1px solid grey"),
-                                             ts,
-                                             align=prGetAlign(cgroup_vec.just, i)),
+                                             `border-bottom`="1px solid grey"),
+                                           ts,
+                                           align=prGetAlign(cgroup_vec.just, i),
+                                           css.cgroup_vec[i]),
                                 cgroup_vec[i])
 
       # If not last then add a filler cell between the row categories
@@ -295,7 +301,7 @@ prGetCgroupHeader <- function(x,
 #' @return \code{list(cgroup, n.cgroup, align.cgroup, cgroup_spacer_cells)}
 #' @keywords internal
 #' @family hidden helper functions for \code{\link{htmlTable}}
-prPrepareCgroup <- function(x, cgroup, n.cgroup, align.cgroup){
+prPrepareCgroup <- function(x, cgroup, n.cgroup, align.cgroup, css.cgroup){
   cgroup_spacer_cells <- rep(0, times=(ncol(x)-1))
 
   # The cgroup is by for compatibility reasons handled as a matrix
@@ -435,10 +441,13 @@ prPrepareCgroup <- function(x, cgroup, n.cgroup, align.cgroup){
         cgroup_spacer_cells[sum(n.cgroup[i, 1:ii], na.rm=TRUE)] <- 1
     }
   }
+
+  css.cgroup <- prPrepareCss(x = cgroup, css = css.cgroup)
   return(list(cgroup = cgroup,
               n.cgroup = n.cgroup,
               align.cgroup = align.cgroup,
-              cgroup_spacer_cells = cgroup_spacer_cells))
+              cgroup_spacer_cells = cgroup_spacer_cells,
+              css.cgroup = css.cgroup))
 }
 
 #' Gets the rowlabel position
@@ -723,80 +732,83 @@ prMergeClr<- function(clrs){
 
 #' Prepares the cell style
 #'
+#' @param css The CSS styles that are to be converted into
+#'  a matrix.
+#' @param name The name of the CSS style that is prepared
 #' @inheritParams htmlTable
 #' @return \code{matrix}
 #' @keywords internal
-prPrepareCellStyles <- function(x, css.cell, rnames, header){
+prPrepareCss <- function(x, css, rnames, header, name = deparse(substitute(css))){
   css.header <- rep("", times = ncol(x))
   css.rnames <- rep("", times = nrow(x) + !missing(header))
-  if (is.matrix(css.cell)){
-    if (ncol(css.cell) == ncol(x) + 1 &&
+  if (is.matrix(css)){
+    if (ncol(css) == ncol(x) + 1 &&
           !prSkipRownames(rnames)){
       if (!missing(header)){
-        if (nrow(css.cell) == nrow(x) + 1){
-          css.rnames <- css.cell[,1]
-        }else if(nrow(css.cell) == nrow(x)){
-          css.rnames[2:length(css.rnames)] <- css.cell[,1]
+        if (nrow(css) == nrow(x) + 1){
+          css.rnames <- css[,1]
+        }else if(nrow(css) == nrow(x)){
+          css.rnames[2:length(css.rnames)] <- css[,1]
         }else{
-          stop("There is an invalid number of rows for the css.cell matrix.",
+          stop("There is an invalid number of rows for the ", name ," matrix.",
                " Your x argument has '", nrow(x), "' rows",
-               " while your css.cell has '", nrow(css.cell), "' rows",
+               " while your ", name ," has '", nrow(css), "' rows",
                " and there is a header")
         }
-      }else if(nrow(x) == nrow(css.cell)){
-        css.rnames <- css.cell[,1]
+      }else if(nrow(x) == nrow(css)){
+        css.rnames <- css[,1]
       }else{
-        stop("There is an invalid number of rows for the css.cell matrix.",
+        stop("There is an invalid number of rows for the ", name ," matrix.",
              " Your x argument has '", nrow(x), "' rows",
-             " while your css.cell has '", nrow(css.cell), "' rows",
+             " while your ", name ," has '", nrow(css), "' rows",
              " (there is no header)")
       }
 
-      css.cell <-
-        css.cell[,-1]
-    }else if (ncol(css.cell) != ncol(x)){
-      stop("There is an invalid number of columns for the css.cell matrix.",
+      css <-
+        css[,-1]
+    }else if (ncol(css) != ncol(x)){
+      stop("There is an invalid number of columns for the ", name ," matrix.",
            " Your x argument has '", ncol(x), "' columns",
-           " while your css.cell has '", ncol(css.cell), "' columns",
+           " while your ", name ," has '", ncol(css), "' columns",
            " and there are ", ifelse(prSkipRownames(rnames),
                                      "no", ""),
            " rownames.")
     }
 
-    if (nrow(css.cell) == nrow(x) + 1 &&
+    if (nrow(css) == nrow(x) + 1 &&
           !missing(header)){
-      css.header <- css.cell[1,]
-      css.cell <- css.cell[-1,]
-    }else if(nrow(css.cell) != nrow(x)){
-      stop("There is an invalid number of rows for the css.cell matrix.",
+      css.header <- css[1,]
+      css <- css[-1,]
+    }else if(nrow(css) != nrow(x)){
+      stop("There is an invalid number of rows for the ", name ," matrix.",
            " Your x argument has '", nrow(x), "' rows",
-           " while your css.cell has '", nrow(css.cell), "' rows",
+           " while your ", name ," has '", nrow(css), "' rows",
            " and there is ", ifelse(missing(header),
                                     "no", "a"),
            " header")
     }
-  }else if(is.vector(css.cell)){
-    if (length(css.cell) == ncol(x) + 1){
-      css.rnames = rep(css.cell[1], nrow(x) + prSkipRownames(rnames))
-      css.cell <-
-        css.cell[-1]
-    }else if(length(css.cell) != ncol(x) &&
-               length(css.cell) != 1){
-      stop("The length of your css.cell vector '", length(css.cell) ,"'",
+  }else if(is.vector(css)){
+    if (length(css) == ncol(x) + 1){
+      css.rnames = rep(css[1], nrow(x) + prSkipRownames(rnames))
+      css <-
+        css[-1]
+    }else if(length(css) != ncol(x) &&
+               length(css) != 1){
+      stop("The length of your ", name ," vector '", length(css) ,"'",
            " does not correspond to the column length '", ncol(x) ,"'",
            " (there are ", ifelse(prSkipRownames(rnames),
                                     "no", ""),
            " rownames)")
     }
 
-    css.cell <- matrix(css.cell,
-                       nrow=nrow(x),
-                       ncol=ncol(x),
-                       byrow = TRUE)
+    css <- matrix(css,
+                  nrow=nrow(x),
+                  ncol=ncol(x),
+                  byrow = TRUE)
   }
 
-  return(structure(css.cell,
+  return(structure(css,
                    rnames = css.rnames,
                    header = css.header,
-                   class=class(css.cell)))
+                   class=class(css)))
 }

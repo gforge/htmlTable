@@ -3,7 +3,7 @@
 \alias{prPrepareCgroup}
 \title{Prepares the cgroup argument}
 \usage{
-prPrepareCgroup(x, cgroup, n.cgroup, align.cgroup)
+prPrepareCgroup(x, cgroup, n.cgroup, align.cgroup, css.cgroup)
 }
 \arguments{
   \item{x}{The matrix/data.frame with the data}
@@ -28,6 +28,9 @@ prPrepareCgroup(x, cgroup, n.cgroup, align.cgroup)
 
   \item{align.cgroup}{The justification of the
   \code{cgroups}}
+
+  \item{css.cgroup}{The same as \code{css.class} but for
+  cgroup formatting.}
 }
 \value{
 \code{list(cgroup, n.cgroup, align.cgroup,

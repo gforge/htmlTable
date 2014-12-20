@@ -14,8 +14,8 @@ htmlTable(x, ...)
   css.rgroup = "font-weight: 900;", css.rgroup.sep = "",
   css.tspanner = "font-weight: 900; text-transform: capitalize; text-align: left;",
   css.tspanner.sep = "border-top: 1px solid grey;", css.cell = "",
-  css.class = "gmisc_table", pos.rowlabel = "bottom", pos.caption = "top",
-  col.rgroup = "none", col.columns = "none",
+  css.cgroup = "", css.class = "gmisc_table", pos.rowlabel = "bottom",
+  pos.caption = "top", col.rgroup = "none", col.columns = "none",
   padding.rgroup = "&nbsp;&nbsp;", ctable = TRUE,
   compatibility = "LibreOffice", cspan.rgroup = "all", ...)
 
@@ -144,6 +144,9 @@ htmlTable(x, ...)
   correspond to the rowname style. Correspondingly if the
   size is \code{nrow(x) + 1} it is assummed that the first
   row is the header row.}
+
+  \item{css.cgroup}{The same as \code{css.class} but for
+  cgroup formatting.}
 
   \item{css.class}{The html CSS class for the table. This
   allows directing html formatting through
