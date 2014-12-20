@@ -1,15 +1,15 @@
 Package: htmlTable
 Version: 1.0.0
 Date: 2014-12-19
-Title: Create advanced tables in markdown/HTML
+Title: Advanced Tables for Markdown/HTML
 Author: Max Gordon <max@gforge.se>
 Maintainer: Max Gordon <max@gforge.se>
-Description: The htmlTable is aimed at creating tables with state of the art
-    table layout containing row spanners, column spanners, table spanners,
+Description: A package for creating tables with state of the art layout
+    containing row spanners, column spanners, table spanners, zebra striping,
     and more. While allowing advanced layout the underlying CSS structure is
-    simple in order to maximize compatibility with MS Word/LibreOffice.The
-    package also contains a few text formatting functions that help outputtig
-    text compatible with html/LaTeX.
+    simple in order to maximize compatibility with MS Word/LibreOffice. The
+    package also contains a few text formatting functions that help outputting
+    text compatible with HTML/LaTeX.
 License: GPL (>= 3)
 URL: http://gforge.se/packages/
 BugReports: https://github.com/gforge/htmlTable/issues
