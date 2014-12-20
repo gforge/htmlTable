@@ -2,9 +2,6 @@
 
 S3method(htmlTable,default)
 S3method(print,htmlTable)
-export(figCapNo)
-export(figCapNoLast)
-export(figCapNoNext)
 export(htmlTable)
 export(outputInt)
 export(pvalueFormatter)

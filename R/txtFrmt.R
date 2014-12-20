@@ -9,7 +9,10 @@
 #'
 #' @param ... The lines that you want to be joined
 #' @param html If HTML compatible output should be used. If \code{FALSE}
-#'  it outputs LaTeX formatting
+#'  it outputs LaTeX formatting. Note if you set this to 5
+#'  then the html5 version of \emph{br} will be used: \code{<br>}
+#'  otherwise it uses the \code{<br />} that is compatible
+#'  with the xhtml-formatting.
 #' @return string
 #'
 #' @examples
@@ -19,7 +22,7 @@
 #'
 #' @family text formatters
 #' @export
-txtMergeLines <- function(..., html = TRUE){
+txtMergeLines <- function(..., html = 5){
   strings <- c()
   for (i in list(...)){
     if (is.list(i)){
@@ -30,17 +33,25 @@ txtMergeLines <- function(..., html = TRUE){
     }
 
   }
-  if (length(strings) < 2)
+  if (length(strings) == 0){
+    return("")
+  }
+  if (length(strings) == 1){
+    strings <- sub("\n", ifelse(html == 5, "<br>\n", "<br />\n"), strings)
     return(strings)
+  }
 
-  ret <- ifelse(html, "", "\\vbox{")
+  ret <- ifelse(html != FALSE, "", "\\vbox{")
   first <- TRUE
   for (line in strings){
     line <- as.character(line)
     if (first)
-      ret <- paste0(ret, ifelse(html, line, sprintf("\\hbox{\\strut %s}", line)))
+      ret <- paste0(ret, ifelse(html != FALSE, line, sprintf("\\hbox{\\strut %s}", line)))
     else
-      ret <- paste0(ret, ifelse(html, sprintf("<br />%s", line), sprintf("\\hbox{\\strut %s}", line)))
+      ret <- paste0(ret, ifelse(html != FALSE,
+                                paste(ifelse(html == 5, "<br>", "<br />"),
+                                      line),
+                                sprintf("\\hbox{\\strut %s}", line)))
     first <- FALSE
   }
   ret <- ifelse(html, ret, paste0(ret, "}"))
@@ -157,7 +168,7 @@ txtPval <- function(pvalues,
       }
     }
   }
-  
+
   if (is.logical(html))
     html <- ifelse(html, "&lt; ", "< ")
   sapply(pvalues, function(x, lim.2dec, lim.sig, lt_sign){

@@ -3,13 +3,16 @@
 \alias{txtMergeLines}
 \title{A merges lines while preserving the line break for html/LaTeX}
 \usage{
-txtMergeLines(..., html = TRUE)
+txtMergeLines(..., html = 5)
 }
 \arguments{
   \item{...}{The lines that you want to be joined}
 
   \item{html}{If HTML compatible output should be used. If
-  \code{FALSE} it outputs LaTeX formatting}
+  \code{FALSE} it outputs LaTeX formatting. Note if you set
+  this to 5 then the html5 version of \emph{br} will be
+  used: \code{<br>} otherwise it uses the \code{<br />}
+  that is compatible with the xhtml-formatting.}
 }
 \value{
 string

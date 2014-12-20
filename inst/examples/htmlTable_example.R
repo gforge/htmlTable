@@ -14,3 +14,6 @@ htmlTable(output,
           n.cgroup = c(2,2),
           caption="Basic table with both column spanners (groups) and row groups",
           tfoot="&dagger; A table footer commment")
+
+# See vignette("tables", package = "htmlTable")
+# for more examples

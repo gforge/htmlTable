@@ -67,7 +67,9 @@
 #'  rowlabel is a character string containing the
 #'  column heading for the \code{rnames}.
 #' @param caption Adds a table caption.
-#' @param tfoot Adds a table footer (uses the \code{<tfoot>} html element).
+#' @param tfoot Adds a table footer (uses the \code{<tfoot>} html element). The
+#'  output is run through \code{\link{txtMergeLines}} simplifying the generation
+#'  of multiple lines.
 #' @param label a text string representing a symbolic label for the
 #'  table for referencing as an anchor. All you need to do is to reference the
 #'  table, for instance \code{<a href="#anchor_name">see table 2</a>}
@@ -149,6 +151,9 @@
 #'
 #' @param padding.rgroup Generally two non-breakings spaces, i.e. \code{&nbsp;&nbsp;}, but some
 #'  journals only have a bold face for the rgroup and leaves the subelements unindented.
+#' @param padding.tspanner The table spanner is usually without padding but you may specify padding
+#'  similar to \code{padding.rgroup} and it will be added to all elements, including the rgroup elements.
+#'  This allows for a 3-level hierarchy if needed.
 #' @param ctable If the table should have a double top border or a single a' la LaTeX ctable style
 #' @param compatibility Is default set to \code{LibreOffice} as some
 #'  settings need to be in old html format as Libre Office can't
@@ -223,6 +228,7 @@ htmlTable.default <- function(x,
 
                               # More alternatives
                               padding.rgroup = "&nbsp;&nbsp;",
+                              padding.tspanner = "",
                               ctable = TRUE,
                               compatibility = "LibreOffice",
                               cspan.rgroup = "all",
@@ -690,7 +696,8 @@ htmlTable.default <- function(x,
                     .,
                     true_span,
                     prGetStyle(rs),
-                    rgroup[rgroup_iterator])
+                    paste0(padding.tspanner,
+                           rgroup[rgroup_iterator]))
 
           cols_left <- ncol(x) - (cspan.rgroup[rgroup_iterator] - 1*!prSkipRownames(rnames))
           cell_str <- prAddCells(rowcells = rep("", ncol(x)),
@@ -714,7 +721,8 @@ htmlTable.default <- function(x,
                     .,
                     total_columns,
                     prGetStyle(rs),
-                    rgroup[rgroup_iterator])
+                    paste0(padding.tspanner,
+                           rgroup[rgroup_iterator]))
         }
 
         first_row <- FALSE
@@ -747,14 +755,15 @@ htmlTable.default <- function(x,
     }
 
     if (!prSkipRownames(rnames)){
-      pdng <- ""
+      pdng <- padding.tspanner
       # Minor change from original function. If the group doesn't have
       # a group name then there shouldn't be any indentation
       if (!missing(rgroup) &&
             rgroup_iterator > 0 &&
             is.na(rgroup[rgroup_iterator]) == FALSE &&
             rgroup[rgroup_iterator] != ""){
-        pdng <- padding.rgroup
+        pdng %<>%
+          paste0(padding.rgroup)
       }
 
       # The padding doesn't work well with the Word import - well nothing really works well with word...
@@ -805,7 +814,7 @@ htmlTable.default <- function(x,
 
     # Add the actual tfoot to a new row
     table_str %<>%
-      paste0("\n\t", tfoot)
+      paste0("\n\t", txtMergeLines(tfoot))
 
     # Close the tfoot
     table_str %<>%
@@ -911,7 +920,9 @@ print.htmlTable<- function(x, useViewer, ...){
 #' The function relies on \code{options("table_counter")}
 #' in order to keep track of the last number.
 #'
-#' @inheritParams figCapNo
+#' @param roman Whether or not to use roman numbers instead
+#'  of arabic. Can also be set through \code{options(table_caption_no_roman = TRUE)}
+#'
 #' @export
 #' @examples
 #' org_opts <- options(table_counter=1)
@@ -942,7 +953,7 @@ tblNoLast <- function(roman = getOption("table_counter_roman",
 #' The function relies on \code{options("table_counter")}
 #' in order to keep track of the last number.
 #'
-#' @inheritParams figCapNo
+#' @inheritParams tblNoLast
 #' @export
 #' @examples
 #' org_opts <- options(table_counter=1)

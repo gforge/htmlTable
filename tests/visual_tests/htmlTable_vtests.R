@@ -13,6 +13,9 @@ htmlTable(mx[1,,drop=FALSE])
 htmlTable(mx, n.rgroup=2, rgroup="A")
 htmlTable(mx, tspanner = "AA", n.tspanner = 2,
           n.rgroup=2, rgroup="A")
+htmlTable(mx, tspanner = "AA", n.tspanner = 2,
+          padding.tspanner = "&nbsp;&nbsp;",
+          n.rgroup=2, rgroup="A")
 htmlTable(mx, tspanner = "AA", n.tspanner = 2)
 
 htmlTable(mx, n.rgroup=2, rgroup="A", padding.rgroup = "")
@@ -93,4 +96,18 @@ htmlTable(mx_3_times,
           n.tspanner=rep(nrow(mx), times=3),
           rowlabel = '',
           tfoot = "Some footer text",
+          caption="Caption text")
+
+htmlTable(mx_3_times,
+          padding.tspanner="+",
+          padding.rgroup="-",
+          css.tspanner = "color: purple; font-weight: bold;",
+          css.tspanner.sep="border-top: 2px solid red;",
+          rgroup = rep(c("Group a", "Group b and c"), times=3),
+          n.rgroup = rep(c(1,2), times=3),
+          tspanner=c("First", "Second", "Third"),
+          n.tspanner=rep(nrow(mx), times=3),
+          rowlabel = '',
+          tfoot = "&dagger; Some footnote
+          &Dagger; Another footnote",
           caption="Caption text")

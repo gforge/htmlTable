@@ -16,7 +16,7 @@ htmlTable(x, ...)
   css.tspanner.sep = "border-top: 1px solid grey;", css.cell = "",
   css.cgroup = "", css.class = "gmisc_table", pos.rowlabel = "bottom",
   pos.caption = "top", col.rgroup = "none", col.columns = "none",
-  padding.rgroup = "&nbsp;&nbsp;", ctable = TRUE,
+  padding.rgroup = "&nbsp;&nbsp;", padding.tspanner = "", ctable = TRUE,
   compatibility = "LibreOffice", cspan.rgroup = "all", ...)
 
 \method{print}{htmlTable}(x, useViewer, ...)
@@ -48,7 +48,9 @@ htmlTable(x, ...)
   \item{caption}{Adds a table caption.}
 
   \item{tfoot}{Adds a table footer (uses the \code{<tfoot>}
-  html element).}
+  html element). The output is run through
+  \code{\link{txtMergeLines}} simplifying the generation of
+  multiple lines.}
 
   \item{label}{a text string representing a symbolic label
   for the table for referencing as an anchor. All you need
@@ -179,6 +181,12 @@ htmlTable(x, ...)
   bold face for the rgroup and leaves the subelements
   unindented.}
 
+  \item{padding.tspanner}{The table spanner is usually
+  without padding but you may specify padding similar to
+  \code{padding.rgroup} and it will be added to all
+  elements, including the rgroup elements. This allows for
+  a 3-level hierarchy if needed.}
+
   \item{ctable}{If the table should have a double top
   border or a single a' la LaTeX ctable style}
 
@@ -303,6 +311,9 @@ htmlTable(output,
           n.cgroup = c(2,2),
           caption="Basic table with both column spanners (groups) and row groups",
           tfoot="&dagger; A table footer commment")
+
+# See vignette("tables", package = "htmlTable")
+# for more examples
 }
 \seealso{
 \code{\link{txtMergeLines}}, \code{\link[Hmisc]{latex}}

@@ -19,6 +19,7 @@ Changes for 1.0
 * htmlTable can now handle rnames = FALSE in order to surpress rownames
 * htmlTable now defaults to the layout of ctable as this is the more commonly found layout among medical papers
 * htmlTable rgroup has the additional padding.rgroup for those that want to change the no-breaking space padding
+* htmlTable tfoot is automatically run through txtMergeLines in order to retain wrapped text
 * Renamed splitLines4Table to txtMergeLines, outputInt to txtInt, pvalueFormatter to txtPval and these follow now the argument style of htmlTable
 * Added txtRound for rounding matrices. The problem with round() is that 1.01 rounds to 1
   instead of "1.0" that is wanted for output.

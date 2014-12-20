@@ -8,7 +8,7 @@ tblNoLast(roman = getOption("table_counter_roman", FALSE))
 \arguments{
   \item{roman}{Whether or not to use roman numbers instead
   of arabic. Can also be set through
-  \code{options(fig_caption_no_roman = TRUE)}}
+  \code{options(table_caption_no_roman = TRUE)}}
 }
 \description{
 The function relies on \code{options("table_counter")} in
