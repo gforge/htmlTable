@@ -508,7 +508,7 @@ htmlTable.default <- function(x,
   # Add caption according to standard HTML
   if (!missing(caption) &
         compatibility != "LibreOffice"){
-    if (pos.caption == "bottom"){
+    if (pos.caption %in% c("bottom", "below")){
       table_str %<>%
         paste0("\n\t<caption style='caption-side: bottom'>")
     }else{
@@ -526,7 +526,7 @@ htmlTable.default <- function(x,
 
   if (!missing(caption) &
         compatibility == "LibreOffice" &
-        pos.caption != "bottom"){
+        !pos.caption %in% c("bottom", "below")){
 
     table_str %<>%
       sprintf("%s\n\t<tr><td colspan='%d' style='text-align: left;'>%s</td></tr>",
@@ -797,7 +797,7 @@ htmlTable.default <- function(x,
 
   if (!missing(caption) &
         compatibility == "LibreOffice" &
-        pos.caption == "bottom"){
+        pos.caption %in% c("bottom", "below")){
 
     table_str %<>%
       sprintf("%s\n\t<tr><td colspan='%d' style='text-align: left;'>%s</td></tr>",

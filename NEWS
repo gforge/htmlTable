@@ -1,5 +1,11 @@
 NEWS for the Gmisc package
 
+Changes for 1.0.1
+-----------------
+* Added a detailed vignette with the primary features of htmlTable
+* The pos.caption can now also be "below"
+* Fixed minor bug with numbering not beeing turned off with options(table_counter = FALSE)
+
 Changes for 1.0
 -----------------
 * The htmlTable and associated txt-functions are now separated from Gmisc
