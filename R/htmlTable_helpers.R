@@ -656,11 +656,12 @@ prSkipRownames <- function(rnames){
 #'
 #' @param clr The colors
 #' @param n The number of rows/columns applicable to the color
-#' @param ng The n.rgroup argument if applicable
+#' @param ng The n.rgroup/n.cgroup argument if applicable
+#' @param gtxt The rgroup/cgroup texts
 #' @return \code{character} A vector containing hexadecimal colors
 #' @import magrittr
 #' @keywords internal
-prPrepareColors <- function(clr, n, ng){
+prPrepareColors <- function(clr, n, ng, gtxt){
   clr <- sapply(clr, function(a_clr){
     if(a_clr == "none")
       return(a_clr)
@@ -684,8 +685,23 @@ prPrepareColors <- function(clr, n, ng){
   }, USE.NAMES=FALSE)
 
   if(!missing(ng)){
-    clr <- rep(clr, length.out = length(ng))
+    # Split groups into separate if the gtxt is ""
+    if (any(gtxt == "")){
+      tmp <- c()
+      for (i in 1:length(ng)){
+        if (gtxt[i] != "" &&
+              !is.na(gtxt[i])){
+          tmp <- c(tmp,
+                   ng[i])
+        }else{
+          tmp <- c(tmp,
+                   rep(1, ng[i]))
+        }
+      }
+      ng <- tmp
+    }
 
+    clr <- rep(clr, length.out = length(ng))
     attr(clr, "groups") <-
       Map(rep, clr, length.out = ng)
   }else if(!missing(n)){

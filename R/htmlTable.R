@@ -272,7 +272,7 @@ htmlTable.default <- function(x,
 
   ## this will convert color names to hexadecimal (easier for user)
   ## but also leaves hex format unchanged
-  col.rgroup <- prPrepareColors(col.rgroup, nrow(x), n.rgroup)
+  col.rgroup <- prPrepareColors(col.rgroup, n = nrow(x), ng = n.rgroup, gtxt = rgroup)
   col.columns <- prPrepareColors(col.columns, ncol(x))
 
   # Unfortunately in knitr there seems to be some issue when the
