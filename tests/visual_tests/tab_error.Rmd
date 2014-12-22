@@ -1,0 +1,20 @@
+---
+title: "Raredd test"
+output: html_document
+---
+
+Test error reported by [raredd](https://github.com/gforge/Gmisc/issues/9)
+
+```{r, results='asis'}
+library("htmlTable")
+htmlTable(head(mtcars))
+```
+
+System info
+===========
+
+```{r}
+version
+sessionInfo()
+```
+
