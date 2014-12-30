@@ -18,7 +18,6 @@
 #' the "second" spans the last three columns, "a" spans the first two, "b"
 #' the middle column, and "c" the last two columns.
 #'
-#'
 #' @section Important \pkg{knitr}-note:
 #'
 #' This funciton will only work with \pkg{knitr} outputting html, i.e.
@@ -915,6 +914,8 @@ print.htmlTable<- function(x, useViewer, ...){
     cat_args <- cat_args[names(cat_args) %in% names(formals(cat))[-1]]
     do.call(cat, c(x, cat_args))
   }
+
+  invisible(x)
 }
 
 #' Gets the last table number
