@@ -69,9 +69,11 @@
 #' @param tfoot Adds a table footer (uses the \code{<tfoot>} html element). The
 #'  output is run through \code{\link{txtMergeLines}} simplifying the generation
 #'  of multiple lines.
-#' @param label a text string representing a symbolic label for the
+#' @param label A text string representing a symbolic label for the
 #'  table for referencing as an anchor. All you need to do is to reference the
-#'  table, for instance \code{<a href="#anchor_name">see table 2</a>}
+#'  table, for instance \code{<a href="#anchor_name">see table 2</a>}. This is
+#'  known as the element's id attribute, i.e. table id, in HTML linguo, and should
+#'  be unique id for an HTML element in contrast to the \code{css.class} element attribute.
 #'
 #' @param align A character strings specifying column alignments, defaulting to
 #'  \code{\link[base]{paste}(rep('c',ncol(x)),collapse='')} to center. Valid alignments are
