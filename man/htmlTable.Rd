@@ -53,10 +53,13 @@ htmlTable(x, ...)
   \code{\link{txtMergeLines}} simplifying the generation of
   multiple lines.}
 
-  \item{label}{a text string representing a symbolic label
+  \item{label}{A text string representing a symbolic label
   for the table for referencing as an anchor. All you need
   to do is to reference the table, for instance \code{<a
-  href="#anchor_name">see table 2</a>}}
+  href="#anchor_name">see table 2</a>}. This is known as
+  the element's id attribute, i.e. table id, in HTML
+  linguo, and should be unique id for an HTML element in
+  contrast to the \code{css.class} element attribute.}
 
   \item{rgroup}{A vector of character strings containing
   headings for row groups. \code{n.rgroup} must be present

@@ -4,7 +4,7 @@
 \alias{prPrepareColors}
 \title{Prepares the alternating colors}
 \usage{
-prPrepareColors(clr, n, ng)
+prPrepareColors(clr, n, ng, gtxt)
 }
 \arguments{
   \item{clr}{The colors}
@@ -12,7 +12,9 @@ prPrepareColors(clr, n, ng)
   \item{n}{The number of rows/columns applicable to the
   color}
 
-  \item{ng}{The n.rgroup argument if applicable}
+  \item{ng}{The n.rgroup/n.cgroup argument if applicable}
+
+  \item{gtxt}{The rgroup/cgroup texts}
 }
 \value{
 \code{character} A vector containing hexadecimal colors

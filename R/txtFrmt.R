@@ -201,6 +201,7 @@ txtPval <- function(pvalues,
 #'  This can be either a number or regular expression.
 #' @param excl.rows Columns to exclude from the rounding procedure.
 #'  This can be either a number or regular expression.
+#' @param txt.NA The string to exchange NA with
 #' @return \code{matrix/data.frame}
 #'
 #' @examples
@@ -211,7 +212,7 @@ txtPval <- function(pvalues,
 #' txtRound(mx, 1)
 #' @export
 #' @family text formatters
-txtRound <- function(x, digits, excl.cols, excl.rows){
+txtRound <- function(x, digits, excl.cols, excl.rows, txt.NA = ""){
   if (is.null(dim(x)) ||
         length(dim(x)) > 2)
     stop("The function only accepts matrices/data.frames as primary argument")
@@ -246,7 +247,9 @@ txtRound <- function(x, digits, excl.cols, excl.rows){
   for (col in cols){
     ret_x[rows, col] <-
       sapply(x[rows, col], function(elmnt){
-        if(!is.numeric(elmnt))
+        if (is.na(elmnt))
+          return(txt.NA)
+        if (!is.numeric(elmnt))
           return(elmnt)
         sprintf(paste0("%.", digits, "f"),
                 elmnt)

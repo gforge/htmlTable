@@ -312,17 +312,32 @@ test_that("Check color function",{
                     c("#ffffff", "#444444", "#ffffff"))
 
   expect_null(attr(prPrepareColors(c("white", "#444444"), 3), "groups"))
-  expect_equivalent(attr(prPrepareColors(c("white", "#444444"), 3, c(2, 3, 1)), "groups")[[1]],
+  expect_equivalent(attr(prPrepareColors(c("white", "#444444"),
+                                         n = 3,
+                                         ng = c(2, 3, 1),
+                                         gtxt = c("a", "b", "c")), "groups")[[1]],
                     c("#ffffff", "#ffffff"))
-  expect_equivalent(attr(prPrepareColors(c("white", "#444444"), 3, c(2, 3, 1)), "groups")[[2]],
+  expect_equivalent(attr(prPrepareColors(c("white", "#444444"),
+                                         n = 3,
+                                         ng = c(2, 3, 1),
+                                         gtxt = c("a", "b", "c")), "groups")[[2]],
                     c("#444444", "#444444", "#444444"))
-  expect_equivalent(attr(prPrepareColors(c("white", "#444444"), 3, c(2, 3, 1)), "groups")[[3]],
+  expect_equivalent(attr(prPrepareColors(c("white", "#444444"),
+                                         n = 3,
+                                         ng = c(2, 3, 1),
+                                         gtxt = c("a", "b", "c")), "groups")[[3]],
                     c("#ffffff"))
 
-  expect_equivalent(attr(prPrepareColors(c("white", "#444444", "none"), 3, c(2, 3, 1)), "groups")[[3]],
+  expect_equivalent(attr(prPrepareColors(c("white", "#444444", "none"),
+                                         n = 3,
+                                         ng = c(2, 3, 1),
+                                         gtxt = c("a", "b", "c")), "groups")[[3]],
                     c("none"))
 
-  expect_equivalent(attr(prPrepareColors(c("white", "none"), 3, c(2, 3, 1)), "groups")[[2]],
+  expect_equivalent(attr(prPrepareColors(c("white", "none"),
+                                         n = 3,
+                                         ng = c(2, 3, 1),
+                                         gtxt = c("a", "b", "c")), "groups")[[2]],
                     c("none", "none", "none"))
 
   ## Test the merge colors

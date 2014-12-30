@@ -9,6 +9,7 @@ test_that("Add zero", {
   expect_equal(txtPval(.00006451, lim.sig=10^-3), "&lt; 0.001")
 })
 
+context('txtRound')
 test_that("Matrix rounder",{
   test_mx <- matrix(c(1, 1.11, 1.25,
                   2.50, 2.55, 2.45,
@@ -41,4 +42,10 @@ test_that("Matrix rounder",{
                     as.character(test_mx["a", 3]))
   expect_equivalent(txtRound(test_mx, 1, excl.rows = "a")["c", 3],
                     sprintf("%.1f", test_mx["c", 3]))
+
+  expect_equivalent(txtRound(matrix(c(NA, 2.22), ncol=1), 1)[1,1],
+                    "")
+
+  expect_equivalent(txtRound(matrix(c(NA, 2.22), ncol=1), 1, txt.NA = "missing")[1,1],
+                    "missing")
 })

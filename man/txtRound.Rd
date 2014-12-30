@@ -4,7 +4,7 @@
 \alias{txtRound}
 \title{A convenient rounding function}
 \usage{
-txtRound(x, digits, excl.cols, excl.rows)
+txtRound(x, digits, excl.cols, excl.rows, txt.NA = "")
 }
 \arguments{
   \item{x}{The data.frame/matrix to be rounded}
@@ -20,6 +20,8 @@ txtRound(x, digits, excl.cols, excl.rows)
   \item{excl.rows}{Columns to exclude from the rounding
   procedure. This can be either a number or regular
   expression.}
+
+  \item{txt.NA}{The string to exchange NA with}
 }
 \value{
 \code{matrix/data.frame}
