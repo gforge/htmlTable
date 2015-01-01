@@ -42,11 +42,12 @@ cat("```{r, results='asis'}
 Advanced
 ========
 
-While it may be sufficient for basic tables a more advanced layout is often needed in medical publications with elements such as:
+While it may be sufficient for basic tables a more advanced layout is often needed in medical articles with elements such as:
 
 * row groups
 * column spanners
 * table spanners
+* total row
 * caption
 * table footer
 * zebra coloring (alias banding):
@@ -144,6 +145,27 @@ A table spanner is similar to rgroup but has the primary purpose of combining 2 
 
 ```{r, results='asis'}
 htmlTable(mx, 
+          tspanner = paste("Spanner", LETTERS[1:3]),
+          n.tspanner = c(2,4,nrow(mx) - 6))
+```
+
+Total row
+---------
+
+Many financial tables use the concept of a total row at the end that sums the above elements:
+
+```{r, results='asis'}
+htmlTable(mx[1:3,], total=TRUE)
+```
+
+This can also be combined with table spanners:
+
+```{r, results='asis'}
+htmlTable(mx, 
+          total = "tspanner",
+          css.total = c("border-top: 1px dashed grey;",
+                        "border-top: 1px dashed grey;",
+                        "border-top: 1px solid grey; font-weight: 900"),
           tspanner = paste("Spanner", LETTERS[1:3]),
           n.tspanner = c(2,4,nrow(mx) - 6))
 ```

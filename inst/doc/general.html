@@ -79,7 +79,8 @@ Column 1
 Column 2
 </th>
     </tr>
-    </thead><tbody>
+    </thead>
+    <tbody>
     <tr>
         <td style="text-align: left;">
 Row 1
@@ -117,11 +118,12 @@ Row 2
 </div>
 <div id="advanced" class="section level1">
 <h1>Advanced</h1>
-<p>While it may be sufficient for basic tables a more advanced layout is often needed in medical publications with elements such as:</p>
+<p>While it may be sufficient for basic tables a more advanced layout is often needed in medical articles with elements such as:</p>
 <ul>
 <li>row groups</li>
 <li>column spanners</li>
 <li>table spanners</li>
+<li>total row</li>
 <li>caption</li>
 <li>table footer</li>
 <li>zebra coloring (alias banding):</li>
@@ -176,7 +178,8 @@ for (nr in <span class="dv">1</span>:<span class="kw">nrow</span>(mx)){
 6th hdr
 </th>
     </tr>
-    </thead><tbody>
+    </thead>
+    <tbody>
     <tr><td colspan="7" style="font-weight: 900;">
 Group A
 </td></tr>
@@ -400,7 +403,8 @@ Group C
 6th hdr
 </th>
     </tr>
-    </thead><tbody>
+    </thead>
+    <tbody>
     <tr><td colspan="7" style="font-weight: 900;">
 Group A
 </td></tr>
@@ -622,7 +626,8 @@ Group B
 6th hdr
 </th>
     </tr>
-    </thead><tbody>
+    </thead>
+    <tbody>
     <tr><td colspan="7" style>
 Group A
 </td></tr>
@@ -860,7 +865,8 @@ Cgroup 2
 6th hdr
 </th>
     </tr>
-    </thead><tbody>
+    </thead>
+    <tbody>
     <tr>
         <td style="text-align: left;">
 1st row
@@ -1130,7 +1136,8 @@ Cgroup 2
 6th hdr
 </th>
     </tr>
-    </thead><tbody>
+    </thead>
+    <tbody>
     <tr>
         <td style="text-align: left;">
 1st row
@@ -1427,7 +1434,8 @@ Cgroup 2
 6th hdr
 </th>
     </tr>
-    </thead><tbody>
+    </thead>
+    <tbody>
     <tr>
         <td style="text-align: left;">
 1st row
@@ -1717,7 +1725,8 @@ Cgroup 2
 6th hdr
 </th>
     </tr>
-    </thead><tbody>
+    </thead>
+    <tbody>
     <tr><td colspan="7" style="font-weight: 900; text-transform: capitalize; text-align: left;">
 Spanner A
 </td></tr>
@@ -1767,7 +1776,7 @@ Spanner A
 2:6
 </td>
     </tr>
-    <tr><td colspan="7" style="font-weight: 900; text-transform: capitalize; text-align: left; border-top: 1px solid grey;">
+    <tr><td colspan="7" style="font-weight: 900; text-transform: capitalize; text-align: left; border-top: 1px solid #BEBEBE;">
 Spanner B
 </td></tr>
     <tr>
@@ -1862,7 +1871,7 @@ Spanner B
 6:6
 </td>
     </tr>
-    <tr><td colspan="7" style="font-weight: 900; text-transform: capitalize; text-align: left; border-top: 1px solid grey;">
+    <tr><td colspan="7" style="font-weight: 900; text-transform: capitalize; text-align: left; border-top: 1px solid #BEBEBE;">
 Spanner C
 </td></tr>
     <tr>
@@ -1915,6 +1924,337 @@ Spanner C
 </table>
 
 </div>
+<div id="total-row" class="section level2">
+<h2>Total row</h2>
+<p>Many financial tables use the concept of a total row at the end that sums the above elements:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">htmlTable</span>(mx[<span class="dv">1</span>:<span class="dv">3</span>,], <span class="dt">total=</span><span class="ot">TRUE</span>)</code></pre>
+<table class="gmisc_table" style="border-collapse: collapse;" id="table_4">
+    <thead>
+    <tr>
+        <th style="border-bottom: 1px solid grey; border-top: 2px solid grey;"> </th>
+        <th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+1st hdr
+</th>
+        <th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+2nd hdr
+</th>
+        <th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+3rd hdr
+</th>
+        <th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+4th hdr
+</th>
+        <th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+5th hdr
+</th>
+        <th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+6th hdr
+</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td style="text-align: left;">
+1st row
+</td>
+        <td style="text-align: center;">
+1:1
+</td>
+        <td style="text-align: center;">
+1:2
+</td>
+        <td style="text-align: center;">
+1:3
+</td>
+        <td style="text-align: center;">
+1:4
+</td>
+        <td style="text-align: center;">
+1:5
+</td>
+        <td style="text-align: center;">
+1:6
+</td>
+    </tr>
+    <tr>
+        <td style="text-align: left;">
+2nd row
+</td>
+        <td style="text-align: center;">
+2:1
+</td>
+        <td style="text-align: center;">
+2:2
+</td>
+        <td style="text-align: center;">
+2:3
+</td>
+        <td style="text-align: center;">
+2:4
+</td>
+        <td style="text-align: center;">
+2:5
+</td>
+        <td style="text-align: center;">
+2:6
+</td>
+    </tr>
+    <tr>
+        <td style="border-bottom: 2px solid grey; border-top: 1px solid #BEBEBE; font-weight: 900; text-align: left;">
+3rd row
+</td>
+        <td style="border-bottom: 2px solid grey; border-top: 1px solid #BEBEBE; font-weight: 900; text-align: center;">
+3:1
+</td>
+        <td style="border-bottom: 2px solid grey; border-top: 1px solid #BEBEBE; font-weight: 900; text-align: center;">
+3:2
+</td>
+        <td style="border-bottom: 2px solid grey; border-top: 1px solid #BEBEBE; font-weight: 900; text-align: center;">
+3:3
+</td>
+        <td style="border-bottom: 2px solid grey; border-top: 1px solid #BEBEBE; font-weight: 900; text-align: center;">
+3:4
+</td>
+        <td style="border-bottom: 2px solid grey; border-top: 1px solid #BEBEBE; font-weight: 900; text-align: center;">
+3:5
+</td>
+        <td style="border-bottom: 2px solid grey; border-top: 1px solid #BEBEBE; font-weight: 900; text-align: center;">
+3:6
+</td>
+    </tr>
+    </tbody>
+</table>
+
+<p>This can also be combined with table spanners:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">htmlTable</span>(mx, 
+          <span class="dt">total =</span> <span class="st">&quot;tspanner&quot;</span>,
+          <span class="dt">css.total =</span> <span class="kw">c</span>(<span class="st">&quot;border-top: 1px dashed grey;&quot;</span>,
+                        <span class="st">&quot;border-top: 1px dashed grey;&quot;</span>,
+                        <span class="st">&quot;border-top: 1px solid grey; font-weight: 900&quot;</span>),
+          <span class="dt">tspanner =</span> <span class="kw">paste</span>(<span class="st">&quot;Spanner&quot;</span>, LETTERS[<span class="dv">1</span>:<span class="dv">3</span>]),
+          <span class="dt">n.tspanner =</span> <span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">4</span>,<span class="kw">nrow</span>(mx) -<span class="st"> </span><span class="dv">6</span>))</code></pre>
+<table class="gmisc_table" style="border-collapse: collapse;" id="table_4">
+    <thead>
+    <tr>
+        <th style="border-bottom: 1px solid grey; border-top: 2px solid grey;"> </th>
+        <th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+1st hdr
+</th>
+        <th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+2nd hdr
+</th>
+        <th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+3rd hdr
+</th>
+        <th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+4th hdr
+</th>
+        <th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+5th hdr
+</th>
+        <th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+6th hdr
+</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr><td colspan="7" style="font-weight: 900; text-transform: capitalize; text-align: left;">
+Spanner A
+</td></tr>
+    <tr>
+        <td style="text-align: left;">
+1st row
+</td>
+        <td style="text-align: center;">
+1:1
+</td>
+        <td style="text-align: center;">
+1:2
+</td>
+        <td style="text-align: center;">
+1:3
+</td>
+        <td style="text-align: center;">
+1:4
+</td>
+        <td style="text-align: center;">
+1:5
+</td>
+        <td style="text-align: center;">
+1:6
+</td>
+    </tr>
+    <tr>
+        <td style="border-top: 1px dashed grey; text-align: left;">
+2nd row
+</td>
+        <td style="border-top: 1px dashed grey; text-align: center;">
+2:1
+</td>
+        <td style="border-top: 1px dashed grey; text-align: center;">
+2:2
+</td>
+        <td style="border-top: 1px dashed grey; text-align: center;">
+2:3
+</td>
+        <td style="border-top: 1px dashed grey; text-align: center;">
+2:4
+</td>
+        <td style="border-top: 1px dashed grey; text-align: center;">
+2:5
+</td>
+        <td style="border-top: 1px dashed grey; text-align: center;">
+2:6
+</td>
+    </tr>
+    <tr><td colspan="7" style="font-weight: 900; text-transform: capitalize; text-align: left; border-top: 1px solid #BEBEBE;">
+Spanner B
+</td></tr>
+    <tr>
+        <td style="text-align: left;">
+3rd row
+</td>
+        <td style="text-align: center;">
+3:1
+</td>
+        <td style="text-align: center;">
+3:2
+</td>
+        <td style="text-align: center;">
+3:3
+</td>
+        <td style="text-align: center;">
+3:4
+</td>
+        <td style="text-align: center;">
+3:5
+</td>
+        <td style="text-align: center;">
+3:6
+</td>
+    </tr>
+    <tr>
+        <td style="text-align: left;">
+4th row
+</td>
+        <td style="text-align: center;">
+4:1
+</td>
+        <td style="text-align: center;">
+4:2
+</td>
+        <td style="text-align: center;">
+4:3
+</td>
+        <td style="text-align: center;">
+4:4
+</td>
+        <td style="text-align: center;">
+4:5
+</td>
+        <td style="text-align: center;">
+4:6
+</td>
+    </tr>
+    <tr>
+        <td style="text-align: left;">
+5th row
+</td>
+        <td style="text-align: center;">
+5:1
+</td>
+        <td style="text-align: center;">
+5:2
+</td>
+        <td style="text-align: center;">
+5:3
+</td>
+        <td style="text-align: center;">
+5:4
+</td>
+        <td style="text-align: center;">
+5:5
+</td>
+        <td style="text-align: center;">
+5:6
+</td>
+    </tr>
+    <tr>
+        <td style="border-top: 1px dashed grey; text-align: left;">
+6th row
+</td>
+        <td style="border-top: 1px dashed grey; text-align: center;">
+6:1
+</td>
+        <td style="border-top: 1px dashed grey; text-align: center;">
+6:2
+</td>
+        <td style="border-top: 1px dashed grey; text-align: center;">
+6:3
+</td>
+        <td style="border-top: 1px dashed grey; text-align: center;">
+6:4
+</td>
+        <td style="border-top: 1px dashed grey; text-align: center;">
+6:5
+</td>
+        <td style="border-top: 1px dashed grey; text-align: center;">
+6:6
+</td>
+    </tr>
+    <tr><td colspan="7" style="font-weight: 900; text-transform: capitalize; text-align: left; border-top: 1px solid #BEBEBE;">
+Spanner C
+</td></tr>
+    <tr>
+        <td style="text-align: left;">
+7th row
+</td>
+        <td style="text-align: center;">
+7:1
+</td>
+        <td style="text-align: center;">
+7:2
+</td>
+        <td style="text-align: center;">
+7:3
+</td>
+        <td style="text-align: center;">
+7:4
+</td>
+        <td style="text-align: center;">
+7:5
+</td>
+        <td style="text-align: center;">
+7:6
+</td>
+    </tr>
+    <tr>
+        <td style="border-bottom: 2px solid grey; border-top: 1px solid grey; font-weight: 900; text-align: left;">
+8th row
+</td>
+        <td style="border-bottom: 2px solid grey; border-top: 1px solid grey; font-weight: 900; text-align: center;">
+8:1
+</td>
+        <td style="border-bottom: 2px solid grey; border-top: 1px solid grey; font-weight: 900; text-align: center;">
+8:2
+</td>
+        <td style="border-bottom: 2px solid grey; border-top: 1px solid grey; font-weight: 900; text-align: center;">
+8:3
+</td>
+        <td style="border-bottom: 2px solid grey; border-top: 1px solid grey; font-weight: 900; text-align: center;">
+8:4
+</td>
+        <td style="border-bottom: 2px solid grey; border-top: 1px solid grey; font-weight: 900; text-align: center;">
+8:5
+</td>
+        <td style="border-bottom: 2px solid grey; border-top: 1px solid grey; font-weight: 900; text-align: center;">
+8:6
+</td>
+    </tr>
+    </tbody>
+</table>
+
+</div>
 <div id="table-caption" class="section level2">
 <h2>Table caption</h2>
 <p>The table caption is simply the table description and can be either located above or below the table:</p>
@@ -1935,7 +2275,8 @@ Table 5: A table caption above
 2nd hdr
 </th>
     </tr>
-    </thead><tbody>
+    </thead>
+    <tbody>
     <tr>
         <td style="text-align: left;">
 1st row
@@ -1976,7 +2317,8 @@ Table 5: A table caption above
 2nd hdr
 </th>
     </tr>
-    </thead><tbody>
+    </thead>
+    <tbody>
     <tr>
         <td style="text-align: left;">
 1st row
@@ -2025,7 +2367,8 @@ Table 1: A table caption with a numbering
 2nd hdr
 </th>
     </tr>
-    </thead><tbody>
+    </thead>
+    <tbody>
     <tr>
         <td style="text-align: left;">
 1st row
@@ -2073,7 +2416,8 @@ Table 1: A table caption with a numbering
 2nd hdr
 </th>
     </tr>
-    </thead><tbody>
+    </thead>
+    <tbody>
     <tr>
         <td style="text-align: left;">
 1st row
@@ -2133,7 +2477,8 @@ A table footer
 6th hdr
 </th>
     </tr>
-    </thead><tbody>
+    </thead>
+    <tbody>
     <tr>
         <td style="text-align: left;">
 1st row
@@ -2349,7 +2694,8 @@ A table footer
 6th hdr
 </th>
     </tr>
-    </thead><tbody>
+    </thead>
+    <tbody>
     <tr><td colspan="7" style="font-weight: 900;">
 Group A
 </td></tr>
@@ -2569,7 +2915,8 @@ Group B
 6th hdr
 </th>
     </tr>
-    </thead><tbody>
+    </thead>
+    <tbody>
     <tr>
         <td style="text-align: left;">
 1st row
@@ -2784,7 +3131,8 @@ Group B
 6th hdr
 </th>
     </tr>
-    </thead><tbody>
+    </thead>
+    <tbody>
     <tr>
         <td style="text-align: left;">
 1st row
@@ -3047,7 +3395,8 @@ Cgroup 2†
 6th hdr
 </th>
     </tr>
-    </thead><tbody>
+    </thead>
+    <tbody>
     <tr><td colspan="2" style="font-weight: 900;">
 Group A
 </td>

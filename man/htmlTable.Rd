@@ -9,16 +9,18 @@
 htmlTable(x, ...)
 
 \method{htmlTable}{default}(x, header, rnames, rowlabel, caption, tfoot, label,
-  rgroup, n.rgroup, cgroup, n.cgroup, tspanner, n.tspanner,
+  rgroup, n.rgroup, cgroup, n.cgroup, tspanner, n.tspanner, total,
   align = paste(rep("c", ncol(x)), collapse = ""),
   align.header = paste(rep("c", ncol(x)), collapse = ""), align.cgroup,
   css.rgroup = "font-weight: 900;", css.rgroup.sep = "",
   css.tspanner = "font-weight: 900; text-transform: capitalize; text-align: left;",
-  css.tspanner.sep = "border-top: 1px solid grey;", css.cell = "",
-  css.cgroup = "", css.class = "gmisc_table", pos.rowlabel = "bottom",
-  pos.caption = "top", col.rgroup = "none", col.columns = "none",
-  padding.rgroup = "&nbsp;&nbsp;", padding.tspanner = "", ctable = TRUE,
-  compatibility = "LibreOffice", cspan.rgroup = "all", ...)
+  css.tspanner.sep = "border-top: 1px solid #BEBEBE;",
+  css.total = "border-top: 1px solid #BEBEBE; font-weight: 900;",
+  css.cell = "", css.cgroup = "", css.class = "gmisc_table",
+  pos.rowlabel = "bottom", pos.caption = "top", col.rgroup = "none",
+  col.columns = "none", padding.rgroup = "&nbsp;&nbsp;",
+  padding.tspanner = "", ctable = TRUE, compatibility = "LibreOffice",
+  cspan.rgroup = "all", ...)
 
 \method{print}{htmlTable}(x, useViewer, ...)
 }
@@ -106,6 +108,12 @@ htmlTable(x, ...)
   rows in the original matrix that the table spanner should
   span.}
 
+  \item{total}{The last row is sometimes a row total with a
+  border on top and bold fonts. Set this to \code{TRUE} if
+  you are interested in such a row. If you want a total row
+  at the end of each table spanner you can set this to
+  \code{"tspanner"}.}
+
   \item{align}{A character strings specifying column
   alignments, defaulting to
   \code{\link[base]{paste}(rep('c',ncol(x)),collapse='')}
@@ -141,6 +149,8 @@ htmlTable(x, ...)
   \item{css.tspanner.sep}{The line between different
   spanners}
 
+  \item{css.total}{The css of the total row}
+
   \item{css.cell}{The css.cell element allows you to add
   any possible CSS style to your table cells. If you
   provide a vector the vector it is assummed that the
@@ -174,9 +184,9 @@ htmlTable(x, ...)
   caption below the table instead of the default of
   \code{"top"}.}
 
-  \item{col.rgroup}{Alternating colors (zebra striping) for
-  each \code{rgroup}; one or two colors is recommended and
-  will be recycled.}
+  \item{col.rgroup}{Alternating colors (zebra
+  striping/banded rows) for each \code{rgroup}; one or two
+  colors is recommended and will be recycled.}
 
   \item{col.columns}{Alternating colors for each column.}
 

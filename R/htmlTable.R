@@ -110,6 +110,9 @@
 #'  you can use when you want to join different tables with the same columns.
 #' @param n.tspanner An integer vector with the number of rows in the original matrix that
 #'  the table spanner should span.
+#' @param total The last row is sometimes a row total with a border on top and
+#'  bold fonts. Set this to \code{TRUE} if you are interested in such a row. If you
+#'  want a total row at the end of each table spanner you can set this to \code{"tspanner"}.
 #'
 #' @param css.rgroup CSS style for the rgorup, if different styles are wanted for each of the
 #'  rgroups you can just specify a vector with the number of elements
@@ -120,6 +123,7 @@
 #'  rgroup doesn't have a separator).
 #' @param css.tspanner The CSS style for the table spanner
 #' @param css.tspanner.sep The line between different spanners
+#' @param css.total The css of the total row
 #' @param css.cell The css.cell element allows you to add any possible CSS style to your
 #'  table cells. If you provide a vector the vector it is assummed that the styles should
 #'  be repeated throughout the columns. If you provide a matrix of the same size as your
@@ -204,6 +208,8 @@ htmlTable.default <- function(x,
                               tspanner,
                               n.tspanner,
 
+                              total,
+
                               # Alignment
                               align = paste(rep('c',ncol(x)),collapse=''),
                               align.header= paste(rep('c',ncol(x)),collapse=''),
@@ -214,7 +220,9 @@ htmlTable.default <- function(x,
                               css.rgroup.sep = "",
 
                               css.tspanner = "font-weight: 900; text-transform: capitalize; text-align: left;",
-                              css.tspanner.sep = "border-top: 1px solid grey;",
+                              css.tspanner.sep = "border-top: 1px solid #BEBEBE;",
+
+                              css.total = "border-top: 1px solid #BEBEBE; font-weight: 900;",
 
                               css.cell = "",
                               css.cgroup = "",
@@ -478,6 +486,44 @@ htmlTable.default <- function(x,
     }
   }
 
+  if (missing(total) ||
+        (is.logical(total) &&
+           all(total == FALSE))){
+    total = c()
+  }else if (is.logical(total)){
+    if (length(total) == 1){
+      total <- nrow(x)
+    }else if(length(total) == nrow(x)){
+      total <- which(total)
+    }else if(!missing(n.tspanner) &&
+               length(total) == length(n.tspanner)){
+      total <- cumsum(n.tspanner)[total]
+    }else{
+      stop("You have provided an invalid 'total' argument:",
+           " '", paste(total, collapse="', '"), "'.",
+           " Logical values accepted are either single TRUE elements",
+           ", of the same length as the output matrix (", nrow(x), ")",
+           ", or of the same length as the tspanner (",
+           ifelse(missing(n.tspanner), "not provided", length(n.tspanner)), ").")
+    }
+  }else if (is.numeric(total)){
+    if (any(!total %in% 1:nrow(x)))
+      stop("You have indicated an invalid row as the total row.",
+           " Valid rows are only 1 to ", nrow(x),
+           " and you have provided invalid row(s): ",
+           "'", paste(total[!total %in% 1:nrow(x)], collapse="', '"), "'")
+  }else if (all(total == "tspanner")){
+    total <- cumsum(n.tspanner)
+  }else{
+    stop("You have provided an invalid 'total' argument:",
+         " '", paste(total, collapse="', '"), "' ",
+         " of the class ", class(total), ".",
+         " The function currently only accepts logical or numerical",
+         " values.")
+  }
+
+  css.total <- rep(css.total, length.out = length(total))
+
   css.cell <- prPrepareCss(x, css = css.cell,
                            rnames = rnames, header = header)
 
@@ -491,7 +537,7 @@ htmlTable.default <- function(x,
   # Theoretically this should be added to the table but the
   # import to word processors works then less well and therefore I've
   # constructed this work-around with borders for the top and bottom cells
-  first_row = TRUE;
+  first_row <- TRUE;
   if (ctable){
     top_row_style = "border-top: 2px solid grey;"
     bottom_row_style = "border-bottom: 2px solid grey;"
@@ -521,95 +567,34 @@ htmlTable.default <- function(x,
       paste0(caption, "</caption>")
   }
 
-  # Start the head
-  table_str %<>%
-    paste0("\n\t<thead>")
-
-  if (!missing(caption) &
-        compatibility == "LibreOffice" &
-        !pos.caption %in% c("bottom", "below")){
-
-    table_str %<>%
-      sprintf("%s\n\t<tr><td colspan='%d' style='text-align: left;'>%s</td></tr>",
-              .,
-              total_columns,
-              caption)
-  }
-
-  # Add the cgroup table header
-  if (!missing(cgroup)){
-
-    for (i in 1:nrow(cgroup)){
-      cgrp_str <- prGetCgroupHeader(x = x,
-                                    cgroup_vec = cgroup[i,],
-                                    n.cgroup_vec = n.cgroup[i,],
-                                    cgroup_vec.just = align.cgroup[i, ],
-                                    css.cgroup_vec = css.cgroup[i,],
-                                    row_no = i,
-                                    top_row_style = top_row_style,
-                                    rnames = rnames,
-                                    rowlabel = rowlabel,
-                                    pos.rowlabel = pos.rowlabel,
-                                    cgroup_spacer_cells = cgroup_spacer_cells,
-                                    css.cell = css.cell)
-      table_str %<>%
-        paste0(cgrp_str)
-    }
+  if (!missing(header) ||
+        !missing(cgroup)){
+    thead <- prGetThead(x = x,
+                        header = header,
+                        cgroup = cgroup,
+                        n.cgroup = n.cgroup,
+                        caption = caption,
+                        pos.caption = pos.caption,
+                        compatibility = compatibility,
+                        total_columns = total_columns,
+                        align.cgroup = align.cgroup,
+                        css.cgroup = css.cgroup,
+                        top_row_style = top_row_style,
+                        rnames = rnames,
+                        rowlabel = rowlabel,
+                        pos.rowlabel = pos.rowlabel,
+                        cgroup_spacer_cells = cgroup_spacer_cells,
+                        css.cell = css.cell,
+                        align.header = align.header,
+                        cell_style = cell_style)
     first_row <- FALSE
+    table_str %<>%
+      paste0(thead)
+
   }
 
-
-  # Add the header
-  if (!missing(header)){
-    # The bottom border was ment to be here but it doesn't
-    # work that well in the export
-    table_str %<>%
-      paste0("\n\t<tr>")
-
-    no_cgroup_rows <-
-      ifelse(!missing(cgroup),
-             nrow(cgroup),
-             0)
-    ts <- ifelse(no_cgroup_rows > 0, "", top_row_style)
-    if (!missing(rowlabel) && pos.rowlabel == no_cgroup_rows + 1){
-      table_str %<>% sprintf("%s\n\t\t<th style='%s'>%s</th>",
-                             .,
-                             prGetStyle(c(`font-weight` = 900,
-                                            `border-bottom` = "1px solid grey"),
-                                          ts,
-                                          attr(css.cell, "rnames")[1],
-                                          align=prGetAlign(align.header, 1)),
-                             rowlabel)
-    }else if(!prSkipRownames(rnames)){
-      table_str %<>% sprintf("%s\n\t\t<th style='%s'> </th>",
-                             .,
-                             prGetStyle(c(`border-bottom`="1px solid grey"),
-                                          ts))
-    }
-
-    cell_style= "border-bottom: 1px solid grey;"
-    if (first_row){
-      cell_style %<>%
-        c(top_row_style)
-    }
-
-    cell_str <- prAddCells(rowcells = header,
-                             cellcode = "th",
-                             align = align.header,
-                             style=cell_style,
-                             cgroup_spacer_cells = cgroup_spacer_cells,
-                             has_rn_col = !prSkipRownames(rnames)*1,
-                             css.cell = attr(css.cell, "header"))
-    table_str %<>%
-      paste0(cell_str, "\n\t</tr>")
-    first_row <- FALSE
-  }
-
-  #################################
-  # Close head and start the body #
-  #################################
   table_str %<>%
-    paste0("\n\t</thead><tbody>")
+    paste0("\n\t<tbody>")
 
   if (missing(rgroup))
     row_clrs <- col.rgroup
@@ -745,6 +730,11 @@ htmlTable.default <- function(x,
     if (row_nr == nrow(x)){
       cell_style %<>%
         c(bottom_row_style)
+    }
+
+    if (row_nr %in% total){
+      cell_style %<>%
+        c(css.total[which(row_nr == total)])
     }
 
     if (prGetStyle(rs) == ""){

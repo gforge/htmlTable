@@ -73,6 +73,18 @@ htmlTable(mx,
           n.tspanner = c(2,4,nrow(mx) - 6))
 
 ## ----, results='asis'----------------------------------------------------
+htmlTable(mx[1:3,], total=TRUE)
+
+## ----, results='asis'----------------------------------------------------
+htmlTable(mx, 
+          total = "tspanner",
+          css.total = c("border-top: 1px dashed grey;",
+                        "border-top: 1px dashed grey;",
+                        "border-top: 1px solid grey; font-weight: 900"),
+          tspanner = paste("Spanner", LETTERS[1:3]),
+          n.tspanner = c(2,4,nrow(mx) - 6))
+
+## ----, results='asis'----------------------------------------------------
 htmlTable(mx[1:2,1:2], 
           caption="A table caption above")
 
