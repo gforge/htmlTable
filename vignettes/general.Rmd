@@ -49,7 +49,7 @@ While it may be sufficient for basic tables a more advanced layout is often need
 * table spanners
 * caption
 * table footer
-* zebra coloring:
+* zebra coloring (alias banding):
   + rows
   + columns
 
@@ -193,23 +193,23 @@ htmlTable(mx[1:2,1:2],
 ```
 
 
-Zebra coloring
---------------
+Zebra coloring (alias banded colors)
+------------------------------------
 
-This is also know as an alternating color pattern, most commonly for each row:
+Zebra coloring is also know as an alternating color pattern or row shading. It is most commonly applied to rows:
 
 ```{r, results='asis'}
 htmlTable(mx, 
           col.rgroup = c("none", "#F7F7F7"))
 ```
 
-It is important that the coloring works with rgroups, this is why zebra striping in htmlTable is centered around the rgroup:
+The zebra coloring in `htmlTable` is unique in that it follows the rgroups. The zebra striping is centered around the rgroup although rows with no set rgroup, i.e. "" will have alternating colors event though they programatically are within the same group:
 
 ```{r, results='asis'}
 htmlTable(mx, 
           col.rgroup = c("none", "#F7F7F7"),
-          rgroup = c(paste("Group", LETTERS[1:3])),
-          n.rgroup = c(2,4,nrow(mx) - 6))
+          rgroup = c(paste("Group", LETTERS[1:2]), ""),
+          n.rgroup = c(2,2,nrow(mx) - 4))
 ```
 
 We can also color the columns:

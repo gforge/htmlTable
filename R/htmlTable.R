@@ -146,7 +146,7 @@
 #' @param ... Passed on to \code{print.htmlTable} function and any argument except the
 #'  \code{useViewer} will be passed on to the \code{\link[base]{cat}} functions arguments.
 #'
-#' @param col.rgroup Alternating colors (zebra striping) for each \code{rgroup}; one or two colors
+#' @param col.rgroup Alternating colors (zebra striping/banded rows) for each \code{rgroup}; one or two colors
 #'  is recommended and will be recycled.
 #' @param col.columns Alternating colors for each column.
 #'

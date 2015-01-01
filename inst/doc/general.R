@@ -103,8 +103,8 @@ htmlTable(mx,
 ## ----, results='asis'----------------------------------------------------
 htmlTable(mx, 
           col.rgroup = c("none", "#F7F7F7"),
-          rgroup = c(paste("Group", LETTERS[1:3])),
-          n.rgroup = c(2,4,nrow(mx) - 6))
+          rgroup = c(paste("Group", LETTERS[1:2]), ""),
+          n.rgroup = c(2,2,nrow(mx) - 4))
 
 ## ----, results='asis'----------------------------------------------------
 htmlTable(mx, 
