@@ -3,6 +3,7 @@
 \name{htmlTable}
 \alias{htmlTable}
 \alias{htmlTable.default}
+\alias{knit_print.htmlTable}
 \alias{print.htmlTable}
 \title{Outputting HTML tables}
 \usage{
@@ -22,10 +23,14 @@ htmlTable(x, ...)
   padding.tspanner = "", ctable = TRUE, compatibility = "LibreOffice",
   cspan.rgroup = "all", ...)
 
+\method{knit_print}{htmlTable}(x, ...)
+
 \method{print}{htmlTable}(x, useViewer, ...)
 }
 \arguments{
-  \item{x}{The matrix/data.frame with the data}
+  \item{x}{The matrix/data.frame with the data. For the
+  \code{print} and \code{knit_print} it takes a string of
+  the class \code{htmlTable} as \code{x} argument.}
 
   \item{...}{Passed on to \code{print.htmlTable} function
   and any argument except the \code{useViewer} will be
@@ -231,11 +236,10 @@ htmlTable(x, ...)
   does the same is to set the
   \code{options(viewer=utils::browseUrl)} and it will
   default to that particular viewer (this is how RStudio
-  decides on a viewer). \emph{Note:} The interactive is for
-  instance not set to false when using
-  \code{devtools::\link[devtools]{build_vignettes}()} and
-  for these special cases you can set the
-  \code{\link[base]{options}(interactive = FALSE)}.}
+  decides on a viewer). \emph{Note:} If you want to force
+  all output to go through the \code{\link[base]{cat}()}
+  the set \code{\link[base]{options}(htmlTable.cat =
+  TRUE)}.}
 }
 \value{
 \code{string} Returns a string of class htmlTable
@@ -265,9 +269,7 @@ compatibility with LibreOffice/OpenOffice.
 
 \section{Important \pkg{knitr}-note}{
   This funciton will only work with \pkg{knitr} outputting
-  html, i.e. markdown mode. For each section where you want
-  a table to be outputted you need to specify:
-  \code{results="asis"}. As the function returns raw
+  html, i.e. markdown mode. As the function returns raw
   html-code the compatibility with non-html formatting is
   limited, even with
   \href{http://johnmacfarlane.net/pandoc/}{pandoc}.
@@ -307,6 +309,12 @@ compatibility with LibreOffice/OpenOffice.
   use \code{&lt;} instead of \code{<} and \code{&gt;}
   instead of \code{>}. You can find a complete list of html
   characters \href{http://ascii.cl/htmlcodes.htm}{here}.
+}
+
+\section{print_knitr}{
+  Thanks to the the \code{\link[knitr]{knit_print}} and the
+  \code{\link[knitr]{asis_output}} the
+  \code{results='asis'} is no longer needed.
 }
 \examples{
 # A simple output

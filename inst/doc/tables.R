@@ -1,4 +1,4 @@
-## ----, results='asis'----------------------------------------------------
+## ------------------------------------------------------------------------
 output <- 
   matrix(paste("Content", LETTERS[1:16]), 
          ncol=4, byrow = TRUE)
@@ -76,7 +76,7 @@ n.cgroup <-
 print(cgroup)
 print(n.cgroup)
 
-## ----, results='asis'----------------------------------------------------
+## ------------------------------------------------------------------------
 htmlTable(txtRound(mx, 1), 
           cgroup = cgroup,
           n.cgroup = n.cgroup,
@@ -87,7 +87,7 @@ htmlTable(txtRound(mx, 1),
           tfoot = txtMergeLines("&Delta;<sub>int</sub> correspnds to the change since start",
                                 "&Delta;<sub>std</sub> corresponds to the change compared to national average"))
 
-## ----, results='asis'----------------------------------------------------
+## ------------------------------------------------------------------------
 htmlTable(txtRound(mx, 1), 
           align="rrrr|r",
           cgroup = cgroup,
@@ -99,7 +99,7 @@ htmlTable(txtRound(mx, 1),
           tfoot = txtMergeLines("&Delta;<sub>int</sub> correspnds to the change since start",
                                 "&Delta;<sub>std</sub> corresponds to the change compared to national average"))
 
-## ----, results='asis'----------------------------------------------------
+## ------------------------------------------------------------------------
 htmlTable(txtRound(mx, 1), 
           col.columns = c(rep("#E6E6F0", 4),
                           rep("none", ncol(mx) - 4)),
@@ -113,7 +113,7 @@ htmlTable(txtRound(mx, 1),
                     tfoot = txtMergeLines("&Delta;<sub>int</sub> correspnds to the change since start",
                                 "&Delta;<sub>std</sub> corresponds to the change compared to national average"))
 
-## ----, results='asis'----------------------------------------------------
+## ------------------------------------------------------------------------
 htmlTable(txtRound(mx, 1),
           col.rgroup = c("none", "#FFFFCC"),
           col.columns = c(rep("#EFEFF0", 4),
@@ -132,7 +132,7 @@ htmlTable(txtRound(mx, 1),
                                 "&Delta;<sub>std</sub> corresponds to the change compared to national average"),
           cspan.rgroup = 1)
 
-## ----, results='asis'----------------------------------------------------
+## ------------------------------------------------------------------------
 cols_2_clr <- grep("&Delta;<sub>std</sub>", colnames(mx))
 # We need a copy as the formatting causes the matrix to loos
 # its numerical property
@@ -173,7 +173,7 @@ htmlTable(out_mx,
                                 "&Delta;<sub>std</sub> corresponds to the change compared to national average"),
           cspan.rgroup = 1)
 
-## ----, results='asis'----------------------------------------------------
+## ------------------------------------------------------------------------
 output <- 
   matrix(sprintf("Content %s", LETTERS[1:4]),
          ncol=2, byrow=TRUE)
@@ -188,7 +188,7 @@ print(xtable(output,
              align = c("l", "c", "r")), 
       type="html")
 
-## ----, results='asis'----------------------------------------------------
+## ------------------------------------------------------------------------
 library(knitr)
 kable(output, 
       caption="A test table", 

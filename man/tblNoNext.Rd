@@ -23,6 +23,7 @@ options(org_opts)
 \seealso{
 Other table functions: \code{\link{htmlTable}},
 \code{\link{htmlTable.default}},
+\code{\link{knit_print.htmlTable}},
 \code{\link{print.htmlTable}}; \code{\link{tblNoLast}}
 }
 

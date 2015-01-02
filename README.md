@@ -35,15 +35,7 @@ htmlTable(output)
 	</tbody>
 </table>
 
-Remember that you need to specify in your `knitr` Markdown have `results='asis'` at each chunk:
-
-<pre>
-```{r, results='asis'}
-   htmlTable(output)
-```
-</pre>
-
-
+As of version 1.0.2 you **no longer need** to specify `results='asis'` for each `knitr` chunk.
 
 Advanced
 ========

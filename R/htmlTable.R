@@ -21,9 +21,8 @@
 #' @section Important \pkg{knitr}-note:
 #'
 #' This funciton will only work with \pkg{knitr} outputting html, i.e.
-#' markdown mode. For each section where you want a table to be outputted
-#' you need to specify: \code{results="asis"}. As the function returns
-#' raw html-code the compatibility with non-html formatting is limited,
+#' markdown mode. As the function returns raw html-code
+#' the compatibility with non-html formatting is limited,
 #' even with \href{http://johnmacfarlane.net/pandoc/}{pandoc}.
 #'
 #' @section Table counter:
@@ -54,9 +53,10 @@
 #' \code{&gt;} instead of \code{>}. You can find a complete list
 #' of html characters \href{http://ascii.cl/htmlcodes.htm}{here}.
 #'
-#' @param x The matrix/data.frame with the data
+#' @param x The matrix/data.frame with the data. For the \code{print} and \code{knit_print}
+#'  it takes a string of the class \code{htmlTable} as \code{x} argument.
 #' @param header A vector of character strings specifying column
-#' header, defaulting to \code{\link[base]{colnames}(x)}
+#'  header, defaulting to \code{\link[base]{colnames}(x)}
 #' @param rnames Default rownames are generated from \code{\link[base]{rownames}(x)}. If you
 #'  provide \code{FALSE} then it will skip the rownames. \emph{Note:} For \code{data.frames}
 #'  if you do \code{\link[base]{rownames}(my_dataframe) <- NULL} it still has
@@ -827,6 +827,20 @@ htmlTable.default <- function(x,
 #' @importFrom methods setClass
 setClass("htmlTable", contains = "character")
 
+
+#' @rdname htmlTable
+#' @section print_knitr:
+#'
+#' Thanks to the the \code{\link[knitr]{knit_print}} and the \code{\link[knitr]{asis_output}}
+#' the \code{results='asis'} is no longer needed.
+#'
+#' @importFrom knitr knit_print
+#' @importFrom knitr asis_output
+#' @export
+knit_print.htmlTable<- function(x, ...){
+  asis_output(x)
+}
+
 #' @rdname htmlTable
 #' @param useViewer If you are using RStudio there is a viewer thar can render
 #'  the table within that is envoced if in \code{\link[base]{interactive}} mode.
@@ -835,9 +849,9 @@ setClass("htmlTable", contains = "character")
 #'  viewer function, e.g. \code{useViewer = utils::browseUrl} if you want to
 #'  override the default RStudio viewer. Another option that does the same is to
 #'  set the \code{options(viewer=utils::browseUrl)} and it will default to that
-#'  particular viewer (this is how RStudio decides on a viewer). \emph{Note:} The
-#'  interactive is for instance not set to false when using \code{devtools::\link[devtools]{build_vignettes}()}
-#'  and for these special cases you can set the \code{\link[base]{options}(interactive = FALSE)}.
+#'  particular viewer (this is how RStudio decides on a viewer).
+#'  \emph{Note:} If you want to force all output to go through the
+#'  \code{\link[base]{cat}()} the set \code{\link[base]{options}(htmlTable.cat = TRUE)}.
 #' @export
 #' @importFrom utils browseURL
 print.htmlTable<- function(x, useViewer, ...){
@@ -855,7 +869,8 @@ print.htmlTable<- function(x, useViewer, ...){
   # useViewer parameter
   if (missing(useViewer)){
     if ("useViewer" %in% names(args) &&
-      is.logical(args$useViewer)){
+      (is.logical(args$useViewer) ||
+         is.function(args$useViewer))){
         useViewer <- args$useViewer
         args$useViewer <- NULL
     }else{
@@ -864,7 +879,7 @@ print.htmlTable<- function(x, useViewer, ...){
   }
 
   if (interactive() &&
-        getOption("interactive", TRUE) &&
+        getOption("htmlTable.cat", FALSE) &&
         (is.function(useViewer) ||
         useViewer != FALSE))
   {

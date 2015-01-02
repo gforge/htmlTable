@@ -7,7 +7,9 @@
 prPrepareCgroup(x, cgroup, n.cgroup, align.cgroup, css.cgroup)
 }
 \arguments{
-  \item{x}{The matrix/data.frame with the data}
+  \item{x}{The matrix/data.frame with the data. For the
+  \code{print} and \code{knit_print} it takes a string of
+  the class \code{htmlTable} as \code{x} argument.}
 
   \item{cgroup}{A vector or a matrix of character strings
   defining major column header. The default is to have

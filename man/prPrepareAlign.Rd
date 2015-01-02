@@ -17,7 +17,9 @@ prPrepareAlign(align, x, rnames, default_rn = "l")
   \code{ncol(x) + 1}, otherwise it automatically pads the
   string with a left alignment for the rownames.}
 
-  \item{x}{The matrix/data.frame with the data}
+  \item{x}{The matrix/data.frame with the data. For the
+  \code{print} and \code{knit_print} it takes a string of
+  the class \code{htmlTable} as \code{x} argument.}
 
   \item{rnames}{Default rownames are generated from
   \code{\link[base]{rownames}(x)}. If you provide

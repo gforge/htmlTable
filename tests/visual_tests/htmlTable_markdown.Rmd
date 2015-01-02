@@ -14,7 +14,7 @@ library(htmlTable)
 ```
 
 
-```{r, results='asis'}
+```{r}
 
 mx <- matrix(1:6, ncol=3) 
 htmlTable(mx)

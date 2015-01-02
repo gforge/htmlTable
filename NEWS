@@ -1,5 +1,9 @@
 NEWS for the Gmisc package
 
+Changes for 1.0.2
+-----------------
+* knit_print implemented removing the need for results='asis'
+
 Changes for 1.0.1
 -----------------
 * Added a detailed vignette with the primary features of htmlTable

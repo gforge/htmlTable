@@ -9,7 +9,9 @@ prGetThead(x, header, cgroup, n.cgroup, caption, pos.caption, compatibility,
   pos.rowlabel, cgroup_spacer_cells, css.cell, align.header, cell_style)
 }
 \arguments{
-  \item{x}{The matrix/data.frame with the data}
+  \item{x}{The matrix/data.frame with the data. For the
+  \code{print} and \code{knit_print} it takes a string of
+  the class \code{htmlTable} as \code{x} argument.}
 
   \item{header}{A vector of character strings specifying
   column header, defaulting to
