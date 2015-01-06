@@ -246,11 +246,11 @@ htmlTable(x, ...)
 }
 \description{
 This is a function for outputting a more advanced table
-than \pkg{xtable} or \pkg{knitr}'s \code{kable} allows.
-It's aim is to provide the \pkg{Hmisc}
-\code{\link[Hmisc]{latex}()} colgroup and rowgroup
-functions in HTML. The html-output is designed for maximum
-compatibility with LibreOffice/OpenOffice.
+than what \pkg{xtable}, \pkg{ztable}, or \pkg{knitr}'s
+\code{\link[knitr]{kable}()} allows. It's aim is to provide
+the \pkg{Hmisc} \code{\link[Hmisc]{latex}()} colgroup and
+rowgroup functions in HTML. The html-output is designed for
+maximum compatibility with LibreOffice/OpenOffice.
 }
 \section{Multiple rows of column spanners \code{cgroup}}{
   If you want to have a column spanner in multiple levels
@@ -269,10 +269,24 @@ compatibility with LibreOffice/OpenOffice.
 
 \section{Important \pkg{knitr}-note}{
   This funciton will only work with \pkg{knitr} outputting
-  html, i.e. markdown mode. As the function returns raw
-  html-code the compatibility with non-html formatting is
-  limited, even with
+  \enph{html}, i.e. markdown mode. As the function returns
+  raw html-code the compatibility with non-html formatting
+  is limited, even with
   \href{http://johnmacfarlane.net/pandoc/}{pandoc}.
+
+  Thanks to the the \code{\link[knitr]{knit_print}} and the
+  \code{\link[knitr]{asis_output}} the
+  \code{results='asis'} is \emph{no longer needed} except
+  within for-loops. If you have a knitr-chunk with a for
+  loop and use \code{print()} to produce raw html you must
+  set the chunk option \code{results='asis'}. \code{Note}:
+  the print-function relies on the
+  \code{\link[base]{interactive}()} function for
+  determining if the output should be sent to a browser or
+  to the terminal. In vignettes and other directly knitted
+  documents you may need to either set \code{useViewer =
+  FALSE} alternatively set \code{options(htmlTable.cat =
+  TRUE)}.
 }
 
 \section{Table counter}{
@@ -304,17 +318,11 @@ compatibility with LibreOffice/OpenOffice.
   As the table uses html for rendering you need to be aware
   of that headers, rownames, and cell values should try
   respect this for optimal display. Browsers try to
-  compensate and frequently the tables still turn out OK
+  compensate and frequently the tables still turn out fine
   but it is not advized. Most importantly you should try to
   use \code{&lt;} instead of \code{<} and \code{&gt;}
   instead of \code{>}. You can find a complete list of html
   characters \href{http://ascii.cl/htmlcodes.htm}{here}.
-}
-
-\section{print_knitr}{
-  Thanks to the the \code{\link[knitr]{knit_print}} and the
-  \code{\link[knitr]{asis_output}} the
-  \code{results='asis'} is no longer needed.
 }
 \examples{
 # A simple output

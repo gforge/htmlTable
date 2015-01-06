@@ -1,7 +1,8 @@
 #' Outputting HTML tables
 #'
 #' This is a function for outputting a more advanced
-#' table than \pkg{xtable} or \pkg{knitr}'s \code{kable} allows.
+#' table than what \pkg{xtable}, \pkg{ztable}, or \pkg{knitr}'s
+#' \code{\link[knitr]{kable}()} allows.
 #' It's aim is to provide the \pkg{Hmisc} \code{\link[Hmisc]{latex}()}
 #' colgroup and rowgroup functions in HTML. The html-output is designed for
 #' maximum compatibility with LibreOffice/OpenOffice.
@@ -20,10 +21,20 @@
 #'
 #' @section Important \pkg{knitr}-note:
 #'
-#' This funciton will only work with \pkg{knitr} outputting html, i.e.
+#' This funciton will only work with \pkg{knitr} outputting \enph{html}, i.e.
 #' markdown mode. As the function returns raw html-code
 #' the compatibility with non-html formatting is limited,
 #' even with \href{http://johnmacfarlane.net/pandoc/}{pandoc}.
+#'
+#' Thanks to the the \code{\link[knitr]{knit_print}} and the
+#' \code{\link[knitr]{asis_output}}
+#' the \code{results='asis'} is \emph{no longer needed} except within for-loops.
+#' If you have a knitr-chunk with a for loop and use \code{print()} to produce
+#' raw html you must set the chunk option \code{results='asis'}. \code{Note}:
+#' the print-function relies on the \code{\link[base]{interactive}()} function
+#' for determining if the output should be sent to a browser or to the terminal.
+#' In vignettes and other directly knitted documents you may need to either set
+#' \code{useViewer = FALSE} alternatively set \code{options(htmlTable.cat = TRUE)}.
 #'
 #' @section Table counter:
 #'
@@ -40,6 +51,7 @@
 #' then the table counter will use Roman numumerals instead of Arabic.
 #'
 #' @section Possible issues:
+#'
 #' Note that when using complex cgroup alignments with multiple levels
 #' not every browser is able to handle this. For instance the RStudio
 #' webkit browser seems to have issues with this and a
@@ -47,7 +59,7 @@
 #'
 #' As the table uses html for rendering you need to be aware of that headers,
 #' rownames, and cell values should try respect this for optimal display. Browsers
-#' try to compensate and frequently the tables still turn out OK but it is
+#' try to compensate and frequently the tables still turn out fine but it is
 #' not advized. Most importantly you should try to use
 #' \code{&lt;} instead of \code{<} and
 #' \code{&gt;} instead of \code{>}. You can find a complete list
@@ -219,7 +231,7 @@ htmlTable.default <- function(x,
                               css.rgroup = "font-weight: 900;",
                               css.rgroup.sep = "",
 
-                              css.tspanner = "font-weight: 900; text-transform: capitalize; text-align: left;",
+                              css.tspanner = "font-weight: 900; text-align: left;",
                               css.tspanner.sep = "border-top: 1px solid #BEBEBE;",
 
                               css.total = "border-top: 1px solid #BEBEBE; font-weight: 900;",
@@ -671,47 +683,18 @@ htmlTable.default <- function(x,
                   top_row_style)
         }
 
-        ## this will allow either css.rgroup or col.rgroup to
-        ## color the rgroup label rows
-        if (is.numeric(cspan.rgroup[rgroup_iterator]) &&
-              cspan.rgroup[rgroup_iterator] < ncol(x)){
+        rgroup_str <- prGetRgroupLine(x = x,
+                                      total_columns = total_columns,
+                                      rgroup_elmnt = rgroup[rgroup_iterator],
+                                      cspan = cspan.rgroup[rgroup_iterator],
+                                      style = rs,
+                                      cgroup_spacer_cells = cgroup_spacer_cells,
+                                      col.columns = col.columns,
+                                      css.row = css.cell[row_nr,],
+                                      padding.tspanner = padding.tspanner)
 
-          true_span <- cspan.rgroup[rgroup_iterator] +
-            sum(cgroup_spacer_cells[0:(cspan.rgroup[rgroup_iterator]-
-                                         1*!prSkipRownames(rnames))])
-          table_str %<>%
-            sprintf("%s\n\t<tr><td colspan='%d' style='%s'>%s</td>",
-                    .,
-                    true_span,
-                    prGetStyle(rs),
-                    paste0(padding.tspanner,
-                           rgroup[rgroup_iterator]))
-
-          cols_left <- ncol(x) - (cspan.rgroup[rgroup_iterator] - 1*!prSkipRownames(rnames))
-          cell_str <- prAddCells(rowcells = rep("", ncol(x)),
-                                   cellcode = "td",
-                                   align = align,
-                                   style = rs,
-                                   cgroup_spacer_cells = cgroup_spacer_cells,
-                                   has_rn_col = !prSkipRownames(rnames)*1,
-                                   col.columns = col.columns,
-                                   offset = ncol(x) - cols_left + 1,
-                                   css.cell = css.cell[row_nr,])
-          table_str %<>%
-            paste0(cell_str)
-
-
-          table_str <- paste0(table_str, "</tr>")
-
-        }else{
-          table_str %<>%
-            sprintf("%s\n\t<tr><td colspan='%d' style='%s'>%s</td></tr>",
-                    .,
-                    total_columns,
-                    prGetStyle(rs),
-                    paste0(padding.tspanner,
-                           rgroup[rgroup_iterator]))
-        }
+        table_str %<>%
+          paste(rgroup_str)
 
         first_row <- FALSE
       }
@@ -829,11 +812,6 @@ setClass("htmlTable", contains = "character")
 
 
 #' @rdname htmlTable
-#' @section print_knitr:
-#'
-#' Thanks to the the \code{\link[knitr]{knit_print}} and the \code{\link[knitr]{asis_output}}
-#' the \code{results='asis'} is no longer needed.
-#'
 #' @importFrom knitr knit_print
 #' @importFrom knitr asis_output
 #' @export
@@ -879,7 +857,7 @@ print.htmlTable<- function(x, useViewer, ...){
   }
 
   if (interactive() &&
-        getOption("htmlTable.cat", FALSE) &&
+        !getOption("htmlTable.cat", FALSE) &&
         (is.function(useViewer) ||
         useViewer != FALSE))
   {

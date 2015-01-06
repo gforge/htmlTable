@@ -113,3 +113,69 @@ prGetThead <- function (x,
     paste0("\n\t</thead>")
   return(head_str)
 }
+
+#' Gets the number of rgroup htmlLine
+#'
+#' @param total_columns The total number of columns
+#' @param rgroup_elmnt An rgoup element
+#' @param cspan The column span of the current rgroup
+#' @param style The css style corresponding to the rgroup css style that includes
+#'  the color specific for the rgroup, i.e. \code{col.rgroup}.
+#' @param cgroup_spacer_cells The vector indicating the position of the cgroup
+#'  spacer cells
+#' @param css.row The css.cell information for this particular row.
+#' @param padding.tspanner The tspanner padding
+#' @inheritParams htmlTable
+prGetRgroupLine <- function(x,
+                            total_columns,
+                            rgroup_elmnt,
+                            cspan,
+                            rnames,
+                            style,
+                            cgroup_spacer_cells,
+                            col.columns,
+                            css.row,
+                            padding.tspanner){
+  ret_str <- ""
+  ## this will allow either css.rgroup or col.rgroup to
+  ## color the rgroup label rows
+  if (is.numeric(cspan) &&
+        cspan < ncol(x)){
+
+    true_span <- cspan +
+      sum(cgroup_spacer_cells[0:(cspan-
+                                   1*!prSkipRownames(rnames))])
+    ret_str %<>%
+      sprintf("%s\n\t<tr><td colspan='%d' style='%s'>%s</td>",
+              .,
+              true_span,
+              prGetStyle(style),
+              paste0(padding.tspanner,
+                     rgroup_elmnt))
+
+    cols_left <- ncol(x) - (cspan - 1*!prSkipRownames(rnames))
+    cell_str <- prAddCells(rowcells = rep("", ncol(x)),
+                           cellcode = "td",
+                           align = align,
+                           style = style,
+                           cgroup_spacer_cells = cgroup_spacer_cells,
+                           has_rn_col = !prSkipRownames(rnames)*1,
+                           col.columns = col.columns,
+                           offset = ncol(x) - cols_left + 1,
+                           css.cell = css.row)
+    ret_str %<>%
+      paste0(cell_str)
+
+
+    ret_str %<>% paste0("</tr>")
+
+  }else{
+    ret_str %<>%
+      sprintf("%s\n\t<tr><td colspan='%d' style='%s'>%s</td></tr>",
+              .,
+              total_columns,
+              prGetStyle(style),
+              paste0(padding.tspanner,
+                     rgroup_elmnt))
+  }
+}
