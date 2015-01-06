@@ -5,6 +5,7 @@ Changes for 1.0.2
 * knit_print implemented removing the need for results='asis' except for within for-loops
 * Removed the capitalize tspanner css as this may cause confusion with limited word processor compatibility
 * Added htmlTable tests
+* txtRound now also rounds character matrices
 
 Changes for 1.0.1
 -----------------

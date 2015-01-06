@@ -202,6 +202,9 @@ txtPval <- function(pvalues,
 #' @param excl.rows Columns to exclude from the rounding procedure.
 #'  This can be either a number or regular expression.
 #' @param txt.NA The string to exchange NA with
+#' @param dec The decimal marker. If the text is in non-english decimal
+#'  and string formatted you need to change this to the apropriate decimal
+#'  indicator.
 #' @return \code{matrix/data.frame}
 #'
 #' @examples
@@ -212,7 +215,7 @@ txtPval <- function(pvalues,
 #' txtRound(mx, 1)
 #' @export
 #' @family text formatters
-txtRound <- function(x, digits, excl.cols, excl.rows, txt.NA = ""){
+txtRound <- function(x, digits, excl.cols, excl.rows, txt.NA = "", dec = "."){
   if (is.null(dim(x)) ||
         length(dim(x)) > 2)
     stop("The function only accepts matrices/data.frames as primary argument")
@@ -247,10 +250,20 @@ txtRound <- function(x, digits, excl.cols, excl.rows, txt.NA = ""){
   for (col in cols){
     ret_x[rows, col] <-
       sapply(x[rows, col], function(elmnt){
+        dec_str <- sprintf("([0-9]*[%s]|)[0-9]+", dec)
         if (is.na(elmnt))
           return(txt.NA)
-        if (!is.numeric(elmnt))
+        if (!is.numeric(elmnt) &&
+              !grepl(dec_str, elmnt))
           return(elmnt)
+        if (is.character(elmnt) &&
+              grepl(dec_str, elmnt)){
+          if (dec != ".")
+            elmnt <- gsub(dec, ".", elmnt)
+
+          elmnt <- as.numeric(elmnt)
+        }
+
         sprintf(paste0("%.", digits, "f"),
                 elmnt)
       },

@@ -10,7 +10,8 @@ test_that("Add zero", {
 })
 
 context('txtRound')
-test_that("Matrix rounder",{
+
+test_that("Numerical matrices",{
   test_mx <- matrix(c(1, 1.11, 1.25,
                   2.50, 2.55, 2.45,
                   3.2313, 3, pi),
@@ -48,4 +49,27 @@ test_that("Matrix rounder",{
 
   expect_equivalent(txtRound(matrix(c(NA, 2.22), ncol=1), 1, txt.NA = "missing")[1,1],
                     "missing")
+})
+
+
+test_that("Character matrices",{
+  test_mx <- matrix(c(1, 1.11, 1.25,
+                      2.50, 2.55, 2.45,
+                      3.2313, 3, pi),
+                    ncol = 3, byrow=TRUE)
+  ch_test_mx <- cbind(test_mx, "a")
+
+  expect_equivalent(txtRound(ch_test_mx, 1)[,1:ncol(test_mx)],
+                    t(apply(test_mx, 1, function(x) sprintf("%.1f", x))))
+
+  expect_equivalent(txtRound(test_mx, 1, excl.cols = 2)[2,2],
+                    as.character(test_mx[2,2]))
+  expect_equivalent(txtRound(test_mx, 1, excl.rows = 2)[2,2],
+                    as.character(test_mx[2,2]))
+
+  expect_equivalent(txtRound(test_mx, 1, excl.cols = 2)[2,1],
+                    sprintf("%.1f", test_mx[2,1]))
+  expect_equivalent(txtRound(test_mx, 1, excl.rows = 2)[1,1],
+                    sprintf("%.1f", test_mx[1,1]))
+
 })
