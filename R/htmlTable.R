@@ -19,6 +19,13 @@
 #' the "second" spans the last three columns, "a" spans the first two, "b"
 #' the middle column, and "c" the last two columns.
 #'
+#' @section The add attribute to \code{rgroup}:
+#'
+#' You can now have an additional element at the rgroup level by specifying the
+#' \code{att(rgroup, 'add')}. The value can either be a vector or a list of the
+#' same length as the rgroup or a list/vector with names corresponding to integers
+#' within the rgroup span.
+#'
 #' @section Important \pkg{knitr}-note:
 #'
 #' This funciton will only work with \pkg{knitr} outputting \enph{html}, i.e.
@@ -685,9 +692,12 @@ htmlTable.default <- function(x,
 
         rgroup_str <- prGetRgroupLine(x = x,
                                       total_columns = total_columns,
-                                      rgroup_elmnt = rgroup[rgroup_iterator],
+                                      rgroup = rgroup,
+                                      rgroup_iterator = rgroup_iterator,
                                       cspan = cspan.rgroup[rgroup_iterator],
+                                      rnames = rnames,
                                       style = rs,
+                                      align = align,
                                       cgroup_spacer_cells = cgroup_spacer_cells,
                                       col.columns = col.columns,
                                       css.row = css.cell[row_nr,],

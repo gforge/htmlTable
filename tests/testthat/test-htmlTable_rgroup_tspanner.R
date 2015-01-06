@@ -37,7 +37,7 @@ test_that("Check that rgroup has the appropriate padding",
   expect_match(out,
                "<tr[^>]*>[^<]*<td[^>]*>iillRow A")
 
-}
+})
 
 test_that("Check that dimensions are correct with rgroup usage",
 {
@@ -78,4 +78,60 @@ test_that("Check that dimensions are correct with rgroup usage",
 
   parsed_table <- readHTMLTable(table_str)[[1]]
   expect_equal(nrow(parsed_table), nrow(mx) + 1, info="Rows did not match")
+})
+
+
+
+test_that("Check rgroup attribute",{
+  mx <- matrix(1:6, ncol=3)
+  colnames(mx) <- sprintf("Col %s", LETTERS[1:NCOL(mx)])
+  rownames(mx) <- sprintf("Row %s", LETTERS[1:NROW(mx)])
+
+  rgroup <- paste("rgroup", 1:2)
+  attr(rgroup, "add") <- "test"
+  expect_error(htmlTable(mx, rgroup = rgroup, n.rgroup = rep(1, 2)))
+
+  attr(rgroup, "add") <- c("test 1", "test 2")
+  expect_match(htmlTable(mx, rgroup = rgroup, n.rgroup = rep(1, 2), useViewer = FALSE),
+               "<td[^>]+colspan[ ]*=[ ]*'3'[^>]+>rgroup 1</td>[^<]*<td[^>]*>test 1")
+
+  attr(rgroup, "add") <- c("test 1", "test 2")
+  expect_match(htmlTable(mx, rgroup = rgroup, n.rgroup = rep(1, 2)),
+               "<td[^>]+colspan[ ]*=[ ]*'3'[^>]+>rgroup 1</td>[^<]*<td[^>]*>test 1")
+
+  attr(rgroup, "add") <- c(`1` = "test c")
+  expect_match(htmlTable(mx, rgroup = rgroup, n.rgroup = rep(1, 2)),
+               "<td[^>]+colspan[ ]*=[ ]*'3'[^>]+>rgroup 1</td>[^<]*<td[^>]*>test c")
+
+  attr(rgroup, "add") <- list(`1` = list(`2` = "test d"))
+  expect_match(htmlTable(mx, rgroup = rgroup, n.rgroup = rep(1, 2)),
+               "<td[^>]+colspan[ ]*=[ ]*'2'[^>]+>rgroup 1</td>[^<]*<td[^>]*>test d")
+
+  attr(rgroup, "add") <- list(`1` = list(`44` = "test d"))
+  expect_error(htmlTable(mx, rgroup = rgroup, n.rgroup = rep(1, 2)))
+
+  attr(rgroup, "add") <- list(`1` = list(`asda` = "test d"))
+  expect_error(suppressWarnings(htmlTable(mx, rgroup = rgroup, n.rgroup = rep(1, 2))))
+
+  attr(rgroup, "add") <- list(`1` = list(`-23` = "test d"))
+  expect_error(htmlTable(mx, rgroup = rgroup, n.rgroup = rep(1, 2)))
+
+  attr(rgroup, "add") <- list(`-1` = list(`3` = "test d"))
+  expect_error(htmlTable(mx, rgroup = rgroup, n.rgroup = rep(1, 2)))
+
+  attr(rgroup, "add") <- list(`23` = list(`3` = "test d"))
+  expect_error(htmlTable(mx, rgroup = rgroup, n.rgroup = rep(1, 2)))
+
+
+  rgroup[2] <- ""
+  attr(rgroup, "add") <- list(`2` = "test d")
+  expect_false(grepl("test d",
+                     htmlTable(mx, rgroup = rgroup, n.rgroup = rep(1, 2))))
+
+  attr(rgroup, "add") <- list("test d")
+  expect_match(htmlTable(mx, rgroup = rgroup, n.rgroup = rep(1, 2)),
+               "test d")
+
+  attr(rgroup, "add") <- list("test d", "test e")
+  expect_error(htmlTable(mx, rgroup = rgroup, n.rgroup = rep(1, 2)))
 })

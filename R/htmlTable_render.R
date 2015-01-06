@@ -128,19 +128,86 @@ prGetThead <- function (x,
 #' @inheritParams htmlTable
 prGetRgroupLine <- function(x,
                             total_columns,
-                            rgroup_elmnt,
+                            rgroup,
+                            rgroup_iterator,
                             cspan,
                             rnames,
+                            align,
                             style,
                             cgroup_spacer_cells,
                             col.columns,
                             css.row,
                             padding.tspanner){
   ret_str <- ""
+  rgroup_elmnt <- rgroup[rgroup_iterator]
+  add_elmnt <- prAttr4RgroupAdd(rgroup, rgroup_iterator)
+
   ## this will allow either css.rgroup or col.rgroup to
   ## color the rgroup label rows
   if (is.numeric(cspan) &&
-        cspan < ncol(x)){
+        cspan < ncol(x) ||
+        !is.null(add_elmnt)){
+
+    filler_cells <- rep("", ncol(x))
+
+    if (!is.null(add_elmnt)){
+      if (!is.numeric(cspan))
+        cspan <- ncol(x) + 1*!prSkipRownames(rnames)
+
+      if (length(add_elmnt) > 1){
+        if (is.null(names(add_elmnt)))
+          stop("The rgroup 'add' attribute element no '", rgroup_iterator, "'",
+               " either be a single element or a named list/vector")
+
+        add_pos <- as.integer(names(add_elmnt))
+        if (any(is.na(add_pos)) ||
+              any(add_pos < 1) ||
+              any(add_pos > ncol(x)))
+          stop("You have provided invalid element position for rgroup = '", rgroup_elmnt, "'",
+               " the attribute seeems to be a list but the names are invalid",
+               " '", paste(names(add_elmnt), collapse="', '"), "'",
+               " they should be integers between 1 and ", ncol(x))
+
+        first_pos <- min(add_pos) - 1 + 1*!prSkipRownames(rnames)
+        if (missing(cspan)){
+          cspan <- first_pos
+        }else{
+          cspan <- min(cspan,
+                       first_pos)
+        }
+
+        for (ii in 1:length(add_pos)){
+          filler_cells[add_pos[ii]] <- add_elmnt[[ii]]
+        }
+      }else if(length(add_elmnt) == 1){
+        if (is.null(names(add_elmnt)) ||
+              names(add_elmnt) == "last"){
+          add_pos <- ncol(x)
+        }else{
+          add_pos <- as.integer(names(add_elmnt))
+          if (is.na(add_pos) ||
+                add_pos < 1 ||
+                add_pos > ncol(x))
+            stop("You have provided invalid element position for rgroup = '", rgroup_elmnt, "'",
+                 " the attribute seeems to be a list but the name is invalid",
+                 " '", names(add_elmnt), "'",
+                 " it should be an integer between 1 and ", ncol(x))
+        }
+
+        first_pos <- add_pos - 1 + 1*!prSkipRownames(rnames)
+        if (missing(cspan)){
+          cspan <- first_pos
+        }else{
+          cspan <- min(cspan,
+                       first_pos)
+        }
+
+        filler_cells[add_pos] <- add_elmnt
+      }else{
+        stop("The attribute to the rgroup '", rgroup_elmnt, "'",
+             " does not have a length!")
+      }
+    }
 
     true_span <- cspan +
       sum(cgroup_spacer_cells[0:(cspan-
@@ -153,8 +220,9 @@ prGetRgroupLine <- function(x,
               paste0(padding.tspanner,
                      rgroup_elmnt))
 
+
     cols_left <- ncol(x) - (cspan - 1*!prSkipRownames(rnames))
-    cell_str <- prAddCells(rowcells = rep("", ncol(x)),
+    cell_str <- prAddCells(rowcells = filler_cells,
                            cellcode = "td",
                            align = align,
                            style = style,
@@ -178,4 +246,6 @@ prGetRgroupLine <- function(x,
               paste0(padding.tspanner,
                      rgroup_elmnt))
   }
+
+  return(ret_str)
 }

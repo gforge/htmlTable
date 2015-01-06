@@ -828,3 +828,51 @@ prPrepareCss <- function(x, css, rnames, header, name = deparse(substitute(css))
                    header = css.header,
                    class=class(css)))
 }
+
+
+#' Get the add attribute element
+#'
+#' Gets the add element attribute if it exists. If non-existant it will
+#' return NULL.
+#'
+#' @param rgroup_iterator The rgroup number of interest
+#' @inheritParams htmlTable
+#' @keywords internal
+prAttr4RgroupAdd <- function (rgroup, rgroup_iterator) {
+  if (is.null(attr(rgroup, "add")))
+    return(NULL)
+
+  add_elmnt <- attr(rgroup, "add")
+  if (is.null(names(add_elmnt))){
+    if (length(add_elmnt) != sum(rgroup !=  ""))
+      stop("The length of the rgroup 'add' attribute must either match",
+           " (1) the length of the rgroup",
+           " (2) or have names corresponding to the mapping integers")
+
+    names(add_elmnt) <- (1:length(rgroup))[rgroup !=  ""]
+  }
+
+  if (!is.list(add_elmnt) &&
+        !is.vector(add_elmnt))
+    stop("The rgroup mus either be a list or a vector")
+
+  add_pos <- as.integer(names(add_elmnt))
+  if (any(is.na(add_pos)))
+    stop("The rgroup 'add' element contains invalid names: ",
+         "'", paste(names(add_elmnt)[is.na(add_pos)], collapse="', '"), "'")
+
+  if (any(add_pos < 1))
+    stop("The rgroup 'add' attribute cannot have integer names below 1")
+
+  if (any(add_pos > length(rgroup)))
+    stop("The rgroup 'add' attribute cannot have integer names indicating",
+         " positions larger than the length of the rgroup ('", length(rgroup), "').",
+         " The problematic position(s):",
+         " '", paste(add_pos[add_pos > length(rgroup)], collapse="', '") ,"'")
+
+  if (rgroup_iterator %in% names(add_elmnt)){
+    return(add_elmnt[[as.character(rgroup_iterator)]])
+  }
+
+  return(NULL)
+}

@@ -1,5 +1,10 @@
 NEWS for the Gmisc package
 
+Changes for 1.0.3
+-----------------
+* Added the option of having an attribute on the rgroup in case there is an interest
+  of adding more data to that particular row.
+
 Changes for 1.0.2
 -----------------
 * knit_print implemented removing the need for results='asis' except for within for-loops
