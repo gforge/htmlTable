@@ -3,7 +3,8 @@ NEWS for the Gmisc package
 Changes for 1.0.3
 -----------------
 * Added the option of having an attribute on the rgroup in case there is an interest
-  of adding more data to that particular row.
+  of adding more data to that particular row
+* Added a fix for the pandoc tab bug
 
 Changes for 1.0.2
 -----------------

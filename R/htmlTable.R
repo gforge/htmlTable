@@ -811,6 +811,9 @@ htmlTable.default <- function(x,
   table_str %<>%
     paste0("\n</table>")
 
+  # Fix tab issue with pandoc v1.13
+  table_str %<>% gsub("\t", "  ", .)
+
   class(table_str) <- c("htmlTable", class(table_str))
   attr(table_str, "...") <- list(...)
 
