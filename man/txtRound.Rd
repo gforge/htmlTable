@@ -4,7 +4,7 @@
 \alias{txtRound}
 \title{A convenient rounding function}
 \usage{
-txtRound(x, digits, excl.cols, excl.rows, txt.NA = "")
+txtRound(x, digits, excl.cols, excl.rows, txt.NA = "", dec = ".")
 }
 \arguments{
   \item{x}{The data.frame/matrix to be rounded}
@@ -22,6 +22,10 @@ txtRound(x, digits, excl.cols, excl.rows, txt.NA = "")
   expression.}
 
   \item{txt.NA}{The string to exchange NA with}
+
+  \item{dec}{The decimal marker. If the text is in
+  non-english decimal and string formatted you need to
+  change this to the apropriate decimal indicator.}
 }
 \value{
 \code{matrix/data.frame}
