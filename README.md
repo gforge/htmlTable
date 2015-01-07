@@ -53,7 +53,7 @@ While it may be sufficient for basic tables a more advanced layout is often need
 
 As many journals require that a MS Word-document is submitted it is furthermore also important that the table imports correctly to a word processor, i.e. that the table doesn't only look nice in a web browser but also in the final document. The `htmlTable`-function is written for all these purposes.
 
-**Note:** Due to GitHub CSS-styles the rows get automatically zebra-striped (in a bad way), borders get overridden and I haven't been able to figure out how to change this. See the vignette correct examples: `vignette("general", package = "htmlTable")`
+**Note:** Due to GitHub CSS-styles the rows get automatically zebra-striped (in a bad way), borders get overridden and I haven't been able to figure out how to change this. See the vignette for a correct example: `vignette("general", package = "htmlTable")`
 
 For demonstration purposes we will setup a basic matrix:
 
