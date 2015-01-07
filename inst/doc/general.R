@@ -44,6 +44,13 @@ htmlTable(mx,
           n.rgroup = c(2,4,nrow(mx) - 6))
 
 ## ------------------------------------------------------------------------
+rgroup <- c(paste("Group", LETTERS[1:2]), "")
+attr(rgroup, "add") <- list(`2` = "More")
+htmlTable(mx, 
+          rgroup = rgroup,
+          n.rgroup = c(2,4,nrow(mx) - 6))
+
+## ------------------------------------------------------------------------
 htmlTable(mx,
           cgroup = c("Cgroup 1", "Cgroup 2"),
           n.cgroup = c(2,4))

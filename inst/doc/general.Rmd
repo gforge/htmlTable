@@ -98,6 +98,17 @@ htmlTable(mx,
           n.rgroup = c(2,4,nrow(mx) - 6))
 ```
 
+The `rgroup` is most commonly a single row without any additional cells but sometimes you may want to have a p-value or similar at the end of the row. This can be achieved by setting the 'add' attribute to the `rgroup`:
+
+```{r}
+rgroup <- c(paste("Group", LETTERS[1:2]), "")
+attr(rgroup, "add") <- list(`2` = "More")
+htmlTable(mx, 
+          rgroup = rgroup,
+          n.rgroup = c(2,4,nrow(mx) - 6))
+```
+
+
 Column spanners
 ---------------
 

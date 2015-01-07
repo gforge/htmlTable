@@ -14,7 +14,7 @@ htmlTable(x, ...)
   align = paste(rep("c", ncol(x)), collapse = ""),
   align.header = paste(rep("c", ncol(x)), collapse = ""), align.cgroup,
   css.rgroup = "font-weight: 900;", css.rgroup.sep = "",
-  css.tspanner = "font-weight: 900; text-transform: capitalize; text-align: left;",
+  css.tspanner = "font-weight: 900; text-align: left;",
   css.tspanner.sep = "border-top: 1px solid #BEBEBE;",
   css.total = "border-top: 1px solid #BEBEBE; font-weight: 900;",
   css.cell = "", css.cgroup = "", css.class = "gmisc_table",
@@ -265,6 +265,14 @@ maximum compatibility with LibreOffice/OpenOffice.
   the "second" spans the last three columns, "a" spans the
   first two, "b" the middle column, and "c" the last two
   columns.
+}
+
+\section{The add attribute to \code{rgroup}}{
+  You can now have an additional element at the rgroup
+  level by specifying the \code{att(rgroup, 'add')}. The
+  value can either be a vector or a list of the same length
+  as the rgroup or a list/vector with names corresponding
+  to integers within the rgroup span.
 }
 
 \section{Important \pkg{knitr}-note}{
