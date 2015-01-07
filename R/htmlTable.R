@@ -28,7 +28,7 @@
 #'
 #' @section Important \pkg{knitr}-note:
 #'
-#' This funciton will only work with \pkg{knitr} outputting \enph{html}, i.e.
+#' This funciton will only work with \pkg{knitr} outputting \emph{html}, i.e.
 #' markdown mode. As the function returns raw html-code
 #' the compatibility with non-html formatting is limited,
 #' even with \href{http://johnmacfarlane.net/pandoc/}{pandoc}.
@@ -120,9 +120,9 @@
 #'  to have a spanner then put that column as "". If you pass cgroup and \code{n.crgroup} as
 #'  matrices you can have column spanners for several rows. See cgroup section below for details.
 #' @param n.cgroup An integer vector or matrix containing the number of columns for which each element in
-#'  cgroup is a heading. For example, specify \code{cgroup=c("Major 1","Major 2")},
-#'  \code{n.cgroup=c(3,3)} if \code{"Major 1"} is to span columns 1-3 and
-#'  \code{"Major 2"} is to span columns 4-6.
+#'  cgroup is a heading. For example, specify \code{cgroup=c("Major_1","Major_2")},
+#'  \code{n.cgroup=c(3,3)} if \code{"Major_1"} is to span columns 1-3 and
+#'  \code{"Major_2"} is to span columns 4-6.
 #'  \code{rowlabel} does not count in the column numbers. You can omit \code{n.cgroup}
 #'  if all groups have the same number of columns.
 #' @param tspanner The table spanner is somewhat of a table header that

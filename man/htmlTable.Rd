@@ -98,12 +98,13 @@ htmlTable(x, ...)
 
   \item{n.cgroup}{An integer vector or matrix containing
   the number of columns for which each element in cgroup is
-  a heading. For example, specify \code{cgroup=c("Major
-  1","Major 2")}, \code{n.cgroup=c(3,3)} if \code{"Major
-  1"} is to span columns 1-3 and \code{"Major 2"} is to
-  span columns 4-6. \code{rowlabel} does not count in the
-  column numbers. You can omit \code{n.cgroup} if all
-  groups have the same number of columns.}
+  a heading. For example, specify
+  \code{cgroup=c("Major_1","Major_2")},
+  \code{n.cgroup=c(3,3)} if \code{"Major_1"} is to span
+  columns 1-3 and \code{"Major_2"} is to span columns 4-6.
+  \code{rowlabel} does not count in the column numbers. You
+  can omit \code{n.cgroup} if all groups have the same
+  number of columns.}
 
   \item{tspanner}{The table spanner is somewhat of a table
   header that you can use when you want to join different
@@ -277,7 +278,7 @@ maximum compatibility with LibreOffice/OpenOffice.
 
 \section{Important \pkg{knitr}-note}{
   This funciton will only work with \pkg{knitr} outputting
-  \enph{html}, i.e. markdown mode. As the function returns
+  \emph{html}, i.e. markdown mode. As the function returns
   raw html-code the compatibility with non-html formatting
   is limited, even with
   \href{http://johnmacfarlane.net/pandoc/}{pandoc}.
