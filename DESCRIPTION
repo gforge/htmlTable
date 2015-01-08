@@ -16,8 +16,8 @@ BugReports: https://github.com/gforge/htmlTable/issues
 Biarch: yes
 Imports:
     stringr,
-    knitr,
-    magrittr,
+    knitr (>= 1.6),
+    magrittr (>= 1.5),
     Hmisc,
     methods
 Suggests:
