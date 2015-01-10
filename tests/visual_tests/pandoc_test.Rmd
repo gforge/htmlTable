@@ -2,7 +2,6 @@
 title: "Pandoc test"
 output:
   html_document:
-    keep_md: yes
 ---
 
 ```{r}

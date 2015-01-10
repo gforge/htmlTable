@@ -9,3 +9,5 @@
 
 # RStudio files
 .Rproj.user
+
+tests/visual_tests/*.html
