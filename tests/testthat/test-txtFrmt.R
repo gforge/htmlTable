@@ -13,9 +13,9 @@ context('txtRound')
 
 test_that("Numerical matrices",{
   test_mx <- matrix(c(1, 1.11, 1.25,
-                  2.50, 2.55, 2.45,
-                  3.2313, 3, pi),
-                ncol = 3, byrow=TRUE)
+                      2.50, 2.55, 2.45,
+                      3.2313, 3, pi),
+                    ncol = 3, byrow=TRUE)
   expect_equivalent(txtRound(test_mx, 1),
                     t(apply(test_mx, 1, function(x) sprintf("%.1f", x))))
 
@@ -71,5 +71,14 @@ test_that("Character matrices",{
                     sprintf("%.1f", test_mx[2,1]))
   expect_equivalent(txtRound(test_mx, 1, excl.rows = 2)[1,1],
                     sprintf("%.1f", test_mx[1,1]))
+
+})
+
+test_that("Numbers that round to 0 should not have -, i.e. no -0.0",{
+  expect_equal(txtRound(matrix(-.01), digits = 1),
+               matrix("0.0"))
+
+  expect_equal(txtRound(matrix("-.01"), digits = 0),
+               matrix("0"))
 
 })

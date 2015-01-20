@@ -264,6 +264,8 @@ txtRound <- function(x, digits, excl.cols, excl.rows, txt.NA = "", dec = "."){
           elmnt <- as.numeric(elmnt)
         }
 
+        if (round(elmnt, digits) == 0)
+          elmnt <- 0
         sprintf(paste0("%.", digits, "f"),
                 elmnt)
       },
