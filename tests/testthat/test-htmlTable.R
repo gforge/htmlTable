@@ -356,3 +356,15 @@ test_that("Test cell styles",{
 
   expect_error(prPrepareCss(mx, mx_cell.style, rnames = mx_rnames))
 })
+
+test_that("Test prAddSemicolon2StrEnd",{
+  test_str <- "background: white"
+  expect_equal(prAddSemicolon2StrEnd(test_str),
+               paste0(test_str, ";"))
+  test_str <- c("", "", `background-color` = "none")
+  expect_equal(prAddSemicolon2StrEnd(test_str),
+               paste0(test_str[3], ";"))
+
+  expect_equal(names(prAddSemicolon2StrEnd(test_str)),
+               names(test_str[3]))
+})

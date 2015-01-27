@@ -92,7 +92,7 @@ prGetStyle <- function(...){
                    names(dots)[i] != ""){
           element <-
             paste0(names(dots)[i], ": ", element)
-        }else{
+        }else if(element != "none") {
           stop("The style should be formatted according to 'style_name: value'",
                " you have provided style '", element,"'")
         }
@@ -167,8 +167,12 @@ prAddSemicolon2StrEnd <- function(my_str){
   if(length(my_str) == 0)
     return("")
 
-  if (tail(strsplit(my_str, "")[[1]], 1) != ";")
+  if (tail(strsplit(my_str, "")[[1]], 1) != ";"){
+    n <- names(my_str)
     my_str <- sprintf("%s;", my_str)
+    if (!is.null(n))
+      names(my_str) <- n
+  }
 
   # Remove duplicated ;
   my_str <- gsub(";;+", ";", my_str)
