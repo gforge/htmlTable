@@ -147,3 +147,14 @@ test_that("Check rgroup attribute",{
   attr(rgroup, "add") <- list("test d", "test e")
   expect_error(htmlTable(mx, rgroup = rgroup, n.rgroup = rep(1, 2)))
 })
+
+
+test_that("Check rgroup attribute without CSS",{
+  mx <- matrix(1:6, ncol=3)
+  colnames(mx) <- sprintf("Col %s", LETTERS[1:NCOL(mx)])
+  rownames(mx) <- sprintf("Row %s", LETTERS[1:NROW(mx)])
+
+  rgroup <- paste("rgroup", 1:2)
+  attr(rgroup, "add") <- list(`1` = "test d")
+  htmlTable(mx, rgroup = rgroup, n.rgroup = rep(1, 2), css.rgroup = "")
+})
