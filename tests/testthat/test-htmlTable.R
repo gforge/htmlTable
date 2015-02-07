@@ -362,8 +362,8 @@ test_that("Test prAddSemicolon2StrEnd",{
   expect_equal(prAddSemicolon2StrEnd(test_str),
                paste0(test_str, ";"))
   test_str <- c("", "", `background-color` = "none")
-  expect_equal(prAddSemicolon2StrEnd(test_str),
-               paste0(test_str[3], ";"))
+  expect_equivalent(prAddSemicolon2StrEnd(test_str),
+                    paste0(test_str[3], ";"))
 
   expect_equal(names(prAddSemicolon2StrEnd(test_str)),
                names(test_str[3]))

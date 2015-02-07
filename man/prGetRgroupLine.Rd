@@ -26,6 +26,8 @@ prGetRgroupLine(x, total_columns, rgroup, rgroup_iterator, cspan, rnames, align,
   put "" for that row, remember to add the corresponding
   number of rows in n.rgroup.}
 
+  \item{rgroup_iterator}{An integer indicating the rgroup}
+
   \item{cspan}{The column span of the current rgroup}
 
   \item{rnames}{Default rownames are generated from
@@ -59,10 +61,9 @@ prGetRgroupLine(x, total_columns, rgroup, rgroup_iterator, cspan, rnames, align,
   particular row.}
 
   \item{padding.tspanner}{The tspanner padding}
-
-  \item{rgroup_elmnt}{An rgoup element}
 }
 \description{
 Gets the number of rgroup htmlLine
 }
+\keyword{internal}
 

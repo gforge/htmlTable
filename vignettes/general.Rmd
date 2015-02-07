@@ -41,7 +41,7 @@ While it may be sufficient for basic tables a more advanced layout is often need
 * total row
 * caption
 * table footer
-* zebra coloring (alias banding):
+* zebra coloring (also known as *banding*):
   + rows
   + columns
 
@@ -217,7 +217,7 @@ htmlTable(mx[1:2,1:2],
 ```
 
 
-Zebra coloring (alias banded colors)
+Zebra coloring (or banded colors)
 ------------------------------------
 
 Zebra coloring is also know as an alternating color pattern or row shading. It is most commonly applied to rows:

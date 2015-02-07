@@ -92,7 +92,7 @@ test_that("Check rgroup attribute",{
   expect_error(htmlTable(mx, rgroup = rgroup, n.rgroup = rep(1, 2)))
 
   attr(rgroup, "add") <- c("test 1", "test 2")
-  expect_match(htmlTable(mx, rgroup = rgroup, n.rgroup = rep(1, 2), useViewer = FALSE),
+  expect_match(htmlTable(mx, rgroup = rgroup, n.rgroup = rep(1, 2)),
                "<td[^>]+colspan[ ]*=[ ]*'3'[^>]+>rgroup 1</td>[^<]*<td[^>]*>test 1")
 
   attr(rgroup, "add") <- c("test 1", "test 2")
@@ -108,11 +108,11 @@ test_that("Check rgroup attribute",{
 
   attr(rgroup, "add") <- list(`2` = "test d")
   expect_match(htmlTable(mx, rgroup = rgroup, n.rgroup = rep(1, 2)),
-               "<td[^>]+colspan[ ]*=[ ]*'2'[^>]+>rgroup 1</td>[^<]*<td[^>]*>test d")
+               "<td[^>]+colspan[ ]*=[ ]*'3'[^>]+>rgroup 2</td>[^<]*<td[^>]*>test d")
 
 
   attr(rgroup, "add") <- list(`1` = list(`2` = "test d"))
-expect_match(htmlTable(mx, rgroup = rgroup, n.rgroup = rep(1, 2)),
+  expect_match(htmlTable(mx, rgroup = rgroup, n.rgroup = rep(1, 2)),
                "<td[^>]+colspan[ ]*=[ ]*'2'[^>]+>rgroup 1</td>[^<]*<td[^>]*>test d")
 
   attr(rgroup, "add") <- list(`1` = list(`2` = "test d", `3` = "test e"))

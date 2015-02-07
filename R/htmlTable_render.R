@@ -117,7 +117,6 @@ prGetThead <- function (x,
 #' Gets the number of rgroup htmlLine
 #'
 #' @param total_columns The total number of columns
-#' @param rgroup_elmnt An rgoup element
 #' @param cspan The column span of the current rgroup
 #' @param style The css style corresponding to the rgroup css style that includes
 #'  the color specific for the rgroup, i.e. \code{col.rgroup}.
@@ -125,7 +124,9 @@ prGetThead <- function (x,
 #'  spacer cells
 #' @param css.row The css.cell information for this particular row.
 #' @param padding.tspanner The tspanner padding
+#' @param rgroup_iterator An integer indicating the rgroup
 #' @inheritParams htmlTable
+#' @keywords internal
 prGetRgroupLine <- function(x,
                             total_columns,
                             rgroup,

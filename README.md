@@ -47,7 +47,7 @@ While it may be sufficient for basic tables a more advanced layout is often need
 * table spanners
 * caption
 * table footer
-* zebra coloring (alias banding):
+* zebra coloring (also know as *banding*):
   + rows
   + columns
 
