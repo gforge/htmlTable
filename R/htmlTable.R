@@ -492,7 +492,9 @@ htmlTable.default <- function(x,
   if (!missing(label)){
     table_id <- sprintf(" id='%s'", label)
   }else if(is.numeric(getOption("table_counter", FALSE))){
-    table_id <- sprintf(" id='table_%d'", getOption("table_counter"))
+    table_id <- getOption("table_counter")
+    options(table_counter = table_id + 1)
+    table_id <- sprintf(" id='table_%d'", table_id)
   }
 
   # A column counter that is used for <td colspan="">

@@ -1,5 +1,9 @@
 NEWS for the Gmisc package
 
+Changes for 1.1.1
+-----------------
+* Fixed table counter update
+
 Changes for 1.1
 -----------------
 * Added the option of having an attribute on the rgroup in case there is an interest

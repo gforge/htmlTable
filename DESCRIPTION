@@ -1,6 +1,6 @@
 Package: htmlTable
-Version: 1.1
-Date: 2015-02-07
+Version: 1.1.1
+Date: 2015-02-09
 Title: Advanced Tables for Markdown/HTML
 Author: Max Gordon <max@gforge.se>
 Maintainer: Max Gordon <max@gforge.se>
@@ -25,6 +25,7 @@ Suggests:
     testthat,
     XML,
     xtable,
+    ztable,
     reshape
 Roxygen: list(wrap = TRUE)
 Encoding: UTF-8

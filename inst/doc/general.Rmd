@@ -7,7 +7,7 @@ output:
     css: custom.css
     keep_md: true
 vignette: >
-  %\VignetteIndexEntry{general}
+  %\VignetteIndexEntry{How-to use htmlTable}
   %\VignetteEngine{knitr::rmarkdown}
   %\usepackage[utf8]{inputenc}
 ---
