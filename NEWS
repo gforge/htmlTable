@@ -1,8 +1,10 @@
 NEWS for the Gmisc package
 
-Changes for 1.1.1
+Changes for 1.2
 -----------------
 * Fixed table counter update
+* Removed the format.df from Hmisc as it converted & to \& with unexpected results. This functionality
+  has also been superseeded by the txtRound function.
 
 Changes for 1.1
 -----------------
