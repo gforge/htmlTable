@@ -25,7 +25,7 @@ As the `htmlTable`-package is all about [HTML](http://en.wikipedia.org/wiki/HTML
 HTML tables
 ===========
 
-Tables are possibly the most tested HTML-element out there. In early web design this was the only feature that browsers handled uniformly, and therefore became the standard way of doing layout for a long period. HTML-tables are thereby an excellent template for generating advanced tables in statistics. There are currently three different implementations that I've encountered, the **xtable**, the **format.tables**, and my own **htmlTable** function. The `format.tables` is unfortunately not yet on CRAN and will not be part of this vignette due to CRAN rules. If you are interested you can find it [here](https://github.com/SwedishPensionsAgency/format.tables).
+Tables are possibly the most tested HTML-element out there. In early web design this was the only feature that browsers handled uniformly, and therefore became the standard way of doing layout for a long period. HTML-tables are thereby an excellent template for generating advanced tables in statistics. There are currently a few different implementations that I've encountered, the **xtable**, **ztable**, the **format.tables**, and my own **htmlTable** function. The `format.tables` is unfortunately not yet on CRAN and will not be part of this vignette due to CRAN rules. If you are interested you can find it [here](https://github.com/SwedishPensionsAgency/format.tables).
 
 
 The `htmlTable`-package
@@ -261,7 +261,7 @@ Other alternatives
 
 ### The `ztable`-package
 
-A promising and interesting alternative package is the `ztable` package. 
+A promising and interesting alternative package is the `ztable` package. The package can also export to LaTeX and if you need this functionality it may be a good choice. The grouping for columns is currently (version 0.1.5) not working entirely as expected and the html-code does not fully validate, but the package is under active development and will hopefully soon be a fully functional alternative.
 
 ```{r, message=FALSE, results='asis'}
 library(ztable)
@@ -272,24 +272,30 @@ zt <- ztable(out_mx,
              for having a negative migration pattern compared to
              Stockholm, while Uppsala has a proportionally large 
              population of students.",
+             zebra.type = 1,
+             zebra = "peach",
              align=paste(rep("r", ncol(out_mx) + 1), collapse = ""))
-zt <- addcgroup(zt,
-                cgroup = cgroup,
-                n.cgroup = n.cgroup)
+# zt <- addcgroup(zt,
+#                 cgroup = cgroup,
+#                 n.cgroup = n.cgroup)
+# Causes an error:
+# Error in if (result <= length(vlines)) { : 
 zt <- addrgroup(zt, 
                 rgroup = c("1st&nbsp;period", 
                            "2nd&nbsp;period",
                            "3rd&nbsp;period"),
                 n.rgroup = rep(5, 3))
+
 print(zt)
 ```
+
 
 
 ### The `xtable`-package
 
 The `xtable` is a solution that delivers both HTML and LaTeX. The syntax is very similar to `kable`:
 
-```{r}
+```{r, results='asis'}
 output <- 
   matrix(sprintf("Content %s", LETTERS[1:4]),
          ncol=2, byrow=TRUE)

@@ -10,7 +10,7 @@
 
 <meta name="author" content="Max Gordon" />
 
-<meta name="date" content="2015-02-09" />
+<meta name="date" content="2015-03-03" />
 
 <title>Tables with htmlTable and some alternatives</title>
 
@@ -54,7 +54,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <div id="header">
 <h1 class="title">Tables with htmlTable and some alternatives</h1>
 <h4 class="author"><em>Max Gordon</em></h4>
-<h4 class="date"><em>2015-02-09</em></h4>
+<h4 class="date"><em>2015-03-03</em></h4>
 </div>
 
 <div id="TOC">
@@ -88,7 +88,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 </div>
 <div id="html-tables" class="section level1">
 <h1>HTML tables</h1>
-<p>Tables are possibly the most tested HTML-element out there. In early web design this was the only feature that browsers handled uniformly, and therefore became the standard way of doing layout for a long period. HTML-tables are thereby an excellent template for generating advanced tables in statistics. There are currently three different implementations that I’ve encountered, the <strong>xtable</strong>, the <strong>format.tables</strong>, and my own <strong>htmlTable</strong> function. The <code>format.tables</code> is unfortunately not yet on CRAN and will not be part of this vignette due to CRAN rules. If you are interested you can find it <a href="https://github.com/SwedishPensionsAgency/format.tables">here</a>.</p>
+<p>Tables are possibly the most tested HTML-element out there. In early web design this was the only feature that browsers handled uniformly, and therefore became the standard way of doing layout for a long period. HTML-tables are thereby an excellent template for generating advanced tables in statistics. There are currently a few different implementations that I’ve encountered, the <strong>xtable</strong>, <strong>ztable</strong>, the <strong>format.tables</strong>, and my own <strong>htmlTable</strong> function. The <code>format.tables</code> is unfortunately not yet on CRAN and will not be part of this vignette due to CRAN rules. If you are interested you can find it <a href="https://github.com/SwedishPensionsAgency/format.tables">here</a>.</p>
 <div id="the-htmltable-package" class="section level2">
 <h2>The <code>htmlTable</code>-package</h2>
 <p>I developed the <code>htmlTable</code> in order to get tables matching those available in top medical journals. After finding no HTML-alternative to the <code>Hmisc::latex</code> function on <a href="http://stackoverflow.com/questions/11950703/html-with-multicolumn-table-in-markdown-using-knitr">Stack Overflow</a> I wrote a basic function allowing column spanners and row groups. Below is a basic example on these two:</p>
@@ -111,14 +111,18 @@ code > span.er { color: #ff0000; font-weight: bold; }
           <span class="dt">tfoot=</span><span class="st">&quot;&amp;dagger; A table footer commment&quot;</span>)</code></pre>
 <table class="gmisc_table" style="border-collapse: collapse;" id="table_8">
 <thead>
-<tr><td colspan="6" style="text-align: left;">
-Table 10: Basic table with both column spanners (groups) and row groups
-</td></tr>
 <tr>
-<th style="border-top: 2px solid grey;"></th>
+<td colspan="6" style="text-align: left;">
+Table 10: Basic table with both column spanners (groups) and row groups
+</td>
+</tr>
+<tr>
+<th style="border-top: 2px solid grey;">
+</th>
 <th colspan="2" style="font-weight: 900; border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
 Cgroup 1
-</th><th style="border-top: 2px solid grey;; border-bottom: hidden;">
+</th>
+<th style="border-top: 2px solid grey;; border-bottom: hidden;">
  
 </th>
 <th colspan="2" style="font-weight: 900; border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
@@ -126,7 +130,8 @@ Cgroup 2†
 </th>
 </tr>
 <tr>
-<th style="border-bottom: 1px solid grey;"> </th>
+<th style="border-bottom: 1px solid grey;">
+</th>
 <th style="border-bottom: 1px solid grey; text-align: center;">
 1st header
 </th>
@@ -144,10 +149,12 @@ Cgroup 2†
 </th>
 </tr>
 </thead>
-<tbody> 
-<tr><td colspan="6" style="font-weight: 900;">
+<tbody>
+<tr>
+<td colspan="6" style="font-weight: 900;">
 Group A
-</td></tr>
+</td>
+</tr>
 <tr>
 <td style="text-align: left;">
   1st row
@@ -187,10 +194,12 @@ Content G
 <td style="text-align: center;">
 Content H
 </td>
-</tr> 
-<tr><td colspan="6" style="font-weight: 900;">
+</tr>
+<tr>
+<td colspan="6" style="font-weight: 900;">
 Group B
-</td></tr>
+</td>
+</tr>
 <tr>
 <td style="text-align: left;">
   3rd row
@@ -232,11 +241,14 @@ Content P
 </td>
 </tr>
 </tbody>
-<tfoot><tr><td colspan="6">
+<tfoot>
+<tr>
+<td colspan="6">
 † A table footer commment
-</td></tr></tfoot>
+</td>
+</tr>
+</tfoot>
 </table>
-
 <div id="example-based-upon-swedish-statistics" class="section level3">
 <h3>Example based upon Swedish statistics</h3>
 <p>In order to make a more interesting example we will try to look at how the average age changes between Swedish counties the last 15 years. <strong>Goal: visualize migration patterns</strong>.</p>
@@ -269,40 +281,45 @@ SCB$year &lt;-<span class="st"> </span><span class="ot">NULL</span>
 <p>To convey all these layers of information will create a table with multiple levels of column spanners:</p>
 <table>
 <tr>
-  <td colspan="7" style="text-align: center; border-bottom: 1px solid grey;">
+<td colspan="7" style="text-align: center; border-bottom: 1px solid grey;">
 County
-</td></tr>
+</td>
+</tr>
 <tr>
-  <td colspan="3" style="text-align: center; border-bottom: 1px solid grey;">
+<td colspan="3" style="text-align: center; border-bottom: 1px solid grey;">
 Men
 </td>
-  <td>
+<td>
  
 </td>
-  <td colspan="3" style="text-align: center; border-bottom: 1px solid grey;">
+<td colspan="3" style="text-align: center; border-bottom: 1px solid grey;">
 Women
-</td></tr>
+</td>
+</tr>
 <tr>
-  <td>
+<td>
 Age
-</td><td>
+</td>
+<td>
 Δ<sub>int.</sub>
-</td><td>
+</td>
+<td>
 Δ<sub>ext.</sub>
 </td>
-  <td>
+<td>
  
 </td>
-  <td>
+<td>
 Age
-</td><td>
+</td>
+<td>
 Δ<sub>int.</sub>
-</td><td>
+</td>
+<td>
 Δ<sub>ext.</sub>
 </td>
-</tr></table>
-
-
+</tr>
+</table>
 <pre class="sourceCode r"><code class="sourceCode r">mx &lt;-<span class="st"> </span><span class="ot">NULL</span>
 for (n in <span class="kw">names</span>(SCB)){
   tmp &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;Sweden_&quot;</span>, <span class="kw">strsplit</span>(n, <span class="st">&quot;_&quot;</span>)[[<span class="dv">1</span>]][<span class="dv">2</span>])
@@ -365,20 +382,24 @@ n.cgroup &lt;-<span class="st"> </span>
 <table class="gmisc_table" style="border-collapse: collapse;" id="table_10">
 <thead>
 <tr>
-<th style="border-top: 2px solid grey;"></th>
+<th style="border-top: 2px solid grey;">
+</th>
 <th colspan="5" style="font-weight: 900; border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
 Sweden
-</th><th style="border-top: 2px solid grey;; border-bottom: hidden;">
+</th>
+<th style="border-top: 2px solid grey;; border-bottom: hidden;">
  
 </th>
 <th colspan="7" style="font-weight: 900; border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
 Norrbotten county
-</th><th style="border-top: 2px solid grey;; border-bottom: hidden;">
+</th>
+<th style="border-top: 2px solid grey;; border-bottom: hidden;">
  
 </th>
 <th colspan="7" style="font-weight: 900; border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
 Stockholm county
-</th><th style="border-top: 2px solid grey;; border-bottom: hidden;">
+</th>
+<th style="border-top: 2px solid grey;; border-bottom: hidden;">
  
 </th>
 <th colspan="7" style="font-weight: 900; border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
@@ -386,40 +407,48 @@ Uppsala county
 </th>
 </tr>
 <tr>
-<th style></th>
-<th colspan="2" style="font-weight: 900; border-bottom: 1px solid grey; text-align: center;">
-Men
-</th><th style="; border-bottom: hidden;">
- 
+<th style>
 </th>
 <th colspan="2" style="font-weight: 900; border-bottom: 1px solid grey; text-align: center;">
+Men
+</th>
+<th style="; border-bottom: hidden;">
+ 
+</th>
+<th colspan="2" style="font-weight: 900; border-bottom: 1px solid grey; text-align: center;">
 Women
-</th><th style="; border-bottom: hidden;">
+</th>
+<th style="; border-bottom: hidden;">
  
 </th>
 <th colspan="3" style="font-weight: 900; border-bottom: 1px solid grey; text-align: center;">
 Men
-</th><th style="; border-bottom: hidden;">
+</th>
+<th style="; border-bottom: hidden;">
  
 </th>
 <th colspan="3" style="font-weight: 900; border-bottom: 1px solid grey; text-align: center;">
 Women
-</th><th style="; border-bottom: hidden;">
+</th>
+<th style="; border-bottom: hidden;">
  
 </th>
 <th colspan="3" style="font-weight: 900; border-bottom: 1px solid grey; text-align: center;">
 Men
-</th><th style="; border-bottom: hidden;">
+</th>
+<th style="; border-bottom: hidden;">
  
 </th>
 <th colspan="3" style="font-weight: 900; border-bottom: 1px solid grey; text-align: center;">
 Women
-</th><th style="; border-bottom: hidden;">
+</th>
+<th style="; border-bottom: hidden;">
  
 </th>
 <th colspan="3" style="font-weight: 900; border-bottom: 1px solid grey; text-align: center;">
 Men
-</th><th style="; border-bottom: hidden;">
+</th>
+<th style="; border-bottom: hidden;">
  
 </th>
 <th colspan="3" style="font-weight: 900; border-bottom: 1px solid grey; text-align: center;">
@@ -427,7 +456,8 @@ Women
 </th>
 </tr>
 <tr>
-<th style="border-bottom: 1px solid grey;"> </th>
+<th style="border-bottom: 1px solid grey;">
+</th>
 <th style="border-bottom: 1px solid grey; text-align: center;">
 Age
 </th>
@@ -517,10 +547,12 @@ Age
 </th>
 </tr>
 </thead>
-<tbody> 
-<tr><td colspan="30" style="font-weight: 900;">
+<tbody>
+<tr>
+<td colspan="30" style="font-weight: 900;">
 First period
-</td></tr>
+</td>
+</tr>
 <tr>
 <td style="text-align: left;">
   1999
@@ -980,10 +1012,12 @@ First period
 <td style="text-align: center;">
 -2.1
 </td>
-</tr> 
-<tr><td colspan="30" style="font-weight: 900;">
+</tr>
+<tr>
+<td colspan="30" style="font-weight: 900;">
 Second period
-</td></tr>
+</td>
+</tr>
 <tr>
 <td style="text-align: left;">
   2004
@@ -1443,10 +1477,12 @@ Second period
 <td style="text-align: center;">
 -1.6
 </td>
-</tr> 
-<tr><td colspan="30" style="font-weight: 900;">
+</tr>
+<tr>
+<td colspan="30" style="font-weight: 900;">
 Third period
-</td></tr>
+</td>
+</tr>
 <tr>
 <td style="text-align: left;">
   2009
@@ -1908,11 +1944,14 @@ Third period
 </td>
 </tr>
 </tbody>
-<tfoot><tr><td colspan="30">
+<tfoot>
+<tr>
+<td colspan="30">
 Δ<sub>int</sub> correspnds to the change since start<br> Δ<sub>std</sub> corresponds to the change compared to national average
-</td></tr></tfoot>
+</td>
+</tr>
+</tfoot>
 </table>
-
 <p>In order to increase the readability we may want to separate the Sweden columns from the county columns, one way is to use the align option with a |. Note that in 1.0 the function continues with the same alignment until the end, i.e. you no longer need count to have the exact right number of columns in your alignment argument.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">htmlTable</span>(<span class="kw">txtRound</span>(mx, <span class="dv">1</span>), 
           <span class="dt">align=</span><span class="st">&quot;rrrr|r&quot;</span>,
@@ -1927,20 +1966,24 @@ Third period
 <table class="gmisc_table" style="border-collapse: collapse;" id="table_11">
 <thead>
 <tr>
-<th style="border-top: 2px solid grey;"></th>
+<th style="border-top: 2px solid grey;">
+</th>
 <th colspan="5" style="font-weight: 900; border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
 Sweden
-</th><th style="border-top: 2px solid grey;; border-bottom: hidden;">
+</th>
+<th style="border-top: 2px solid grey;; border-bottom: hidden;">
  
 </th>
 <th colspan="7" style="font-weight: 900; border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
 Norrbotten county
-</th><th style="border-top: 2px solid grey;; border-bottom: hidden;">
+</th>
+<th style="border-top: 2px solid grey;; border-bottom: hidden;">
  
 </th>
 <th colspan="7" style="font-weight: 900; border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
 Stockholm county
-</th><th style="border-top: 2px solid grey;; border-bottom: hidden;">
+</th>
+<th style="border-top: 2px solid grey;; border-bottom: hidden;">
  
 </th>
 <th colspan="7" style="font-weight: 900; border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
@@ -1948,40 +1991,48 @@ Uppsala county
 </th>
 </tr>
 <tr>
-<th style></th>
-<th colspan="2" style="font-weight: 900; border-bottom: 1px solid grey; text-align: center;">
-Men
-</th><th style="; border-bottom: hidden;">
- 
+<th style>
 </th>
 <th colspan="2" style="font-weight: 900; border-bottom: 1px solid grey; text-align: center;">
+Men
+</th>
+<th style="; border-bottom: hidden;">
+ 
+</th>
+<th colspan="2" style="font-weight: 900; border-bottom: 1px solid grey; text-align: center;">
 Women
-</th><th style="; border-bottom: hidden;">
+</th>
+<th style="; border-bottom: hidden;">
  
 </th>
 <th colspan="3" style="font-weight: 900; border-bottom: 1px solid grey; text-align: center;">
 Men
-</th><th style="; border-bottom: hidden;">
+</th>
+<th style="; border-bottom: hidden;">
  
 </th>
 <th colspan="3" style="font-weight: 900; border-bottom: 1px solid grey; text-align: center;">
 Women
-</th><th style="; border-bottom: hidden;">
+</th>
+<th style="; border-bottom: hidden;">
  
 </th>
 <th colspan="3" style="font-weight: 900; border-bottom: 1px solid grey; text-align: center;">
 Men
-</th><th style="; border-bottom: hidden;">
+</th>
+<th style="; border-bottom: hidden;">
  
 </th>
 <th colspan="3" style="font-weight: 900; border-bottom: 1px solid grey; text-align: center;">
 Women
-</th><th style="; border-bottom: hidden;">
+</th>
+<th style="; border-bottom: hidden;">
  
 </th>
 <th colspan="3" style="font-weight: 900; border-bottom: 1px solid grey; text-align: center;">
 Men
-</th><th style="; border-bottom: hidden;">
+</th>
+<th style="; border-bottom: hidden;">
  
 </th>
 <th colspan="3" style="font-weight: 900; border-bottom: 1px solid grey; text-align: center;">
@@ -1989,7 +2040,8 @@ Women
 </th>
 </tr>
 <tr>
-<th style="border-bottom: 1px solid grey;"> </th>
+<th style="border-bottom: 1px solid grey;">
+</th>
 <th style="border-bottom: 1px solid grey; text-align: center;">
 Age
 </th>
@@ -2079,10 +2131,12 @@ Age
 </th>
 </tr>
 </thead>
-<tbody> 
-<tr><td colspan="30" style="font-weight: 900;">
+<tbody>
+<tr>
+<td colspan="30" style="font-weight: 900;">
 First period
-</td></tr>
+</td>
+</tr>
 <tr>
 <td style="text-align: left;">
   1999
@@ -2542,10 +2596,12 @@ First period
 <td style="text-align: right;">
 -2.1
 </td>
-</tr> 
-<tr><td colspan="30" style="font-weight: 900;">
+</tr>
+<tr>
+<td colspan="30" style="font-weight: 900;">
 Second period
-</td></tr>
+</td>
+</tr>
 <tr>
 <td style="text-align: left;">
   2004
@@ -3005,10 +3061,12 @@ Second period
 <td style="text-align: right;">
 -1.6
 </td>
-</tr> 
-<tr><td colspan="30" style="font-weight: 900;">
+</tr>
+<tr>
+<td colspan="30" style="font-weight: 900;">
 Third period
-</td></tr>
+</td>
+</tr>
 <tr>
 <td style="text-align: left;">
   2009
@@ -3470,11 +3528,14 @@ Third period
 </td>
 </tr>
 </tbody>
-<tfoot><tr><td colspan="30">
+<tfoot>
+<tr>
+<td colspan="30">
 Δ<sub>int</sub> correspnds to the change since start<br> Δ<sub>std</sub> corresponds to the change compared to national average
-</td></tr></tfoot>
+</td>
+</tr>
+</tfoot>
 </table>
-
 <p>If we still feel that we want more separation it is always possible to add colors.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">htmlTable</span>(<span class="kw">txtRound</span>(mx, <span class="dv">1</span>), 
           <span class="dt">col.columns =</span> <span class="kw">c</span>(<span class="kw">rep</span>(<span class="st">&quot;#E6E6F0&quot;</span>, <span class="dv">4</span>),
@@ -3491,20 +3552,24 @@ Third period
 <table class="gmisc_table" style="border-collapse: collapse;" id="table_12">
 <thead>
 <tr>
-<th style="border-top: 2px solid grey;"></th>
+<th style="border-top: 2px solid grey;">
+</th>
 <th colspan="5" style="font-weight: 900; border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
 Sweden
-</th><th style="border-top: 2px solid grey;; border-bottom: hidden;">
+</th>
+<th style="border-top: 2px solid grey;; border-bottom: hidden;">
  
 </th>
 <th colspan="7" style="font-weight: 900; border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
 Norrbotten county
-</th><th style="border-top: 2px solid grey;; border-bottom: hidden;">
+</th>
+<th style="border-top: 2px solid grey;; border-bottom: hidden;">
  
 </th>
 <th colspan="7" style="font-weight: 900; border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
 Stockholm county
-</th><th style="border-top: 2px solid grey;; border-bottom: hidden;">
+</th>
+<th style="border-top: 2px solid grey;; border-bottom: hidden;">
  
 </th>
 <th colspan="7" style="font-weight: 900; border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
@@ -3512,40 +3577,48 @@ Uppsala county
 </th>
 </tr>
 <tr>
-<th style></th>
-<th colspan="2" style="font-weight: 900; border-bottom: 1px solid grey; text-align: center;">
-Men
-</th><th style="; border-bottom: hidden;">
- 
+<th style>
 </th>
 <th colspan="2" style="font-weight: 900; border-bottom: 1px solid grey; text-align: center;">
+Men
+</th>
+<th style="; border-bottom: hidden;">
+ 
+</th>
+<th colspan="2" style="font-weight: 900; border-bottom: 1px solid grey; text-align: center;">
 Women
-</th><th style="; border-bottom: hidden;">
+</th>
+<th style="; border-bottom: hidden;">
  
 </th>
 <th colspan="3" style="font-weight: 900; border-bottom: 1px solid grey; text-align: center;">
 Men
-</th><th style="; border-bottom: hidden;">
+</th>
+<th style="; border-bottom: hidden;">
  
 </th>
 <th colspan="3" style="font-weight: 900; border-bottom: 1px solid grey; text-align: center;">
 Women
-</th><th style="; border-bottom: hidden;">
+</th>
+<th style="; border-bottom: hidden;">
  
 </th>
 <th colspan="3" style="font-weight: 900; border-bottom: 1px solid grey; text-align: center;">
 Men
-</th><th style="; border-bottom: hidden;">
+</th>
+<th style="; border-bottom: hidden;">
  
 </th>
 <th colspan="3" style="font-weight: 900; border-bottom: 1px solid grey; text-align: center;">
 Women
-</th><th style="; border-bottom: hidden;">
+</th>
+<th style="; border-bottom: hidden;">
  
 </th>
 <th colspan="3" style="font-weight: 900; border-bottom: 1px solid grey; text-align: center;">
 Men
-</th><th style="; border-bottom: hidden;">
+</th>
+<th style="; border-bottom: hidden;">
  
 </th>
 <th colspan="3" style="font-weight: 900; border-bottom: 1px solid grey; text-align: center;">
@@ -3553,7 +3626,8 @@ Women
 </th>
 </tr>
 <tr>
-<th style="border-bottom: 1px solid grey;"> </th>
+<th style="border-bottom: 1px solid grey;">
+</th>
 <th style="border-bottom: 1px solid grey; text-align: center;">
 Age
 </th>
@@ -3643,10 +3717,12 @@ Age
 </th>
 </tr>
 </thead>
-<tbody> 
-<tr><td colspan="30" style="font-weight: 900;">
+<tbody>
+<tr>
+<td colspan="30" style="font-weight: 900;">
 First period
-</td></tr>
+</td>
+</tr>
 <tr>
 <td style="text-align: left;">
   1999
@@ -4106,10 +4182,12 @@ First period
 <td style="text-align: right;">
 -2.1
 </td>
-</tr> 
-<tr><td colspan="30" style="font-weight: 900;">
+</tr>
+<tr>
+<td colspan="30" style="font-weight: 900;">
 Second period
-</td></tr>
+</td>
+</tr>
 <tr>
 <td style="text-align: left;">
   2004
@@ -4569,10 +4647,12 @@ Second period
 <td style="text-align: right;">
 -1.6
 </td>
-</tr> 
-<tr><td colspan="30" style="font-weight: 900;">
+</tr>
+<tr>
+<td colspan="30" style="font-weight: 900;">
 Third period
-</td></tr>
+</td>
+</tr>
 <tr>
 <td style="text-align: left;">
   2009
@@ -5034,11 +5114,14 @@ Third period
 </td>
 </tr>
 </tbody>
-<tfoot><tr><td colspan="30">
+<tfoot>
+<tr>
+<td colspan="30">
 Δ<sub>int</sub> correspnds to the change since start<br> Δ<sub>std</sub> corresponds to the change compared to national average
-</td></tr></tfoot>
+</td>
+</tr>
+</tfoot>
 </table>
-
 <p>If we add a color to the row group and restrict the rgroup spanner we may even have a more visual aid.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">htmlTable</span>(<span class="kw">txtRound</span>(mx, <span class="dv">1</span>),
           <span class="dt">col.rgroup =</span> <span class="kw">c</span>(<span class="st">&quot;none&quot;</span>, <span class="st">&quot;#FFFFCC&quot;</span>),
@@ -5060,20 +5143,24 @@ Third period
 <table class="gmisc_table" style="border-collapse: collapse;" id="table_13">
 <thead>
 <tr>
-<th style="border-top: 2px solid grey;"></th>
+<th style="border-top: 2px solid grey;">
+</th>
 <th colspan="5" style="font-weight: 900; border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
 Sweden
-</th><th style="border-top: 2px solid grey;; border-bottom: hidden;">
+</th>
+<th style="border-top: 2px solid grey;; border-bottom: hidden;">
  
 </th>
 <th colspan="7" style="font-weight: 900; border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
 Norrbotten county
-</th><th style="border-top: 2px solid grey;; border-bottom: hidden;">
+</th>
+<th style="border-top: 2px solid grey;; border-bottom: hidden;">
  
 </th>
 <th colspan="7" style="font-weight: 900; border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
 Stockholm county
-</th><th style="border-top: 2px solid grey;; border-bottom: hidden;">
+</th>
+<th style="border-top: 2px solid grey;; border-bottom: hidden;">
  
 </th>
 <th colspan="7" style="font-weight: 900; border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
@@ -5081,40 +5168,48 @@ Uppsala county
 </th>
 </tr>
 <tr>
-<th style></th>
-<th colspan="2" style="font-weight: 900; border-bottom: 1px solid grey; text-align: center;">
-Men
-</th><th style="; border-bottom: hidden;">
- 
+<th style>
 </th>
 <th colspan="2" style="font-weight: 900; border-bottom: 1px solid grey; text-align: center;">
+Men
+</th>
+<th style="; border-bottom: hidden;">
+ 
+</th>
+<th colspan="2" style="font-weight: 900; border-bottom: 1px solid grey; text-align: center;">
 Women
-</th><th style="; border-bottom: hidden;">
+</th>
+<th style="; border-bottom: hidden;">
  
 </th>
 <th colspan="3" style="font-weight: 900; border-bottom: 1px solid grey; text-align: center;">
 Men
-</th><th style="; border-bottom: hidden;">
+</th>
+<th style="; border-bottom: hidden;">
  
 </th>
 <th colspan="3" style="font-weight: 900; border-bottom: 1px solid grey; text-align: center;">
 Women
-</th><th style="; border-bottom: hidden;">
+</th>
+<th style="; border-bottom: hidden;">
  
 </th>
 <th colspan="3" style="font-weight: 900; border-bottom: 1px solid grey; text-align: center;">
 Men
-</th><th style="; border-bottom: hidden;">
+</th>
+<th style="; border-bottom: hidden;">
  
 </th>
 <th colspan="3" style="font-weight: 900; border-bottom: 1px solid grey; text-align: center;">
 Women
-</th><th style="; border-bottom: hidden;">
+</th>
+<th style="; border-bottom: hidden;">
  
 </th>
 <th colspan="3" style="font-weight: 900; border-bottom: 1px solid grey; text-align: center;">
 Men
-</th><th style="; border-bottom: hidden;">
+</th>
+<th style="; border-bottom: hidden;">
  
 </th>
 <th colspan="3" style="font-weight: 900; border-bottom: 1px solid grey; text-align: center;">
@@ -5122,7 +5217,8 @@ Women
 </th>
 </tr>
 <tr>
-<th style="border-bottom: 1px solid grey;"> </th>
+<th style="border-bottom: 1px solid grey;">
+</th>
 <th style="border-bottom: 1px solid grey; text-align: center;">
 Age
 </th>
@@ -5212,53 +5308,77 @@ Age
 </th>
 </tr>
 </thead>
-<tbody> 
-<tr><td colspan="1" style="font-weight: 900;">
+<tbody>
+<tr>
+<td colspan="1" style="font-weight: 900;">
 1st period
 </td>
-<td style="font-weight: 900; text-align: right; background-color: #efeff0;"></td>
-<td style="font-weight: 900; text-align: right; background-color: #efeff0;"></td>
+<td style="font-weight: 900; text-align: right; background-color: #efeff0;">
+</td>
+<td style="font-weight: 900; text-align: right; background-color: #efeff0;">
+</td>
 <td style="font-weight: 900; background-color: #efeff0;" colspan="1">
  
 </td>
-<td style="font-weight: 900; text-align: right; background-color: #efeff0;"></td>
-<td style="font-weight: 900; border-right: 1px solid black; text-align: right; background-color: #efeff0;"></td>
+<td style="font-weight: 900; text-align: right; background-color: #efeff0;">
+</td>
+<td style="font-weight: 900; border-right: 1px solid black; text-align: right; background-color: #efeff0;">
+</td>
 <td style="font-weight: 900;" colspan="1">
  
 </td>
-<td style="font-weight: 900; text-align: right;"></td>
-<td style="font-weight: 900; text-align: right;"></td>
-<td style="font-weight: 900; text-align: right;"></td>
+<td style="font-weight: 900; text-align: right;">
+</td>
+<td style="font-weight: 900; text-align: right;">
+</td>
+<td style="font-weight: 900; text-align: right;">
+</td>
 <td style="font-weight: 900;" colspan="1">
  
 </td>
-<td style="font-weight: 900; text-align: right;"></td>
-<td style="font-weight: 900; text-align: right;"></td>
-<td style="font-weight: 900; text-align: right;"></td>
+<td style="font-weight: 900; text-align: right;">
+</td>
+<td style="font-weight: 900; text-align: right;">
+</td>
+<td style="font-weight: 900; text-align: right;">
+</td>
 <td style="font-weight: 900;" colspan="1">
  
 </td>
-<td style="font-weight: 900; text-align: right;"></td>
-<td style="font-weight: 900; text-align: right;"></td>
-<td style="font-weight: 900; text-align: right;"></td>
+<td style="font-weight: 900; text-align: right;">
+</td>
+<td style="font-weight: 900; text-align: right;">
+</td>
+<td style="font-weight: 900; text-align: right;">
+</td>
 <td style="font-weight: 900;" colspan="1">
  
 </td>
-<td style="font-weight: 900; text-align: right;"></td>
-<td style="font-weight: 900; text-align: right;"></td>
-<td style="font-weight: 900; text-align: right;"></td>
+<td style="font-weight: 900; text-align: right;">
+</td>
+<td style="font-weight: 900; text-align: right;">
+</td>
+<td style="font-weight: 900; text-align: right;">
+</td>
 <td style="font-weight: 900;" colspan="1">
  
 </td>
-<td style="font-weight: 900; text-align: right;"></td>
-<td style="font-weight: 900; text-align: right;"></td>
-<td style="font-weight: 900; text-align: right;"></td>
+<td style="font-weight: 900; text-align: right;">
+</td>
+<td style="font-weight: 900; text-align: right;">
+</td>
+<td style="font-weight: 900; text-align: right;">
+</td>
 <td style="font-weight: 900;" colspan="1">
  
 </td>
-<td style="font-weight: 900; text-align: right;"></td>
-<td style="font-weight: 900; text-align: right;"></td>
-<td style="font-weight: 900; text-align: right;"></td></tr>
+<td style="font-weight: 900; text-align: right;">
+</td>
+<td style="font-weight: 900; text-align: right;">
+</td>
+<td style="font-weight: 900; text-align: right;">
+</td>
+</tr>
 <tr>
 <td style="text-align: left;">
   1999
@@ -5718,53 +5838,77 @@ Age
 <td style="text-align: right;">
 -2.1
 </td>
-</tr> 
-<tr><td colspan="1" style="font-weight: 900; background-color: #ffffcc;">
+</tr>
+<tr>
+<td colspan="1" style="font-weight: 900; background-color: #ffffcc;">
 2nd period
 </td>
-<td style="font-weight: 900; text-align: right; background-color: #F7F7DE;"></td>
-<td style="font-weight: 900; text-align: right; background-color: #F7F7DE;"></td>
+<td style="font-weight: 900; text-align: right; background-color: #F7F7DE;">
+</td>
+<td style="font-weight: 900; text-align: right; background-color: #F7F7DE;">
+</td>
 <td style="font-weight: 900; background-color: #F7F7DE;" colspan="1">
  
 </td>
-<td style="font-weight: 900; text-align: right; background-color: #F7F7DE;"></td>
-<td style="font-weight: 900; border-right: 1px solid black; text-align: right; background-color: #F7F7DE;"></td>
+<td style="font-weight: 900; text-align: right; background-color: #F7F7DE;">
+</td>
+<td style="font-weight: 900; border-right: 1px solid black; text-align: right; background-color: #F7F7DE;">
+</td>
 <td style="font-weight: 900; background-color: #ffffcc;" colspan="1">
  
 </td>
-<td style="font-weight: 900; background-color: #ffffcc; text-align: right;"></td>
-<td style="font-weight: 900; background-color: #ffffcc; text-align: right;"></td>
-<td style="font-weight: 900; background-color: #ffffcc; text-align: right;"></td>
+<td style="font-weight: 900; background-color: #ffffcc; text-align: right;">
+</td>
+<td style="font-weight: 900; background-color: #ffffcc; text-align: right;">
+</td>
+<td style="font-weight: 900; background-color: #ffffcc; text-align: right;">
+</td>
 <td style="font-weight: 900; background-color: #ffffcc;" colspan="1">
  
 </td>
-<td style="font-weight: 900; background-color: #ffffcc; text-align: right;"></td>
-<td style="font-weight: 900; background-color: #ffffcc; text-align: right;"></td>
-<td style="font-weight: 900; background-color: #ffffcc; text-align: right;"></td>
+<td style="font-weight: 900; background-color: #ffffcc; text-align: right;">
+</td>
+<td style="font-weight: 900; background-color: #ffffcc; text-align: right;">
+</td>
+<td style="font-weight: 900; background-color: #ffffcc; text-align: right;">
+</td>
 <td style="font-weight: 900; background-color: #ffffcc;" colspan="1">
  
 </td>
-<td style="font-weight: 900; background-color: #ffffcc; text-align: right;"></td>
-<td style="font-weight: 900; background-color: #ffffcc; text-align: right;"></td>
-<td style="font-weight: 900; background-color: #ffffcc; text-align: right;"></td>
+<td style="font-weight: 900; background-color: #ffffcc; text-align: right;">
+</td>
+<td style="font-weight: 900; background-color: #ffffcc; text-align: right;">
+</td>
+<td style="font-weight: 900; background-color: #ffffcc; text-align: right;">
+</td>
 <td style="font-weight: 900; background-color: #ffffcc;" colspan="1">
  
 </td>
-<td style="font-weight: 900; background-color: #ffffcc; text-align: right;"></td>
-<td style="font-weight: 900; background-color: #ffffcc; text-align: right;"></td>
-<td style="font-weight: 900; background-color: #ffffcc; text-align: right;"></td>
+<td style="font-weight: 900; background-color: #ffffcc; text-align: right;">
+</td>
+<td style="font-weight: 900; background-color: #ffffcc; text-align: right;">
+</td>
+<td style="font-weight: 900; background-color: #ffffcc; text-align: right;">
+</td>
 <td style="font-weight: 900; background-color: #ffffcc;" colspan="1">
  
 </td>
-<td style="font-weight: 900; background-color: #ffffcc; text-align: right;"></td>
-<td style="font-weight: 900; background-color: #ffffcc; text-align: right;"></td>
-<td style="font-weight: 900; background-color: #ffffcc; text-align: right;"></td>
+<td style="font-weight: 900; background-color: #ffffcc; text-align: right;">
+</td>
+<td style="font-weight: 900; background-color: #ffffcc; text-align: right;">
+</td>
+<td style="font-weight: 900; background-color: #ffffcc; text-align: right;">
+</td>
 <td style="font-weight: 900; background-color: #ffffcc;" colspan="1">
  
 </td>
-<td style="font-weight: 900; background-color: #ffffcc; text-align: right;"></td>
-<td style="font-weight: 900; background-color: #ffffcc; text-align: right;"></td>
-<td style="font-weight: 900; background-color: #ffffcc; text-align: right;"></td></tr>
+<td style="font-weight: 900; background-color: #ffffcc; text-align: right;">
+</td>
+<td style="font-weight: 900; background-color: #ffffcc; text-align: right;">
+</td>
+<td style="font-weight: 900; background-color: #ffffcc; text-align: right;">
+</td>
+</tr>
 <tr style="background-color: #ffffcc;">
 <td style="background-color: #ffffcc; text-align: left;">
   2004
@@ -6224,53 +6368,77 @@ Age
 <td style="background-color: #ffffcc; text-align: right;">
 -1.6
 </td>
-</tr> 
-<tr><td colspan="1" style="font-weight: 900;">
+</tr>
+<tr>
+<td colspan="1" style="font-weight: 900;">
 3rd period
 </td>
-<td style="font-weight: 900; text-align: right; background-color: #efeff0;"></td>
-<td style="font-weight: 900; text-align: right; background-color: #efeff0;"></td>
+<td style="font-weight: 900; text-align: right; background-color: #efeff0;">
+</td>
+<td style="font-weight: 900; text-align: right; background-color: #efeff0;">
+</td>
 <td style="font-weight: 900; background-color: #efeff0;" colspan="1">
  
 </td>
-<td style="font-weight: 900; text-align: right; background-color: #efeff0;"></td>
-<td style="font-weight: 900; border-right: 1px solid black; text-align: right; background-color: #efeff0;"></td>
+<td style="font-weight: 900; text-align: right; background-color: #efeff0;">
+</td>
+<td style="font-weight: 900; border-right: 1px solid black; text-align: right; background-color: #efeff0;">
+</td>
 <td style="font-weight: 900;" colspan="1">
  
 </td>
-<td style="font-weight: 900; text-align: right;"></td>
-<td style="font-weight: 900; text-align: right;"></td>
-<td style="font-weight: 900; text-align: right;"></td>
+<td style="font-weight: 900; text-align: right;">
+</td>
+<td style="font-weight: 900; text-align: right;">
+</td>
+<td style="font-weight: 900; text-align: right;">
+</td>
 <td style="font-weight: 900;" colspan="1">
  
 </td>
-<td style="font-weight: 900; text-align: right;"></td>
-<td style="font-weight: 900; text-align: right;"></td>
-<td style="font-weight: 900; text-align: right;"></td>
+<td style="font-weight: 900; text-align: right;">
+</td>
+<td style="font-weight: 900; text-align: right;">
+</td>
+<td style="font-weight: 900; text-align: right;">
+</td>
 <td style="font-weight: 900;" colspan="1">
  
 </td>
-<td style="font-weight: 900; text-align: right;"></td>
-<td style="font-weight: 900; text-align: right;"></td>
-<td style="font-weight: 900; text-align: right;"></td>
+<td style="font-weight: 900; text-align: right;">
+</td>
+<td style="font-weight: 900; text-align: right;">
+</td>
+<td style="font-weight: 900; text-align: right;">
+</td>
 <td style="font-weight: 900;" colspan="1">
  
 </td>
-<td style="font-weight: 900; text-align: right;"></td>
-<td style="font-weight: 900; text-align: right;"></td>
-<td style="font-weight: 900; text-align: right;"></td>
+<td style="font-weight: 900; text-align: right;">
+</td>
+<td style="font-weight: 900; text-align: right;">
+</td>
+<td style="font-weight: 900; text-align: right;">
+</td>
 <td style="font-weight: 900;" colspan="1">
  
 </td>
-<td style="font-weight: 900; text-align: right;"></td>
-<td style="font-weight: 900; text-align: right;"></td>
-<td style="font-weight: 900; text-align: right;"></td>
+<td style="font-weight: 900; text-align: right;">
+</td>
+<td style="font-weight: 900; text-align: right;">
+</td>
+<td style="font-weight: 900; text-align: right;">
+</td>
 <td style="font-weight: 900;" colspan="1">
  
 </td>
-<td style="font-weight: 900; text-align: right;"></td>
-<td style="font-weight: 900; text-align: right;"></td>
-<td style="font-weight: 900; text-align: right;"></td></tr>
+<td style="font-weight: 900; text-align: right;">
+</td>
+<td style="font-weight: 900; text-align: right;">
+</td>
+<td style="font-weight: 900; text-align: right;">
+</td>
+</tr>
 <tr>
 <td style="text-align: left;">
   2009
@@ -6732,11 +6900,14 @@ Age
 </td>
 </tr>
 </tbody>
-<tfoot><tr><td colspan="30">
+<tfoot>
+<tr>
+<td colspan="30">
 Δ<sub>int</sub> correspnds to the change since start<br> Δ<sub>std</sub> corresponds to the change compared to national average
-</td></tr></tfoot>
+</td>
+</tr>
+</tfoot>
 </table>
-
 <p>If you want to further add to the visual hints you can use specific HTML-code and insert it into the cells. Here we will color the Δ<sub>std</sub> according to color.</p>
 <pre class="sourceCode r"><code class="sourceCode r">cols_2_clr &lt;-<span class="st"> </span><span class="kw">grep</span>(<span class="st">&quot;&amp;Delta;&lt;sub&gt;std&lt;/sub&gt;&quot;</span>, <span class="kw">colnames</span>(mx))
 <span class="co"># We need a copy as the formatting causes the matrix to loos</span>
@@ -6779,24 +6950,30 @@ for (col in cols_2_clr){
           <span class="dt">cspan.rgroup =</span> <span class="dv">1</span>)</code></pre>
 <table class="gmisc_table" style="border-collapse: collapse;" id="table_14">
 <thead>
-<tr><td colspan="30" style="text-align: left;">
-Table 16: Average age in Sweden counties over a period of 15 years. The Norbotten county is typically known for having a negative migration pattern compared to Stockholm, while Uppsala has a proportionally large population of students.
-</td></tr>
 <tr>
-<th style="border-top: 2px solid grey;"></th>
+<td colspan="30" style="text-align: left;">
+Table 16: Average age in Sweden counties over a period of 15 years. The Norbotten county is typically known for having a negative migration pattern compared to Stockholm, while Uppsala has a proportionally large population of students.
+</td>
+</tr>
+<tr>
+<th style="border-top: 2px solid grey;">
+</th>
 <th colspan="5" style="font-weight: 900; border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
 Sweden
-</th><th style="border-top: 2px solid grey;; border-bottom: hidden;">
+</th>
+<th style="border-top: 2px solid grey;; border-bottom: hidden;">
  
 </th>
 <th colspan="7" style="font-weight: 900; border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
 Norrbotten county
-</th><th style="border-top: 2px solid grey;; border-bottom: hidden;">
+</th>
+<th style="border-top: 2px solid grey;; border-bottom: hidden;">
  
 </th>
 <th colspan="7" style="font-weight: 900; border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
 Stockholm county
-</th><th style="border-top: 2px solid grey;; border-bottom: hidden;">
+</th>
+<th style="border-top: 2px solid grey;; border-bottom: hidden;">
  
 </th>
 <th colspan="7" style="font-weight: 900; border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
@@ -6804,40 +6981,48 @@ Uppsala county
 </th>
 </tr>
 <tr>
-<th style></th>
-<th colspan="2" style="font-weight: 900; border-bottom: 1px solid grey; text-align: center;">
-Men
-</th><th style="; border-bottom: hidden;">
- 
+<th style>
 </th>
 <th colspan="2" style="font-weight: 900; border-bottom: 1px solid grey; text-align: center;">
+Men
+</th>
+<th style="; border-bottom: hidden;">
+ 
+</th>
+<th colspan="2" style="font-weight: 900; border-bottom: 1px solid grey; text-align: center;">
 Women
-</th><th style="; border-bottom: hidden;">
+</th>
+<th style="; border-bottom: hidden;">
  
 </th>
 <th colspan="3" style="font-weight: 900; border-bottom: 1px solid grey; text-align: center;">
 Men
-</th><th style="; border-bottom: hidden;">
+</th>
+<th style="; border-bottom: hidden;">
  
 </th>
 <th colspan="3" style="font-weight: 900; border-bottom: 1px solid grey; text-align: center;">
 Women
-</th><th style="; border-bottom: hidden;">
+</th>
+<th style="; border-bottom: hidden;">
  
 </th>
 <th colspan="3" style="font-weight: 900; border-bottom: 1px solid grey; text-align: center;">
 Men
-</th><th style="; border-bottom: hidden;">
+</th>
+<th style="; border-bottom: hidden;">
  
 </th>
 <th colspan="3" style="font-weight: 900; border-bottom: 1px solid grey; text-align: center;">
 Women
-</th><th style="; border-bottom: hidden;">
+</th>
+<th style="; border-bottom: hidden;">
  
 </th>
 <th colspan="3" style="font-weight: 900; border-bottom: 1px solid grey; text-align: center;">
 Men
-</th><th style="; border-bottom: hidden;">
+</th>
+<th style="; border-bottom: hidden;">
  
 </th>
 <th colspan="3" style="font-weight: 900; border-bottom: 1px solid grey; text-align: center;">
@@ -6937,53 +7122,77 @@ Age
 </th>
 </tr>
 </thead>
-<tbody> 
-<tr><td colspan="1" style="font-weight: 900;">
+<tbody>
+<tr>
+<td colspan="1" style="font-weight: 900;">
 1st period
 </td>
-<td style="font-weight: 900; text-align: right; background-color: #efeff0;"></td>
-<td style="font-weight: 900; text-align: right; background-color: #efeff0;"></td>
+<td style="font-weight: 900; text-align: right; background-color: #efeff0;">
+</td>
+<td style="font-weight: 900; text-align: right; background-color: #efeff0;">
+</td>
 <td style="font-weight: 900; background-color: #efeff0;" colspan="1">
  
 </td>
-<td style="font-weight: 900; text-align: right; background-color: #efeff0;"></td>
-<td style="font-weight: 900; border-right: 1px solid black; text-align: right; background-color: #efeff0;"></td>
+<td style="font-weight: 900; text-align: right; background-color: #efeff0;">
+</td>
+<td style="font-weight: 900; border-right: 1px solid black; text-align: right; background-color: #efeff0;">
+</td>
 <td style="font-weight: 900;" colspan="1">
  
 </td>
-<td style="font-weight: 900; text-align: right;"></td>
-<td style="font-weight: 900; text-align: right;"></td>
-<td style="font-weight: 900; text-align: right;"></td>
+<td style="font-weight: 900; text-align: right;">
+</td>
+<td style="font-weight: 900; text-align: right;">
+</td>
+<td style="font-weight: 900; text-align: right;">
+</td>
 <td style="font-weight: 900;" colspan="1">
  
 </td>
-<td style="font-weight: 900; text-align: right;"></td>
-<td style="font-weight: 900; text-align: right;"></td>
-<td style="font-weight: 900; text-align: right;"></td>
+<td style="font-weight: 900; text-align: right;">
+</td>
+<td style="font-weight: 900; text-align: right;">
+</td>
+<td style="font-weight: 900; text-align: right;">
+</td>
 <td style="font-weight: 900;" colspan="1">
  
 </td>
-<td style="font-weight: 900; text-align: right;"></td>
-<td style="font-weight: 900; text-align: right;"></td>
-<td style="font-weight: 900; text-align: right;"></td>
+<td style="font-weight: 900; text-align: right;">
+</td>
+<td style="font-weight: 900; text-align: right;">
+</td>
+<td style="font-weight: 900; text-align: right;">
+</td>
 <td style="font-weight: 900;" colspan="1">
  
 </td>
-<td style="font-weight: 900; text-align: right;"></td>
-<td style="font-weight: 900; text-align: right;"></td>
-<td style="font-weight: 900; text-align: right;"></td>
+<td style="font-weight: 900; text-align: right;">
+</td>
+<td style="font-weight: 900; text-align: right;">
+</td>
+<td style="font-weight: 900; text-align: right;">
+</td>
 <td style="font-weight: 900;" colspan="1">
  
 </td>
-<td style="font-weight: 900; text-align: right;"></td>
-<td style="font-weight: 900; text-align: right;"></td>
-<td style="font-weight: 900; text-align: right;"></td>
+<td style="font-weight: 900; text-align: right;">
+</td>
+<td style="font-weight: 900; text-align: right;">
+</td>
+<td style="font-weight: 900; text-align: right;">
+</td>
 <td style="font-weight: 900;" colspan="1">
  
 </td>
-<td style="font-weight: 900; text-align: right;"></td>
-<td style="font-weight: 900; text-align: right;"></td>
-<td style="font-weight: 900; text-align: right;"></td></tr>
+<td style="font-weight: 900; text-align: right;">
+</td>
+<td style="font-weight: 900; text-align: right;">
+</td>
+<td style="font-weight: 900; text-align: right;">
+</td>
+</tr>
 <tr>
 <td style="text-align: left;">
   1999
@@ -7443,53 +7652,77 @@ Age
 <td style="text-align: right;">
 <span style="font-weight: 900; color: #008C00">-2.1</span>
 </td>
-</tr> 
-<tr><td colspan="1" style="font-weight: 900; background-color: #ffffcc;">
+</tr>
+<tr>
+<td colspan="1" style="font-weight: 900; background-color: #ffffcc;">
 2nd period
 </td>
-<td style="font-weight: 900; text-align: right; background-color: #F7F7DE;"></td>
-<td style="font-weight: 900; text-align: right; background-color: #F7F7DE;"></td>
+<td style="font-weight: 900; text-align: right; background-color: #F7F7DE;">
+</td>
+<td style="font-weight: 900; text-align: right; background-color: #F7F7DE;">
+</td>
 <td style="font-weight: 900; background-color: #F7F7DE;" colspan="1">
  
 </td>
-<td style="font-weight: 900; text-align: right; background-color: #F7F7DE;"></td>
-<td style="font-weight: 900; border-right: 1px solid black; text-align: right; background-color: #F7F7DE;"></td>
+<td style="font-weight: 900; text-align: right; background-color: #F7F7DE;">
+</td>
+<td style="font-weight: 900; border-right: 1px solid black; text-align: right; background-color: #F7F7DE;">
+</td>
 <td style="font-weight: 900; background-color: #ffffcc;" colspan="1">
  
 </td>
-<td style="font-weight: 900; background-color: #ffffcc; text-align: right;"></td>
-<td style="font-weight: 900; background-color: #ffffcc; text-align: right;"></td>
-<td style="font-weight: 900; background-color: #ffffcc; text-align: right;"></td>
+<td style="font-weight: 900; background-color: #ffffcc; text-align: right;">
+</td>
+<td style="font-weight: 900; background-color: #ffffcc; text-align: right;">
+</td>
+<td style="font-weight: 900; background-color: #ffffcc; text-align: right;">
+</td>
 <td style="font-weight: 900; background-color: #ffffcc;" colspan="1">
  
 </td>
-<td style="font-weight: 900; background-color: #ffffcc; text-align: right;"></td>
-<td style="font-weight: 900; background-color: #ffffcc; text-align: right;"></td>
-<td style="font-weight: 900; background-color: #ffffcc; text-align: right;"></td>
+<td style="font-weight: 900; background-color: #ffffcc; text-align: right;">
+</td>
+<td style="font-weight: 900; background-color: #ffffcc; text-align: right;">
+</td>
+<td style="font-weight: 900; background-color: #ffffcc; text-align: right;">
+</td>
 <td style="font-weight: 900; background-color: #ffffcc;" colspan="1">
  
 </td>
-<td style="font-weight: 900; background-color: #ffffcc; text-align: right;"></td>
-<td style="font-weight: 900; background-color: #ffffcc; text-align: right;"></td>
-<td style="font-weight: 900; background-color: #ffffcc; text-align: right;"></td>
+<td style="font-weight: 900; background-color: #ffffcc; text-align: right;">
+</td>
+<td style="font-weight: 900; background-color: #ffffcc; text-align: right;">
+</td>
+<td style="font-weight: 900; background-color: #ffffcc; text-align: right;">
+</td>
 <td style="font-weight: 900; background-color: #ffffcc;" colspan="1">
  
 </td>
-<td style="font-weight: 900; background-color: #ffffcc; text-align: right;"></td>
-<td style="font-weight: 900; background-color: #ffffcc; text-align: right;"></td>
-<td style="font-weight: 900; background-color: #ffffcc; text-align: right;"></td>
+<td style="font-weight: 900; background-color: #ffffcc; text-align: right;">
+</td>
+<td style="font-weight: 900; background-color: #ffffcc; text-align: right;">
+</td>
+<td style="font-weight: 900; background-color: #ffffcc; text-align: right;">
+</td>
 <td style="font-weight: 900; background-color: #ffffcc;" colspan="1">
  
 </td>
-<td style="font-weight: 900; background-color: #ffffcc; text-align: right;"></td>
-<td style="font-weight: 900; background-color: #ffffcc; text-align: right;"></td>
-<td style="font-weight: 900; background-color: #ffffcc; text-align: right;"></td>
+<td style="font-weight: 900; background-color: #ffffcc; text-align: right;">
+</td>
+<td style="font-weight: 900; background-color: #ffffcc; text-align: right;">
+</td>
+<td style="font-weight: 900; background-color: #ffffcc; text-align: right;">
+</td>
 <td style="font-weight: 900; background-color: #ffffcc;" colspan="1">
  
 </td>
-<td style="font-weight: 900; background-color: #ffffcc; text-align: right;"></td>
-<td style="font-weight: 900; background-color: #ffffcc; text-align: right;"></td>
-<td style="font-weight: 900; background-color: #ffffcc; text-align: right;"></td></tr>
+<td style="font-weight: 900; background-color: #ffffcc; text-align: right;">
+</td>
+<td style="font-weight: 900; background-color: #ffffcc; text-align: right;">
+</td>
+<td style="font-weight: 900; background-color: #ffffcc; text-align: right;">
+</td>
+</tr>
 <tr style="background-color: #ffffcc;">
 <td style="background-color: #ffffcc; text-align: left;">
   2004
@@ -7949,53 +8182,77 @@ Age
 <td style="background-color: #ffffcc; text-align: right;">
 <span style="font-weight: 900; color: #006B00">-1.6</span>
 </td>
-</tr> 
-<tr><td colspan="1" style="font-weight: 900;">
+</tr>
+<tr>
+<td colspan="1" style="font-weight: 900;">
 3rd period
 </td>
-<td style="font-weight: 900; text-align: right; background-color: #efeff0;"></td>
-<td style="font-weight: 900; text-align: right; background-color: #efeff0;"></td>
+<td style="font-weight: 900; text-align: right; background-color: #efeff0;">
+</td>
+<td style="font-weight: 900; text-align: right; background-color: #efeff0;">
+</td>
 <td style="font-weight: 900; background-color: #efeff0;" colspan="1">
  
 </td>
-<td style="font-weight: 900; text-align: right; background-color: #efeff0;"></td>
-<td style="font-weight: 900; border-right: 1px solid black; text-align: right; background-color: #efeff0;"></td>
+<td style="font-weight: 900; text-align: right; background-color: #efeff0;">
+</td>
+<td style="font-weight: 900; border-right: 1px solid black; text-align: right; background-color: #efeff0;">
+</td>
 <td style="font-weight: 900;" colspan="1">
  
 </td>
-<td style="font-weight: 900; text-align: right;"></td>
-<td style="font-weight: 900; text-align: right;"></td>
-<td style="font-weight: 900; text-align: right;"></td>
+<td style="font-weight: 900; text-align: right;">
+</td>
+<td style="font-weight: 900; text-align: right;">
+</td>
+<td style="font-weight: 900; text-align: right;">
+</td>
 <td style="font-weight: 900;" colspan="1">
  
 </td>
-<td style="font-weight: 900; text-align: right;"></td>
-<td style="font-weight: 900; text-align: right;"></td>
-<td style="font-weight: 900; text-align: right;"></td>
+<td style="font-weight: 900; text-align: right;">
+</td>
+<td style="font-weight: 900; text-align: right;">
+</td>
+<td style="font-weight: 900; text-align: right;">
+</td>
 <td style="font-weight: 900;" colspan="1">
  
 </td>
-<td style="font-weight: 900; text-align: right;"></td>
-<td style="font-weight: 900; text-align: right;"></td>
-<td style="font-weight: 900; text-align: right;"></td>
+<td style="font-weight: 900; text-align: right;">
+</td>
+<td style="font-weight: 900; text-align: right;">
+</td>
+<td style="font-weight: 900; text-align: right;">
+</td>
 <td style="font-weight: 900;" colspan="1">
  
 </td>
-<td style="font-weight: 900; text-align: right;"></td>
-<td style="font-weight: 900; text-align: right;"></td>
-<td style="font-weight: 900; text-align: right;"></td>
+<td style="font-weight: 900; text-align: right;">
+</td>
+<td style="font-weight: 900; text-align: right;">
+</td>
+<td style="font-weight: 900; text-align: right;">
+</td>
 <td style="font-weight: 900;" colspan="1">
  
 </td>
-<td style="font-weight: 900; text-align: right;"></td>
-<td style="font-weight: 900; text-align: right;"></td>
-<td style="font-weight: 900; text-align: right;"></td>
+<td style="font-weight: 900; text-align: right;">
+</td>
+<td style="font-weight: 900; text-align: right;">
+</td>
+<td style="font-weight: 900; text-align: right;">
+</td>
 <td style="font-weight: 900;" colspan="1">
  
 </td>
-<td style="font-weight: 900; text-align: right;"></td>
-<td style="font-weight: 900; text-align: right;"></td>
-<td style="font-weight: 900; text-align: right;"></td></tr>
+<td style="font-weight: 900; text-align: right;">
+</td>
+<td style="font-weight: 900; text-align: right;">
+</td>
+<td style="font-weight: 900; text-align: right;">
+</td>
+</tr>
 <tr>
 <td style="text-align: left;">
   2009
@@ -8457,11 +8714,14 @@ Age
 </td>
 </tr>
 </tbody>
-<tfoot><tr><td colspan="30">
+<tfoot>
+<tr>
+<td colspan="30">
 Δ<sub>int</sub> correspnds to the change since start<br> Δ<sub>std</sub> corresponds to the change compared to national average
-</td></tr></tfoot>
+</td>
+</tr>
+</tfoot>
 </table>
-
 <p>Although a graph most likely does the visualization task better, tables are good at conveying detailed information. It is in my mind without doubt easier in the latest version to find the pattern in the data.</p>
 <p>Lastly I would like to thank <a href="http://www.amazon.com/Show-Me-Numbers-Designing-Enlighten/dp/0970601999">Stephen Few</a>, <a href="http://www.thinkui.co.uk/resources/effective-design-of-data-tables/">ThinkUI</a>, <a href="http://www.acaps.org/img/documents/t-121007-tb-table-design.pdf">ACAPS</a>, and <a href="http://www.ncsu.edu/labwrite/res/gh/gh-tables.html">LabWrite</a> for inspiration.</p>
 </div>
@@ -8470,7 +8730,7 @@ Age
 <h2>Other alternatives</h2>
 <div id="the-ztable-package" class="section level3">
 <h3>The <code>ztable</code>-package</h3>
-<p>A promising and interesting alternative package is the <code>ztable</code> package.</p>
+<p>A promising and interesting alternative package is the <code>ztable</code> package. The package can also export to LaTeX and if you need this functionality it may be a good choice. The grouping for columns is currently (version 0.1.5) not working entirely as expected and the html-code does not fully validate, but the package is under active development and will hopefully soon be a fully functional alternative.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ztable)
 <span class="kw">options</span>(<span class="dt">ztable.type=</span><span class="st">&quot;html&quot;</span>)
 zt &lt;-<span class="st"> </span><span class="kw">ztable</span>(out_mx, 
@@ -8479,1381 +8739,1193 @@ zt &lt;-<span class="st"> </span><span class="kw">ztable</span>(out_mx,
 <span class="st">             for having a negative migration pattern compared to</span>
 <span class="st">             Stockholm, while Uppsala has a proportionally large </span>
 <span class="st">             population of students.&quot;</span>,
+             <span class="dt">zebra.type =</span> <span class="dv">1</span>,
+             <span class="dt">zebra =</span> <span class="st">&quot;peach&quot;</span>,
              <span class="dt">align=</span><span class="kw">paste</span>(<span class="kw">rep</span>(<span class="st">&quot;r&quot;</span>, <span class="kw">ncol</span>(out_mx) +<span class="st"> </span><span class="dv">1</span>), <span class="dt">collapse =</span> <span class="st">&quot;&quot;</span>))
-zt &lt;-<span class="st"> </span><span class="kw">addcgroup</span>(zt,
-                <span class="dt">cgroup =</span> cgroup,
-                <span class="dt">n.cgroup =</span> n.cgroup)
+<span class="co"># zt &lt;- addcgroup(zt,</span>
+<span class="co">#                 cgroup = cgroup,</span>
+<span class="co">#                 n.cgroup = n.cgroup)</span>
+<span class="co"># Causes an error:</span>
+<span class="co"># Error in if (result &lt;= length(vlines)) { : </span>
 zt &lt;-<span class="st"> </span><span class="kw">addrgroup</span>(zt, 
                 <span class="dt">rgroup =</span> <span class="kw">c</span>(<span class="st">&quot;1st&amp;nbsp;period&quot;</span>, 
                            <span class="st">&quot;2nd&amp;nbsp;period&quot;</span>,
                            <span class="st">&quot;3rd&amp;nbsp;period&quot;</span>),
                 <span class="dt">n.rgroup =</span> <span class="kw">rep</span>(<span class="dv">5</span>, <span class="dv">3</span>))
+
 <span class="kw">print</span>(zt)</code></pre>
-<head><style>
+<head>
+<style>
         table {
+              font-family: serif;
               text-align: right;}
         th {
-              padding: 2px 2px 5px 5px;
+              padding: 1px 1px 5px 5px;
             }
         td {
-             padding: 2px 2px 5px 5px; }
-      </style></head><table align="center" style="border-collapse: collapse; caption-side:top; font-size:11pt;"><caption style="text-align:center;">
+             padding: 1px 1px 5px 5px; }
+      </style>
+</head>
+<table align="center" style="border-collapse: collapse; caption-side:top; font-size:11pt;">
+<caption style="text-align:center;">
 Average age in Sweden counties over a period of 15 years. The Norbotten county is typically known for having a negative migration pattern compared to Stockholm, while Uppsala has a proportionally large population of students.
-</caption><tr>
-<td style="border-top: 2px solid gray;"> </td>
-<td colspan=" 5 " align="center" style="font-weight: normal;border-top: 2px solid gray;border-bottom: 1px solid gray;">
-Sweden
-</td>
-<td style="border-top: 2px solid gray;border-bottom: hidden">
- 
-</td>
-<td colspan=" 7 " align="center" style="font-weight: normal;border-top: 2px solid gray;border-bottom: 1px solid gray;">
-Norrbotten county
-</td>
-<td style="border-top: 2px solid gray;border-bottom: hidden">
- 
-</td>
-<td colspan=" 7 " align="center" style="font-weight: normal;border-top: 2px solid gray;border-bottom: 1px solid gray;">
-Stockholm county
-</td>
-<td style="border-top: 2px solid gray;border-bottom: hidden">
- 
-</td>
-<td colspan=" 7 " align="center" style="font-weight: normal;border-top: 2px solid gray;border-bottom: 1px solid gray;">
-Uppsala county
-</td>
-</tr>
+</caption>
 <tr>
-<td style> </td>
-<td colspan=" 2 " align="center" style="font-weight: normal;border-bottom: 1px solid gray;">
-Men
-</td>
-<td style="border-bottom: hidden">
- 
-</td>
-<td colspan=" 2 " align="center" style="font-weight: normal;border-bottom: 1px solid gray;">
-Women
-</td>
-<td style="border-bottom: hidden">
- 
-</td>
-<td colspan=" 3 " align="center" style="font-weight: normal;border-bottom: 1px solid gray;">
-Men
-</td>
-<td style="border-bottom: hidden">
- 
-</td>
-<td colspan=" 3 " align="center" style="font-weight: normal;border-bottom: 1px solid gray;">
-Women
-</td>
-<td style="border-bottom: hidden">
- 
-</td>
-<td colspan=" 3 " align="center" style="font-weight: normal;border-bottom: 1px solid gray;">
-Men
-</td>
-<td style="border-bottom: hidden">
- 
-</td>
-<td colspan=" 3 " align="center" style="font-weight: normal;border-bottom: 1px solid gray;">
-Women
-</td>
-<td style="border-bottom: hidden">
- 
-</td>
-<td colspan=" 3 " align="center" style="font-weight: normal;border-bottom: 1px solid gray;">
-Men
-</td>
-<td style="border-bottom: hidden">
- 
-</td>
-<td colspan=" 3 " align="center" style="font-weight: normal;border-bottom: 1px solid gray;">
-Women
-</td>
-</tr>
-<tr>
-<th style="border-left: 0px solid black;background-color: #FFFFFF;border-bottom: 1px solid gray;">
+<th style="border-left: 0px solid black;background-color: #FFFFFF;border-top: 2px solid gray;border-bottom: 1px solid gray;">
  
 </th>
-<th style="font-weight: normal;border-left: 0px solid black;border-bottom: 1px solid gray;">
+<th <th align="center" style="font-weight: normal;border-left: 0px solid black;border-bottom: 1px solid gray;border-top: 2px solid gray;">
 Age
 </th>
-<th style="font-weight: normal;border-left: 0px solid black;border-bottom: 1px solid gray;">
+<th <th align="center" style="font-weight: normal;border-left: 0px solid black;border-bottom: 1px solid gray;border-top: 2px solid gray;">
 Δ<sub>int</sub>
 </th>
-<th style="border-bottom: 1px solid gray;">
- 
-</th>
-<th style="font-weight: normal;border-left: 0px solid black;border-bottom: 1px solid gray;">
+<th <th align="center" style="font-weight: normal;border-left: 0px solid black;border-bottom: 1px solid gray;border-top: 2px solid gray;">
 Age
 </th>
-<th style="font-weight: normal;border-left: 0px solid black;border-bottom: 1px solid gray;">
+<th <th align="center" style="font-weight: normal;border-left: 0px solid black;border-bottom: 1px solid gray;border-top: 2px solid gray;">
 Δ<sub>int</sub>
 </th>
-<th style="border-bottom: 1px solid gray;">
- 
-</th>
-<th style="font-weight: normal;border-left: 0px solid black;border-bottom: 1px solid gray;">
+<th <th align="center" style="font-weight: normal;border-left: 0px solid black;border-bottom: 1px solid gray;border-top: 2px solid gray;">
 Age
 </th>
-<th style="font-weight: normal;border-left: 0px solid black;border-bottom: 1px solid gray;">
+<th <th align="center" style="font-weight: normal;border-left: 0px solid black;border-bottom: 1px solid gray;border-top: 2px solid gray;">
 Δ<sub>int</sub>
 </th>
-<th style="font-weight: normal;border-left: 0px solid black;border-bottom: 1px solid gray;">
+<th <th align="center" style="font-weight: normal;border-left: 0px solid black;border-bottom: 1px solid gray;border-top: 2px solid gray;">
 Δ<sub>std</sub>
 </th>
-<th style="border-bottom: 1px solid gray;">
- 
-</th>
-<th style="font-weight: normal;border-left: 0px solid black;border-bottom: 1px solid gray;">
+<th <th align="center" style="font-weight: normal;border-left: 0px solid black;border-bottom: 1px solid gray;border-top: 2px solid gray;">
 Age
 </th>
-<th style="font-weight: normal;border-left: 0px solid black;border-bottom: 1px solid gray;">
+<th <th align="center" style="font-weight: normal;border-left: 0px solid black;border-bottom: 1px solid gray;border-top: 2px solid gray;">
 Δ<sub>int</sub>
 </th>
-<th style="font-weight: normal;border-left: 0px solid black;border-bottom: 1px solid gray;">
+<th <th align="center" style="font-weight: normal;border-left: 0px solid black;border-bottom: 1px solid gray;border-top: 2px solid gray;">
 Δ<sub>std</sub>
 </th>
-<th style="border-bottom: 1px solid gray;">
- 
-</th>
-<th style="font-weight: normal;border-left: 0px solid black;border-bottom: 1px solid gray;">
+<th <th align="center" style="font-weight: normal;border-left: 0px solid black;border-bottom: 1px solid gray;border-top: 2px solid gray;">
 Age
 </th>
-<th style="font-weight: normal;border-left: 0px solid black;border-bottom: 1px solid gray;">
+<th <th align="center" style="font-weight: normal;border-left: 0px solid black;border-bottom: 1px solid gray;border-top: 2px solid gray;">
 Δ<sub>int</sub>
 </th>
-<th style="font-weight: normal;border-left: 0px solid black;border-bottom: 1px solid gray;">
+<th <th align="center" style="font-weight: normal;border-left: 0px solid black;border-bottom: 1px solid gray;border-top: 2px solid gray;">
 Δ<sub>std</sub>
 </th>
-<th style="border-bottom: 1px solid gray;">
- 
-</th>
-<th style="font-weight: normal;border-left: 0px solid black;border-bottom: 1px solid gray;">
+<th <th align="center" style="font-weight: normal;border-left: 0px solid black;border-bottom: 1px solid gray;border-top: 2px solid gray;">
 Age
 </th>
-<th style="font-weight: normal;border-left: 0px solid black;border-bottom: 1px solid gray;">
+<th <th align="center" style="font-weight: normal;border-left: 0px solid black;border-bottom: 1px solid gray;border-top: 2px solid gray;">
 Δ<sub>int</sub>
 </th>
-<th style="font-weight: normal;border-left: 0px solid black;border-bottom: 1px solid gray;">
+<th <th align="center" style="font-weight: normal;border-left: 0px solid black;border-bottom: 1px solid gray;border-top: 2px solid gray;">
 Δ<sub>std</sub>
 </th>
-<th style="border-bottom: 1px solid gray;">
- 
-</th>
-<th style="font-weight: normal;border-left: 0px solid black;border-bottom: 1px solid gray;">
+<th <th align="center" style="font-weight: normal;border-left: 0px solid black;border-bottom: 1px solid gray;border-top: 2px solid gray;">
 Age
 </th>
-<th style="font-weight: normal;border-left: 0px solid black;border-bottom: 1px solid gray;">
+<th <th align="center" style="font-weight: normal;border-left: 0px solid black;border-bottom: 1px solid gray;border-top: 2px solid gray;">
 Δ<sub>int</sub>
 </th>
-<th style="font-weight: normal;border-left: 0px solid black;border-bottom: 1px solid gray;">
+<th <th align="center" style="font-weight: normal;border-left: 0px solid black;border-bottom: 1px solid gray;border-top: 2px solid gray;">
 Δ<sub>std</sub>
 </th>
-<th style="border-bottom: 1px solid gray;">
- 
-</th>
-<th style="font-weight: normal;border-left: 0px solid black;border-bottom: 1px solid gray;">
+<th <th align="center" style="font-weight: normal;border-left: 0px solid black;border-bottom: 1px solid gray;border-top: 2px solid gray;">
 Age
 </th>
-<th style="font-weight: normal;border-left: 0px solid black;border-bottom: 1px solid gray;">
+<th <th align="center" style="font-weight: normal;border-left: 0px solid black;border-bottom: 1px solid gray;border-top: 2px solid gray;">
 Δ<sub>int</sub>
 </th>
-<th style="font-weight: normal;border-left: 0px solid black;border-bottom: 1px solid gray;">
+<th <th align="center" style="font-weight: normal;border-left: 0px solid black;border-right:0px solid black;border-bottom: 1px solid gray;border-top: 2px solid gray;">
 Δ<sub>std</sub>
 </th>
 </tr>
 <tr>
-<td colspan="30" align="left" style="font-weight: bold;">
+<td colspan="23" align="left" style="font-weight: bold; border-left: 0px solid black; border-right:0px solid black;border-bottom: 1px solid black;border-top: 1px solid black;">
 1st period
 </td>
- </tr>
+</tr>
 <tr>
-<td style="border-left: 0px solid black; ">
+<td style="border-left: 0px solid black; border-top: hidden;">
 1999
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 38.9
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 0.0
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 41.5
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 0.0
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 39.7
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 0.0
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 <span style="font-weight: 900; color: #2D000F">0.8</span>
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 41.9
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 0.0
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 <span style="font-weight: 900; color: #120006">0.4</span>
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 37.3
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 0.0
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 <span style="font-weight: 900; color: #006B00">-1.6</span>
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 40.1
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 0.0
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 <span style="font-weight: 900; color: #005E00">-1.4</span>
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 37.2
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 0.0
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 <span style="font-weight: 900; color: #007100">-1.7</span>
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 39.3
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 0.0
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-right:0px solid black;border-top: hidden;">
 <span style="font-weight: 900; color: #009200">-2.2</span>
 </td>
 </tr>
 <tr>
-<td style="border-left: 0px solid black; ">
+<td style="border-left: 0px solid black; border-top: hidden;background-color: #FFCC99; ">
 2000
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 39.0
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 0.1
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 41.6
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 0.1
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 40.0
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 0.3
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 <span style="font-weight: 900; color: #3A0013">1.0</span>
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 42.2
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 0.3
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 <span style="font-weight: 900; color: #1E000A">0.6</span>
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 37.4
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 0.1
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 <span style="font-weight: 900; color: #006B00">-1.6</span>
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 40.1
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 0.0
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 <span style="font-weight: 900; color: #006400">-1.5</span>
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 37.5
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 0.3
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 <span style="font-weight: 900; color: #006400">-1.5</span>
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 39.4
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 0.1
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-right:0px solid black;border-top: hidden;background-color: #FFCC99;">
 <span style="font-weight: 900; color: #009200">-2.2</span>
 </td>
 </tr>
 <tr>
-<td style="border-left: 0px solid black; ">
+<td style="border-left: 0px solid black; border-top: hidden;">
 2001
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 39.2
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 0.3
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 41.7
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 0.2
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 40.2
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 0.5
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 <span style="font-weight: 900; color: #3A0013">1.0</span>
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 42.5
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 0.6
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 <span style="font-weight: 900; color: #2D000F">0.8</span>
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 37.5
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 0.2
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 <span style="font-weight: 900; color: #007100">-1.7</span>
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 40.1
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 0.0
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 <span style="font-weight: 900; color: #006B00">-1.6</span>
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 37.6
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 0.4
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 <span style="font-weight: 900; color: #006B00">-1.6</span>
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 39.6
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 0.3
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-right:0px solid black;border-top: hidden;">
 <span style="font-weight: 900; color: #008C00">-2.1</span>
 </td>
 </tr>
 <tr>
-<td style="border-left: 0px solid black; ">
+<td style="border-left: 0px solid black; border-top: hidden;background-color: #FFCC99; ">
 2002
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 39.3
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 0.4
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 41.8
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 0.3
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 40.5
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 0.8
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 <span style="font-weight: 900; color: #460017">1.2</span>
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 42.8
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 0.9
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 <span style="font-weight: 900; color: #3A0013">1.0</span>
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 37.6
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 0.3
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 <span style="font-weight: 900; color: #007100">-1.7</span>
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 40.2
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 0.1
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 <span style="font-weight: 900; color: #006B00">-1.6</span>
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 37.8
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 0.6
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 <span style="font-weight: 900; color: #006400">-1.5</span>
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 39.7
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 0.4
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-right:0px solid black;border-top: hidden;background-color: #FFCC99;">
 <span style="font-weight: 900; color: #008C00">-2.1</span>
 </td>
 </tr>
 <tr>
-<td style="border-left: 0px solid black; ">
+<td style="border-left: 0px solid black; border-top: hidden;">
 2003
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 39.4
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 0.5
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 41.9
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 0.4
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 40.7
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 1.0
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 <span style="font-weight: 900; color: #4C0019">1.3</span>
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 43.0
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 1.1
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 <span style="font-weight: 900; color: #400015">1.1</span>
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 37.7
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 0.4
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 <span style="font-weight: 900; color: #007100">-1.7</span>
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 40.2
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 0.1
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 <span style="font-weight: 900; color: #007100">-1.7</span>
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 38.0
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 0.8
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 <span style="font-weight: 900; color: #005E00">-1.4</span>
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 39.8
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 0.5
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-right:0px solid black;border-top: hidden;">
 <span style="font-weight: 900; color: #008C00">-2.1</span>
 </td>
 </tr>
 <tr>
-<td colspan="30" align="left" style="font-weight: bold;">
+<td colspan="23" align="left" style="font-weight: bold; border-left: 0px solid black; border-right:0px solid black;border-bottom: 1px solid black;border-top: 1px solid black;">
 2nd period
 </td>
- </tr>
+</tr>
 <tr>
-<td style="border-left: 0px solid black; ">
+<td style="border-left: 0px solid black; border-top: hidden;background-color: #FFCC99; ">
 2004
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 39.6
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 0.7
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 42.0
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 0.5
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 40.9
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 1.2
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 <span style="font-weight: 900; color: #4C0019">1.3</span>
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 43.1
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 1.2
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 <span style="font-weight: 900; color: #400015">1.1</span>
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 37.8
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 0.5
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 <span style="font-weight: 900; color: #007A00">-1.8</span>
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 40.3
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 0.2
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 <span style="font-weight: 900; color: #007100">-1.7</span>
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 38.1
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 0.9
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 <span style="font-weight: 900; color: #006400">-1.5</span>
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 40.0
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 0.7
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-right:0px solid black;border-top: hidden;background-color: #FFCC99;">
 <span style="font-weight: 900; color: #008600">-2.0</span>
 </td>
 </tr>
 <tr>
-<td style="border-left: 0px solid black; ">
+<td style="border-left: 0px solid black; border-top: hidden;">
 2005
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 39.7
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 0.8
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 42.0
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 0.5
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 41.1
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 1.4
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 <span style="font-weight: 900; color: #52001B">1.4</span>
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 43.4
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 1.5
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 <span style="font-weight: 900; color: #52001B">1.4</span>
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 37.9
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 0.6
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 <span style="font-weight: 900; color: #007A00">-1.8</span>
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 40.3
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 0.2
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 <span style="font-weight: 900; color: #007100">-1.7</span>
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 38.3
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 1.1
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 <span style="font-weight: 900; color: #005E00">-1.4</span>
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 40.1
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 0.8
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-right:0px solid black;border-top: hidden;">
 <span style="font-weight: 900; color: #008000">-1.9</span>
 </td>
 </tr>
 <tr>
-<td style="border-left: 0px solid black; ">
+<td style="border-left: 0px solid black; border-top: hidden;background-color: #FFCC99; ">
 2006
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 39.8
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 0.9
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 42.1
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 0.6
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 41.3
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 1.6
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 <span style="font-weight: 900; color: #58001D">1.5</span>
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 43.5
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 1.6
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 <span style="font-weight: 900; color: #52001B">1.4</span>
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 37.9
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 0.6
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 <span style="font-weight: 900; color: #008000">-1.9</span>
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 40.2
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 0.1
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 <span style="font-weight: 900; color: #008000">-1.9</span>
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 38.5
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 1.3
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 <span style="font-weight: 900; color: #005800">-1.3</span>
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 40.4
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 1.1
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-right:0px solid black;border-top: hidden;background-color: #FFCC99;">
 <span style="font-weight: 900; color: #007100">-1.7</span>
 </td>
 </tr>
 <tr>
-<td style="border-left: 0px solid black; ">
+<td style="border-left: 0px solid black; border-top: hidden;">
 2007
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 39.8
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 0.9
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 42.1
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 0.6
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 41.5
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 1.8
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 <span style="font-weight: 900; color: #640021">1.7</span>
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 43.8
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 1.9
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 <span style="font-weight: 900; color: #640021">1.7</span>
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 37.8
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 0.5
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 <span style="font-weight: 900; color: #008600">-2.0</span>
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 40.1
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 0.0
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 <span style="font-weight: 900; color: #008600">-2.0</span>
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 38.6
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 1.4
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 <span style="font-weight: 900; color: #005200">-1.2</span>
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 40.5
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 1.2
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-right:0px solid black;border-top: hidden;">
 <span style="font-weight: 900; color: #006B00">-1.6</span>
 </td>
 </tr>
 <tr>
-<td style="border-left: 0px solid black; ">
+<td style="border-left: 0px solid black; border-top: hidden;background-color: #FFCC99; ">
 2008
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 39.9
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 1.0
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 42.1
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 0.6
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 41.7
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 2.0
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 <span style="font-weight: 900; color: #6B0023">1.8</span>
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 44.0
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 2.1
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 <span style="font-weight: 900; color: #710025">1.9</span>
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 37.8
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 0.5
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 <span style="font-weight: 900; color: #008C00">-2.1</span>
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 40.1
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 0.0
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 <span style="font-weight: 900; color: #008600">-2.0</span>
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 38.7
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 1.5
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 <span style="font-weight: 900; color: #005200">-1.2</span>
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 40.5
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 1.2
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-right:0px solid black;border-top: hidden;background-color: #FFCC99;">
 <span style="font-weight: 900; color: #006B00">-1.6</span>
 </td>
 </tr>
 <tr>
-<td colspan="30" align="left" style="font-weight: bold;">
+<td colspan="23" align="left" style="font-weight: bold; border-left: 0px solid black; border-right:0px solid black;border-bottom: 1px solid black;border-top: 1px solid black;">
 3rd period
 </td>
- </tr>
+</tr>
 <tr>
-<td style="border-left: 0px solid black; ">
+<td style="border-left: 0px solid black; border-top: hidden;">
 2009
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 39.9
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 1.0
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 42.1
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 0.6
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 41.9
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 2.2
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 <span style="font-weight: 900; color: #7A0028">2.0</span>
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 44.2
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 2.3
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 <span style="font-weight: 900; color: #80002A">2.1</span>
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 37.8
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 0.5
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 <span style="font-weight: 900; color: #008C00">-2.1</span>
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 40.0
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 -0.1
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 <span style="font-weight: 900; color: #008C00">-2.1</span>
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 38.8
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 1.6
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 <span style="font-weight: 900; color: #004C00">-1.1</span>
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 40.6
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 1.3
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-right:0px solid black;border-top: hidden;">
 <span style="font-weight: 900; color: #006400">-1.5</span>
 </td>
 </tr>
 <tr>
-<td style="border-left: 0px solid black; ">
+<td style="border-left: 0px solid black; border-top: hidden;background-color: #FFCC99; ">
 2010
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 40.0
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 1.1
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 42.1
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 0.6
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 42.1
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 2.4
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 <span style="font-weight: 900; color: #80002A">2.1</span>
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 44.4
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 2.5
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 <span style="font-weight: 900; color: #8C002E">2.3</span>
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 37.8
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 0.5
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 <span style="font-weight: 900; color: #009200">-2.2</span>
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 40.0
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 -0.1
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 <span style="font-weight: 900; color: #008C00">-2.1</span>
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 38.9
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 1.7
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 <span style="font-weight: 900; color: #004C00">-1.1</span>
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 40.6
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 1.3
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-right:0px solid black;border-top: hidden;background-color: #FFCC99;">
 <span style="font-weight: 900; color: #006400">-1.5</span>
 </td>
 </tr>
 <tr>
-<td style="border-left: 0px solid black; ">
+<td style="border-left: 0px solid black; border-top: hidden;">
 2011
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 40.1
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 1.2
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 42.2
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 0.7
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 42.3
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 2.6
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 <span style="font-weight: 900; color: #86002C">2.2</span>
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 44.5
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 2.6
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 <span style="font-weight: 900; color: #8C002E">2.3</span>
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 37.9
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 0.6
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 <span style="font-weight: 900; color: #009200">-2.2</span>
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 39.9
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 -0.2
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 <span style="font-weight: 900; color: #009900">-2.3</span>
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 39.0
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 1.8
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 <span style="font-weight: 900; color: #004C00">-1.1</span>
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 40.7
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 1.4
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-right:0px solid black;border-top: hidden;">
 <span style="font-weight: 900; color: #006400">-1.5</span>
 </td>
 </tr>
 <tr>
-<td style="border-left: 0px solid black; ">
+<td style="border-left: 0px solid black; border-top: hidden;background-color: #FFCC99; ">
 2012
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 40.2
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 1.3
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 42.2
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 0.7
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 42.4
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 2.7
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 <span style="font-weight: 900; color: #86002C">2.2</span>
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 44.6
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 2.7
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 <span style="font-weight: 900; color: #920030">2.4</span>
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 37.9
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 0.6
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 <span style="font-weight: 900; color: #009900">-2.3</span>
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 39.9
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 -0.2
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 <span style="font-weight: 900; color: #009900">-2.3</span>
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 39.1
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 1.9
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 <span style="font-weight: 900; color: #004C00">-1.1</span>
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 40.8
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;background-color: #FFCC99;">
 1.5
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-right:0px solid black;border-top: hidden;background-color: #FFCC99;">
 <span style="font-weight: 900; color: #005E00">-1.4</span>
 </td>
 </tr>
 <tr>
-<td style="border-left: 0px solid black; ">
+<td style="border-left: 0px solid black; border-top: hidden;">
 2013
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 40.2
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 1.3
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 42.2
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 0.7
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 42.4
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 2.7
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 <span style="font-weight: 900; color: #86002C">2.2</span>
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 44.7
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 2.8
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 <span style="font-weight: 900; color: #990033">2.5</span>
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 38.0
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 0.7
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 <span style="font-weight: 900; color: #009200">-2.2</span>
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 39.9
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 -0.2
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 <span style="font-weight: 900; color: #009900">-2.3</span>
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 39.2
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 2.0
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 <span style="font-weight: 900; color: #004600">-1.0</span>
 </td>
-<td></td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 40.9
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-top: hidden;">
 1.6
 </td>
-<td align="right" style="border-left: 0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-right:0px solid black;border-top: hidden;">
 <span style="font-weight: 900; color: #005800">-1.3</span>
 </td>
 </tr>
 <tr>
-<td colspan="30" align="left" style="font-size:9pt ;border-top: 1px solid black;"></td>
+<td colspan="23" align="left" style="font-size:9pt ;border-top: 1px solid black; border-bottom: hidden;">
+</td>
 </tr>
 </table>
-
-
 </div>
 <div id="the-xtable-package" class="section level3">
 <h3>The <code>xtable</code>-package</h3>
@@ -9871,14 +9943,45 @@ Age
              <span class="dt">caption=</span><span class="st">&quot;A test table&quot;</span>, 
              <span class="dt">align =</span> <span class="kw">c</span>(<span class="st">&quot;l&quot;</span>, <span class="st">&quot;c&quot;</span>, <span class="st">&quot;r&quot;</span>)), 
       <span class="dt">type=</span><span class="st">&quot;html&quot;</span>)</code></pre>
-<pre><code>## &lt;!-- html table generated in R 3.1.2 by xtable 1.7-4 package --&gt;
-## &lt;!-- Mon Feb 09 10:10:18 2015 --&gt;
-## &lt;table border=1&gt;
-## &lt;caption align=&quot;bottom&quot;&gt; A test table &lt;/caption&gt;
-## &lt;tr&gt; &lt;th&gt;  &lt;/th&gt; &lt;th&gt; 1st header &lt;/th&gt; &lt;th&gt; 2nd header &lt;/th&gt;  &lt;/tr&gt;
-##   &lt;tr&gt; &lt;td&gt; 1st row &lt;/td&gt; &lt;td align=&quot;center&quot;&gt; Content A &lt;/td&gt; &lt;td align=&quot;right&quot;&gt; Content B &lt;/td&gt; &lt;/tr&gt;
-##   &lt;tr&gt; &lt;td&gt; 2nd row &lt;/td&gt; &lt;td align=&quot;center&quot;&gt; Content C &lt;/td&gt; &lt;td align=&quot;right&quot;&gt; Content D &lt;/td&gt; &lt;/tr&gt;
-##    &lt;/table&gt;</code></pre>
+<!-- html table generated in R 3.1.2 by xtable 1.7-4 package -->
+<!-- Tue Mar 03 23:18:56 2015 -->
+<table border="1">
+<caption align="bottom">
+A test table
+</caption>
+<tr>
+<th>
+</th>
+<th>
+1st header
+</th>
+<th>
+2nd header
+</th>
+</tr>
+<tr>
+<td>
+1st row
+</td>
+<td align="center">
+Content A
+</td>
+<td align="right">
+Content B
+</td>
+</tr>
+<tr>
+<td>
+2nd row
+</td>
+<td align="center">
+Content C
+</td>
+<td align="right">
+Content D
+</td>
+</tr>
+</table>
 <p>The downside with the function is that you need to change output depending on your target and there is not that much advantage compared to <code>kable</code>.</p>
 </div>
 </div>
@@ -9894,7 +9997,6 @@ Age
 Content A   | Content B
 Content C   | Content D
 </pre>
-
 <p>And you will end up with this beauty:</p>
 <table>
 <thead>
@@ -9964,7 +10066,6 @@ Content C   | Content D
 
 : Demonstration of pipe table syntax.
 </pre>
-
 <table>
 <caption>Demonstration of pipe table syntax.</caption>
 <thead>
@@ -10009,7 +10110,6 @@ Content C   | Content D
 |               |               | - tasty            |
 +---------------+---------------+--------------------+
 </pre>
-
 <table>
 <caption>Sample grid table.</caption>
 <colgroup>
