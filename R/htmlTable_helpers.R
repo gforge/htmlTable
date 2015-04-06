@@ -20,12 +20,6 @@ prTblNo <- function (caption) {
       return(caption)
   }
 
-  # Count which table it currently is
-  if (is.numeric(tc))
-    tc <- tc + 1
-  else
-    tc <- 1
-  options(table_counter = tc)
   table_template <- getOption("table_counter_str", "Table %s: ")
   out <- sprintf(table_template,
                  ifelse(getOption("table_counter_roman", FALSE),
@@ -538,7 +532,9 @@ prAddCells <- function(rowcells, cellcode, align, style, cgroup_spacer_cells, ha
               cellcode)
 
     # Add empty cell if not last column
-    if (nr != length(rowcells) && cgroup_spacer_cells[nr] > 0){
+    if (nr != length(rowcells) &&
+          nr <= length(cgroup_spacer_cells) &&
+          cgroup_spacer_cells[nr] > 0){
       spanner_style <- style
       if (!missing(col.columns)){
         if (col.columns[nr] == col.columns[nr + 1]){

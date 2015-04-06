@@ -292,10 +292,21 @@ htmlTable.default <- function(x,
                 " as of ver. 1.0")
       }else{
         stop("You have set both the old parameter name: '", old_name, "'",
-             " and the new parameter name: '", new_name, "'.")
+             " and the new parameter name: '", new_name, "'.",
+             " Note that parameters may have a default value and you may have only",
+             " set the old paramter while the function automatically attaches a value to the new parameter")
       }
     }
   }
+
+  if (is.null(dim(x))){
+    x <- matrix(x, ncol = ifelse(missing(header),
+                                 length(x),
+                                 length(header)))
+  }else if (length(dim(x)) != 2)
+    stop("Your table variable seems to have the wrong dimension,",
+         " length(dim(x)) = ", length(dim(x)) , " != 2")
+
 
   ## this will convert color names to hexadecimal (easier for user)
   ## but also leaves hex format unchanged
@@ -327,12 +338,13 @@ htmlTable.default <- function(x,
          ", or set the rownames of the x argument.")
 
   if (missing(header) &&
-        !is.null(colnames(x)))
+        !is.null(colnames(x))){
     header<-colnames(x)
-
-  if (length(dim(x)) != 2)
-    stop("Your table variable seems to have the wrong dimension,",
-         " length(dim(x)) = ", length(dim(x)) , " != 2")
+  }else if(!missing(header)){
+    if (length(header) != ncol(x))
+      stop("You have a header with ", length(header), " cells",
+           " while your output matrix has only ", ncol(x), " columns")
+  }
 
   # Fix alignment to match with the matrix
   align <- prPrepareAlign(align, x, rnames)
@@ -475,14 +487,22 @@ htmlTable.default <- function(x,
 
   pos.rowlabel <- prGetRowlabelPos(cgroup, pos.rowlabel, header)
 
+  tc <- getOption("table_counter", FALSE)
+  if (tc){
+    # Count which table it currently is
+    if (is.numeric(tc))
+      tc <- tc + 1
+    else
+      tc <- 1
+    options(table_counter = tc)
+  }
+
   # The id works just as well as any anchor
-  table_id <- ""
+  table_id <- getOption("table_counter", "")
   if (!missing(label)){
     table_id <- sprintf(" id='%s'", label)
-  }else if(is.numeric(getOption("table_counter", FALSE))){
-    table_id <- getOption("table_counter")
-    options(table_counter = table_id + 1)
-    table_id <- sprintf(" id='table_%d'", table_id)
+  }else if(is.numeric(table_id)){
+    table_id <- paste0(" id='table_", table_id, "'")
   }
 
   # A column counter that is used for <td colspan="">
@@ -556,24 +576,23 @@ htmlTable.default <- function(x,
   }
 
 
+  # Add caption according to standard HTML
   if (!missing(caption)){
     # Combine a table counter if provided
     caption <- paste0("\n\t", prTblNo(caption))
-  }
 
-  # Add caption according to standard HTML
-  if (!missing(caption) &
-        compatibility != "LibreOffice"){
-    if (pos.caption %in% c("bottom", "below")){
+    if(compatibility != "LibreOffice"){
+      if (pos.caption %in% c("bottom", "below")){
+        table_str %<>%
+          paste0("\n\t<caption style='caption-side: bottom'>")
+      }else{
+        table_str %<>%
+          paste0("\n\t<caption style='caption-side: top'>")
+      }
+
       table_str %<>%
-        paste0("\n\t<caption style='caption-side: bottom'>")
-    }else{
-      table_str %<>%
-        paste0("\n\t<caption style='caption-side: top'>")
+        paste0(caption, "</caption>")
     }
-
-    table_str %<>%
-      paste0(caption, "</caption>")
   }
 
   if (!missing(header) ||
