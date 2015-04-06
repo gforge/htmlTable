@@ -10,7 +10,7 @@
 
 <meta name="author" content="Max Gordon" />
 
-<meta name="date" content="2015-03-03" />
+<meta name="date" content="2015-04-06" />
 
 <title>Tables with htmlTable and some alternatives</title>
 
@@ -54,7 +54,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <div id="header">
 <h1 class="title">Tables with htmlTable and some alternatives</h1>
 <h4 class="author"><em>Max Gordon</em></h4>
-<h4 class="date"><em>2015-03-03</em></h4>
+<h4 class="date"><em>2015-04-06</em></h4>
 </div>
 
 <div id="TOC">
@@ -109,11 +109,11 @@ code > span.er { color: #ff0000; font-weight: bold; }
           <span class="dt">n.cgroup =</span> <span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">2</span>), 
           <span class="dt">caption=</span><span class="st">&quot;Basic table with both column spanners (groups) and row groups&quot;</span>,
           <span class="dt">tfoot=</span><span class="st">&quot;&amp;dagger; A table footer commment&quot;</span>)</code></pre>
-<table class="gmisc_table" style="border-collapse: collapse;" id="table_8">
+<table class="gmisc_table" style="border-collapse: collapse;" FALSE>
 <thead>
 <tr>
 <td colspan="6" style="text-align: left;">
-Table 10: Basic table with both column spanners (groups) and row groups
+Basic table with both column spanners (groups) and row groups
 </td>
 </tr>
 <tr>
@@ -379,7 +379,7 @@ n.cgroup &lt;-<span class="st"> </span>
           <span class="dt">n.rgroup =</span> <span class="kw">rep</span>(<span class="dv">5</span>, <span class="dv">3</span>),
           <span class="dt">tfoot =</span> <span class="kw">txtMergeLines</span>(<span class="st">&quot;&amp;Delta;&lt;sub&gt;int&lt;/sub&gt; correspnds to the change since start&quot;</span>,
                                 <span class="st">&quot;&amp;Delta;&lt;sub&gt;std&lt;/sub&gt; corresponds to the change compared to national average&quot;</span>))</code></pre>
-<table class="gmisc_table" style="border-collapse: collapse;" id="table_10">
+<table class="gmisc_table" style="border-collapse: collapse;" FALSE>
 <thead>
 <tr>
 <th style="border-top: 2px solid grey;">
@@ -1963,7 +1963,7 @@ Third period
           <span class="dt">n.rgroup =</span> <span class="kw">rep</span>(<span class="dv">5</span>, <span class="dv">3</span>),
           <span class="dt">tfoot =</span> <span class="kw">txtMergeLines</span>(<span class="st">&quot;&amp;Delta;&lt;sub&gt;int&lt;/sub&gt; correspnds to the change since start&quot;</span>,
                                 <span class="st">&quot;&amp;Delta;&lt;sub&gt;std&lt;/sub&gt; corresponds to the change compared to national average&quot;</span>))</code></pre>
-<table class="gmisc_table" style="border-collapse: collapse;" id="table_11">
+<table class="gmisc_table" style="border-collapse: collapse;" FALSE>
 <thead>
 <tr>
 <th style="border-top: 2px solid grey;">
@@ -3549,7 +3549,7 @@ Third period
           <span class="dt">n.rgroup =</span> <span class="kw">rep</span>(<span class="dv">5</span>, <span class="dv">3</span>),
                     <span class="dt">tfoot =</span> <span class="kw">txtMergeLines</span>(<span class="st">&quot;&amp;Delta;&lt;sub&gt;int&lt;/sub&gt; correspnds to the change since start&quot;</span>,
                                 <span class="st">&quot;&amp;Delta;&lt;sub&gt;std&lt;/sub&gt; corresponds to the change compared to national average&quot;</span>))</code></pre>
-<table class="gmisc_table" style="border-collapse: collapse;" id="table_12">
+<table class="gmisc_table" style="border-collapse: collapse;" FALSE>
 <thead>
 <tr>
 <th style="border-top: 2px solid grey;">
@@ -5140,7 +5140,7 @@ Third period
           <span class="dt">tfoot =</span> <span class="kw">txtMergeLines</span>(<span class="st">&quot;&amp;Delta;&lt;sub&gt;int&lt;/sub&gt; correspnds to the change since start&quot;</span>,
                                 <span class="st">&quot;&amp;Delta;&lt;sub&gt;std&lt;/sub&gt; corresponds to the change compared to national average&quot;</span>),
           <span class="dt">cspan.rgroup =</span> <span class="dv">1</span>)</code></pre>
-<table class="gmisc_table" style="border-collapse: collapse;" id="table_13">
+<table class="gmisc_table" style="border-collapse: collapse;" FALSE>
 <thead>
 <tr>
 <th style="border-top: 2px solid grey;">
@@ -6948,11 +6948,11 @@ for (col in cols_2_clr){
           <span class="dt">tfoot =</span> <span class="kw">txtMergeLines</span>(<span class="st">&quot;&amp;Delta;&lt;sub&gt;int&lt;/sub&gt; correspnds to the change since start&quot;</span>,
                                 <span class="st">&quot;&amp;Delta;&lt;sub&gt;std&lt;/sub&gt; corresponds to the change compared to national average&quot;</span>),
           <span class="dt">cspan.rgroup =</span> <span class="dv">1</span>)</code></pre>
-<table class="gmisc_table" style="border-collapse: collapse;" id="table_14">
+<table class="gmisc_table" style="border-collapse: collapse;" FALSE>
 <thead>
 <tr>
 <td colspan="30" style="text-align: left;">
-Table 16: Average age in Sweden counties over a period of 15 years. The Norbotten county is typically known for having a negative migration pattern compared to Stockholm, while Uppsala has a proportionally large population of students.
+Average age in Sweden counties over a period of 15 years. The Norbotten county is typically known for having a negative migration pattern compared to Stockholm, while Uppsala has a proportionally large population of students.
 </td>
 </tr>
 <tr>
@@ -9943,8 +9943,8 @@ Age
              <span class="dt">caption=</span><span class="st">&quot;A test table&quot;</span>, 
              <span class="dt">align =</span> <span class="kw">c</span>(<span class="st">&quot;l&quot;</span>, <span class="st">&quot;c&quot;</span>, <span class="st">&quot;r&quot;</span>)), 
       <span class="dt">type=</span><span class="st">&quot;html&quot;</span>)</code></pre>
-<!-- html table generated in R 3.1.2 by xtable 1.7-4 package -->
-<!-- Tue Mar 03 23:18:56 2015 -->
+<!-- html table generated in R 3.1.3 by xtable 1.7-4 package -->
+<!-- Mon Apr 06 11:20:08 2015 -->
 <table border="1">
 <caption align="bottom">
 A test table

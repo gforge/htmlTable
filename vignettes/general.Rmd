@@ -6,6 +6,7 @@ output:
   rmarkdown::html_vignette:
     css: custom.css
     keep_md: true
+    toc: true
 vignette: >
   %\VignetteIndexEntry{How-to use htmlTable}
   %\VignetteEngine{knitr::rmarkdown}
@@ -29,6 +30,47 @@ htmlTable(output)
 
 As of version 1.0.2 you **no longer need** to specify `results='asis'` for each `knitr` chunk.
 
+Table caption
+-------------
+
+The table caption is simply the table description and can be either located above or below:
+
+```{r}
+htmlTable(output, 
+          caption="A table caption above")
+```
+
+The caption defaults to above but by setting the `pos.caption` argument to "bottom" it appears below the table. 
+
+```{r}
+htmlTable(output, 
+          pos.caption = "bottom",
+          caption="A table caption below")
+```
+
+Cell alignment
+--------------
+
+Cell alignment is specified through the `align`, `align.header`, `align.cgroup` arguments. For aligning the cell values just use `align`. The argument can accept either a vector or a string, although supplying it with a string is the simplest option as in the example below:
+
+```{r}
+htmlTable(1:3, 
+          rnames = "Row 1",
+          align = "lcr",
+          header = c("'l' = left", "'c' = center", "'r' = right"),
+          caption = "The alignment is set through the align options. Available alternatives are l, r, c as designated by the below table.")
+```
+
+Note that you can specify a string shorter than the number of columns. This can be useful if you have plenty of columns and you simply want all remaining columns to keep the alignment of the last column. To align the row name you can just add another letter to the string while the header is aligned through the `align.header` argument:
+
+```{r}
+htmlTable(1:3, 
+          rnames = "Row 1",
+          align = "clcr",
+          align.header = "lcr",
+          header = c("'l' = left", "'c' = center", "'r' = right"),
+          caption = "The alignment is set through the align options. Available alternatives are l, r, c as designated by the below table.")
+```
 
 Advanced
 ========
@@ -39,13 +81,12 @@ While it may be sufficient for basic tables a more advanced layout is often need
 * column spanners
 * table spanners
 * total row
-* caption
 * table footer
 * zebra coloring (also known as *banding*):
   + rows
   + columns
 
-As many journals require that a MS Word-document is submitted it is furthermore also important that the table imports correctly to a word processor, i.e. that the table doesn't only look nice in a web browser but also in the final document. The `htmlTable`-function is written for all these purposes.
+As many journals require that a MS Word-document is submitted it is furthermore also important that the table imports correctly to a word processor, i.e. that the table also looks nice in the final document not only in the browser. The `htmlTable`-function is written for all these purposes.
 
 For demonstration purposes we will setup a basic matrix:
 
@@ -172,23 +213,10 @@ htmlTable(mx,
           n.tspanner = c(2,4,nrow(mx) - 6))
 ```
 
-Table caption
--------------
+Table numbering
+---------------
 
-The table caption is simply the table description and can be either located above or below the table:
-
-```{r}
-htmlTable(mx[1:2,1:2], 
-          caption="A table caption above")
-```
-
-```{r}
-htmlTable(mx[1:2,1:2], 
-          pos.caption = "bottom",
-          caption="A table caption below")
-```
-
-A more interesting detail that the function allows for is table numbering, initialized by:
+The htmlTable has built-in numbering, initialized by:
 
 ```{r}
 options(table_counter = TRUE)
@@ -205,6 +233,18 @@ As we often want to reference the table number in the text there are two associa
 tblNoLast()
 tblNoNext()
 ```
+
+```{r}
+htmlTable(mx[1:2,1:2], 
+          caption="Another table with numbering")
+```
+
+If you want to start the counter at 2 you can instead of setting table_counter to `TRUE` set it to 1. Note that you need to set the value to one less as each time the table is called the counter is incremented by one. You can also turn off the feature by:
+
+```{r}
+options(table_counter = FALSE)
+```
+
 
 Table footer
 ------------

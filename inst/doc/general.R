@@ -8,6 +8,30 @@ output <- matrix(1:4,
 htmlTable(output)
 
 ## ------------------------------------------------------------------------
+htmlTable(output, 
+          caption="A table caption above")
+
+## ------------------------------------------------------------------------
+htmlTable(output, 
+          pos.caption = "bottom",
+          caption="A table caption below")
+
+## ------------------------------------------------------------------------
+htmlTable(1:3, 
+          rnames = "Row 1",
+          align = "lcr",
+          header = c("'l' = left", "'c' = center", "'r' = right"),
+          caption = "The alignment is set through the align options. Available alternatives are l, r, c as designated by the below table.")
+
+## ------------------------------------------------------------------------
+htmlTable(1:3, 
+          rnames = "Row 1",
+          align = "clcr",
+          align.header = "lcr",
+          header = c("'l' = left", "'c' = center", "'r' = right"),
+          caption = "The alignment is set through the align options. Available alternatives are l, r, c as designated by the below table.")
+
+## ------------------------------------------------------------------------
 mx <-
   matrix(ncol=6, nrow=8)
 rownames(mx) <- paste(c("1st", "2nd",
@@ -87,15 +111,6 @@ htmlTable(mx,
           n.tspanner = c(2,4,nrow(mx) - 6))
 
 ## ------------------------------------------------------------------------
-htmlTable(mx[1:2,1:2], 
-          caption="A table caption above")
-
-## ------------------------------------------------------------------------
-htmlTable(mx[1:2,1:2], 
-          pos.caption = "bottom",
-          caption="A table caption below")
-
-## ------------------------------------------------------------------------
 options(table_counter = TRUE)
 
 ## ------------------------------------------------------------------------
@@ -105,6 +120,13 @@ htmlTable(mx[1:2,1:2],
 ## ------------------------------------------------------------------------
 tblNoLast()
 tblNoNext()
+
+## ------------------------------------------------------------------------
+htmlTable(mx[1:2,1:2], 
+          caption="Another table with numbering")
+
+## ------------------------------------------------------------------------
+options(table_counter = FALSE)
 
 ## ------------------------------------------------------------------------
 htmlTable(mx[1:2,1:2], 
