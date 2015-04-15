@@ -368,3 +368,13 @@ test_that("Test prAddSemicolon2StrEnd",{
   expect_equal(names(prAddSemicolon2StrEnd(test_str)),
                names(test_str[3]))
 })
+
+
+test_that("Problem with naming in stringr 1.0.0", {
+  style_bug <- structure(c("", "font-weight: 900;", "#f7f7f7"),
+                         .Names = c("", "", "background-color"))
+  expect_false(is.null(names(prAddSemicolon2StrEnd(style_bug))))
+  expect_match(prGetStyle(style_bug),
+               regexp = "^font-weight: 900; background-color: #f7f7f7")
+
+})

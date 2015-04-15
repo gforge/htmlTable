@@ -153,7 +153,13 @@ prGetStyle <- function(...){
 #' @keywords internal
 #' @family hidden helper functions for \code{\link{htmlTable}}
 prAddSemicolon2StrEnd <- function(my_str){
-  my_str <- str_trim(my_str)
+  if (!is.null(names(my_str))){
+    tmp <- str_trim(my_str)
+    names(tmp) <- names(my_str)
+    my_str <- tmp
+  }else{
+    my_str <- str_trim(my_str)
+  }
   my_str_n <- sapply(my_str, nchar, USE.NAMES = FALSE)
   if (any(my_str_n == 0))
     my_str <- my_str[my_str_n > 0]
