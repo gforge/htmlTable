@@ -82,3 +82,13 @@ test_that("Numbers that round to 0 should not have -, i.e. no -0.0",{
                matrix("0"))
 
 })
+
+test_that("Character vectors work", {
+  test_str <- c("AA 2 2A", "-1.2  aaa",
+                "-1", "2.8888")
+  correct_str <- c("2.0", "-1.2", "-1.0", "2.9")
+  for (i in 1:length(test_str))
+    expect_equivalent(txtRound(test_str[i], digits = 1),
+                      correct_str[i], info = paste("Test case", i))
+
+})

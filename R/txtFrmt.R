@@ -194,13 +194,17 @@ txtPval <- function(pvalues,
 
 #' A convenient rounding function
 #'
-#' @param x The data.frame/matrix to be rounded
+#' If you provide a string value in X the function will try to round this if
+#' a numeric text is present. If you want to skip certain rows/columns then
+#' use the excl.* arguments.
+#'
+#' @param x The value/vector/data.frame/matrix to be rounded
 #' @param digits The number of digits to round each element to.
 #'  If you provide a vector each element for corresponding columns.
 #' @param excl.cols Rows to exclude from the rounding procedure.
 #'  This can be either a number or regular expression.
 #' @param excl.rows Columns to exclude from the rounding procedure.
-#'  This can be either a number or regular expression.
+#'  This can be either a number or regular expression. Skipped if x is a vector.
 #' @param txt.NA The string to exchange NA with
 #' @param dec The decimal marker. If the text is in non-english decimal
 #'  and string formatted you need to change this to the apropriate decimal
@@ -215,10 +219,48 @@ txtPval <- function(pvalues,
 #' txtRound(mx, 1)
 #' @export
 #' @family text formatters
-txtRound <- function(x, digits, excl.cols, excl.rows, txt.NA = "", dec = "."){
-  if (is.null(dim(x)) ||
-        length(dim(x)) > 2)
-    stop("The function only accepts matrices/data.frames as primary argument")
+txtRound <- function(x, digits = 0, excl.cols, excl.rows, txt.NA = "", dec = "."){
+  round_fn <- function(elmnt){
+    dec_str <- sprintf("^[^0-9\\%s-]*([\\-]{0,1}(([0-9]*|[0-9]+[ 0-9]+)[\\%s]|)[0-9]+)(|[^0-9]+.*)$",
+                       dec, dec)
+    if (is.na(elmnt))
+      return(txt.NA)
+    if (!is.numeric(elmnt) &&
+          !grepl(dec_str, elmnt))
+      return(elmnt)
+    if (is.character(elmnt) &&
+          grepl(dec_str, elmnt)){
+      if (dec != ".")
+        elmnt <- gsub(dec, ".", elmnt)
+
+      # Select the first occurring number
+      # remove any spaces indicating thousands
+      # and convert to numeric
+      elmnt <-
+        sub(dec_str, "\\1", elmnt) %>%
+        gsub(" ", "", .) %>%
+        as.numeric
+    }
+
+    if (round(elmnt, digits) == 0)
+      elmnt <- 0
+    sprintf(paste0("%.", digits, "f"),
+            elmnt)
+  }
+
+  if (is.null(dim(x))){
+    ret <- sapply(x, round_fn, USE.NAMES = FALSE)
+    if (!missing(excl.rows)){
+      if (is.character(excl.cols)){
+        excl.cols <- grep(excl.cols, names(x))
+      }
+
+      ret <- ret[!excl.rows]
+    }
+    return (ret)
+  }else if(length(dim(x)) > 2){
+    stop("The function only accepts vectors/matrices/data.frames as primary argument")
+  }
 
   rows <- 1L:nrow(x)
   if (!missing(excl.rows)){
@@ -249,26 +291,7 @@ txtRound <- function(x, digits, excl.cols, excl.rows, txt.NA = "", dec = "."){
   ret_x <- x
   for (col in cols){
     ret_x[rows, col] <-
-      sapply(x[rows, col], function(elmnt){
-        dec_str <- sprintf("([0-9]*[%s]|)[0-9]+", dec)
-        if (is.na(elmnt))
-          return(txt.NA)
-        if (!is.numeric(elmnt) &&
-              !grepl(dec_str, elmnt))
-          return(elmnt)
-        if (is.character(elmnt) &&
-              grepl(dec_str, elmnt)){
-          if (dec != ".")
-            elmnt <- gsub(dec, ".", elmnt)
-
-          elmnt <- as.numeric(elmnt)
-        }
-
-        if (round(elmnt, digits) == 0)
-          elmnt <- 0
-        sprintf(paste0("%.", digits, "f"),
-                elmnt)
-      },
+      sapply(x[rows, col], round_fn,
       USE.NAMES = FALSE)
   }
 
