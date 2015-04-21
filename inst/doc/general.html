@@ -10,7 +10,7 @@
 
 <meta name="author" content="Max Gordon" />
 
-<meta name="date" content="2015-04-06" />
+<meta name="date" content="2015-04-21" />
 
 <title>The htmlTable package</title>
 
@@ -54,7 +54,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <div id="header">
 <h1 class="title">The htmlTable package</h1>
 <h4 class="author"><em>Max Gordon</em></h4>
-<h4 class="date"><em>2015-04-06</em></h4>
+<h4 class="date"><em>2015-04-21</em></h4>
 </div>
 
 <div id="TOC">
@@ -86,7 +86,7 @@ output &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class=
                  <span class="dt">dimnames =</span> <span class="kw">list</span>(<span class="kw">list</span>(<span class="st">&quot;Row 1&quot;</span>, <span class="st">&quot;Row 2&quot;</span>),
                                  <span class="kw">list</span>(<span class="st">&quot;Column 1&quot;</span>, <span class="st">&quot;Column 2&quot;</span>)))
 <span class="kw">htmlTable</span>(output)</code></pre>
-<table class="gmisc_table" style="border-collapse: collapse;" id="table_53">
+<table class="gmisc_table" style="border-collapse: collapse;">
 <thead>
 <tr>
 <th style="border-bottom: 1px solid grey; border-top: 2px solid grey;">
@@ -124,17 +124,17 @@ Row 2
 </tr>
 </tbody>
 </table>
-<p>As of version 1.0.2 you <strong>no longer need</strong> to specify <code>results='asis'</code> for each <code>knitr</code> chunk.</p>
+<p>As of version 1.1 you <strong>no longer need</strong> to specify <code>results='asis'</code> for each <code>knitr</code> chunk.</p>
 <div id="table-caption" class="section level2">
 <h2>Table caption</h2>
 <p>The table caption is simply the table description and can be either located above or below:</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">htmlTable</span>(output, 
           <span class="dt">caption=</span><span class="st">&quot;A table caption above&quot;</span>)</code></pre>
-<table class="gmisc_table" style="border-collapse: collapse;" id="table_54">
+<table class="gmisc_table" style="border-collapse: collapse;">
 <thead>
 <tr>
 <td colspan="3" style="text-align: left;">
-Table 54: A table caption above
+A table caption above
 </td>
 </tr>
 <tr>
@@ -177,7 +177,7 @@ Row 2
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">htmlTable</span>(output, 
           <span class="dt">pos.caption =</span> <span class="st">&quot;bottom&quot;</span>,
           <span class="dt">caption=</span><span class="st">&quot;A table caption below&quot;</span>)</code></pre>
-<table class="gmisc_table" style="border-collapse: collapse;" id="table_55">
+<table class="gmisc_table" style="border-collapse: collapse;">
 <thead>
 <tr>
 <th style="border-bottom: 1px solid grey; border-top: 2px solid grey;">
@@ -216,7 +216,7 @@ Row 2
 </tbody>
 <tr>
 <td colspan="3" style="text-align: left;">
-Table 55: A table caption below
+A table caption below
 </td>
 </tr>
 </table>
@@ -229,11 +229,11 @@ Table 55: A table caption below
           <span class="dt">align =</span> <span class="st">&quot;lcr&quot;</span>,
           <span class="dt">header =</span> <span class="kw">c</span>(<span class="st">&quot;'l' = left&quot;</span>, <span class="st">&quot;'c' = center&quot;</span>, <span class="st">&quot;'r' = right&quot;</span>),
           <span class="dt">caption =</span> <span class="st">&quot;The alignment is set through the align options. Available alternatives are l, r, c as designated by the below table.&quot;</span>)</code></pre>
-<table class="gmisc_table" style="border-collapse: collapse;" id="table_56">
+<table class="gmisc_table" style="border-collapse: collapse;">
 <thead>
 <tr>
 <td colspan="4" style="text-align: left;">
-Table 56: The alignment is set through the align options. Available alternatives are l, r, c as designated by the below table.
+The alignment is set through the align options. Available alternatives are l, r, c as designated by the below table.
 </td>
 </tr>
 <tr>
@@ -274,11 +274,11 @@ Row 1
           <span class="dt">align.header =</span> <span class="st">&quot;lcr&quot;</span>,
           <span class="dt">header =</span> <span class="kw">c</span>(<span class="st">&quot;'l' = left&quot;</span>, <span class="st">&quot;'c' = center&quot;</span>, <span class="st">&quot;'r' = right&quot;</span>),
           <span class="dt">caption =</span> <span class="st">&quot;The alignment is set through the align options. Available alternatives are l, r, c as designated by the below table.&quot;</span>)</code></pre>
-<table class="gmisc_table" style="border-collapse: collapse;" id="table_57">
+<table class="gmisc_table" style="border-collapse: collapse;">
 <thead>
 <tr>
 <td colspan="4" style="text-align: left;">
-Table 57: The alignment is set through the align options. Available alternatives are l, r, c as designated by the below table.
+The alignment is set through the align options. Available alternatives are l, r, c as designated by the below table.
 </td>
 </tr>
 <tr>
@@ -352,7 +352,7 @@ for (nr in <span class="dv">1</span>:<span class="kw">nrow</span>(mx)){
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">htmlTable</span>(mx, 
           <span class="dt">rgroup =</span> <span class="kw">paste</span>(<span class="st">&quot;Group&quot;</span>, LETTERS[<span class="dv">1</span>:<span class="dv">3</span>]),
           <span class="dt">n.rgroup =</span> <span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">4</span>,<span class="kw">nrow</span>(mx) -<span class="st"> </span><span class="dv">6</span>))</code></pre>
-<table class="gmisc_table" style="border-collapse: collapse;" id="table_58">
+<table class="gmisc_table" style="border-collapse: collapse;">
 <thead>
 <tr>
 <th style="border-bottom: 1px solid grey; border-top: 2px solid grey;">
@@ -583,7 +583,7 @@ Group C
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">htmlTable</span>(mx, 
           <span class="dt">rgroup =</span> <span class="kw">c</span>(<span class="kw">paste</span>(<span class="st">&quot;Group&quot;</span>, LETTERS[<span class="dv">1</span>:<span class="dv">2</span>]), <span class="st">&quot;&quot;</span>),
           <span class="dt">n.rgroup =</span> <span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">4</span>,<span class="kw">nrow</span>(mx) -<span class="st"> </span><span class="dv">6</span>))</code></pre>
-<table class="gmisc_table" style="border-collapse: collapse;" id="table_59">
+<table class="gmisc_table" style="border-collapse: collapse;">
 <thead>
 <tr>
 <th style="border-bottom: 1px solid grey; border-top: 2px solid grey;">
@@ -810,7 +810,7 @@ Group B
           <span class="dt">css.rgroup =</span> <span class="st">&quot;&quot;</span>,
           <span class="dt">rgroup =</span> <span class="kw">c</span>(<span class="kw">paste</span>(<span class="st">&quot;Group&quot;</span>, LETTERS[<span class="dv">1</span>:<span class="dv">2</span>]), <span class="st">&quot;&quot;</span>),
           <span class="dt">n.rgroup =</span> <span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">4</span>,<span class="kw">nrow</span>(mx) -<span class="st"> </span><span class="dv">6</span>))</code></pre>
-<table class="gmisc_table" style="border-collapse: collapse;" id="table_60">
+<table class="gmisc_table" style="border-collapse: collapse;">
 <thead>
 <tr>
 <th style="border-bottom: 1px solid grey; border-top: 2px solid grey;">
@@ -1038,7 +1038,7 @@ Group B
 <span class="kw">htmlTable</span>(mx, 
           <span class="dt">rgroup =</span> rgroup,
           <span class="dt">n.rgroup =</span> <span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">4</span>,<span class="kw">nrow</span>(mx) -<span class="st"> </span><span class="dv">6</span>))</code></pre>
-<table class="gmisc_table" style="border-collapse: collapse;" id="table_61">
+<table class="gmisc_table" style="border-collapse: collapse;">
 <thead>
 <tr>
 <th style="border-bottom: 1px solid grey; border-top: 2px solid grey;">
@@ -1270,7 +1270,7 @@ More
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">htmlTable</span>(mx,
           <span class="dt">cgroup =</span> <span class="kw">c</span>(<span class="st">&quot;Cgroup 1&quot;</span>, <span class="st">&quot;Cgroup 2&quot;</span>),
           <span class="dt">n.cgroup =</span> <span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">4</span>))</code></pre>
-<table class="gmisc_table" style="border-collapse: collapse;" id="table_62">
+<table class="gmisc_table" style="border-collapse: collapse;">
 <thead>
 <tr>
 <th style="border-top: 2px solid grey;">
@@ -1528,7 +1528,7 @@ Cgroup 2
                          <span class="kw">c</span>(<span class="st">&quot;&quot;</span>, <span class="st">&quot;Cgroup 1&quot;</span>, <span class="st">&quot;Cgroup 2&quot;</span>)),
           <span class="dt">n.cgroup =</span> <span class="kw">rbind</span>(<span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="ot">NA</span>),
                            <span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">2</span>)))</code></pre>
-<table class="gmisc_table" style="border-collapse: collapse;" id="table_63">
+<table class="gmisc_table" style="border-collapse: collapse;">
 <thead>
 <tr>
 <th style="border-top: 2px solid grey;">
@@ -1830,7 +1830,7 @@ Cgroup 2
                          <span class="kw">c</span>(<span class="st">&quot;&quot;</span>, <span class="st">&quot;Cgroup 1&quot;</span>, <span class="st">&quot;Cgroup 2&quot;</span>)),
           <span class="dt">n.cgroup =</span> <span class="kw">rbind</span>(<span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">5</span>,<span class="ot">NA</span>),
                            <span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">1</span>,<span class="dv">3</span>)))</code></pre>
-<table class="gmisc_table" style="border-collapse: collapse;" id="table_64">
+<table class="gmisc_table" style="border-collapse: collapse;">
 <thead>
 <tr>
 <th style="border-top: 2px solid grey;">
@@ -2160,7 +2160,7 @@ Cgroup 2
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">htmlTable</span>(mx, 
           <span class="dt">tspanner =</span> <span class="kw">paste</span>(<span class="st">&quot;Spanner&quot;</span>, LETTERS[<span class="dv">1</span>:<span class="dv">3</span>]),
           <span class="dt">n.tspanner =</span> <span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">4</span>,<span class="kw">nrow</span>(mx) -<span class="st"> </span><span class="dv">6</span>))</code></pre>
-<table class="gmisc_table" style="border-collapse: collapse;" id="table_65">
+<table class="gmisc_table" style="border-collapse: collapse;">
 <thead>
 <tr>
 <th style="border-bottom: 1px solid grey; border-top: 2px solid grey;">
@@ -2392,7 +2392,7 @@ Spanner C
 <h2>Total row</h2>
 <p>Many financial tables use the concept of a total row at the end that sums the above elements:</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">htmlTable</span>(mx[<span class="dv">1</span>:<span class="dv">3</span>,], <span class="dt">total=</span><span class="ot">TRUE</span>)</code></pre>
-<table class="gmisc_table" style="border-collapse: collapse;" id="table_66">
+<table class="gmisc_table" style="border-collapse: collapse;">
 <thead>
 <tr>
 <th style="border-bottom: 1px solid grey; border-top: 2px solid grey;">
@@ -2497,7 +2497,7 @@ Spanner C
                         <span class="st">&quot;border-top: 1px solid grey; font-weight: 900&quot;</span>),
           <span class="dt">tspanner =</span> <span class="kw">paste</span>(<span class="st">&quot;Spanner&quot;</span>, LETTERS[<span class="dv">1</span>:<span class="dv">3</span>]),
           <span class="dt">n.tspanner =</span> <span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">4</span>,<span class="kw">nrow</span>(mx) -<span class="st"> </span><span class="dv">6</span>))</code></pre>
-<table class="gmisc_table" style="border-collapse: collapse;" id="table_67">
+<table class="gmisc_table" style="border-collapse: collapse;">
 <thead>
 <tr>
 <th style="border-bottom: 1px solid grey; border-top: 2px solid grey;">

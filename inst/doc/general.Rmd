@@ -28,7 +28,7 @@ output <- matrix(1:4,
 htmlTable(output)
 ```
 
-As of version 1.0.2 you **no longer need** to specify `results='asis'` for each `knitr` chunk.
+As of version 1.1 you **no longer need** to specify `results='asis'` for each `knitr` chunk.
 
 Table caption
 -------------
