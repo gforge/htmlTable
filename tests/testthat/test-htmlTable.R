@@ -378,3 +378,19 @@ test_that("Problem with naming in stringr 1.0.0", {
                regexp = "^font-weight: 900; background-color: #f7f7f7")
 
 })
+
+test_that("Handling data.frames with factors",{
+  tmp <- data.frame(a = 1:3,
+                    b = factor(x = 1:3,
+                               labels = c("Unique_Factor_1",
+                                          "Factor_2",
+                                          "Factor_3")))
+
+  str <- htmlTable(tmp)
+  expect_true(grepl("Unique_Factor_1", str))
+
+  tmp <- data.frame(a = 1,
+                    b = factor(x = 1,
+                               labels = c("1.2")))
+  expect_true(txtRound(tmp)$b == 1)
+})

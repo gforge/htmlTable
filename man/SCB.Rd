@@ -5,10 +5,10 @@
 \alias{SCB}
 \title{Average age in Sweden}
 \description{
-For the vignettes there is a dataset downloaded by using
-the \code{\link[pxweb]{get_pxweb_data}()} call. The data is
-from SCB (\href{http://scb.se/}{Statistics Sweden}) and
-downloaded using:
+For the vignettes there is a dataset downloaded by using the
+\code{\link[pxweb]{get_pxweb_data}()} call. The data is from
+SCB (\href{http://scb.se/}{Statistics Sweden}) and downloaded
+using:
 }
 \examples{
 \dontrun{

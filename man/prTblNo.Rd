@@ -7,27 +7,26 @@
 prTblNo(caption)
 }
 \arguments{
-  \item{The}{caption}
+\item{The}{caption}
 }
 \value{
-\code{string} Returns a string formatted according to the
-table_counter_str and table_counter_roman. The number is
-decided by the table_counter variable
+\code{string} Returns a string formatted according to
+ the table_counter_str and table_counter_roman. The number is
+ decided by the table_counter variable
 }
 \description{
-Returns the string used for htmlTable to number the
-different tables. Uses options \code{table_counter},
-\code{table_counter_str}, and \code{table_counter_roman} to
-produce the final string. You can set each option by simply
-calling \code{options()}.
+Returns the string used for htmlTable to number the different tables.
+Uses options \code{table_counter}, \code{table_counter_str},
+and \code{table_counter_roman} to produce the final string. You
+can set each option by simply calling \code{options()}.
 }
 \seealso{
-Other hidden helper functions for \code{\link{htmlTable}}:
-\code{\link{prAddCells}};
-\code{\link{prAddSemicolon2StrEnd}};
-\code{\link{prGetCgroupHeader}};
-\code{\link{prGetRowlabelPos}}; \code{\link{prGetStyle}};
-\code{\link{prPrepareAlign}}; \code{\link{prPrepareCgroup}}
+Other hidden helper functions for \code{\link{htmlTable}}: \code{\link{prAddCells}};
+  \code{\link{prAddSemicolon2StrEnd}};
+  \code{\link{prGetCgroupHeader}};
+  \code{\link{prGetRowlabelPos}}; \code{\link{prGetStyle}};
+  \code{\link{prPrepareAlign}};
+  \code{\link{prPrepareCgroup}}
 }
 \keyword{internal}
 

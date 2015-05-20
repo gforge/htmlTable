@@ -17,7 +17,7 @@ htmlTable(output,
           caption="Basic table with both column spanners (groups) and row groups",
           tfoot="&dagger; A table footer commment")
 
-## ----, results='markup'--------------------------------------------------
+## ---- results='markup'---------------------------------------------------
 data(SCB)
 
 # The SCB has three other coulmns and one value column
@@ -173,7 +173,7 @@ htmlTable(out_mx,
                                 "&Delta;<sub>std</sub> corresponds to the change compared to national average"),
           cspan.rgroup = 1)
 
-## ----, message=FALSE, results='asis'-------------------------------------
+## ---- message=FALSE, results='asis'--------------------------------------
 library(ztable)
 options(ztable.type="html")
 zt <- ztable(out_mx, 
@@ -198,7 +198,7 @@ zt <- addrgroup(zt,
 
 print(zt)
 
-## ----, results='asis'----------------------------------------------------
+## ---- results='asis'-----------------------------------------------------
 output <- 
   matrix(sprintf("Content %s", LETTERS[1:4]),
          ncol=2, byrow=TRUE)

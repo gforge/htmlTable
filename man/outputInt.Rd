@@ -7,7 +7,7 @@
 outputInt(...)
 }
 \arguments{
-  \item{...}{Passed to \code{\link{txtInt}}}
+\item{...}{Passed to \code{\link{txtInt}}}
 }
 \description{
 Deprecated use \code{\link{txtInt}} instead.

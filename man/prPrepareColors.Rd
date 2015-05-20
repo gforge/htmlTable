@@ -7,14 +7,13 @@
 prPrepareColors(clr, n, ng, gtxt)
 }
 \arguments{
-  \item{clr}{The colors}
+\item{clr}{The colors}
 
-  \item{n}{The number of rows/columns applicable to the
-  color}
+\item{n}{The number of rows/columns applicable to the color}
 
-  \item{ng}{The n.rgroup/n.cgroup argument if applicable}
+\item{ng}{The n.rgroup/n.cgroup argument if applicable}
 
-  \item{gtxt}{The rgroup/cgroup texts}
+\item{gtxt}{The rgroup/cgroup texts}
 }
 \value{
 \code{character} A vector containing hexadecimal colors

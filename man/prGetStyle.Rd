@@ -7,31 +7,28 @@
 prGetStyle(...)
 }
 \arguments{
-  \item{...}{All styles here are merged with the first
-  parameter. If you provide a name, e.g.
-  \code{styles="background: blue", align="center"} the
-  function will convert the \code{align} into proper
-  \code{align: center}.}
+\item{...}{All styles here are merged with the first parameter.
+If you provide a name, e.g. \code{styles="background: blue", align="center"}
+the function will convert the \code{align} into proper \code{align: center}.}
 
-  \item{styles}{The styles can be provided as
-  \code{vector}, \code{named vector}, or \code{string}.}
+\item{styles}{The styles can be provided as \code{vector},
+\code{named vector}, or \code{string}.}
 }
 \value{
 \code{string} Returns the codes merged into one string with
-correct CSS ; and : structure.
+ correct CSS ; and : structure.
 }
 \description{
-A funciton for checking, merging, and more with a variety
-of different style formats.
+A funciton for checking, merging, and more
+with a variety of different style formats.
 }
 \seealso{
-Other hidden helper functions for \code{\link{htmlTable}}:
-\code{\link{prAddCells}};
-\code{\link{prAddSemicolon2StrEnd}};
-\code{\link{prGetCgroupHeader}};
-\code{\link{prGetRowlabelPos}};
-\code{\link{prPrepareAlign}};
-\code{\link{prPrepareCgroup}}; \code{\link{prTblNo}}
+Other hidden helper functions for \code{\link{htmlTable}}: \code{\link{prAddCells}};
+  \code{\link{prAddSemicolon2StrEnd}};
+  \code{\link{prGetCgroupHeader}};
+  \code{\link{prGetRowlabelPos}};
+  \code{\link{prPrepareAlign}};
+  \code{\link{prPrepareCgroup}}; \code{\link{prTblNo}}
 }
 \keyword{internal}
 

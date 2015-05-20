@@ -7,13 +7,12 @@
 tblNoLast(roman = getOption("table_counter_roman", FALSE))
 }
 \arguments{
-  \item{roman}{Whether or not to use roman numbers instead
-  of arabic. Can also be set through
-  \code{options(table_caption_no_roman = TRUE)}}
+\item{roman}{Whether or not to use roman numbers instead
+ of arabic. Can also be set through \code{options(table_caption_no_roman = TRUE)}}
 }
 \description{
-The function relies on \code{options("table_counter")} in
-order to keep track of the last number.
+The function relies on \code{options("table_counter")}
+in order to keep track of the last number.
 }
 \examples{
 org_opts <- options(table_counter=1)
@@ -22,8 +21,8 @@ options(org_opts)
 }
 \seealso{
 Other table functions: \code{\link{htmlTable}},
-\code{\link{htmlTable.default}},
-\code{\link{knit_print.htmlTable}},
-\code{\link{print.htmlTable}}; \code{\link{tblNoNext}}
+  \code{\link{htmlTable.default}},
+  \code{\link{knit_print.htmlTable}},
+  \code{\link{print.htmlTable}}; \code{\link{tblNoNext}}
 }
 

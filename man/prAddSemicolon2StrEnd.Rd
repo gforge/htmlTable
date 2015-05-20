@@ -7,22 +7,22 @@
 prAddSemicolon2StrEnd(my_str)
 }
 \arguments{
-  \item{my_str}{The string that is to be processed}
+\item{my_str}{The string that is to be processed}
 }
 \value{
 \code{string}
 }
 \description{
 The CSS expects a semicolon at the end of each argument
-this function just adds a semicolong if none is given and
-remove multiple semicolon if such exist
+this function just adds a semicolong if none is given
+and remove multiple semicolon if such exist
 }
 \seealso{
-Other hidden helper functions for \code{\link{htmlTable}}:
-\code{\link{prAddCells}}; \code{\link{prGetCgroupHeader}};
-\code{\link{prGetRowlabelPos}}; \code{\link{prGetStyle}};
-\code{\link{prPrepareAlign}};
-\code{\link{prPrepareCgroup}}; \code{\link{prTblNo}}
+Other hidden helper functions for \code{\link{htmlTable}}: \code{\link{prAddCells}};
+  \code{\link{prGetCgroupHeader}};
+  \code{\link{prGetRowlabelPos}}; \code{\link{prGetStyle}};
+  \code{\link{prPrepareAlign}};
+  \code{\link{prPrepareCgroup}}; \code{\link{prTblNo}}
 }
 \keyword{internal}
 

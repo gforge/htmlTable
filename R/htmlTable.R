@@ -829,6 +829,17 @@ htmlTable.default <- function(x,
   return(table_str)
 }
 
+#' @export
+htmlTable.data.frame <- function(x, ...) {
+  # Convert all factors to characters to print them as they expected
+  i <- sapply(x, is.factor)
+  if(any(i)){
+    x[i] <- lapply(x[i], as.character)
+  }
+
+  htmlTable.default(x,...)
+}
+
 #' @importFrom methods setClass
 setClass("htmlTable", contains = "character")
 

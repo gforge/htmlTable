@@ -7,23 +7,24 @@
 txtMergeLines(..., html = 5)
 }
 \arguments{
-  \item{...}{The lines that you want to be joined}
+\item{...}{The lines that you want to be joined}
 
-  \item{html}{If HTML compatible output should be used. If
-  \code{FALSE} it outputs LaTeX formatting. Note if you set
-  this to 5 then the html5 version of \emph{br} will be
-  used: \code{<br>} otherwise it uses the \code{<br />}
-  that is compatible with the xhtml-formatting.}
+\item{html}{If HTML compatible output should be used. If \code{FALSE}
+it outputs LaTeX formatting. Note if you set this to 5
+then the html5 version of \emph{br} will be used: \code{<br>}
+otherwise it uses the \code{<br />} that is compatible
+with the xhtml-formatting.}
 }
 \value{
 string
 }
 \description{
-This function helps you to do a multiline table header in
-both html and in LaTeX. In html this isn't that tricky, you
-just use the <br /> command but in LaTeX I often find
-myself writing vbox/hbox stuff and therefore I've created
-this simple helper function
+This function helps you to do a multiline
+table header in both html and in LaTeX. In
+html this isn't that tricky, you just use
+the <br /> command but in LaTeX I often find
+myself writing vbox/hbox stuff and therefore
+I've created this simple helper function
 }
 \examples{
 txtMergeLines("hello", "world")
@@ -32,6 +33,6 @@ txtMergeLines("hello", "world", list("A list", "is OK"))
 }
 \seealso{
 Other text formatters: \code{\link{txtPval}};
-\code{\link{txtRound}}
+  \code{\link{txtRound}}
 }
 

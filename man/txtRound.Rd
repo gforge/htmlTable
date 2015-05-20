@@ -7,34 +7,30 @@
 txtRound(x, digits = 0, excl.cols, excl.rows, txt.NA = "", dec = ".")
 }
 \arguments{
-  \item{x}{The value/vector/data.frame/matrix to be
-  rounded}
+\item{x}{The value/vector/data.frame/matrix to be rounded}
 
-  \item{digits}{The number of digits to round each element
-  to. If you provide a vector each element for
-  corresponding columns.}
+\item{digits}{The number of digits to round each element to.
+If you provide a vector each element for corresponding columns.}
 
-  \item{excl.cols}{Rows to exclude from the rounding
-  procedure. This can be either a number or regular
-  expression.}
+\item{excl.cols}{Rows to exclude from the rounding procedure.
+This can be either a number or regular expression.}
 
-  \item{excl.rows}{Columns to exclude from the rounding
-  procedure. This can be either a number or regular
-  expression. Skipped if x is a vector.}
+\item{excl.rows}{Columns to exclude from the rounding procedure.
+This can be either a number or regular expression. Skipped if x is a vector.}
 
-  \item{txt.NA}{The string to exchange NA with}
+\item{txt.NA}{The string to exchange NA with}
 
-  \item{dec}{The decimal marker. If the text is in
-  non-english decimal and string formatted you need to
-  change this to the apropriate decimal indicator.}
+\item{dec}{The decimal marker. If the text is in non-english decimal
+and string formatted you need to change this to the apropriate decimal
+indicator.}
 }
 \value{
 \code{matrix/data.frame}
 }
 \description{
-If you provide a string value in X the function will try to
-round this if a numeric text is present. If you want to
-skip certain rows/columns then use the excl.* arguments.
+If you provide a string value in X the function will try to round this if
+a numeric text is present. If you want to skip certain rows/columns then
+use the excl.* arguments.
 }
 \examples{
 mx <- matrix(c(1, 1.11, 1.25,
@@ -45,6 +41,6 @@ txtRound(mx, 1)
 }
 \seealso{
 Other text formatters: \code{\link{txtMergeLines}};
-\code{\link{txtPval}}
+  \code{\link{txtPval}}
 }
 

@@ -7,8 +7,7 @@
 pvalueFormatter(...)
 }
 \arguments{
-  \item{...}{Currently only used for generating warnings of
-  deprecated call}
+\item{...}{Currently only used for generating warnings of deprecated call}
 }
 \description{
 Deprecated use \code{\link{txtPval}} instead

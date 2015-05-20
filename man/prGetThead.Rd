@@ -9,106 +9,79 @@ prGetThead(x, header, cgroup, n.cgroup, caption, pos.caption, compatibility,
   pos.rowlabel, cgroup_spacer_cells, css.cell, align.header, cell_style)
 }
 \arguments{
-  \item{x}{The matrix/data.frame with the data. For the
-  \code{print} and \code{knit_print} it takes a string of
-  the class \code{htmlTable} as \code{x} argument.}
+\item{x}{The matrix/data.frame with the data. For the \code{print} and \code{knit_print}
+it takes a string of the class \code{htmlTable} as \code{x} argument.}
 
-  \item{header}{A vector of character strings specifying
-  column header, defaulting to
-  \code{\link[base]{colnames}(x)}}
+\item{header}{A vector of character strings specifying column
+header, defaulting to \code{\link[base]{colnames}(x)}}
 
-  \item{cgroup}{A vector or a matrix of character strings
-  defining major column header. The default is to have
-  none. These elements are also known as \emph{column
-  spanners}. If you want a column \emph{not} to have a
-  spanner then put that column as "". If you pass cgroup
-  and \code{n.crgroup} as matrices you can have column
-  spanners for several rows. See cgroup section below for
-  details.}
+\item{cgroup}{A vector or a matrix of character strings defining major column header. The default
+is to have none. These elements are also known as \emph{column spanners}. If you want a column \emph{not}
+to have a spanner then put that column as "". If you pass cgroup and \code{n.crgroup} as
+matrices you can have column spanners for several rows. See cgroup section below for details.}
 
-  \item{n.cgroup}{An integer vector or matrix containing
-  the number of columns for which each element in cgroup is
-  a heading. For example, specify
-  \code{cgroup=c("Major_1","Major_2")},
-  \code{n.cgroup=c(3,3)} if \code{"Major_1"} is to span
-  columns 1-3 and \code{"Major_2"} is to span columns 4-6.
-  \code{rowlabel} does not count in the column numbers. You
-  can omit \code{n.cgroup} if all groups have the same
-  number of columns.}
+\item{n.cgroup}{An integer vector or matrix containing the number of columns for which each element in
+cgroup is a heading. For example, specify \code{cgroup=c("Major_1","Major_2")},
+\code{n.cgroup=c(3,3)} if \code{"Major_1"} is to span columns 1-3 and
+\code{"Major_2"} is to span columns 4-6.
+\code{rowlabel} does not count in the column numbers. You can omit \code{n.cgroup}
+if all groups have the same number of columns.}
 
-  \item{caption}{Adds a table caption.}
+\item{caption}{Adds a table caption.}
 
-  \item{pos.caption}{Set to \code{"bottom"} to position a
-  caption below the table instead of the default of
-  \code{"top"}.}
+\item{pos.caption}{Set to \code{"bottom"} to position a caption below the table
+instead of the default of \code{"top"}.}
 
-  \item{compatibility}{Is default set to \code{LibreOffice}
-  as some settings need to be in old html format as Libre
-  Office can't handle some commands such as the css
-  caption-alignment. Note: this option is not yet fully
-  implemented for all details, in the future I aim to
-  generate a html-correct table and one that is aimed at
-  Libre Office compatibility. Word-compatibility is
-  difficult as Word ignores most settings and destroys all
-  layout attempts (at least that is how my 2010 version
-  behaves).}
+\item{compatibility}{Is default set to \code{LibreOffice} as some
+settings need to be in old html format as Libre Office can't
+handle some commands such as the css caption-alignment. Note: this
+option is not yet fully implemented for all details, in the future
+I aim to generate a html-correct table and one that is aimed
+at Libre Office compatibility. Word-compatibility is difficult as
+Word ignores most settings and destroys all layout attempts
+(at least that is how my 2010 version behaves).}
 
-  \item{total_columns}{The total number of columns}
+\item{total_columns}{The total number of columns}
 
-  \item{align.cgroup}{The justification of the
-  \code{cgroups}}
+\item{align.cgroup}{The justification of the \code{cgroups}}
 
-  \item{css.cgroup}{The same as \code{css.class} but for
-  cgroup formatting.}
+\item{css.cgroup}{The same as \code{css.class} but for cgroup formatting.}
 
-  \item{top_row_style}{The top row has a special style
-  depending on the \code{ctable} option in the
-  \code{htmlTable} call.}
+\item{top_row_style}{The top row has a special style depending on
+the \code{ctable} option in the \code{htmlTable} call.}
 
-  \item{rnames}{Default rownames are generated from
-  \code{\link[base]{rownames}(x)}. If you provide
-  \code{FALSE} then it will skip the rownames. \emph{Note:}
-  For \code{data.frames} if you do
-  \code{\link[base]{rownames}(my_dataframe) <- NULL} it
-  still has rownames. Thus you need to use \code{FALSE} if
-  you want to surpress rownames for \code{data.frames}.}
+\item{rnames}{Default rownames are generated from \code{\link[base]{rownames}(x)}. If you
+provide \code{FALSE} then it will skip the rownames. \emph{Note:} For \code{data.frames}
+if you do \code{\link[base]{rownames}(my_dataframe) <- NULL} it still has
+rownames. Thus you need to use \code{FALSE} if you want to
+surpress rownames for \code{data.frames}.}
 
-  \item{rowlabel}{If the table has rownames or
-  \code{rnames}, rowlabel is a character string containing
-  the column heading for the \code{rnames}.}
+\item{rowlabel}{If the table has rownames or \code{rnames},
+rowlabel is a character string containing the
+column heading for the \code{rnames}.}
 
-  \item{pos.rowlabel}{Where the rowlabel should be
-  positioned. This value can be \code{"top"},
-  \code{"bottom"}, \code{"header"}, or a integer between
-  \code{1} and \code{nrow(cgroup) + 1}. The options
-  \code{"bottom"} and \code{"header"} are the same, where
-  the row label is presented at the same level as the
-  header.}
+\item{pos.rowlabel}{Where the rowlabel should be positioned. This value can be \code{"top"},
+\code{"bottom"}, \code{"header"}, or a integer between \code{1} and \code{nrow(cgroup) + 1}. The options
+\code{"bottom"} and \code{"header"} are the same, where the row label is presented at the same level as
+the header.}
 
-  \item{cgroup_spacer_cells}{The spacer cells due to the
-  multiple cgroup levels. With multiple rows in cgroup we
-  need to keep track of how many spacer cells occur between
-  the columns. This variable contains is of the size
-  \code{ncol(x)-1} and 0 if there is no cgroup element
-  between.}
+\item{cgroup_spacer_cells}{The spacer cells due to the multiple cgroup levels.
+With multiple rows in cgroup we need to keep track of how many spacer cells
+occur between the columns. This variable contains is of the size \code{ncol(x)-1}
+and 0 if there is no cgroup element between.}
 
-  \item{css.cell}{The css.cell element allows you to add
-  any possible CSS style to your table cells. If you
-  provide a vector the vector it is assummed that the
-  styles should be repeated throughout the columns. If you
-  provide a matrix of the same size as your \code{x}
-  argument. If have \code{ncol(x) + 1} the first row will
-  correspond to the rowname style. Correspondingly if the
-  size is \code{nrow(x) + 1} it is assummed that the first
-  row is the header row.}
+\item{css.cell}{The css.cell element allows you to add any possible CSS style to your
+table cells. If you provide a vector the vector it is assummed that the styles should
+be repeated throughout the columns. If you provide a matrix of the same size as your
+\code{x} argument. If have \code{ncol(x) + 1} the first row will correspond to the
+rowname style. Correspondingly if the size is \code{nrow(x) + 1} it is assummed that the
+first row is the header row.}
 
-  \item{align.header}{A character strings specifying
-  alignment for column header, defaulting to centered, i.e.
-  \code{\link[base]{paste}(rep('c',ncol(x)),collapse='')}.}
+\item{align.header}{A character strings specifying alignment for column header,
+defaulting to centered, i.e. \code{\link[base]{paste}(rep('c',ncol(x)),collapse='')}.}
 }
 \value{
-\code{string} Returns the html string for the
-\code{<thead>...</thead>} element
+\code{string} Returns the html string for the \code{<thead>...</thead>} element
 }
 \description{
 Renders the table head (thead)

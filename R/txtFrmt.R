@@ -260,6 +260,11 @@ txtRound <- function(x, digits = 0, excl.cols, excl.rows, txt.NA = "", dec = "."
     return (ret)
   }else if(length(dim(x)) > 2){
     stop("The function only accepts vectors/matrices/data.frames as primary argument")
+  }else if(is.data.frame(x)){
+    i <- sapply(x, is.factor)
+    if (any(i)){
+      x[i] <- lapply(x[i], as.character)
+    }
   }
 
   rows <- 1L:nrow(x)

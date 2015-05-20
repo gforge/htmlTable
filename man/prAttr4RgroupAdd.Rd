@@ -7,23 +7,19 @@
 prAttr4RgroupAdd(rgroup, rgroup_iterator)
 }
 \arguments{
-  \item{rgroup}{A vector of character strings containing
-  headings for row groups. \code{n.rgroup} must be present
-  when \code{rgroup} is given. The first
-  \code{n.rgroup[1]}rows are sectioned off and
-  \code{rgroup[1]} is used as a bold heading for them. The
-  usual row dimnames (which must be present if
-  \code{rgroup} is) are indented. The next
-  \code{n.rgroup[2]} rows are treated likewise, etc. If you
-  don't want a row to be part of a row group then you just
-  put "" for that row, remember to add the corresponding
-  number of rows in n.rgroup.}
+\item{rgroup}{A vector of character strings containing headings for row groups.
+\code{n.rgroup} must be present when \code{rgroup} is given. The first
+\code{n.rgroup[1]}rows are sectioned off and \code{rgroup[1]} is used as a bold
+heading for them. The usual row dimnames (which must be present if \code{rgroup} is)
+are indented. The next \code{n.rgroup[2]} rows are treated likewise, etc. If you don't
+want a row to be part of a row group then you just put "" for that row, remember to add
+the corresponding number of rows in n.rgroup.}
 
-  \item{rgroup_iterator}{The rgroup number of interest}
+\item{rgroup_iterator}{The rgroup number of interest}
 }
 \description{
-Gets the add element attribute if it exists. If
-non-existant it will return NULL.
+Gets the add element attribute if it exists. If non-existant it will
+return NULL.
 }
 \keyword{internal}
 

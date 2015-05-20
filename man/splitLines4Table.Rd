@@ -7,7 +7,7 @@
 splitLines4Table(...)
 }
 \arguments{
-  \item{...}{passed onto \code{\link{txtMergeLines}}}
+\item{...}{passed onto \code{\link{txtMergeLines}}}
 }
 \description{
 See \code{\link{txtMergeLines}}
