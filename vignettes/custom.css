@@ -147,7 +147,7 @@ a[href^="http:"] {
 text-decoration: underline; }
 a[href^="https:"] {
 text-decoration: underline; }
-/* Class described in https://benjeffrey.com/posts/pandoc-syntax-highlighting-css
+/* Class described in http://benjeffrey.com/posts/pandoc-syntax-highlighting-css
 Colours from https://gist.github.com/robsimmons/1172277 */
 code > span.kw { color: #555; font-weight: bold; } /* Keyword */
 code > span.dt { color: #902000; } /* DataType */
