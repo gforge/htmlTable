@@ -1,5 +1,9 @@
 NEWS for the Gmisc package
 
+Changes for 1.5
+---------------
+* Added an interactiveTable for allowing tables with cells that have resizeable content
+
 Changes for 1.4
 ---------------
 * Handles data.frames with factors - thanks Sergio Oller #4
