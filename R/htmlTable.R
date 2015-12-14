@@ -154,6 +154,7 @@
 #'  directly at all instances of that class. \emph{Note:} unfortunately the
 #'  CSS is frequently ignored by word processors. This option
 #'  is mostly inteded for web-presentations.
+#' @param css.table You can specify the the style of the table-element using this parameter
 #' @param css.cgroup The same as \code{css.class} but for cgroup formatting.
 #'
 #' @param pos.rowlabel Where the rowlabel should be positioned. This value can be \code{"top"},
@@ -246,6 +247,7 @@ htmlTable.default <- function(x,
                               css.cgroup = "",
 
                               css.class = "gmisc_table",
+                              css.table = "margin-top: 1em; margin-bottom: 1em;",
 
                               # Positions
                               pos.rowlabel = "bottom",
@@ -559,8 +561,9 @@ htmlTable.default <- function(x,
   ###############################
   # Start building table string #
   ###############################
-  table_str <- sprintf("<table class='%s' style='border-collapse: collapse;' %s>",
+  table_str <- sprintf("<table class='%s' style='border-collapse: collapse; %s' %s>",
                        paste(css.class, collapse=", "),
+                       paste(css.table, collapse = "; "),
                        table_id)
 
   # Theoretically this should be added to the table but the
@@ -829,15 +832,24 @@ htmlTable.default <- function(x,
   return(table_str)
 }
 
-#' @export
-htmlTable.data.frame <- function(x, ...) {
-  # Convert all factors to characters to print them as they expected
+#' Convert all factors to characters to print them as they expected
+#'
+#' @inheritParams htmlTable
+#' @return The data frame with factors as characters
+prConvertDfFactors <- function(x){
+  if (!"data.frame" %in% class(x))
+    return(x)
+
   i <- sapply(x, is.factor)
   if(any(i)){
     x[i] <- lapply(x[i], as.character)
   }
+  return (x)
+}
 
-  htmlTable.default(x,...)
+#' @export
+htmlTable.data.frame <- function(x, ...) {
+  htmlTable.default(prConvertDfFactors(x),...)
 }
 
 #' @importFrom methods setClass

@@ -3,6 +3,7 @@ NEWS for the Gmisc package
 Changes for 1.5
 ---------------
 * Added an interactiveTable for allowing tables with cells that have resizeable content
+* Added css.table for table element css styling
 
 Changes for 1.4
 ---------------
