@@ -18,5 +18,12 @@ mx[1] <- "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmo
 colnames(mx) <- c("A")
 rownames(mx) <- letters[1]
 interactiveTable(mx)
-interactiveTable(mx)
 ```
+
+
+```{r}
+mx <- matrix(rep(mx, 6), ncol = 2)
+interactiveTable(mx)
+
+```
+

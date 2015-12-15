@@ -5,11 +5,12 @@
 #'
 #' @param ... The exact same parameters as \code{\link{htmlTable}} uses
 #' @param txt.maxlen The maximum length of a text
+#' @param button Indicator if the cell should be clickable or if a button should appear with a plus/minus
 #' @param minimized.columns Notifies if any particular columns should be collapsed from start
 #' @return An htmlTable with a javascript attribute containing the code that is then printed
 #' @export
 #' @rdname interactiveTable
-interactiveTable <- function(x, ..., txt.maxlen = 20, minimized.columns){
+interactiveTable <- function(x, ..., txt.maxlen = 20, button = FALSE, minimized.columns){
   UseMethod("interactiveTable")
 }
 
@@ -21,7 +22,7 @@ getButtonDiv <- function(sign = "-"){
 }
 
 #' @export
-interactiveTable.default <- function(x, ..., txt.maxlen = 20, minimized.columns){
+interactiveTable.default <- function(x, ..., txt.maxlen = 20, button = FALSE, minimized.columns){
   if ("data.frame" %in% class(x))
     x <- prConvertDfFactors(x)
   if (!missing(minimized.columns)){
@@ -36,14 +37,18 @@ interactiveTable.default <- function(x, ..., txt.maxlen = 20, minimized.columns)
     if(!is.null(dim(minimized.columns)))
       stop("Can only handle column vectors for minimization")
 
+    addon_elements <- paste("... ",
+                            "<span class='hidden' style='display: none'>%span_inner_text%</span>")
+    if (button){
+      addon_elements <- paste(aaddon_elements,
+                              getButtonDiv("+"))
+    }
     for (col_no in minimized.columns){
       for (row_no in 1:nrow(x)){
         if (nchar(x[row_no, col_no]) > txt.maxlen){
           x[row_no, col_no] <-
             paste0(substr(x[row_no, col_no], 1, txt.maxlen),
-                   "... ",
-                   "<span class='hidden' style='display: none'>", x[row_no, col_no], "</span>",
-                   getButtonDiv("+"))
+                   gsub("%span_inner_text%", x[row_no, col_no], addon_elements))
         }
       }
     }
@@ -53,17 +58,19 @@ interactiveTable.default <- function(x, ..., txt.maxlen = 20, minimized.columns)
   tbl <- htmlTable(x, ...)
   return(interactiveTable(tbl,
                           txt.maxlen = 20,
+                          button = button,
                           minimized.columns = minimized.columns))
 }
 
 #' @param tbl An htmlTable object can be directly passed into the function
 #' @rdname interactiveTable
-interactiveTable.htmlTable <- function(tbl, txt.maxlen = 20, minimized.columns){
+interactiveTable.htmlTable <- function(tbl, txt.maxlen = 20, button = FALSE, minimized.columns){
   if (!missing(minimized.columns) && all(minimized.columns != FALSE))
     stop("Can't minimize columns after creating the htmlTable. Try calling the function directly with the input data that you used for htmlTable")
 
   class(tbl) <- c("interactiveTable", class(tbl))
-  attr(tbl, "javascript") <- "
+  if (button) {
+    attr(tbl, "javascript") <- "
 <script type = \"text/javascript\" language = \"javascript\">
 $(document).ready(function(){
  btn = \"%btn%\"
@@ -86,7 +93,49 @@ $(document).ready(function(){
  })
 })
 </script>" %>% gsub("%txt.maxlen%", txt.maxlen, .) %>%
-    gsub("%btn%", getButtonDiv(), .)
+      gsub("%btn%", getButtonDiv(), .)
+  }else{
+    attr(tbl, "javascript") <- "
+<script type = \"text/javascript\" language = \"javascript\">
+$(document).ready(function(){
+ $(\".gmisc_table td .hidden\").map(function(index, el){
+   el.parentNode.style[\"background-color\"] = \"#DDD\";
+  })
+
+  getSelected = function(){
+    var t = '';
+    if(window.getSelection){
+      t = window.getSelection();
+    }else if(document.getSelection){
+      t = document.getSelection();
+    }else if(document.selection){
+      t = document.selection.createRange().text;
+    }
+    return t.toString();
+  }
+
+  $(\".gmisc_table td\").map(function(index, el){
+    var org_clr = this.style[\"background-color\"]
+    this.style.cursor = \"pointer\";
+    el.onmouseup =  function(e){
+      if (getSelected().length > 0)
+        return;
+
+      var hidden = this.getElementsByClassName(\"hidden\");
+      if (hidden.length > 0){
+        this.innerHTML = hidden[0].textContent;
+        this.style[\"background-color\"] = org_clr;
+      }else{
+        $(this).append(\"<span class='hidden' style='display: none'>\" + this.innerHTML + \"</span>\")
+        this.childNodes[0].data = this.childNodes[0].data.substr(0, 20) + \"... \";
+        this.style[\"background-color\"] = \"#DDD\";
+      }
+    }
+  })
+})
+</script>" %>% gsub("%txt.maxlen%", txt.maxlen, .) %>%
+      gsub("%btn%", getButtonDiv(), .)
+  }
 
   return(tbl)
 }
