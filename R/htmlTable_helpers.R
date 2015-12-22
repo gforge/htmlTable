@@ -849,10 +849,10 @@ prPrepareCss <- function(x, css, rnames, header, name = deparse(substitute(css))
 #' return NULL.
 #'
 #' @param rgroup_iterator The rgroup number of interest
-#' @param total_columns The total number of columns in the table including the rowlabel
+#' @param no_cols The \code{ncol(x)} of the core htmlTable x argument
 #' @inheritParams htmlTable
 #' @keywords internal
-prAttr4RgroupAdd <- function (rgroup, rgroup_iterator, total_columns) {
+prAttr4RgroupAdd <- function (rgroup, rgroup_iterator, no_cols) {
   if (is.null(attr(rgroup, "add")))
     return(NULL)
 
@@ -864,7 +864,7 @@ prAttr4RgroupAdd <- function (rgroup, rgroup_iterator, total_columns) {
         add_elmnt <- as.list(add_elmnt)
       names(add_elmnt) <- (1:length(rgroup))[rgroup !=  ""]
     }else if(!is.null(dim(add_elmnt)) &&
-             ncol(add_elmnt) %in% c(1, total_columns - 1)){
+             ncol(add_elmnt) %in% c(1, no_cols)){
 
       # Convert matrix to stricter format
       tmp <- list()
@@ -873,12 +873,12 @@ prAttr4RgroupAdd <- function (rgroup, rgroup_iterator, total_columns) {
           tmp[[i]] <- add_elmnt[i,]
         }else{
           tmp2 <- as.list(add_elmnt[i,])
-          names(tmp2) <- 1:(total_columns - 1)
+          names(tmp2) <- 1:no_cols
           tmp[[i]] <- tmp2
         }
       }
       if (nrow(add_elmnt) == sum(rgroup !=  "")){
-        names(tmp) <- 1:nrow(add_elmnt)
+        names(tmp) <- (1:length(rgroup))[rgroup != ""]
       } else if (!is.null(rownames(add_elmnt))){
         names(tmp) <- rownames(add_elmnt)
       } else {
@@ -947,12 +947,13 @@ prAttr4RgroupAdd <- function (rgroup, rgroup_iterator, total_columns) {
   if (any(add_pos < 1))
     stop("The rgroup 'add' attribute cannot have integer names below 1")
 
-  if (any(add_pos > length(rgroup[rgroup != ""])))
+  if (any(!add_pos < length(rgroup)) ||
+      any(rgroup[add_pos] == ""))
     stop("The rgroup 'add' attribute cannot have integer names indicating",
          " positions larger than the length of the rgroup",
-         " ('", length(rgroup[rgroup != ""]), "' after excluding the '' groups).",
+         " ('", length(rgroup), "' or matches one of the empty groups).",
          " The problematic position(s):",
-         " '", paste(add_pos[add_pos > length(rgroup[rgroup != ""])], collapse="', '") ,"'")
+         " '", paste(add_pos[add_pos > length(rgroup)], collapse="', '") ,"'")
 
   # Return the matching iterator
   if (rgroup_iterator %in% names(add_elmnt)){

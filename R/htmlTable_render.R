@@ -2,7 +2,8 @@
 #'
 #' @inheritParams htmlTable
 #' @inheritParams prGetCgroupHeader
-#' @param total_columns The total number of columns including the rowlabel
+#' @param total_columns The total number of columns including the rowlabel and the
+#'  specer cells
 #' @return \code{string} Returns the html string for the \code{<thead>...</thead>} element
 #' @keywords internal
 prGetThead <- function (x,
@@ -116,7 +117,8 @@ prGetThead <- function (x,
 
 #' Gets the number of rgroup htmlLine
 #'
-#' @param total_columns The total number of columns including the rowlabel
+#' @param total_columns The total number of columns including the rowlabel and the
+#'  spacer cells
 #' @param cspan The column span of the current rgroup
 #' @param style The css style corresponding to the rgroup css style that includes
 #'  the color specific for the rgroup, i.e. \code{col.rgroup}.
@@ -143,7 +145,7 @@ prGetRgroupLine <- function(x,
   rgroup_elmnt <- rgroup[rgroup_iterator]
   add_elmnt <- prAttr4RgroupAdd(rgroup = rgroup,
                                 rgroup_iterator = rgroup_iterator,
-                                total_columns = total_columns)
+                                no_cols = ncol(x))
 
   ## this will allow either css.rgroup or col.rgroup to
   ## color the rgroup label rows

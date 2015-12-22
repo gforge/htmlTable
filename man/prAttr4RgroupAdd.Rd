@@ -4,7 +4,7 @@
 \alias{prAttr4RgroupAdd}
 \title{Get the add attribute element}
 \usage{
-prAttr4RgroupAdd(rgroup, rgroup_iterator, total_columns)
+prAttr4RgroupAdd(rgroup, rgroup_iterator, no_cols)
 }
 \arguments{
 \item{rgroup}{A vector of character strings containing headings for row groups.
@@ -17,7 +17,7 @@ the corresponding number of rows in n.rgroup.}
 
 \item{rgroup_iterator}{The rgroup number of interest}
 
-\item{total_columns}{The total number of columns in the table including the rowlabel}
+\item{no_cols}{The \code{ncol(x)} of the core htmlTable x argument}
 }
 \description{
 Gets the add element attribute if it exists. If non-existant it will
