@@ -95,7 +95,6 @@ test_that("Check rgroup attribute",{
   expect_match(htmlTable(mx, rgroup = rgroup, n.rgroup = rep(1, 2)),
                "<td[^>]+colspan[ ]*=[ ]*'3'[^>]+>rgroup 1</td>[^<]*<td[^>]*>test 1")
 
-  attr(rgroup, "add") <- c("test 1", "test 2")
   expect_match(htmlTable(mx, rgroup = rgroup, n.rgroup = rep(1, 2)),
                "<td[^>]+colspan[ ]*=[ ]*'3'[^>]+>rgroup 1</td>[^<]*<td[^>]*>test 1")
 
@@ -137,8 +136,7 @@ test_that("Check rgroup attribute",{
 
   rgroup[2] <- ""
   attr(rgroup, "add") <- list(`2` = "test d")
-  expect_false(grepl("test d",
-                     htmlTable(mx, rgroup = rgroup, n.rgroup = rep(1, 2))))
+  expect_error(htmlTable(mx, rgroup = rgroup, n.rgroup = rep(1, 2)))
 
   attr(rgroup, "add") <- list("test d")
   expect_match(htmlTable(mx, rgroup = rgroup, n.rgroup = rep(1, 2)),
@@ -156,5 +154,79 @@ test_that("Check rgroup attribute without CSS",{
 
   rgroup <- paste("rgroup", 1:2)
   attr(rgroup, "add") <- list(`1` = "test d")
-  htmlTable(mx, rgroup = rgroup, n.rgroup = rep(1, 2), css.rgroup = "")
+  expect_match(htmlTable(mx, rgroup = rgroup, n.rgroup = rep(1, 2), css.rgroup = ""),
+               "<td[^>]+>rgroup 1</td>[^<]*<td[^>]*>test d</td>")
+})
+
+test_that("Check rgroup attribute with matrix",{
+  mx <- matrix(1:6, ncol=2)
+  colnames(mx) <- sprintf("Col %s", LETTERS[1:NCOL(mx)])
+  rownames(mx) <- sprintf("Row %s", LETTERS[1:NROW(mx)])
+
+  rgroup <- c(paste("rgroup", 1:2), "")
+  attr(rgroup, "add") <- matrix(c("test a",
+                                  "test b"),
+                                ncol = 1)
+  out <- htmlTable(mx,
+                   rgroup = rgroup,
+                   n.rgroup = c(1, 1),
+                   css.rgroup = "")
+
+  expect_match(out,
+               "<td[^>]+>rgroup 1</td>[^<]*<td[^>]*>test a</td>")
+  expect_match(out,
+               "<td[^>]+>rgroup 2</td>[^<]*<td[^>]*>test b</td>")
+
+
+  rgroup <- c(paste("rgroup", 1:2), "")
+  add_mtrx <- matrix(1:4,
+                     ncol = 2)
+  attr(rgroup, "add") <- add_mtrx
+  out <- htmlTable(mx,
+                   rgroup = rgroup,
+                   n.rgroup = c(1, 1),
+                   css.rgroup = "")
+  expect_match(out,
+               paste0("<td[^>]+>rgroup 1</td>",
+                      paste(sprintf("[^<]*<td[^>]*>%d</td>", add_mtrx[1,]),
+                            collapse = ""),
+                      "[^<]*</tr"))
+  expect_match(out,
+               paste0("<td[^>]+>rgroup 2</td>",
+                      paste(sprintf("[^<]*<td[^>]*>%d</td>", add_mtrx[2,]),
+                            collapse = ""),
+                      "[^<]*</tr"))
+
+  add_mtrx <- matrix(1:2,
+                     ncol = 2)
+  rownames(add_mtrx) <- c("rgroup 2")
+  attr(rgroup, "add") <- add_mtrx
+  out <- htmlTable(mx,
+                   rgroup = rgroup,
+                   n.rgroup = c(1, 1),
+                   css.rgroup = "")
+  expect_match(out,
+               paste0("<td[^>]+>rgroup 2</td>",
+                      paste(sprintf("[^<]*<td[^>]*>%d</td>", add_mtrx[1,]),
+                            collapse = ""),
+                      "[^<]*</tr"))
+  expect_match(out,
+               paste0("<td[^>]+>rgroup 1</td>",
+                      "[^<]*</tr"))
+
+  add_mtrx <- matrix(1:3,
+                     ncol = 3)
+  rownames(add_mtrx) <- c("rgroup 2")
+  attr(rgroup, "add") <- add_mtrx
+  expect_error(htmlTable(mx,
+                         rgroup = rgroup,
+                         n.rgroup = c(1, 1)))
+
+  add_mtrx <- matrix(1:2,
+                     ncol = 2)
+  rownames(add_mtrx) <- c("rgroup 223")
+  attr(rgroup, "add") <- add_mtrx
+  expect_error(htmlTable(mx,
+                         rgroup = rgroup,
+                         n.rgroup = c(1, 1)))
 })

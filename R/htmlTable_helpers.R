@@ -910,34 +910,31 @@ prAttr4RgroupAdd <- function (rgroup, rgroup_iterator, no_cols) {
     # Look for rgroup names that match to those not
     # found through the integer match
     # If found the number is assigned to the add_pos
-    available_rgroups <- rgroup[rgroup != ""]
+    available_rgroups <- rgroup
     if (!all(is.na(add_pos)))
       available_rgroups <- available_rgroups[-na.omit(add_pos)]
-    matches <-
-      sapply(available_rgroups,
-             function(row_label){
-               match <- which(row_label == names(add_elmnt)[is.na(add_pos)])
-               if (length(match) > 1)
-                 stop("Invalid add argument name '", row_label, "'",
-                      " it matches several rgroups.",
-                      " Functionality with same rgroup names has not yet been added.",
-                      " Try to use integers instead that match the row number.")
-               if (length(match) == 1)
-                 return(match)
-               return(0)
-             })
-    if (is.vector(matches) &&
-        sum(matches != 0) == sum(is.na(add_pos))){
-      for (i in 1:sum(is.na(add_pos))){
-        row_label <- names(add_elmnt)[i]
-        add_pos <- matches[row_label]
+    for (missing_pos in which(is.na(add_pos))){
+      row_label <- names(add_elmnt)
+      if (row_label %in% available_rgroups){
+        available_rgroups <-
+          available_rgroups[available_rgroups != row_label]
+        pos <- which(rgroup == row_label)
+        if (length(pos) > 1){
+          stop("There seem to be two identical row groups ('", row_label, "')",
+               " that you whish to assign a add columns to through the 'add'",
+               " attribute for the rgroup element.")
+        }else{
+          add_pos[missing_pos] <- pos
+        }
       }
-    }else{
-      stop("The rgroup 'add' element contains invalid names: ",
-           "'", paste(names(add_elmnt)[is.na(add_pos)], collapse="', '"), "'",
-           " that were neither valid integers or occurred among the rgroup names: ",
-           "'", paste(rgroup[rgroup != ""], collapse="', '"), "'")
     }
+    if (any(is.na(add_pos)))
+      stop("Failed to find matchin rgroup elements for: ",
+           "'", paste(names(add_elmnt)[is.na(add_pos)],
+                      collapse = "', '"), "'",
+           " from availabel rgroups: ",
+           "'", paste(rgroup,
+                      collapse = "', '"), "'")
     names(add_elmnt) <- add_pos
   }
 
@@ -947,13 +944,17 @@ prAttr4RgroupAdd <- function (rgroup, rgroup_iterator, no_cols) {
   if (any(add_pos < 1))
     stop("The rgroup 'add' attribute cannot have integer names below 1")
 
-  if (any(!add_pos < length(rgroup)) ||
+  if (any(!add_pos <= length(rgroup)) ||
       any(rgroup[add_pos] == ""))
     stop("The rgroup 'add' attribute cannot have integer names indicating",
          " positions larger than the length of the rgroup",
-         " ('", length(rgroup), "' or matches one of the empty groups).",
+         " (=", length(rgroup), ") or matches",
+         " one of the empty groups (no. ", paste(which(rgroup == ""),
+                                             collapse = ", "), ").",
          " The problematic position(s):",
-         " '", paste(add_pos[add_pos > length(rgroup)], collapse="', '") ,"'")
+         " '", paste(add_pos[add_pos > length(rgroup) |
+                               add_pos %in% which(rgroup == "")],
+                     collapse="', '") ,"'")
 
   # Return the matching iterator
   if (rgroup_iterator %in% names(add_elmnt)){
