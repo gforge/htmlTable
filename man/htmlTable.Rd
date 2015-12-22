@@ -61,12 +61,8 @@ known as the element's id attribute, i.e. table id, in HTML linguo, and should
 be unique id for an HTML element in contrast to the \code{css.class} element attribute.}
 
 \item{rgroup}{A vector of character strings containing headings for row groups.
-\code{n.rgroup} must be present when \code{rgroup} is given. The first
-\code{n.rgroup[1]}rows are sectioned off and \code{rgroup[1]} is used as a bold
-heading for them. The usual row dimnames (which must be present if \code{rgroup} is)
-are indented. The next \code{n.rgroup[2]} rows are treated likewise, etc. If you don't
-want a row to be part of a row group then you just put "" for that row, remember to add
-the corresponding number of rows in n.rgroup.}
+\code{n.rgroup} must be present when \code{rgroup} is given. See
+ detailed description in section below.}
 
 \item{n.rgroup}{An integer vector giving the number of rows in each grouping. If \code{rgroup}
 is not specified, \code{n.rgroup} is just used to divide off blocks of rows by horizontal
@@ -210,6 +206,19 @@ And the corresponding n,cgroup would be \code{n.cgroup = rbind(c(1, 2, NA), c(2,
 for a table consisting of 5 columns. The "first" spans the first two columns,
 the "second" spans the last three columns, "a" spans the first two, "b"
 the middle column, and "c" the last two columns.
+}
+
+\section{The \code{rgroup} arguement}{
+
+
+ The rgroup allows you to smoothly group rows. Each row within a group
+ receives an indention of two blank spaces and are grouped with their
+ corresponing rgroup element. The \code{sum(n.rgroup)} should always
+ be equal or less than the matrix rows. If less then it will pad the
+ remaining rows with either an empty rgroup, i.e. an "" or if the
+ rgroup is one longer than the n.rgroup the last n.rgroup element will
+ be calculated through \code{nrow(x) - sum(n.rgroup)} in order to make
+ the table generating smoother.
 }
 
 \section{The add attribute to \code{rgroup}}{

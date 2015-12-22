@@ -19,6 +19,17 @@
 #' the "second" spans the last three columns, "a" spans the first two, "b"
 #' the middle column, and "c" the last two columns.
 #'
+#' @section The \code{rgroup} arguement:
+#'
+#'  The rgroup allows you to smoothly group rows. Each row within a group
+#'  receives an indention of two blank spaces and are grouped with their
+#'  corresponing rgroup element. The \code{sum(n.rgroup)} should always
+#'  be equal or less than the matrix rows. If less then it will pad the
+#'  remaining rows with either an empty rgroup, i.e. an "" or if the
+#'  rgroup is one longer than the n.rgroup the last n.rgroup element will
+#'  be calculated through \code{nrow(x) - sum(n.rgroup)} in order to make
+#'  the table generating smoother.
+#'
 #' @section The add attribute to \code{rgroup}:
 #'
 #' You can now have an additional element at the rgroup level by specifying the
@@ -117,12 +128,8 @@
 #' @param align.cgroup The justification of the \code{cgroups}
 #'
 #' @param rgroup A vector of character strings containing headings for row groups.
-#'  \code{n.rgroup} must be present when \code{rgroup} is given. The first
-#'  \code{n.rgroup[1]}rows are sectioned off and \code{rgroup[1]} is used as a bold
-#'  heading for them. The usual row dimnames (which must be present if \code{rgroup} is)
-#'  are indented. The next \code{n.rgroup[2]} rows are treated likewise, etc. If you don't
-#'  want a row to be part of a row group then you just put "" for that row, remember to add
-#'  the corresponding number of rows in n.rgroup.
+#'  \code{n.rgroup} must be present when \code{rgroup} is given. See
+#'   detailed description in section below.
 #' @param n.rgroup An integer vector giving the number of rows in each grouping. If \code{rgroup}
 #'  is not specified, \code{n.rgroup} is just used to divide off blocks of rows by horizontal
 #'  lines. If \code{rgroup} is given but \code{n.rgroup} is omitted, \code{n.rgroup} will
@@ -385,9 +392,21 @@ htmlTable.default <- function(x,
       n.rgroup <- n.rgroup[n.rgroup >= 1]
     }
     # Sanity check for rgroup
-    if (sum(n.rgroup) !=  nrow(x))
-      stop("Your rows don't match in the n.rgroup,",
-           " i.e. ", sum(n.rgroup) , "(n.rgroup) != ", nrow(x), "(rows in x)")
+    if (sum(n.rgroup) >  nrow(x)){
+      stop("Your rows are fewer than suggested by the n.rgroup,",
+           " i.e. ", sum(n.rgroup) , "(n.rgroup) > ", nrow(x), "(rows in x)")
+    }else if (sum(n.rgroup) < nrow(x) &&
+              (length(n.rgroup) == length(rgroup) - 1 ||
+               length(n.rgroup) == length(rgroup))){
+      # Add an empty rgroup if missing
+      if (length(n.rgroup) == length(rgroup))
+        rgroup <- c(rgroup, "")
+      # Calculate the remaining rows and add those
+      n.rgroup <- c(n.rgroup, nrow(x) - sum(n.rgroup))
+    }else if (sum(n.rgroup) != nrow(x)){
+      stop("Your n.rgroup doesn't add up")
+    }
+
 
     # Sanity checks css.rgroup and prepares the style
     if (length(css.rgroup) > 1 &&

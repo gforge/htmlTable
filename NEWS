@@ -4,6 +4,7 @@ Changes for 1.5.1
 -----------------
 * Added better description for how to use the add attribute for rgroups
 * Extended the add attribute for rgroup to accept matrices
+* The n.rgroup/rgroup are automaticaly completed with the last rows if sum(n.rgroup) is less than the total number of rows
 
 Changes for 1.5
 ---------------

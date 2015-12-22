@@ -8,12 +8,8 @@ prAttr4RgroupAdd(rgroup, rgroup_iterator, no_cols)
 }
 \arguments{
 \item{rgroup}{A vector of character strings containing headings for row groups.
-\code{n.rgroup} must be present when \code{rgroup} is given. The first
-\code{n.rgroup[1]}rows are sectioned off and \code{rgroup[1]} is used as a bold
-heading for them. The usual row dimnames (which must be present if \code{rgroup} is)
-are indented. The next \code{n.rgroup[2]} rows are treated likewise, etc. If you don't
-want a row to be part of a row group then you just put "" for that row, remember to add
-the corresponding number of rows in n.rgroup.}
+\code{n.rgroup} must be present when \code{rgroup} is given. See
+ detailed description in section below.}
 
 \item{rgroup_iterator}{The rgroup number of interest}
 
