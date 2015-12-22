@@ -22,9 +22,21 @@
 #' @section The add attribute to \code{rgroup}:
 #'
 #' You can now have an additional element at the rgroup level by specifying the
-#' \code{att(rgroup, 'add')}. The value can either be a vector or a list of the
-#' same length as the rgroup or a list/vector with names corresponding to integers
-#' within the rgroup span.
+#' \code{attr(rgroup, 'add')}. The value can either be a \code{vector}, a \code{list},
+#' or a \code{matrix}. See \code{vignette("general", package = "htmlTable")} for examples.
+#' \itemize{
+#'  \item{A \code{vector} of either equal number of rgroups to the number
+#'   of rgroups that aren't empty, i.e. \code{rgroup[rgroup != ""]}. Or a named vector where
+#'   the name must correspond to either an rgroup or to an rgroup number.}
+#'  \item{A \code{list} that has exactly the same requirements as the vector.
+#'   In addition to the previous we can also have a list with column numbers within
+#'   as names within the list.}
+#'  \item{A \code{matrix} with the dimensiont \code{nrow(x) x ncol(x)} or
+#'   \code{nrow(x) x 1} where the latter is equivalent to a named vector.
+#'   If you have \code{rownames} these will resolve similarly to the names to the
+#'   \code{list}/\code{vector} arguments. The same thing applies to \code{colnames}.
+#'  }
+#' }
 #'
 #' @section Important \pkg{knitr}-note:
 #'
@@ -114,7 +126,9 @@
 #' @param n.rgroup An integer vector giving the number of rows in each grouping. If \code{rgroup}
 #'  is not specified, \code{n.rgroup} is just used to divide off blocks of rows by horizontal
 #'  lines. If \code{rgroup} is given but \code{n.rgroup} is omitted, \code{n.rgroup} will
-#'  default so that each row group contains the same number of rows.
+#'  default so that each row group contains the same number of rows. If you want additional
+#'  rgroup column elements to the cells you can sett the "add" attribute to \code{rgroup} through
+#'  \code{attr(rgroup, "add")}, see below explaining section.
 #' @param cgroup A vector or a matrix of character strings defining major column header. The default
 #'  is to have none. These elements are also known as \emph{column spanners}. If you want a column \emph{not}
 #'  to have a spanner then put that column as "". If you pass cgroup and \code{n.crgroup} as

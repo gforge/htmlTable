@@ -849,40 +849,112 @@ prPrepareCss <- function(x, css, rnames, header, name = deparse(substitute(css))
 #' return NULL.
 #'
 #' @param rgroup_iterator The rgroup number of interest
+#' @param total_columns The total number of columns in the table including the rowlabel
 #' @inheritParams htmlTable
 #' @keywords internal
-prAttr4RgroupAdd <- function (rgroup, rgroup_iterator) {
+prAttr4RgroupAdd <- function (rgroup, rgroup_iterator, total_columns) {
   if (is.null(attr(rgroup, "add")))
     return(NULL)
 
   add_elmnt <- attr(rgroup, "add")
   if (is.null(names(add_elmnt))){
-    if (length(add_elmnt) != sum(rgroup !=  ""))
+    if (is.null(dim(add_elmnt)) &&
+        length(add_elmnt) == sum(rgroup !=  "")){
+      if (!is.list(add_elmnt))
+        add_elmnt <- as.list(add_elmnt)
+      names(add_elmnt) <- (1:length(rgroup))[rgroup !=  ""]
+    }else if(!is.null(dim(add_elmnt)) &&
+             ncol(add_elmnt) %in% c(1, total_columns - 1)){
+
+      # Convert matrix to stricter format
+      tmp <- list()
+      for (i in 1:nrow(add_elmnt)){
+        if (ncol(add_elmnt) == 1){
+          tmp[[i]] <- add_elmnt[i,]
+        }else{
+          tmp2 <- as.list(add_elmnt[i,])
+          names(tmp2) <- 1:(total_columns - 1)
+          tmp[[i]] <- tmp2
+        }
+      }
+      if (nrow(add_elmnt) == sum(rgroup !=  "")){
+        names(tmp) <- 1:nrow(add_elmnt)
+      } else if (!is.null(rownames(add_elmnt))){
+        names(tmp) <- rownames(add_elmnt)
+      } else {
+        stop("You have provided a matrix as the
+             add attribute to rgroups without rows that either
+             match the number of rgroups available '", length(rgroup[rgroup != ""]), "'",
+             " (you provided '", nrow(add_elmnt), "' rows).",
+             " And you also failed to have rownames.")
+      }
+      add_elmnt <- tmp
+
+    }else{
       stop("The length of the rgroup 'add' attribute must either match",
            " (1) the length of the rgroup",
            " (2) or have names corresponding to the mapping integers")
+    }
 
-    names(add_elmnt) <- (1:length(rgroup))[rgroup !=  ""]
   }
 
   if (!is.list(add_elmnt) &&
         !is.vector(add_elmnt))
     stop("The rgroup mus either be a list or a vector")
 
-  add_pos <- as.integer(names(add_elmnt))
-  if (any(is.na(add_pos)))
-    stop("The rgroup 'add' element contains invalid names: ",
-         "'", paste(names(add_elmnt)[is.na(add_pos)], collapse="', '"), "'")
+  add_pos <- ifelse(grepl("^[123456789][0-9]*$",
+                          names(add_elmnt)),
+                    as.integer(names(add_elmnt)),
+                    NA)
+  if (any(is.na(add_pos))){
+    # Look for rgroup names that match to those not
+    # found through the integer match
+    # If found the number is assigned to the add_pos
+    available_rgroups <- rgroup[rgroup != ""]
+    if (!all(is.na(add_pos)))
+      available_rgroups <- available_rgroups[-na.omit(add_pos)]
+    matches <-
+      sapply(available_rgroups,
+             function(row_label){
+               match <- which(row_label == names(add_elmnt)[is.na(add_pos)])
+               if (length(match) > 1)
+                 stop("Invalid add argument name '", row_label, "'",
+                      " it matches several rgroups.",
+                      " Functionality with same rgroup names has not yet been added.",
+                      " Try to use integers instead that match the row number.")
+               if (length(match) == 1)
+                 return(match)
+               return(0)
+             })
+    if (is.vector(matches) &&
+        sum(matches != 0) == sum(is.na(add_pos))){
+      for (i in 1:sum(is.na(add_pos))){
+        row_label <- names(add_elmnt)[i]
+        add_pos <- matches[row_label]
+      }
+    }else{
+      stop("The rgroup 'add' element contains invalid names: ",
+           "'", paste(names(add_elmnt)[is.na(add_pos)], collapse="', '"), "'",
+           " that were neither valid integers or occurred among the rgroup names: ",
+           "'", paste(rgroup[rgroup != ""], collapse="', '"), "'")
+    }
+    names(add_elmnt) <- add_pos
+  }
+
+  if (!is.list(add_elmnt))
+    add_elmnt <- as.list(add_elmnt)
 
   if (any(add_pos < 1))
     stop("The rgroup 'add' attribute cannot have integer names below 1")
 
-  if (any(add_pos > length(rgroup)))
+  if (any(add_pos > length(rgroup[rgroup != ""])))
     stop("The rgroup 'add' attribute cannot have integer names indicating",
-         " positions larger than the length of the rgroup ('", length(rgroup), "').",
+         " positions larger than the length of the rgroup",
+         " ('", length(rgroup[rgroup != ""]), "' after excluding the '' groups).",
          " The problematic position(s):",
-         " '", paste(add_pos[add_pos > length(rgroup)], collapse="', '") ,"'")
+         " '", paste(add_pos[add_pos > length(rgroup[rgroup != ""])], collapse="', '") ,"'")
 
+  # Return the matching iterator
   if (rgroup_iterator %in% names(add_elmnt)){
     return(add_elmnt[[as.character(rgroup_iterator)]])
   }

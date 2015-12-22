@@ -41,7 +41,7 @@ at Libre Office compatibility. Word-compatibility is difficult as
 Word ignores most settings and destroys all layout attempts
 (at least that is how my 2010 version behaves).}
 
-\item{total_columns}{The total number of columns}
+\item{total_columns}{The total number of columns including the rowlabel}
 
 \item{align.cgroup}{The justification of the \code{cgroups}}
 

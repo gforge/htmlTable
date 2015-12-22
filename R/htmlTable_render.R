@@ -2,7 +2,7 @@
 #'
 #' @inheritParams htmlTable
 #' @inheritParams prGetCgroupHeader
-#' @param total_columns The total number of columns
+#' @param total_columns The total number of columns including the rowlabel
 #' @return \code{string} Returns the html string for the \code{<thead>...</thead>} element
 #' @keywords internal
 prGetThead <- function (x,
@@ -27,8 +27,8 @@ prGetThead <- function (x,
   head_str <- "\n\t<thead>"
 
   if (!missing(caption) &
-        compatibility == "LibreOffice" &
-        !pos.caption %in% c("bottom", "below")){
+      compatibility == "LibreOffice" &
+      !pos.caption %in% c("bottom", "below")){
 
     head_str %<>%
       sprintf("%s\n\t<tr><td colspan='%d' style='text-align: left;'>%s</td></tr>",
@@ -74,18 +74,18 @@ prGetThead <- function (x,
     ts <- ifelse(no_cgroup_rows > 0, "", top_row_style)
     if (!missing(rowlabel) && pos.rowlabel == no_cgroup_rows + 1){
       head_str %<>% sprintf("%s\n\t\t<th style='%s'>%s</th>",
-                             .,
-                             prGetStyle(c(`font-weight` = 900,
-                                          `border-bottom` = "1px solid grey"),
-                                        ts,
-                                        attr(css.cell, "rnames")[1],
-                                        align=prGetAlign(align.header, 1)),
-                             rowlabel)
+                            .,
+                            prGetStyle(c(`font-weight` = 900,
+                                         `border-bottom` = "1px solid grey"),
+                                       ts,
+                                       attr(css.cell, "rnames")[1],
+                                       align=prGetAlign(align.header, 1)),
+                            rowlabel)
     }else if(!prSkipRownames(rnames)){
       head_str %<>% sprintf("%s\n\t\t<th style='%s'> </th>",
-                             .,
-                             prGetStyle(c(`border-bottom`="1px solid grey"),
-                                        ts))
+                            .,
+                            prGetStyle(c(`border-bottom`="1px solid grey"),
+                                       ts))
     }
 
     cell_style <- "border-bottom: 1px solid grey;"
@@ -116,7 +116,7 @@ prGetThead <- function (x,
 
 #' Gets the number of rgroup htmlLine
 #'
-#' @param total_columns The total number of columns
+#' @param total_columns The total number of columns including the rowlabel
 #' @param cspan The column span of the current rgroup
 #' @param style The css style corresponding to the rgroup css style that includes
 #'  the color specific for the rgroup, i.e. \code{col.rgroup}.
@@ -141,13 +141,15 @@ prGetRgroupLine <- function(x,
                             padding.tspanner){
   ret_str <- ""
   rgroup_elmnt <- rgroup[rgroup_iterator]
-  add_elmnt <- prAttr4RgroupAdd(rgroup, rgroup_iterator)
+  add_elmnt <- prAttr4RgroupAdd(rgroup = rgroup,
+                                rgroup_iterator = rgroup_iterator,
+                                total_columns = total_columns)
 
   ## this will allow either css.rgroup or col.rgroup to
   ## color the rgroup label rows
   if (is.numeric(cspan) &&
-        cspan < ncol(x) ||
-        !is.null(add_elmnt)){
+      cspan < ncol(x) ||
+      !is.null(add_elmnt)){
 
     filler_cells <- rep("", ncol(x))
 
@@ -162,8 +164,8 @@ prGetRgroupLine <- function(x,
 
         add_pos <- as.integer(names(add_elmnt))
         if (any(is.na(add_pos)) ||
-              any(add_pos < 1) ||
-              any(add_pos > ncol(x)))
+            any(add_pos < 1) ||
+            any(add_pos > ncol(x)))
           stop("You have provided invalid element position for rgroup = '", rgroup_elmnt, "'",
                " the attribute seeems to be a list but the names are invalid",
                " '", paste(names(add_elmnt), collapse="', '"), "'",
@@ -182,13 +184,13 @@ prGetRgroupLine <- function(x,
         }
       }else if(length(add_elmnt) == 1){
         if (is.null(names(add_elmnt)) ||
-              names(add_elmnt) == "last"){
+            names(add_elmnt) == "last"){
           add_pos <- ncol(x)
         }else{
           add_pos <- as.integer(names(add_elmnt))
           if (is.na(add_pos) ||
-                add_pos < 1 ||
-                add_pos > ncol(x))
+              add_pos < 1 ||
+              add_pos > ncol(x))
             stop("You have provided invalid element position for rgroup = '", rgroup_elmnt, "'",
                  " the attribute seeems to be a list but the name is invalid",
                  " '", names(add_elmnt), "'",

@@ -4,7 +4,7 @@
 \alias{prAttr4RgroupAdd}
 \title{Get the add attribute element}
 \usage{
-prAttr4RgroupAdd(rgroup, rgroup_iterator)
+prAttr4RgroupAdd(rgroup, rgroup_iterator, total_columns)
 }
 \arguments{
 \item{rgroup}{A vector of character strings containing headings for row groups.
@@ -16,6 +16,8 @@ want a row to be part of a row group then you just put "" for that row, remember
 the corresponding number of rows in n.rgroup.}
 
 \item{rgroup_iterator}{The rgroup number of interest}
+
+\item{total_columns}{The total number of columns in the table including the rowlabel}
 }
 \description{
 Gets the add element attribute if it exists. If non-existant it will

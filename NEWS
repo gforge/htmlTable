@@ -1,4 +1,9 @@
-NEWS for the Gmisc package
+NEWS for the htmlTable package
+
+Changes for 1.5.1
+-----------------
+* Added better description for how to use the add attribute for rgroups
+* Extended the add attribute for rgroup to accept matrices
 
 Changes for 1.5
 ---------------

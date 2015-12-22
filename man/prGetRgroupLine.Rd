@@ -11,7 +11,7 @@ prGetRgroupLine(x, total_columns, rgroup, rgroup_iterator, cspan, rnames, align,
 \item{x}{The matrix/data.frame with the data. For the \code{print} and \code{knit_print}
 it takes a string of the class \code{htmlTable} as \code{x} argument.}
 
-\item{total_columns}{The total number of columns}
+\item{total_columns}{The total number of columns including the rowlabel}
 
 \item{rgroup}{A vector of character strings containing headings for row groups.
 \code{n.rgroup} must be present when \code{rgroup} is given. The first
