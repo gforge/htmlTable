@@ -7,22 +7,32 @@
 #' @param txt.maxlen The maximum length of a text
 #' @param button Indicator if the cell should be clickable or if a button should appear with a plus/minus
 #' @param minimized.columns Notifies if any particular columns should be collapsed from start
+#' @param js.scripts If you want to add your own JavaScript code you can just add it here.
+#'  All code is merged into one string where each section is wrapped in it's own
+#'  \code{<scrip></script>} element.
 #' @return An htmlTable with a javascript attribute containing the code that is then printed
 #' @export
+#' @example inst/examples/interactiveTable_example.R
 #' @rdname interactiveTable
-interactiveTable <- function(x, ..., txt.maxlen = 20, button = FALSE, minimized.columns){
+interactiveTable <- function(x, ..., txt.maxlen = 20, button = FALSE, minimized.columns, js.scripts = c()){
   UseMethod("interactiveTable")
 }
 
 getButtonDiv <- function(sign = "-"){
-  paste0("<div class='btn'",
-         " style='background-color: #ccc; border: 1px solid #999; float: right; font-size: 0.5em; height: 1.8em;",
-         " margin: 2px; padding: 0.1em; position: relative; text-align: center; top: 0; width: 1.8em;'",
-         ">", sign, "</div>")
+  template <- system.file("inst/html_components/button.html", package = "htmlTable")
+  if (template == "")
+    stop("Could not find the button template file")
+
+  template <- readChar(template, nchar = file.info(template)$size)
+  gsub("%sign%", sign, template)
 }
 
 #' @export
-interactiveTable.default <- function(x, ..., txt.maxlen = 20, button = FALSE, minimized.columns){
+interactiveTable.default <- function(x, ...,
+                                     txt.maxlen = 20,
+                                     button = FALSE,
+                                     minimized.columns,
+                                     js.scripts = c()){
   if ("data.frame" %in% class(x))
     x <- prConvertDfFactors(x)
   if (!missing(minimized.columns)){
@@ -59,82 +69,40 @@ interactiveTable.default <- function(x, ..., txt.maxlen = 20, button = FALSE, mi
   return(interactiveTable(tbl,
                           txt.maxlen = 20,
                           button = button,
-                          minimized.columns = minimized.columns))
+                          minimized.columns = minimized.columns,
+                          js.scripts = js.scripts))
 }
 
 #' @param tbl An htmlTable object can be directly passed into the function
 #' @rdname interactiveTable
-interactiveTable.htmlTable <- function(tbl, txt.maxlen = 20, button = FALSE, minimized.columns){
+interactiveTable.htmlTable <- function(tbl,
+                                       txt.maxlen = 20,
+                                       button = FALSE,
+                                       minimized.columns,
+                                       js.scripts = c()){
   if (!missing(minimized.columns) && all(minimized.columns != FALSE))
     stop("Can't minimize columns after creating the htmlTable. Try calling the function directly with the input data that you used for htmlTable")
 
   class(tbl) <- c("interactiveTable", class(tbl))
   if (button) {
-    attr(tbl, "javascript") <- "
-<script type = \"text/javascript\" language = \"javascript\">
-$(document).ready(function(){
- btn = \"%btn%\"
- $(\".gmisc_table td\").map(function(index, el){
-   if (el.innerHTML.length > %txt.maxlen% && el.getElementsByClassName(\"btn\").length == 0)
-     el.innerHTML += btn;
- })
- $(\".gmisc_table td .btn\").map(function(index, el){
-   el.onclick =  function(e){
-     var hidden = this.parentNode.getElementsByClassName(\"hidden\");
-     if (this.textContent === \"+\"){
-       this.parentNode.childNodes[0].data = hidden[0].textContent;
-       this.textContent = \"-\";
-     }else{
-       $(this.parentNode).append(\"<span class='hidden' style='display: none'>\" + this.parentNode.childNodes[0].data + \"</span>\")
-       this.parentNode.childNodes[0].data = this.parentNode.textContent.substr(0, %txt.maxlen%) + \"... \";
-       this.textContent = \"+\";
-     }
-   }
- })
-})
-</script>" %>% gsub("%txt.maxlen%", txt.maxlen, .) %>%
-      gsub("%btn%", getButtonDiv(), .)
+    template <- system.file("inst/javascript/button.js", package = "htmlTable")
+    if (template == "")
+      stop("Could not find the javascript button template file")
+    template <- readChar(template, nchar = file.info(template)$size)
+
+    attr(tbl, "javascript") <- c(js.scripts,
+                                 template %>%
+                                   gsub("%txt.maxlen%", txt.maxlen, .) %>%
+                                   gsub("%btn%", getButtonDiv(), .))
   }else{
-    attr(tbl, "javascript") <- "
-<script type = \"text/javascript\" language = \"javascript\">
-$(document).ready(function(){
- $(\".gmisc_table td .hidden\").map(function(index, el){
-   el.parentNode.style[\"background-color\"] = \"#DDD\";
-  })
+    template <- system.file("inst/javascript/toggler.js", package = "htmlTable")
+    if (template == "")
+      stop("Could not find the javascript toggler template file")
+    template <- readChar(template, nchar = file.info(template)$size)
 
-  getSelected = function(){
-    var t = '';
-    if(window.getSelection){
-      t = window.getSelection();
-    }else if(document.getSelection){
-      t = document.getSelection();
-    }else if(document.selection){
-      t = document.selection.createRange().text;
-    }
-    return t.toString();
-  }
-
-  $(\".gmisc_table td\").map(function(index, el){
-    var org_clr = this.style[\"background-color\"]
-    this.style.cursor = \"pointer\";
-    el.onmouseup =  function(e){
-      if (getSelected().length > 0)
-        return;
-
-      var hidden = this.getElementsByClassName(\"hidden\");
-      if (hidden.length > 0){
-        this.innerHTML = hidden[0].textContent;
-        this.style[\"background-color\"] = org_clr;
-      }else{
-        $(this).append(\"<span class='hidden' style='display: none'>\" + this.innerHTML + \"</span>\")
-        this.childNodes[0].data = this.childNodes[0].data.substr(0, 20) + \"... \";
-        this.style[\"background-color\"] = \"#DDD\";
-      }
-    }
-  })
-})
-</script>" %>% gsub("%txt.maxlen%", txt.maxlen, .) %>%
-      gsub("%btn%", getButtonDiv(), .)
+    attr(tbl, "javascript") <- c(js.scripts,
+                                 template %>%
+                                   gsub("%txt.maxlen%", txt.maxlen, .))
   }
 
   return(tbl)
@@ -154,11 +122,37 @@ knit_print.interactiveTable<- function(x, ...){
   }
 }
 
+#' Gets a string with all the scripts merged into one script tag
+#'
+#' Each element has it's own script tags in otherwise an error will cause
+#' all the scripts to fail.
+#'
+#' @param x An interactiveTable
+#' @return string
+#' @keywords internal
+prGetScriptString <- function(x){
+  scripts <- attr(x, "javascript")
+  if (is.null(scripts))
+    stop("You have provided an object of class ", class(x), " that does not contain a javascript attribute")
+
+  sapply(scripts,
+         USE.NAMES = FALSE,
+         FUN = function(s){
+           if (s == "")
+             return("")
+
+           paste("<script type = \"text/javascript\" language = \"javascript\">",
+                 s,
+                 "</script>")
+         }) %>%
+    paste(collapse = "\n\n <!-- *** Next script group *** !-->\n")
+}
+
 #' @rdname interactiveTable
 #' @param x The interactive table that is to be printed
 #' @inheritParams htmlTable
 #' @export
-print.interactiveTable <- print.htmlTable<- function(x, useViewer, ...){
+print.interactiveTable <- function(x, useViewer, ...){
   args <- attr(x, "...")
   # Use the latest ... from the print call
   # and override the original htmlTable call ...
@@ -200,7 +194,7 @@ print.interactiveTable <- print.htmlTable<- function(x, useViewer, ...){
                       "<div style=\"margin: 0 auto; display: table; margin-top: 1em;\">",
                       x,
                       "</div>",
-                      attr(x, "javascript"),
+                      prGetScriptString(x),
                       "</body>",
                       "</html>", sep="\n")
     # We only want to use those arguments that are actually in cat
@@ -226,7 +220,7 @@ print.interactiveTable <- print.htmlTable<- function(x, useViewer, ...){
     cat_args <- args
     cat_args <- cat_args[names(cat_args) %in% names(formals(cat))[-1]]
     do.call(cat, c(x, cat_args))
-    cat(attr(x, "javascript"))
+    cat(prGetScriptString(x))
   }
 
   invisible(x)

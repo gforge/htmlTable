@@ -7,9 +7,11 @@
 \alias{print.interactiveTable}
 \title{An interactive table that allows you to limit the size of boxes}
 \usage{
-interactiveTable(x, ..., txt.maxlen = 20, minimized.columns)
+interactiveTable(x, ..., txt.maxlen = 20, button = FALSE, minimized.columns,
+  js.scripts = c())
 
-\method{interactiveTable}{htmlTable}(tbl, txt.maxlen = 20, minimized.columns)
+\method{interactiveTable}{htmlTable}(tbl, txt.maxlen = 20, button = FALSE,
+  minimized.columns, js.scripts = c())
 
 \method{knit_print}{interactiveTable}(x, ...)
 
@@ -22,7 +24,13 @@ interactiveTable(x, ..., txt.maxlen = 20, minimized.columns)
 
 \item{txt.maxlen}{The maximum length of a text}
 
+\item{button}{Indicator if the cell should be clickable or if a button should appear with a plus/minus}
+
 \item{minimized.columns}{Notifies if any particular columns should be collapsed from start}
+
+\item{js.scripts}{If you want to add your own JavaScript code you can just add it here.
+All code is merged into one string where each section is wrapped in it's own
+\code{<scrip></script>} element.}
 
 \item{tbl}{An htmlTable object can be directly passed into the function}
 
@@ -43,5 +51,20 @@ An htmlTable with a javascript attribute containing the code that is then printe
 \description{
 This function wraps the htmlTable and adds JavaScript code for toggling the amount
 of text shown in any particular cell.
+}
+\examples{
+# A simple output
+long_txt <- "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum"
+short_txt <- gsub("(^[^.]+).*", "\\\\1", long_txt)
+
+output <-
+  cbind(rep(short_txt, 2),
+        rep(long_txt, 2))
+
+interactiveTable(output,
+                 minimized.columns = ncol(output),
+                 header = c("Short", "Long"),
+                 rnames = c("First", "Second"),
+                 col.rgroup = c("#FFF", "#EEF"))
 }
 
