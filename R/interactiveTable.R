@@ -19,11 +19,11 @@ interactiveTable <- function(x, ..., txt.maxlen = 20, button = FALSE, minimized.
 }
 
 getButtonDiv <- function(sign = "-"){
-  template <- system.file("inst/html_components/button.html", package = "htmlTable")
+  template <- system.file("html_components/button.html", package = "htmlTable")
   if (template == "")
     stop("Could not find the button template file")
 
-  template <- readChar(template, nchar = file.info(template)$size)
+  template <- readChar(template, nchars = file.info(template)$size)
   gsub("%sign%", sign, template)
 }
 
@@ -50,7 +50,7 @@ interactiveTable.default <- function(x, ...,
     addon_elements <- paste("... ",
                             "<span class='hidden' style='display: none'>%span_inner_text%</span>")
     if (button){
-      addon_elements <- paste(aaddon_elements,
+      addon_elements <- paste(addon_elements,
                               getButtonDiv("+"))
     }
     for (col_no in minimized.columns){
@@ -85,20 +85,20 @@ interactiveTable.htmlTable <- function(tbl,
 
   class(tbl) <- c("interactiveTable", class(tbl))
   if (button) {
-    template <- system.file("inst/javascript/button.js", package = "htmlTable")
+    template <- system.file("javascript/button.js", package = "htmlTable")
     if (template == "")
       stop("Could not find the javascript button template file")
-    template <- readChar(template, nchar = file.info(template)$size)
+    template <- readChar(template, nchars = file.info(template)$size)
 
     attr(tbl, "javascript") <- c(js.scripts,
                                  template %>%
                                    gsub("%txt.maxlen%", txt.maxlen, .) %>%
                                    gsub("%btn%", getButtonDiv(), .))
   }else{
-    template <- system.file("inst/javascript/toggler.js", package = "htmlTable")
+    template <- system.file("javascript/toggler.js", package = "htmlTable")
     if (template == "")
       stop("Could not find the javascript toggler template file")
-    template <- readChar(template, nchar = file.info(template)$size)
+    template <- readChar(template, nchars = file.info(template)$size)
 
     attr(tbl, "javascript") <- c(js.scripts,
                                  template %>%
