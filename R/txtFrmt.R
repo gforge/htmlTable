@@ -37,7 +37,7 @@ txtMergeLines <- function(..., html = 5){
     return("")
   }
   if (length(strings) == 1){
-    strings <- sub("\n", ifelse(html == 5, "<br>\n", "<br />\n"), strings)
+    strings <- gsub("\n", ifelse(html == 5, "<br>\n", "<br />\n"), strings)
     return(strings)
   }
 
@@ -49,7 +49,7 @@ txtMergeLines <- function(..., html = 5){
       ret <- paste0(ret, ifelse(html != FALSE, line, sprintf("\\hbox{\\strut %s}", line)))
     else
       ret <- paste0(ret, ifelse(html != FALSE,
-                                paste(ifelse(html == 5, "<br>", "<br />"),
+                                paste(ifelse(html == 5, "<br>\n", "<br />\n"),
                                       line),
                                 sprintf("\\hbox{\\strut %s}", line)))
     first <- FALSE
