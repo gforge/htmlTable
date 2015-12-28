@@ -82,7 +82,8 @@ cgroup is a heading. For example, specify \code{cgroup=c("Major_1","Major_2")},
 \code{n.cgroup=c(3,3)} if \code{"Major_1"} is to span columns 1-3 and
 \code{"Major_2"} is to span columns 4-6.
 \code{rowlabel} does not count in the column numbers. You can omit \code{n.cgroup}
-if all groups have the same number of columns.}
+if all groups have the same number of columns. If the n.cgroup is one less than
+the number of columns in the matrix/data.frame then it automatically adds those.}
 
 \item{tspanner}{The table spanner is somewhat of a table header that
 you can use when you want to join different tables with the same columns.}
@@ -296,6 +297,9 @@ Currently the following compatibitilies have been tested with MS Word 2013:
 \emph{Keep formatting:} As you copy-paste results into Word you need to keep
 the original formatting. Either right click and choose that paste option or click
 on the icon appearing after a paste.
+
+\emph{Direct word processor opening:} Opening directly in LibreOffice or Word is no longer
+recommended. You get much prettier results using the cut-and-paste option.
 
 Note that when using complex cgroup alignments with multiple levels
 not every browser is able to handle this. For instance the RStudio

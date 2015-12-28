@@ -11,7 +11,7 @@ test_that("Check one argument with multiple new lines",{
                        b
                        c")
   expect_equal(length(gregexpr("<br>", out)[[1]]),
-               1)
+               2)
 })
 
 test_that("Check multiple arguments",{

@@ -162,7 +162,8 @@
 #'  \code{n.cgroup=c(3,3)} if \code{"Major_1"} is to span columns 1-3 and
 #'  \code{"Major_2"} is to span columns 4-6.
 #'  \code{rowlabel} does not count in the column numbers. You can omit \code{n.cgroup}
-#'  if all groups have the same number of columns.
+#'  if all groups have the same number of columns. If the n.cgroup is one less than
+#'  the number of columns in the matrix/data.frame then it automatically adds those.
 #' @param tspanner The table spanner is somewhat of a table header that
 #'  you can use when you want to join different tables with the same columns.
 #' @param n.tspanner An integer vector with the number of rows in the original matrix that

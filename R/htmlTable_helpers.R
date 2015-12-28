@@ -326,10 +326,18 @@ prPrepareCgroup <- function(x, cgroup, n.cgroup, align.cgroup, css.cgroup){
 
       if (ncol(cgroup) != length(n.cgroup)){
         n.cgroup <- n.cgroup[n.cgroup > 0]
-        if (ncol(cgroup) != length(n.cgroup))
-          stop("You have provided invalid n.cgroup,",
-               " it should have the same length as the cgroup (", ncol(cgroup), ")",
+        if (ncol(cgroup) < length(n.cgroup))
+          stop("You have provided too many n.cgroup,",
+               " it should have the same length or one less than the cgroup (", ncol(cgroup), ")",
                " but it has the length of ", length(n.cgroup))
+        if (ncol(cgroup) - 1 < length(n.cgroup))
+          stop("You have provided too few n.cgroup,",
+               " it should have the ate the length or one less than the cgroup (", ncol(cgroup), ")",
+               " but it has the length of ", length(n.cgroup))
+        if (ncol(cgroup) - 1 == length(n.cgroup))
+          n.cgroup <- c(n.cgroup, ncol(x) - sum(n.cgroup))
+
+
       }
       n.cgroup <- matrix(n.cgroup, nrow=1)
     }

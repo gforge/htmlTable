@@ -25,7 +25,8 @@ cgroup is a heading. For example, specify \code{cgroup=c("Major_1","Major_2")},
 \code{n.cgroup=c(3,3)} if \code{"Major_1"} is to span columns 1-3 and
 \code{"Major_2"} is to span columns 4-6.
 \code{rowlabel} does not count in the column numbers. You can omit \code{n.cgroup}
-if all groups have the same number of columns.}
+if all groups have the same number of columns. If the n.cgroup is one less than
+the number of columns in the matrix/data.frame then it automatically adds those.}
 
 \item{caption}{Adds a table caption.}
 

@@ -34,7 +34,7 @@ htmlTable(mx,
           rgroup = c("Lorem", "ipsum", "dolor"),
           n.rgroup = c(2, 3),
           cgroup = c("", "Test"),
-          n.cgroup = c(1,2),
+          n.cgroup = 1,
           align = "llr",
           caption = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.")
 ```
