@@ -39,7 +39,9 @@ option is not yet fully implemented for all details, in the future
 I aim to generate a html-correct table and one that is aimed
 at Libre Office compatibility. Word-compatibility is difficult as
 Word ignores most settings and destroys all layout attempts
-(at least that is how my 2010 version behaves).}
+(at least that is how my 2010 version behaves). You can additinally use the
+\code{options(htmlTableCompat = "html")} if you want a change to apply
+to the entire document.}
 
 \item{total_columns}{The total number of columns including the rowlabel and the
 specer cells}

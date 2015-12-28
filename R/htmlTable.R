@@ -208,7 +208,9 @@
 #'  I aim to generate a html-correct table and one that is aimed
 #'  at Libre Office compatibility. Word-compatibility is difficult as
 #'  Word ignores most settings and destroys all layout attempts
-#'  (at least that is how my 2010 version behaves).
+#'  (at least that is how my 2010 version behaves). You can additinally use the
+#'  \code{options(htmlTableCompat = "html")} if you want a change to apply
+#'  to the entire document.
 #' @return \code{string} Returns a string of class htmlTable
 #'
 #' @example inst/examples/htmlTable_example.R
@@ -282,7 +284,7 @@ htmlTable.default <- function(x,
                               padding.rgroup = "&nbsp;&nbsp;",
                               padding.tspanner = "",
                               ctable = TRUE,
-                              compatibility = "LibreOffice",
+                              compatibility = getOption("htmlTableCompat", "LibreOffice"),
                               cspan.rgroup = "all",
                               ...)
 {
@@ -632,7 +634,8 @@ htmlTable.default <- function(x,
   }
 
   if (!missing(header) ||
-        !missing(cgroup)){
+      !missing(cgroup) ||
+      !missing(caption)){
     thead <- prGetThead(x = x,
                         header = header,
                         cgroup = cgroup,

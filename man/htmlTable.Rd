@@ -21,7 +21,8 @@ htmlTable(x, ...)
   css.table = "margin-top: 1em; margin-bottom: 1em;",
   pos.rowlabel = "bottom", pos.caption = "top", col.rgroup = "none",
   col.columns = "none", padding.rgroup = "&nbsp;&nbsp;",
-  padding.tspanner = "", ctable = TRUE, compatibility = "LibreOffice",
+  padding.tspanner = "", ctable = TRUE,
+  compatibility = getOption("htmlTableCompat", "LibreOffice"),
   cspan.rgroup = "all", ...)
 
 \method{knit_print}{htmlTable}(x, ...)
@@ -166,7 +167,9 @@ option is not yet fully implemented for all details, in the future
 I aim to generate a html-correct table and one that is aimed
 at Libre Office compatibility. Word-compatibility is difficult as
 Word ignores most settings and destroys all layout attempts
-(at least that is how my 2010 version behaves).}
+(at least that is how my 2010 version behaves). You can additinally use the
+\code{options(htmlTableCompat = "html")} if you want a change to apply
+to the entire document.}
 
 \item{cspan.rgroup}{The number of columns that an \code{rgroup} should span. It spans
 by default all columns but you may want to limit this if you have column colors
