@@ -280,8 +280,22 @@ for compatibility reasons. If you set \code{options(table_counter_roman = TRUE)}
 then the table counter will use Roman numumerals instead of Arabic.
 }
 
-\section{Possible issues}{
+\section{Browsers and possible issues}{
 
+
+Currently the following compatibitilies have been tested with MS Word 2013:
+
+\itemize{
+ \item{RStudio v. 0.99.448}{Works perfectly when copy-pasting into Word}
+ \item{Chrome v. 47.0.2526.106 m}{Works perfectly when copy-pasting into Word}
+ \item{Internet Explorer v. 11.20.10586.0}{Works perfectly when copy-pasting into Word}
+ \item{Firefox v. 43.0.3}{Works poorly - looses font-styling, lines and general feel}
+ \item{Edge v. 25.10586.0.0}{Works poorly - looses lines and general feel}
+}
+
+\emph{Keep formatting:} As you copy-paste results into Word you need to keep
+the original formatting. Either right click and choose that paste option or click
+on the icon appearing after a paste.
 
 Note that when using complex cgroup alignments with multiple levels
 not every browser is able to handle this. For instance the RStudio

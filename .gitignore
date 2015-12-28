@@ -11,3 +11,4 @@
 .Rproj.user
 
 tests/visual_tests/*.html
+tests/visual_tests/*.css
