@@ -145,30 +145,6 @@ txtPval <- function(pvalues,
                     lim.sig = 10^-4,
                     html=TRUE, ...){
 
-  API_changes <-
-    c(`sig.limit` = "lim.sig",
-      sig_lim = "lim.sig",
-      `two_dec.limit` = "lim.2dec",
-      `two_dec_lim`= "lim.2dec")
-  dots <- list(...)
-  fenv <- environment()
-  for (i in 1:length(API_changes)){
-    old_name <- names(API_changes)[i]
-    new_name <- API_changes[i]
-    if (old_name %in% names(dots)){
-      if (class(fenv[[new_name]]) == "name"){
-        fenv[[new_name]] <- dots[[old_name]]
-        dots[[old_name]] <- NULL
-        warning("Deprecated: '", old_name, "'",
-                " argument is now '", new_name ,"'",
-                " as of ver. 1.0")
-      }else{
-        stop("You have set both the old parameter name: '", old_name, "'",
-             " and the new parameter name: '", new_name, "'.")
-      }
-    }
-  }
-
   if (is.logical(html))
     html <- ifelse(html, "&lt; ", "< ")
   sapply(pvalues, function(x, lim.2dec, lim.sig, lt_sign){
