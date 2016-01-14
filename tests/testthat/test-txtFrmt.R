@@ -1,4 +1,28 @@
 library('testthat')
+context('txtInt')
+
+test_that("Add zero", {
+  expect_equal(txtInt(5), "5")
+  expect_equal(txtInt(106), "106")
+  expect_equal(txtInt(1006), "1,006")
+  expect_equal(txtInt(c(5, 106, 10006)),
+               c("5", "106", "10,006"))
+  expect_equal(txtInt(1000, language = "se", html = TRUE), "1000")
+  expect_equal(txtInt(10000, language = "se", html = TRUE), "10&nbsp;000")
+  expect_equal(txtInt(10000, language = "se", html = FALSE), "10 000")
+
+  mtrx <- matrix(seq(from = 10,
+                     to = 10000,
+                     length.out = 3*6),
+                 ncol = 3, nrow = 6)
+  mtrx <- round(mtrx)
+  int_mtrx <- txtInt(mtrx)
+  expect_equal(dim(mtrx),
+               dim(int_mtrx))
+  expect_equal(int_mtrx[3,1],
+               txtInt(mtrx[3,1]))
+})
+
 context('txtPval')
 
 test_that("Add zero", {
@@ -7,6 +31,7 @@ test_that("Add zero", {
   expect_equal(txtPval(.06, lim.2dec=10^-2), "0.060")
   expect_equal(txtPval(.06451, lim.2dec=10^-3), "0.065")
   expect_equal(txtPval(.00006451, lim.sig=10^-3), "&lt; 0.001")
+  expect_warning(txtPval("a", lim.sig = 10^-3))
 })
 
 context('txtRound')
