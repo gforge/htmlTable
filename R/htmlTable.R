@@ -19,12 +19,35 @@
 #' the "second" spans the last three columns, "a" spans the first two, "b"
 #' the middle column, and "c" the last two columns.
 #'
+#' @section The \code{rgroup} arguement:
+#'
+#'  The rgroup allows you to smoothly group rows. Each row within a group
+#'  receives an indention of two blank spaces and are grouped with their
+#'  corresponing rgroup element. The \code{sum(n.rgroup)} should always
+#'  be equal or less than the matrix rows. If less then it will pad the
+#'  remaining rows with either an empty rgroup, i.e. an "" or if the
+#'  rgroup is one longer than the n.rgroup the last n.rgroup element will
+#'  be calculated through \code{nrow(x) - sum(n.rgroup)} in order to make
+#'  the table generating smoother.
+#'
 #' @section The add attribute to \code{rgroup}:
 #'
 #' You can now have an additional element at the rgroup level by specifying the
-#' \code{att(rgroup, 'add')}. The value can either be a vector or a list of the
-#' same length as the rgroup or a list/vector with names corresponding to integers
-#' within the rgroup span.
+#' \code{attr(rgroup, 'add')}. The value can either be a \code{vector}, a \code{list},
+#' or a \code{matrix}. See \code{vignette("general", package = "htmlTable")} for examples.
+#' \itemize{
+#'  \item{A \code{vector} of either equal number of rgroups to the number
+#'   of rgroups that aren't empty, i.e. \code{rgroup[rgroup != ""]}. Or a named vector where
+#'   the name must correspond to either an rgroup or to an rgroup number.}
+#'  \item{A \code{list} that has exactly the same requirements as the vector.
+#'   In addition to the previous we can also have a list with column numbers within
+#'   as names within the list.}
+#'  \item{A \code{matrix} with the dimensiont \code{nrow(x) x ncol(x)} or
+#'   \code{nrow(x) x 1} where the latter is equivalent to a named vector.
+#'   If you have \code{rownames} these will resolve similarly to the names to the
+#'   \code{list}/\code{vector} arguments. The same thing applies to \code{colnames}.
+#'  }
+#' }
 #'
 #' @section Important \pkg{knitr}-note:
 #'
@@ -57,7 +80,24 @@
 #' for compatibility reasons. If you set \code{options(table_counter_roman = TRUE)}
 #' then the table counter will use Roman numumerals instead of Arabic.
 #'
-#' @section Possible issues:
+#' @section Browsers and possible issues:
+#'
+#' Currently the following compatibitilies have been tested with MS Word 2013:
+#'
+#' \itemize{
+#'  \item{RStudio v. 0.99.448}{Works perfectly when copy-pasting into Word}
+#'  \item{Chrome v. 47.0.2526.106 m}{Works perfectly when copy-pasting into Word}
+#'  \item{Internet Explorer v. 11.20.10586.0}{Works perfectly when copy-pasting into Word}
+#'  \item{Firefox v. 43.0.3}{Works poorly - looses font-styling, lines and general feel}
+#'  \item{Edge v. 25.10586.0.0}{Works poorly - looses lines and general feel}
+#' }
+#'
+#' \emph{Keep formatting:} As you copy-paste results into Word you need to keep
+#' the original formatting. Either right click and choose that paste option or click
+#' on the icon appearing after a paste.
+#'
+#' \emph{Direct word processor opening:} Opening directly in LibreOffice or Word is no longer
+#' recommended. You get much prettier results using the cut-and-paste option.
 #'
 #' Note that when using complex cgroup alignments with multiple levels
 #' not every browser is able to handle this. For instance the RStudio
@@ -105,16 +145,14 @@
 #' @param align.cgroup The justification of the \code{cgroups}
 #'
 #' @param rgroup A vector of character strings containing headings for row groups.
-#'  \code{n.rgroup} must be present when \code{rgroup} is given. The first
-#'  \code{n.rgroup[1]}rows are sectioned off and \code{rgroup[1]} is used as a bold
-#'  heading for them. The usual row dimnames (which must be present if \code{rgroup} is)
-#'  are indented. The next \code{n.rgroup[2]} rows are treated likewise, etc. If you don't
-#'  want a row to be part of a row group then you just put "" for that row, remember to add
-#'  the corresponding number of rows in n.rgroup.
+#'  \code{n.rgroup} must be present when \code{rgroup} is given. See
+#'   detailed description in section below.
 #' @param n.rgroup An integer vector giving the number of rows in each grouping. If \code{rgroup}
 #'  is not specified, \code{n.rgroup} is just used to divide off blocks of rows by horizontal
 #'  lines. If \code{rgroup} is given but \code{n.rgroup} is omitted, \code{n.rgroup} will
-#'  default so that each row group contains the same number of rows.
+#'  default so that each row group contains the same number of rows. If you want additional
+#'  rgroup column elements to the cells you can sett the "add" attribute to \code{rgroup} through
+#'  \code{attr(rgroup, "add")}, see below explaining section.
 #' @param cgroup A vector or a matrix of character strings defining major column header. The default
 #'  is to have none. These elements are also known as \emph{column spanners}. If you want a column \emph{not}
 #'  to have a spanner then put that column as "". If you pass cgroup and \code{n.crgroup} as
@@ -124,7 +162,8 @@
 #'  \code{n.cgroup=c(3,3)} if \code{"Major_1"} is to span columns 1-3 and
 #'  \code{"Major_2"} is to span columns 4-6.
 #'  \code{rowlabel} does not count in the column numbers. You can omit \code{n.cgroup}
-#'  if all groups have the same number of columns.
+#'  if all groups have the same number of columns. If the n.cgroup is one less than
+#'  the number of columns in the matrix/data.frame then it automatically adds those.
 #' @param tspanner The table spanner is somewhat of a table header that
 #'  you can use when you want to join different tables with the same columns.
 #' @param n.tspanner An integer vector with the number of rows in the original matrix that
@@ -154,6 +193,7 @@
 #'  directly at all instances of that class. \emph{Note:} unfortunately the
 #'  CSS is frequently ignored by word processors. This option
 #'  is mostly inteded for web-presentations.
+#' @param css.table You can specify the the style of the table-element using this parameter
 #' @param css.cgroup The same as \code{css.class} but for cgroup formatting.
 #'
 #' @param pos.rowlabel Where the rowlabel should be positioned. This value can be \code{"top"},
@@ -186,7 +226,9 @@
 #'  I aim to generate a html-correct table and one that is aimed
 #'  at Libre Office compatibility. Word-compatibility is difficult as
 #'  Word ignores most settings and destroys all layout attempts
-#'  (at least that is how my 2010 version behaves).
+#'  (at least that is how my 2010 version behaves). You can additinally use the
+#'  \code{options(htmlTableCompat = "html")} if you want a change to apply
+#'  to the entire document.
 #' @return \code{string} Returns a string of class htmlTable
 #'
 #' @example inst/examples/htmlTable_example.R
@@ -246,6 +288,7 @@ htmlTable.default <- function(x,
                               css.cgroup = "",
 
                               css.class = "gmisc_table",
+                              css.table = "margin-top: 1em; margin-bottom: 1em;",
 
                               # Positions
                               pos.rowlabel = "bottom",
@@ -259,7 +302,7 @@ htmlTable.default <- function(x,
                               padding.rgroup = "&nbsp;&nbsp;",
                               padding.tspanner = "",
                               ctable = TRUE,
-                              compatibility = "LibreOffice",
+                              compatibility = getOption("htmlTableCompat", "LibreOffice"),
                               cspan.rgroup = "all",
                               ...)
 {
@@ -369,9 +412,21 @@ htmlTable.default <- function(x,
       n.rgroup <- n.rgroup[n.rgroup >= 1]
     }
     # Sanity check for rgroup
-    if (sum(n.rgroup) !=  nrow(x))
-      stop("Your rows don't match in the n.rgroup,",
-           " i.e. ", sum(n.rgroup) , "(n.rgroup) != ", nrow(x), "(rows in x)")
+    if (sum(n.rgroup) >  nrow(x)){
+      stop("Your rows are fewer than suggested by the n.rgroup,",
+           " i.e. ", sum(n.rgroup) , "(n.rgroup) > ", nrow(x), "(rows in x)")
+    }else if (sum(n.rgroup) < nrow(x) &&
+              (length(n.rgroup) == length(rgroup) - 1 ||
+               length(n.rgroup) == length(rgroup))){
+      # Add an empty rgroup if missing
+      if (length(n.rgroup) == length(rgroup))
+        rgroup <- c(rgroup, "")
+      # Calculate the remaining rows and add those
+      n.rgroup <- c(n.rgroup, nrow(x) - sum(n.rgroup))
+    }else if (sum(n.rgroup) != nrow(x)){
+      stop("Your n.rgroup doesn't add up")
+    }
+
 
     # Sanity checks css.rgroup and prepares the style
     if (length(css.rgroup) > 1 &&
@@ -559,8 +614,9 @@ htmlTable.default <- function(x,
   ###############################
   # Start building table string #
   ###############################
-  table_str <- sprintf("<table class='%s' style='border-collapse: collapse;' %s>",
+  table_str <- sprintf("<table class='%s' style='border-collapse: collapse; %s' %s>",
                        paste(css.class, collapse=", "),
+                       paste(css.table, collapse = "; "),
                        table_id)
 
   # Theoretically this should be added to the table but the
@@ -596,7 +652,8 @@ htmlTable.default <- function(x,
   }
 
   if (!missing(header) ||
-        !missing(cgroup)){
+      !missing(cgroup) ||
+      !missing(caption)){
     thead <- prGetThead(x = x,
                         header = header,
                         cgroup = cgroup,
@@ -827,6 +884,26 @@ htmlTable.default <- function(x,
   attr(table_str, "...") <- list(...)
 
   return(table_str)
+}
+
+#' Convert all factors to characters to print them as they expected
+#'
+#' @inheritParams htmlTable
+#' @return The data frame with factors as characters
+prConvertDfFactors <- function(x){
+  if (!"data.frame" %in% class(x))
+    return(x)
+
+  i <- sapply(x, is.factor)
+  if(any(i)){
+    x[i] <- lapply(x[i], as.character)
+  }
+  return (x)
+}
+
+#' @export
+htmlTable.data.frame <- function(x, ...) {
+  htmlTable.default(prConvertDfFactors(x),...)
 }
 
 #' @importFrom methods setClass

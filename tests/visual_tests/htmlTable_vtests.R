@@ -111,3 +111,5 @@ htmlTable(mx_3_times,
           tfoot = "&dagger; Some footnote
           &Dagger; Another footnote",
           caption="Caption text")
+
+

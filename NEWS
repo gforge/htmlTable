@@ -1,4 +1,21 @@
-NEWS for the Gmisc package
+NEWS for the htmlTable package
+
+Changes for 1.5.1
+-----------------
+* Added better description for how to use the add attribute for rgroups
+* Extended the add attribute for rgroup to accept matrices
+* The n.rgroup/rgroup are automaticaly completed with the last rows if sum(n.rgroup) is less than the total number of rows
+* Similar applies to n.cgroup/cgroup
+* Fixed the line-merge so that all new lines get an <br>-tag
+
+Changes for 1.5
+---------------
+* Added an interactiveTable for allowing tables with cells that have resizeable content
+* Added css.table for table element css styling
+
+Changes for 1.4
+---------------
+* Handles data.frames with factors - thanks Sergio Oller #4
 
 Changes for 1.3
 ---------------

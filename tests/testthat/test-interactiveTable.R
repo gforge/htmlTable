@@ -1,17 +1,17 @@
 library('testthat')
 library('XML')
-context('htmlTable')
+context('interactiveTable')
 
 # A simple example
 test_that("With empty rownames(mx) it should skip those",
 {
   mx <- matrix(1:6, ncol=3)
-  table_str <- htmlTable(mx)
+  table_str <- interactiveTable(mx)
   expect_false(grepl("</th>", table_str))
   expect_false(grepl("<tr>[^>]+>NA</td>", table_str))
 
   colnames(mx) <- sprintf("Col %s", LETTERS[1:NCOL(mx)])
-  table_str <- htmlTable(mx)
+  table_str <- interactiveTable(mx)
   expect_true(grepl("</th>", table_str))
   expect_false(grepl("<tr>[^>]+>NA</td>", table_str))
 })
@@ -21,7 +21,7 @@ test_that("Empty cell names should be replaced with ''",
 {
   mx <- matrix(1:6, ncol=3)
   mx[1,1] <- NA
-  table_str <- htmlTable(mx)
+  table_str <- interactiveTable(mx)
   expect_false(grepl("<tr>[^>]+>NA</td>", table_str))
 })
 
@@ -29,7 +29,7 @@ test_that("The variable name should not be in the tables first row if no rowname
 {
   mx <- matrix(1:6, ncol=3)
   colnames(mx) <- sprintf("Col %s", LETTERS[1:NCOL(mx)])
-  table_str <- htmlTable(mx)
+  table_str <- interactiveTable(mx)
   expect_false(grepl("<thead>[^<]*<tr>[^>]+>mx</th>", table_str))
 })
 
@@ -37,7 +37,7 @@ test_that("A rowlabel without rownames indicates some kind of error and should t
 {
   mx <- matrix(1:6, ncol=3)
   colnames(mx) <- sprintf("Col %s", LETTERS[1:NCOL(mx)])
-  expect_error(htmlTable(mx, rowlabel="not_mx"))
+  expect_error(interactiveTable(mx, rowlabel="not_mx"))
 })
 
 # Add rownames
@@ -46,7 +46,8 @@ test_that("The rowname should appear",
   mx <- matrix(1:6, ncol=3)
   colnames(mx) <- sprintf("Col %s", LETTERS[1:NCOL(mx)])
   rownames(mx) <- LETTERS[1:NROW(mx)]
-  table_str <- htmlTable(mx)
+  table_str <- interactiveTable(mx)
+  class(table_str) <- "character"
   parsed_table <- readHTMLTable(table_str)[[1]]
   expect_equal(ncol(parsed_table), ncol(mx) + 1)
   expect_match(table_str, "<tr[^>]*>[^>]+>A</td>")
@@ -57,7 +58,8 @@ test_that("Check that basic output are the same as the provided matrix",
 {
   mx <- matrix(1:6, ncol=3)
   colnames(mx) <- sprintf("Col %s", LETTERS[1:NCOL(mx)])
-  table_str <- htmlTable(mx)
+  table_str <- interactiveTable(mx)
+  class(table_str) <- "character"
   parsed_table <- readHTMLTable(table_str)[[1]]
   expect_equal(ncol(parsed_table), ncol(mx), info="Cols did not match")
   expect_equal(nrow(parsed_table), nrow(mx), info="Rows did not match")
@@ -71,7 +73,7 @@ test_that("rnames = FALSE it should skip those",
 {
   mx <- matrix(1:6, ncol=3)
   rownames(mx) <- c("Row A", "Row B")
-  table_str <- htmlTable(mx, rnames = FALSE)
+  table_str <- interactiveTable(mx, rnames = FALSE)
   expect_false(grepl("FALSE", table_str))
   expect_false(grepl("Row A", table_str))
 })
@@ -144,24 +146,24 @@ test_that("Test align functions", {
 
   mx <- matrix(1:6, ncol=3)
   rownames(mx) <- c("Row A", "Row B")
-  table_str <- htmlTable(mx, rname = FALSE)
+  table_str <- interactiveTable(mx, rname = FALSE)
   expect_match(table_str, "text-align: center;[^>]*>1")
   expect_match(table_str, "text-align: center;[^>]*>3")
   expect_match(table_str, "text-align: center;[^>]*>5")
 
-  table_str <- htmlTable(mx)
+  table_str <- interactiveTable(mx)
   expect_match(table_str, "text-align: left;[^>]*>Row A")
   expect_match(table_str, "text-align: center;[^>]*>1")
   expect_match(table_str, "text-align: center;[^>]*>3")
   expect_match(table_str, "text-align: center;[^>]*>5")
 
-  table_str <- htmlTable(mx, align="r")
+  table_str <- interactiveTable(mx, align="r")
   expect_match(table_str, "text-align: left;[^>]*>Ro")
   expect_match(table_str, "text-align: right;[^>]*>1")
   expect_match(table_str, "text-align: right;[^>]*>3")
   expect_match(table_str, "text-align: right;[^>]*>5")
 
-  table_str <- htmlTable(mx, align="|ll|r|r|")
+  table_str <- interactiveTable(mx, align="|ll|r|r|")
   expect_match(table_str, "text-align: left;[^>]*>Ro")
   expect_match(table_str, "text-align: left;[^>]*>1")
   expect_match(table_str, "text-align: right;[^>]*>3")
@@ -296,11 +298,19 @@ test_that("Handling data.frames with factors",{
                                           "Factor_2",
                                           "Factor_3")))
 
-  str <- htmlTable(tmp)
+  str <- interactiveTable(tmp)
   expect_true(grepl("Unique_Factor_1", str))
 
   tmp <- data.frame(a = 1,
                     b = factor(x = 1,
                                labels = c("1.2")))
   expect_true(txtRound(tmp)$b == 1)
+})
+
+
+test_that("Check Javascript string",{
+  js <- prGetScriptString(structure(1:3, javascript= c("a", "B")))
+  expect_gt(length(strsplit(js, "<script")[[1]]),
+            1)
+  expect_error(prGetScriptString(1:3))
 })
