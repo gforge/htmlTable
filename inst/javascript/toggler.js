@@ -17,7 +17,6 @@ $(document).ready(function(){
   };
 
   $(".gmisc_table td").map(function(index, el){
-    if (el.data[0].length < )
     this.style.cursor = "pointer";
     el.onmouseup =  function(e){
       if (getSelected().length > 0)
