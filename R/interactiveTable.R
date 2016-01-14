@@ -24,7 +24,8 @@ getButtonDiv <- function(sign = "-"){
     stop("Could not find the button template file")
 
   template <- readChar(template, nchars = file.info(template)$size)
-  gsub("%sign%", sign, template)
+  gsub("%sign%", sign, template) %>%
+    gsub("[\n\r]", " ", .)
 }
 
 #' @export
