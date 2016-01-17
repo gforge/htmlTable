@@ -11,6 +11,7 @@
 #'  decided by the table_counter variable
 #' @keywords internal
 #' @family hidden helper functions for \code{\link{htmlTable}}
+#' @importFrom utils as.roman
 prTblNo <- function (caption) {
   tc <- getOption("table_counter", FALSE)
   if (tc == FALSE){
@@ -152,6 +153,7 @@ prGetStyle <- function(...){
 #' @return \code{string}
 #' @keywords internal
 #' @family hidden helper functions for \code{\link{htmlTable}}
+#' @importFrom utils tail
 prAddSemicolon2StrEnd <- function(my_str){
   if (!is.null(names(my_str))){
     tmp <- str_trim(my_str)
@@ -675,6 +677,7 @@ prSkipRownames <- function(rnames){
 #' @return \code{character} A vector containing hexadecimal colors
 #' @import magrittr
 #' @keywords internal
+#' @importFrom grDevices col2rgb
 prPrepareColors <- function(clr, n, ng, gtxt){
   clr <- sapply(clr, function(a_clr){
     if(a_clr == "none")
@@ -738,6 +741,8 @@ prPrepareColors <- function(clr, n, ng, gtxt){
 #' @return \code{character} A hexadecimal color
 #' @import magrittr
 #' @keywords internal
+#' @importFrom grDevices colorRampPalette
+#' @importFrom utils head
 prMergeClr<- function(clrs){
   if (length(clrs) == 1)
     return(clrs)

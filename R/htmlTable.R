@@ -1020,6 +1020,7 @@ print.htmlTable<- function(x, useViewer, ...){
 #' tblNoLast()
 #' options(org_opts)
 #' @family table functions
+#' @importFrom utils as.roman
 tblNoLast <- function(roman = getOption("table_counter_roman",
                                         FALSE)){
   last_no <- getOption("table_counter")
@@ -1051,6 +1052,7 @@ tblNoLast <- function(roman = getOption("table_counter_roman",
 #' tblNoNext()
 #' options(org_opts)
 #' @family table functions
+#' @importFrom utils as.roman
 tblNoNext <- function(roman = getOption("table_counter_roman",
                                         FALSE)){
   last_no <- getOption("table_counter")
