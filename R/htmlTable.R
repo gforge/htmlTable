@@ -82,19 +82,19 @@
 #'
 #' @section Browsers and possible issues:
 #'
-#' Currently the following compatibitilies have been tested with MS Word 2013:
+#' \emph{Copy-pasting:} As you copy-paste results into Word you need to keep
+#' the original formatting. Either right click and choose that paste option or click
+#' on the icon appearing after a paste. Currently the following compatibitilies
+#' have been tested with MS Word 2013:
 #'
 #' \itemize{
-#'  \item{RStudio v. 0.99.448}{Works perfectly when copy-pasting into Word}
-#'  \item{Chrome v. 47.0.2526.106 m}{Works perfectly when copy-pasting into Word}
-#'  \item{Internet Explorer v. 11.20.10586.0}{Works perfectly when copy-pasting into Word}
-#'  \item{Firefox v. 43.0.3}{Works poorly - looses font-styling, lines and general feel}
-#'  \item{Edge v. 25.10586.0.0}{Works poorly - looses lines and general feel}
+#'  \item{\bold{RStudio v. 0.99.448} Works perfectly when copy-pasting into Word}
+#'  \item{\bold{Internet Explorer v. 11.20.10586.0} Works perfectly when copy-pasting into Word}
+#'  \item{\bold{Chrome v. 47.0.2526.106} Works perfectly when copy-pasting into Word}
+#'  \item{\bold{Firefox v. 43.0.3} Works poorly - looses font-styling, lines and general feel}
+#'  \item{\bold{Edge v. 25.10586.0.0} Works poorly - looses lines and general feel}
 #' }
 #'
-#' \emph{Keep formatting:} As you copy-paste results into Word you need to keep
-#' the original formatting. Either right click and choose that paste option or click
-#' on the icon appearing after a paste.
 #'
 #' \emph{Direct word processor opening:} Opening directly in LibreOffice or Word is no longer
 #' recommended. You get much prettier results using the cut-and-paste option.
