@@ -37,16 +37,25 @@ interactiveTable.default <- function(x, ...,
   if ("data.frame" %in% class(x))
     x <- prConvertDfFactors(x)
   if (!missing(minimized.columns)){
-    if(is.logical(minimized.columns))
+    if (is.character(minimized.columns)){
+      if (minimized.columns != "last")
+        stop("If you want to provide a character for columns you must",
+             " provide 'last' - '", minimized.columns, "' has not yet",
+             " been implemented.")
+      minimized.columns <- ncol(x)
+    }else if(is.logical(minimized.columns)){
       minimized.columns <- which(minimized.columns)
-    if(!is.numeric(minimized.columns))
+    }else if(!is.numeric(minimized.columns)){
       stop("Expecting the minimized columns to either be numbers or logical parameters")
-    if(max(minimized.columns) > ncol(x))
+    }else if(max(minimized.columns) > ncol(x)){
       stop("You can't minimize columns larger than the number of columns available.",
            "I.e. ", paste(minimized.columns[minimized.columns > ncol(x)], collapse =", "),
            " > ", ncol(x))
-    if(!is.null(dim(minimized.columns)))
+    }
+
+    if(!is.null(dim(minimized.columns))){
       stop("Can only handle column vectors for minimization")
+    }
 
     addon_elements <- paste("... ",
                             "<span class='hidden' style='display: none'>%span_inner_text%</span>")
