@@ -865,6 +865,7 @@ prPrepareCss <- function(x, css, rnames, header, name = deparse(substitute(css))
 #' @param no_cols The \code{ncol(x)} of the core htmlTable x argument
 #' @inheritParams htmlTable
 #' @keywords internal
+#' @importFrom stats na.omit
 prAttr4RgroupAdd <- function (rgroup, rgroup_iterator, no_cols) {
   if (is.null(attr(rgroup, "add")))
     return(NULL)
