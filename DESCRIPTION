@@ -31,5 +31,5 @@ Suggests:
 Roxygen: list(wrap = FALSE)
 Encoding: UTF-8
 NeedsCompilation: no
-VignetteBuilder: rmarkdown
+VignetteBuilder: knitr
 RoxygenNote: 5.0.1
