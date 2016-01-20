@@ -219,3 +219,7 @@ kable(output,
       caption="A test table", 
       align = c("c", "r"))
 
+## ---- results='asis'-----------------------------------------------------
+library(pander)
+pandoc.table(output, emphasize.rows = 1, emphasize.strong.cols = 2)
+
