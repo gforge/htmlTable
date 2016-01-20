@@ -88,11 +88,15 @@
 #' have been tested with MS Word 2013:
 #'
 #' \itemize{
-#'  \item{\bold{RStudio v. 0.99.448} Works perfectly when copy-pasting into Word}
-#'  \item{\bold{Internet Explorer v. 11.20.10586.0} Works perfectly when copy-pasting into Word}
-#'  \item{\bold{Chrome v. 47.0.2526.106} Works perfectly when copy-pasting into Word}
-#'  \item{\bold{Firefox v. 43.0.3} Works poorly - looses font-styling, lines and general feel}
-#'  \item{\bold{Edge v. 25.10586.0.0} Works poorly - looses lines and general feel}
+#'  \item{\bold{Internet Explorer} (v. 11.20.10586.0) Works perfectly when copy-pasting into Word}
+#'  \item{\bold{RStudio} (v. 0.99.448) Works perfectly when copy-pasting into Word.
+#'        \emph{Note:} can have issues with multiline cgroups -
+#'        see \href{http://code.google.com/p/chromium/issues/detail?id=305130}{bug}}
+#'  \item{\bold{Chrome} (v. 47.0.2526.106) Works perfectly when copy-pasting into Word.
+#'        \emph{Note:} can have issues with multiline cgroups -
+#'        see \href{http://code.google.com/p/chromium/issues/detail?id=305130}{bug}}
+#'  \item{\bold{Firefox} (v. 43.0.3) Works poorly - looses font-styling, lines and general feel}
+#'  \item{\bold{Edge} (v. 25.10586.0.0) Works poorly - looses lines and general feel}
 #' }
 #'
 #'
@@ -1016,6 +1020,7 @@ print.htmlTable<- function(x, useViewer, ...){
 #' tblNoLast()
 #' options(org_opts)
 #' @family table functions
+#' @importFrom utils as.roman
 tblNoLast <- function(roman = getOption("table_counter_roman",
                                         FALSE)){
   last_no <- getOption("table_counter")
@@ -1047,6 +1052,7 @@ tblNoLast <- function(roman = getOption("table_counter_roman",
 #' tblNoNext()
 #' options(org_opts)
 #' @family table functions
+#' @importFrom utils as.roman
 tblNoNext <- function(roman = getOption("table_counter_roman",
                                         FALSE)){
   last_no <- getOption("table_counter")

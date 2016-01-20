@@ -1,3 +1,6 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^visual_tests
+^cran-comments.md
+^\.travis\.yml$
+^revdep$
