@@ -781,7 +781,7 @@ htmlTable.default <- function(x,
     }
 
 
-    cell_style <- rs <- paste("background-color:", row_clrs[row_nr], "!important")
+    cell_style <- rs <- paste("background-color:", row_clrs[row_nr])
     if (first_row){
       rs %<>%
         c(top_row_style)
