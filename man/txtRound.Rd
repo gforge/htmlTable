@@ -2,27 +2,38 @@
 % Please edit documentation in R/txtFrmt.R
 \name{txtRound}
 \alias{txtRound}
+\alias{txtRound.data.frame}
+\alias{txtRound.default}
+\alias{txtRound.matrix}
 \title{A convenient rounding function}
 \usage{
-txtRound(x, digits = 0, excl.cols, excl.rows, txt.NA = "", dec = ".")
+txtRound(x, ...)
+
+\method{txtRound}{default}(x, digits = 0, txt.NA = "", dec = ".", ...)
+
+\method{txtRound}{data.frame}(x, ...)
+
+\method{txtRound}{matrix}(x, digits = 0, excl.cols, excl.rows, ...)
 }
 \arguments{
 \item{x}{The value/vector/data.frame/matrix to be rounded}
 
+\item{...}{Passed to next method}
+
 \item{digits}{The number of digits to round each element to.
 If you provide a vector each element for corresponding columns.}
-
-\item{excl.cols}{Rows to exclude from the rounding procedure.
-This can be either a number or regular expression.}
-
-\item{excl.rows}{Columns to exclude from the rounding procedure.
-This can be either a number or regular expression. Skipped if x is a vector.}
 
 \item{txt.NA}{The string to exchange NA with}
 
 \item{dec}{The decimal marker. If the text is in non-english decimal
 and string formatted you need to change this to the apropriate decimal
 indicator.}
+
+\item{excl.cols}{Rows to exclude from the rounding procedure.
+This can be either a number or regular expression.}
+
+\item{excl.rows}{Columns to exclude from the rounding procedure.
+This can be either a number or regular expression. Skipped if x is a vector.}
 }
 \value{
 \code{matrix/data.frame}

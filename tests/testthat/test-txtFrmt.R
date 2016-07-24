@@ -99,6 +99,33 @@ test_that("Character matrices",{
 
 })
 
+test_that("Supplying a data.frame",{
+  test_df <- matrix(c(1, 1.11, 1.25,
+                      2.50, 2.55, 2.45,
+                      3.2313, 3, pi),
+                    ncol = 3, byrow=TRUE) %>%
+    as.data.frame()
+  test_df$text = LETTERS[1:nrow(test_df)]
+
+  expect_equal(dim(txtRound(test_df, 1)),
+               dim(test_df))
+  expect_equivalent(as.matrix(txtRound(test_df, 1)[,1:3]),
+                    t(apply(test_df[,1:3], 1, function(x) sprintf("%.1f", x))))
+
+  expect_equal(txtRound(test_df, 1)$text,
+               test_df$text)
+})
+
+test_that("Supplying a vector for the digits",{
+  w <- matrix((1:8)/7, ncol=4)
+  w_out <- txtRound(w, digits=1:4)
+  txtRound
+  for (digits in 1:4)
+    expect_equivalent(w_out[,digits],
+                      sprintf(paste0("%.", digits, "f"), w[,digits]),
+                      paste("Expected the number of digits to be", digits))
+})
+
 test_that("Numbers that round to 0 should not have -, i.e. no -0.0",{
   expect_equal(txtRound(matrix(-.01), digits = 1),
                matrix("0.0"))

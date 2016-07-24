@@ -193,7 +193,7 @@
 #'  rowname style. Correspondingly if the size is \code{nrow(x) + 1} it is assummed that the
 #'  first row is the header row.
 #' @param css.class The html CSS class for the table. This allows directing html
-#'  formatting through \href{http://www.w3schools.com/css/css_selectors.asp}{CSS}
+#'  formatting through \href{http://www.w3schools.com/Css/}{CSS}
 #'  directly at all instances of that class. \emph{Note:} unfortunately the
 #'  CSS is frequently ignored by word processors. This option
 #'  is mostly inteded for web-presentations.

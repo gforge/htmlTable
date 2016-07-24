@@ -132,7 +132,7 @@ first row is the header row.}
 \item{css.cgroup}{The same as \code{css.class} but for cgroup formatting.}
 
 \item{css.class}{The html CSS class for the table. This allows directing html
-formatting through \href{http://www.w3schools.com/css/css_selectors.asp}{CSS}
+formatting through \href{http://www.w3schools.com/Css/}{CSS}
 directly at all instances of that class. \emph{Note:} unfortunately the
 CSS is frequently ignored by word processors. This option
 is mostly inteded for web-presentations.}

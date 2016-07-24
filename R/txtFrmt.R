@@ -139,6 +139,7 @@ txtInt <- function(x, language = "en", html = TRUE, ...){
 #' @examples
 #' txtPval(c(0.10234,0.010234, 0.0010234, 0.000010234))
 #' @family text formatters
+#' @rdname txtPval
 #' @export
 txtPval <- function(pvalues,
                     lim.2dec = 10^-2,
@@ -185,6 +186,7 @@ txtPval <- function(pvalues,
 #' @param dec The decimal marker. If the text is in non-english decimal
 #'  and string formatted you need to change this to the apropriate decimal
 #'  indicator.
+#' @param ... Passed to next method
 #' @return \code{matrix/data.frame}
 #'
 #' @examples
@@ -194,54 +196,64 @@ txtPval <- function(pvalues,
 #'              ncol = 3, byrow=TRUE)
 #' txtRound(mx, 1)
 #' @export
+#' @rdname txtRound
 #' @family text formatters
-txtRound <- function(x, digits = 0, excl.cols, excl.rows, txt.NA = "", dec = "."){
-  round_fn <- function(elmnt){
-    dec_str <- sprintf("^[^0-9\\%s-]*([\\-]{0,1}(([0-9]*|[0-9]+[ 0-9]+)[\\%s]|)[0-9]+)(|[^0-9]+.*)$",
-                       dec, dec)
-    if (is.na(elmnt))
-      return(txt.NA)
-    if (!is.numeric(elmnt) &&
-          !grepl(dec_str, elmnt))
-      return(elmnt)
-    if (is.character(elmnt) &&
-          grepl(dec_str, elmnt)){
-      if (dec != ".")
-        elmnt <- gsub(dec, ".", elmnt)
+txtRound <- function(x, ...){
+  UseMethod("txtRound")
+}
 
-      # Select the first occurring number
-      # remove any spaces indicating thousands
-      # and convert to numeric
-      elmnt <-
-        sub(dec_str, "\\1", elmnt) %>%
-        gsub(" ", "", .) %>%
-        as.numeric
-    }
+#' @export
+#' @rdname txtRound
+txtRound.default = function(x, digits = 0, txt.NA = "", dec = ".", ...){
+  if(length(digits) > length(x)) stop("You have ", length(digits), " but only a vector of length ", length(x), ": ", paste(x, collape=", "))
 
-    if (round(elmnt, digits) == 0)
-      elmnt <- 0
-    sprintf(paste0("%.", digits, "f"),
-            elmnt)
+  dec_str <- sprintf("^[^0-9\\%s-]*([\\-]{0,1}(([0-9]*|[0-9]+[ 0-9]+)[\\%s]|)[0-9]+)(|[^0-9]+.*)$",
+                     dec, dec)
+  if (is.na(x))
+    return(txt.NA)
+  if (!is.numeric(x) &&
+      !grepl(dec_str, x))
+    return(x)
+  if (is.character(x) &&
+      grepl(dec_str, x)){
+    if (dec != ".")
+      x <- gsub(dec, ".", x)
+
+    # Select the first occurring number
+    # remove any spaces indicating thousands
+    # and convert to numeric
+    x <-
+      sub(dec_str, "\\1", x) %>%
+      gsub(" ", "", .) %>%
+      as.numeric
   }
 
-  if (is.null(dim(x))){
-    ret <- sapply(x, round_fn, USE.NAMES = FALSE)
-    if (!missing(excl.rows)){
-      if (is.character(excl.cols)){
-        excl.cols <- grep(excl.cols, names(x))
-      }
+  mapply(function(v, d){
+    if (round(v, d) == 0)
+      v <- 0
+    sprintf(paste0("%.", d, "f"), v)
+  }, x, digits)
+}
 
-      ret <- ret[!excl.rows]
-    }
-    return (ret)
-  }else if(length(dim(x)) > 2){
+#' @export
+#' @rdname txtRound
+txtRound.data.frame <- function(x, ...){
+  i <- sapply(x, is.factor)
+  if (any(i)){
+    x[i] <- lapply(x[i], as.character)
+  }
+
+  x <- as.matrix(x)
+  x <- txtRound.matrix(x, ...)
+
+  return (as.data.frame(x, stringsAsFactors = FALSE))
+}
+
+#' @rdname txtRound
+#' @export
+txtRound.matrix <- function(x, digits = 0, excl.cols, excl.rows, ...){
+  if(length(dim(x)) > 2)
     stop("The function only accepts vectors/matrices/data.frames as primary argument")
-  }else if(is.data.frame(x)){
-    i <- sapply(x, is.factor)
-    if (any(i)){
-      x[i] <- lapply(x[i], as.character)
-    }
-  }
 
   rows <- 1L:nrow(x)
   if (!missing(excl.rows)){
@@ -269,11 +281,14 @@ txtRound <- function(x, digits = 0, excl.cols, excl.rows, txt.NA = "", dec = "."
   if (length(rows) == 0)
     stop("No rows to round")
 
+  if(length(digits) > length(cols)) stop("You have ", length(digits), " but only ", length(cols), " to apply them to: ", paste(cols, collape=", "))
+
   ret_x <- x
-  for (col in cols){
-    ret_x[rows, col] <-
-      sapply(x[rows, col], round_fn,
-      USE.NAMES = FALSE)
+  for (row in rows){
+    ret_x[row, cols] <-
+      mapply(txtRound, x[row, cols], digits,
+             ...,
+             USE.NAMES = FALSE)
   }
 
   return(ret_x)

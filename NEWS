@@ -1,5 +1,10 @@
 NEWS for the htmlTable package
 
+Changes for 1.6
+-----------------
+* The txtRound now properly handles vector digits argument
+* The txtRound is now a S3-function and handles data.frame objects in a cleaner way
+
 Changes for 1.5
 -----------------
 * Added better description for how to use the add attribute for rgroups
