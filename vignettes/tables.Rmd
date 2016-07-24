@@ -355,6 +355,17 @@ The advantage with the `kable` function is that it outputs true markdown tables 
 * No control over borders
 * ...
 
+The `pander::pandoc.table` function
+-----------------------------------
+
+Another option is to use the pander function that can help with text-formatting inside a markdown-compatible table (Thanks Gergely Daróczi for the tip). Here's a simple example:
+
+```{r, results='asis'}
+library(pander)
+pandoc.table(output, emphasize.rows = 1, emphasize.strong.cols = 2)
+```
+
+
 More *raw* markdown tables
 --------------------------
 

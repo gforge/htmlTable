@@ -26,7 +26,8 @@ Suggests:
     ztable,
     Hmisc,
     reshape,
-    rmarkdown
+    rmarkdown,
+    pander
 Roxygen: list(wrap = FALSE)
 Encoding: UTF-8
 NeedsCompilation: no
