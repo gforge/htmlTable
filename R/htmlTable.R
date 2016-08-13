@@ -310,42 +310,6 @@ htmlTable.default <- function(x,
                               cspan.rgroup = "all",
                               ...)
 {
-  # Warnings due to interface changes in 1.0
-  API_changes <-
-    c(rowname = "rnames",
-      headings = "header",
-      halign = "align.header",
-      cgroup.just = "align.cgroup",
-      rgroupCSSstyle = "css.rgroup",
-      rgroupCSSseparator = "css.rgroup.sep",
-      tspannerCSSstyle = "css.tspanner",
-      tspannerCSSseparator = "css.tspanner.sep",
-      rgroup.padding = "padding.rgroup",
-      rowlabel.pos =  "pos.rowlabel",
-      caption.loc  = "pos.caption",
-      altcol = "col.rgroup",
-      tableCSSclass = "css.class")
-  dots <- list(...)
-  fenv <- environment()
-  for (i in 1:length(API_changes)){
-    old_name <- names(API_changes)[i]
-    new_name <- API_changes[i]
-    if (old_name %in% names(dots)){
-      if (class(fenv[[new_name]]) == "name"){
-        fenv[[new_name]] <- dots[[old_name]]
-        dots[[old_name]] <- NULL
-        warning("Deprecated: '", old_name, "'",
-                " argument is now '", new_name ,"'",
-                " as of ver. 1.0")
-      }else{
-        stop("You have set both the old parameter name: '", old_name, "'",
-             " and the new parameter name: '", new_name, "'.",
-             " Note that parameters may have a default value and you may have only",
-             " set the old paramter while the function automatically attaches a value to the new parameter")
-      }
-    }
-  }
-
   if (is.null(dim(x))){
     x <- matrix(x, ncol = ifelse(missing(header),
                                  length(x),
@@ -354,6 +318,11 @@ htmlTable.default <- function(x,
     stop("Your table variable seems to have the wrong dimension,",
          " length(dim(x)) = ", length(dim(x)) , " != 2")
 
+  if (missing(rgroup) &&
+      !missing(n.rgroup)){
+    # Add "" rgroups corresponding to the n.rgroups
+    rgroup = rep("", length.out=length(n.rgroup))
+  }
 
   ## this will convert color names to hexadecimal (easier for user)
   ## but also leaves hex format unchanged
@@ -733,6 +702,7 @@ htmlTable.default <- function(x,
     # and it's:
     # - first row
     # - the row belongs to the next row group
+    rgroup_sep_style <- FALSE
     if (!missing(rgroup) &&
       (row_nr == 1 ||
         row_nr > sum(n.rgroup[1:rgroup_iterator]))){
@@ -753,7 +723,7 @@ htmlTable.default <- function(x,
 
       # Only add if there is anything in the group
       if (is.na(rgroup[rgroup_iterator]) == FALSE &&
-            rgroup[rgroup_iterator] != ""){
+          rgroup[rgroup_iterator] != ""){
 
         if (first_row){
           rs <- c(rs,
@@ -777,6 +747,9 @@ htmlTable.default <- function(x,
           paste(rgroup_str)
 
         first_row <- FALSE
+      }else if(rgroup_iterator > 1 && css.rgroup.sep[rgroup_iterator-1] != ""){
+        # Add the separator if the rgroup wasn't added so that it's included in the regular cells
+        rgroup_sep_style = css.rgroup.sep[rgroup_iterator-1]
       }
     }
 
@@ -787,6 +760,8 @@ htmlTable.default <- function(x,
         c(top_row_style)
       cell_style %<>%
         c(top_row_style)
+    }else if(rgroup_sep_style != FALSE){
+      rs %<>% c(rgroup_sep_style)
     }
     first_row <- FALSE
 
