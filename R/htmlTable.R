@@ -596,9 +596,14 @@ htmlTable.default <- function(x,
   # import to word processors works then less well and therefore I've
   # constructed this work-around with borders for the top and bottom cells
   first_row <- TRUE;
-  if (ctable){
+  if (isTRUE(ctable)){
     top_row_style = "border-top: 2px solid grey;"
     bottom_row_style = "border-bottom: 2px solid grey;"
+  } else if (any(ctable %in% c('single', 'double'))) {
+    ctable <- rep_len(ctable, 2L)
+    ctable[ctable %in% 'single'] <- 'solid'
+    top_row_style = ifelse(ctable[1] ==  'solid', "border-top: 2px solid grey;", "border-top: 4px double grey;")
+    bottom_row_style = ifelse(ctable[2] ==  'solid', "border-bottom: 2px solid grey;", "border-bottom: 4px double grey;")
   } else {
     top_row_style = "border-top: 4px double grey;"
     bottom_row_style = "border-bottom: 1px solid grey;"

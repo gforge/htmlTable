@@ -1,5 +1,9 @@
 NEWS for the htmlTable package
 
+Changes for 1.6.2
+-----------------
+* Added table border flexibility via the ctable argument (Thanks raredd)
+
 Changes for 1.6.1
 -----------------
 * Added option of having row-group separators for no-named row groups (Thanks, prof. Harrell)
