@@ -311,6 +311,9 @@ htmlTable.default <- function(x,
                               ...)
 {
   if (is.null(dim(x))){
+    if (!is.numeric(x) && !is.character(x)){
+      x <- as.character(x)
+    }
     x <- matrix(x, ncol = ifelse(missing(header),
                                  length(x),
                                  length(header)))
@@ -878,10 +881,12 @@ prConvertDfFactors <- function(x){
   if (!"data.frame" %in% class(x))
     return(x)
 
-  i <- sapply(x, is.factor)
+  i <- sapply(x, function(x)
+    (!is.numeric(x) && !is.character(x)))
   if(any(i)){
     x[i] <- lapply(x[i], as.character)
   }
+
   return (x)
 }
 
