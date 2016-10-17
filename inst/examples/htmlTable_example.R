@@ -39,5 +39,25 @@ htmlTable(output, align="r",
           col.rgroup = c("none", "#F7F7F7"),
           css.cell = "padding-left: .5em; padding-right: .2em;")
 
+# An advanced empty table
+output <- matrix(ncol = 6,
+                 nrow = 0)
+
+htmlTable(output, align="r",
+          header =  paste(c("1st", "2nd",
+                            "3rd", "4th",
+                            "5th", "6th"),
+                          "hdr"),
+          cgroup = rbind(c("", "Column spanners", NA),
+                         c("", "Cgroup 1", "Cgroup 2&dagger;")),
+          n.cgroup = rbind(c(1,2,NA),
+                           c(2,2,2)),
+          caption="Basic empty table with column spanners (groups) and ignored row colors",
+          tfoot="&dagger; A table footer commment",
+          cspan.rgroup = 2,
+          col.columns = c(rep("none", 2),
+                          rep("#F5FBFF", 4)),
+          col.rgroup = c("none", "#F7F7F7"),
+          css.cell = "padding-left: .5em; padding-right: .2em;")
 # See vignette("tables", package = "htmlTable")
 # for more examples

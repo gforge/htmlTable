@@ -29,11 +29,11 @@ If you provide a vector each element for corresponding columns.}
 and string formatted you need to change this to the apropriate decimal
 indicator.}
 
-\item{excl.cols}{Columns to exclude from the rounding procedure.
-This can be either a number or regular expression. Skipped if x is a vector.}
-
-\item{excl.rows}{Rows to exclude from the rounding procedure.
+\item{excl.cols}{Rows to exclude from the rounding procedure.
 This can be either a number or regular expression.}
+
+\item{excl.rows}{Columns to exclude from the rounding procedure.
+This can be either a number or regular expression. Skipped if x is a vector.}
 }
 \value{
 \code{matrix/data.frame}
