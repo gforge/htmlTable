@@ -304,3 +304,44 @@ test_that("Handling data.frames with factors",{
                                labels = c("1.2")))
   expect_true(txtRound(tmp)$b == 1)
 })
+
+test_that("An empty dataframe returns an empty table with a warning", {
+  empty_dataframe <- data.frame(a = numeric(),
+                      b = factor(levels = c("level one",
+                                            "level two")))
+  expect_warning({
+    htmlTable(empty_dataframe)
+
+    htmlTable(empty_dataframe,
+              cgroup = "Spanner",
+              n.cgroup = 2)
+
+    htmlTable(empty_dataframe,
+              cgroup = "Spanner",
+              n.cgroup = 2,
+              caption = "Caption",
+              tfoot = "Footnote")
+
+    htmlTable(empty_dataframe,
+              col.rgroup = c("white",
+                             "gray"))
+
+    htmlTable(empty_dataframe,
+              rnames = TRUE,
+              rowlabel = "Row number",
+              cgroup = "Spanner",
+              n.cgroup = 2,
+              col.rgroup = c("white",
+                             "gray"))
+
+    htmlTable(empty_dataframe,
+              rnames = TRUE,
+              rowlabel = "Row number",
+              cgroup = "Spanner",
+              n.cgroup = 2,
+              col.rgroup = c("white",
+                             "gray"),
+              caption = "This is a caption",
+              tfoot = "This is a footnote")
+  })
+})

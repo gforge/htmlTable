@@ -80,6 +80,10 @@
 #' for compatibility reasons. If you set \code{options(table_counter_roman = TRUE)}
 #' then the table counter will use Roman numumerals instead of Arabic.
 #'
+#'@section Empty dataframes:
+#' An empty dataframe will result in a warning and output an empty table, provided that
+#' rgroup and n.rgroup are not specified. All other row layout options will be ignored.
+#'
 #' @section Browsers and possible issues:
 #'
 #' \emph{Copy-pasting:} As you copy-paste results into Word you need to keep
@@ -669,6 +673,7 @@ htmlTable.default <- function(x,
 
   rgroup_iterator <- 0
   tspanner_iterator <- 0
+  if(nrow(x) > 0){
   for (row_nr in 1:nrow(x)){
     rname_style = attr(css.cell, "rnames")[row_nr + !prSkipRownames(rnames)]
 
@@ -827,7 +832,7 @@ htmlTable.default <- function(x,
     table_str %<>%
       paste0(cell_str, "\n\t</tr>")
   }
-
+}
   # Close body
   table_str %<>%
     paste0("\n\t</tbody>")
@@ -892,6 +897,10 @@ prConvertDfFactors <- function(x){
 
 #' @export
 htmlTable.data.frame <- function(x, ...) {
+  # deal gracefully with an empty dataframe - issue a warning.
+  if(nrow(x) == 0){
+    warning(paste(deparse(substitute(x)), "is an empty object"))
+  }
   htmlTable.default(prConvertDfFactors(x),...)
 }
 

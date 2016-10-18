@@ -178,10 +178,10 @@ txtPval <- function(pvalues,
 #' @param x The value/vector/data.frame/matrix to be rounded
 #' @param digits The number of digits to round each element to.
 #'  If you provide a vector each element for corresponding columns.
-#' @param excl.cols Rows to exclude from the rounding procedure.
-#'  This can be either a number or regular expression.
-#' @param excl.rows Columns to exclude from the rounding procedure.
+#' @param excl.cols Columns to exclude from the rounding procedure.
 #'  This can be either a number or regular expression. Skipped if x is a vector.
+#' @param excl.rows Rows to exclude from the rounding procedure.
+#'  This can be either a number or regular expression.
 #' @param txt.NA The string to exchange NA with
 #' @param dec The decimal marker. If the text is in non-english decimal
 #'  and string formatted you need to change this to the apropriate decimal
