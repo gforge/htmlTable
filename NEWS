@@ -1,5 +1,9 @@
 NEWS for the htmlTable package
 
+Changes for 1.6.3
+-----------------
+* Added ability to print matrix & data.frame without any rows, i.e. empty (thanks lemna)
+
 Changes for 1.6.2
 -----------------
 * Added table border flexibility via the ctable argument (Thanks raredd)

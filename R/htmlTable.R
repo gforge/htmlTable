@@ -904,6 +904,15 @@ htmlTable.data.frame <- function(x, ...) {
   htmlTable.default(prConvertDfFactors(x),...)
 }
 
+#' @export
+htmlTable.matrix <- function(x, ...) {
+  # deal gracefully with an empty dataframe - issue a warning.
+  if(nrow(x) == 0){
+    warning(paste(deparse(substitute(x)), "is an empty object"))
+  }
+  htmlTable.default(x,...)
+}
+
 #' @importFrom methods setClass
 setClass("htmlTable", contains = "character")
 

@@ -305,43 +305,80 @@ test_that("Handling data.frames with factors",{
   expect_true(txtRound(tmp)$b == 1)
 })
 
+context('htmlTable - empty table')
+
+test_that("has header elements", {
+  empty_dataframe <- data.frame(a = numeric(),
+                                b = factor(levels = c("level one",
+                                                      "level two")))
+  expect_warning({
+    table_str <-
+      htmlTable(empty_dataframe)
+  })
+
+  expect_match(table_str, "<thead>[^<]*<tr>[^>]+>[^<]+</th>[^>]+>a</th>[^>]+>b</th>[^<]+</tr>")
+  expect_match(table_str, "<tbody>[^<]+</tbody>")
+
+  expect_warning({
+    table_str <- htmlTable(empty_dataframe,
+                           rnames = TRUE,
+                           rowlabel = "Row number",
+                           cgroup = "Spanner",
+                           n.cgroup = 2,
+                           col.rgroup = c("white",
+                                          "gray"),
+                           caption = "This is a caption",
+                           tfoot = "This is a footnote")
+  })
+
+  expect_match(table_str, "[^<]*<tr>[^>]+>[^<]+</th>[^>]+>a</th>[^>]+>b</th>[^<]+</tr>")
+  expect_match(table_str, "<tbody>[^<]+</tbody>")
+  expect_match(table_str, "<tfoot><tr><td[^>]+>\\s*This is a footnote</td></tr>", perl=TRUE)
+  expect_match(table_str, "<tr><td[^>]+>\\s*This is a caption</td></tr>", perl=TRUE)
+})
+
 test_that("An empty dataframe returns an empty table with a warning", {
   empty_dataframe <- data.frame(a = numeric(),
                       b = factor(levels = c("level one",
                                             "level two")))
-  expect_warning({
-    htmlTable(empty_dataframe)
+  expect_warning(htmlTable(empty_dataframe), regexp = "empty_dataframe")
 
-    htmlTable(empty_dataframe,
-              cgroup = "Spanner",
-              n.cgroup = 2)
+  empty_matrix <- empty_dataframe %>%
+    as.matrix()
+  expect_warning(htmlTable(empty_matrix), regexp = "empty_matrix")
 
-    htmlTable(empty_dataframe,
-              cgroup = "Spanner",
-              n.cgroup = 2,
-              caption = "Caption",
-              tfoot = "Footnote")
+  expect_warning(htmlTable(empty_dataframe))
 
-    htmlTable(empty_dataframe,
-              col.rgroup = c("white",
-                             "gray"))
+  expect_warning(htmlTable(empty_dataframe,
+                           cgroup = "Spanner",
+                           n.cgroup = 2))
 
-    htmlTable(empty_dataframe,
-              rnames = TRUE,
-              rowlabel = "Row number",
-              cgroup = "Spanner",
-              n.cgroup = 2,
-              col.rgroup = c("white",
-                             "gray"))
+  expect_warning(htmlTable(empty_dataframe,
+                           cgroup = "Spanner",
+                           n.cgroup = 2,
+                           caption = "Caption",
+                           tfoot = "Footnote"))
 
-    htmlTable(empty_dataframe,
-              rnames = TRUE,
-              rowlabel = "Row number",
-              cgroup = "Spanner",
-              n.cgroup = 2,
-              col.rgroup = c("white",
-                             "gray"),
-              caption = "This is a caption",
-              tfoot = "This is a footnote")
-  })
+  expect_warning(htmlTable(empty_dataframe,
+                           col.rgroup = c("white",
+                                          "gray")))
+
+  expect_warning(htmlTable(empty_dataframe,
+                           rnames = TRUE,
+                           rowlabel = "Row number",
+                           cgroup = "Spanner",
+                           n.cgroup = 2,
+                           col.rgroup = c("white",
+                                          "gray")))
+
+  expect_warning(htmlTable(empty_dataframe,
+                           rnames = TRUE,
+                           rowlabel = "Row number",
+                           cgroup = "Spanner",
+                           n.cgroup = 2,
+                           col.rgroup = c("white",
+                                          "gray"),
+                           caption = "This is a caption",
+                           tfoot = "This is a footnote"))
+
 })

@@ -2,6 +2,7 @@
 
 S3method(htmlTable,data.frame)
 S3method(htmlTable,default)
+S3method(htmlTable,matrix)
 S3method(interactiveTable,default)
 S3method(knit_print,htmlTable)
 S3method(knit_print,interactiveTable)
