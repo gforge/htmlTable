@@ -321,9 +321,10 @@ htmlTable.default <- function(x,
     x <- matrix(x, ncol = ifelse(missing(header),
                                  length(x),
                                  length(header)))
-  }else if (length(dim(x)) != 2)
+  }else if (length(dim(x)) != 2) {
     stop("Your table variable seems to have the wrong dimension,",
          " length(dim(x)) = ", length(dim(x)) , " != 2")
+  }
 
   if (missing(rgroup) &&
       !missing(n.rgroup)){
@@ -886,8 +887,18 @@ prConvertDfFactors <- function(x){
   if (!"data.frame" %in% class(x))
     return(x)
 
-  i <- sapply(x, function(x)
-    (!is.numeric(x) && !is.character(x)))
+  i <- sapply(x, function(col)
+    (
+      (
+        !is.numeric(col) &&
+          !is.character(col)
+      ) ||
+      (
+        inherits(col, "times") # For handlin Chron input
+      )
+    )
+  )
+
   if(any(i)){
     x[i] <- lapply(x[i], as.character)
   }
