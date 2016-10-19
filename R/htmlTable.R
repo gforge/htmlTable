@@ -539,6 +539,8 @@ htmlTable.default <- function(x,
     table_id <- sprintf(" id='%s'", label)
   }else if(is.numeric(table_id)){
     table_id <- paste0(" id='table_", table_id, "'")
+  }else if(table_id == FALSE){
+    table_id <- ""
   }
 
   # A column counter that is used for <td colspan="">

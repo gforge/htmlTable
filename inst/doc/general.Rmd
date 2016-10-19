@@ -36,7 +36,7 @@ Table caption
 The table caption is simply the table description and can be either located above or below:
 
 ```{r}
-htmlTable(output, 
+htmlTable(output,  ctable=c("solid", "double"),
           caption="A table caption above")
 ```
 

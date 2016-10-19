@@ -8,7 +8,7 @@ output <- matrix(1:4,
 htmlTable(output)
 
 ## ------------------------------------------------------------------------
-htmlTable(output, 
+htmlTable(output,  ctable=c("solid", "double"),
           caption="A table caption above")
 
 ## ------------------------------------------------------------------------

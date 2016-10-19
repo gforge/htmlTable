@@ -12,7 +12,7 @@
 
 <meta name="author" content="Max Gordon" />
 
-<meta name="date" content="2016-07-24" />
+<meta name="date" content="2016-10-19" />
 
 <title>The htmlTable package</title>
 
@@ -70,7 +70,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">The htmlTable package</h1>
 <h4 class="author"><em>Max Gordon</em></h4>
-<h4 class="date"><em>2016-07-24</em></h4>
+<h4 class="date"><em>2016-10-19</em></h4>
 
 
 <div id="TOC">
@@ -144,7 +144,7 @@ Row 2
 <div id="table-caption" class="section level2">
 <h2>Table caption</h2>
 <p>The table caption is simply the table description and can be either located above or below:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">htmlTable</span>(output, 
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">htmlTable</span>(output,  <span class="dt">ctable=</span><span class="kw">c</span>(<span class="st">&quot;solid&quot;</span>, <span class="st">&quot;double&quot;</span>),
           <span class="dt">caption=</span><span class="st">&quot;A table caption above&quot;</span>)</code></pre></div>
 <table class="gmisc_table" style="border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;">
 <thead>
@@ -177,13 +177,13 @@ Row 1
 </td>
 </tr>
 <tr>
-<td style="border-bottom: 2px solid grey; text-align: left;">
+<td style="border-bottom: 4px double grey; text-align: left;">
 Row 2
 </td>
-<td style="border-bottom: 2px solid grey; text-align: center;">
+<td style="border-bottom: 4px double grey; text-align: center;">
 2
 </td>
-<td style="border-bottom: 2px solid grey; text-align: center;">
+<td style="border-bottom: 4px double grey; text-align: center;">
 4
 </td>
 </tr>
@@ -2848,7 +2848,7 @@ Table 2: Another table with numbering
 <p>The footer usually contains specifics regarding variables and is always located at the foot of the table:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">htmlTable</span>(mx[<span class="dv">1</span>:<span class="dv">2</span>,<span class="dv">1</span>:<span class="dv">2</span>], 
           <span class="dt">tfoot=</span><span class="st">&quot;A table footer&quot;</span>)</code></pre></div>
-<table class="gmisc_table" style="border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;" FALSE>
+<table class="gmisc_table" style="border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;">
 <thead>
 <tr>
 <th style="border-bottom: 1px solid grey; border-top: 2px solid grey;">
@@ -2899,7 +2899,7 @@ A table footer
 <p>Zebra coloring is also know as an alternating color pattern or row shading. It is most commonly applied to rows:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">htmlTable</span>(mx, 
           <span class="dt">col.rgroup =</span> <span class="kw">c</span>(<span class="st">&quot;none&quot;</span>, <span class="st">&quot;#F7F7F7&quot;</span>))</code></pre></div>
-<table class="gmisc_table" style="border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;" FALSE>
+<table class="gmisc_table" style="border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;">
 <thead>
 <tr>
 <th style="border-bottom: 1px solid grey; border-top: 2px solid grey;">
@@ -3116,7 +3116,7 @@ A table footer
           <span class="dt">col.rgroup =</span> <span class="kw">c</span>(<span class="st">&quot;none&quot;</span>, <span class="st">&quot;#F7F7F7&quot;</span>),
           <span class="dt">rgroup =</span> <span class="kw">c</span>(<span class="kw">paste</span>(<span class="st">&quot;Group&quot;</span>, LETTERS[<span class="dv">1</span>:<span class="dv">2</span>]), <span class="st">&quot;&quot;</span>),
           <span class="dt">n.rgroup =</span> <span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">2</span>,<span class="kw">nrow</span>(mx) -<span class="st"> </span><span class="dv">4</span>))</code></pre></div>
-<table class="gmisc_table" style="border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;" FALSE>
+<table class="gmisc_table" style="border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;">
 <thead>
 <tr>
 <th style="border-bottom: 1px solid grey; border-top: 2px solid grey;">
@@ -3341,7 +3341,7 @@ Group B
 <p>We can also color the columns:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">htmlTable</span>(mx, 
           <span class="dt">col.columns =</span> <span class="kw">c</span>(<span class="st">&quot;none&quot;</span>, <span class="st">&quot;#F7F7F7&quot;</span>))</code></pre></div>
-<table class="gmisc_table" style="border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;" FALSE>
+<table class="gmisc_table" style="border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;">
 <thead>
 <tr>
 <th style="border-bottom: 1px solid grey; border-top: 2px solid grey;">
@@ -3557,7 +3557,7 @@ Group B
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">htmlTable</span>(mx, 
           <span class="dt">col.rgroup =</span> <span class="kw">c</span>(<span class="st">&quot;none&quot;</span>, <span class="st">&quot;#F9FAF0&quot;</span>),
           <span class="dt">col.columns =</span> <span class="kw">c</span>(<span class="st">&quot;none&quot;</span>, <span class="st">&quot;#F1F0FA&quot;</span>))</code></pre></div>
-<table class="gmisc_table" style="border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;" FALSE>
+<table class="gmisc_table" style="border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;">
 <thead>
 <tr>
 <th style="border-bottom: 1px solid grey; border-top: 2px solid grey;">
@@ -3788,7 +3788,7 @@ Group B
                           <span class="kw">rep</span>(<span class="st">&quot;#F5FBFF&quot;</span>, <span class="dv">4</span>)),
           <span class="dt">col.rgroup =</span> <span class="kw">c</span>(<span class="st">&quot;none&quot;</span>, <span class="st">&quot;#F7F7F7&quot;</span>),
           <span class="dt">css.cell =</span> <span class="st">&quot;padding-left: .5em; padding-right: .2em;&quot;</span>)</code></pre></div>
-<table class="gmisc_table" style="border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;" FALSE>
+<table class="gmisc_table" style="border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;">
 <thead>
 <tr>
 <td colspan="9" style="text-align: left;">
