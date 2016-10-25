@@ -21,7 +21,7 @@ txtRound(x, ...)
 \item{...}{Passed to next method}
 
 \item{digits}{The number of digits to round each element to.
-If you provide a vector each element for corresponding columns.}
+If you provide a vector each element will apply to the corresponding columns.}
 
 \item{txt.NA}{The string to exchange NA with}
 
