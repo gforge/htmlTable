@@ -211,7 +211,7 @@ txtRound.default = function(x, digits = 0, txt.NA = "", dec = ".", ...){
          " digits specifications but a vector of length ",
          length(x),
          ": ",
-         paste(x, collape=", "))
+         paste(x, collapse=", "))
 
   dec_str <- sprintf("^[^0-9\\%s-]*([\\-]{0,1}(([0-9]*|[0-9]+[ 0-9]+)[\\%s]|)[0-9]+)(|[^0-9]+.*)$",
                      dec, dec)
