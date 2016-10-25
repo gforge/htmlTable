@@ -177,7 +177,7 @@ txtPval <- function(pvalues,
 #'
 #' @param x The value/vector/data.frame/matrix to be rounded
 #' @param digits The number of digits to round each element to.
-#'  If you provide a vector each element for corresponding columns.
+#'  If you provide a vector each element will apply to the corresponding columns.
 #' @param excl.cols Columns to exclude from the rounding procedure.
 #'  This can be either a number or regular expression. Skipped if x is a vector.
 #' @param excl.rows Rows to exclude from the rounding procedure.
@@ -205,7 +205,13 @@ txtRound <- function(x, ...){
 #' @export
 #' @rdname txtRound
 txtRound.default = function(x, digits = 0, txt.NA = "", dec = ".", ...){
-  if(length(digits) > length(x)) stop("You have ", length(digits), " but only a vector of length ", length(x), ": ", paste(x, collape=", "))
+  if(length(digits) != 1 & length(digits) != length(x))
+    stop("You have ",
+         length(digits),
+         " digits specifications but a vector of length ",
+         length(x),
+         ": ",
+         paste(x, collape=", "))
 
   dec_str <- sprintf("^[^0-9\\%s-]*([\\-]{0,1}(([0-9]*|[0-9]+[ 0-9]+)[\\%s]|)[0-9]+)(|[^0-9]+.*)$",
                      dec, dec)
@@ -281,7 +287,13 @@ txtRound.matrix <- function(x, digits = 0, excl.cols, excl.rows, ...){
   if (length(rows) == 0)
     stop("No rows to round")
 
-  if(length(digits) > length(cols)) stop("You have ", length(digits), " but only ", length(cols), " to apply them to: ", paste(cols, collape=", "))
+  if(length(digits) != 1 & length(digits) != length(cols))
+    stop("You have ",
+         length(digits),
+         " digits specifications but ",
+         length(cols),
+         " columns to apply them to: ",
+         paste(cols, collapse = ", "))
 
   ret_x <- x
   for (row in rows){
