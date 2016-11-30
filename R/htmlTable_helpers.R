@@ -776,8 +776,6 @@ prMergeClr<- function(clrs){
 prPrepareCss <- function(x, css, rnames, header, name = deparse(substitute(css))){
   css.header <- rep("", times = ncol(x))
   css.rnames <- rep("", times = nrow(x) + !missing(header))
-  if (is.data.frame(css))
-    css <- as.matrix(css)
 
   if (is.matrix(css)){
     if (any(grepl("^[^:]*[a-zA-Z]+[:]*:", css))){
