@@ -19,7 +19,8 @@ Imports:
     knitr (>= 1.6),
     magrittr (>= 1.5),
     methods,
-    checkmate
+    checkmate,
+    htmlwidgets
 Suggests:
     testthat,
     XML,
