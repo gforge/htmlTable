@@ -27,7 +27,9 @@ Suggests:
     Hmisc,
     reshape,
     rmarkdown,
-    pander
+    pander,
+    chron,
+    lubridate
 Roxygen: list(wrap = FALSE)
 Encoding: UTF-8
 NeedsCompilation: no
