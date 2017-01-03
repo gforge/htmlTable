@@ -35,12 +35,13 @@ test_that("should be converted into strings", {
                                                            gmtoff = c(NA_integer_, NA_integer_, NA_integer_)),
                                                       .Names = c("sec", "min", "hour", "mday", "mon", "year", "wday",  "yday", "isdst", "zone", "gmtoff"),
                                                       class = c("POSIXlt", "POSIXt")),
-                            contact_chron = structure(c(17092, 17091, 17090), format = "Y-m-d", origin = structure(c(1, 1, 1970),
-                                                                                                                   .Names = c("month", "day", "year")),
+                            contact_chron = structure(c(17092, 17091, 17090), format = "Y-m-d",
+                                                      origin = structure(c(1, 1, 1970),
+                                                                         .Names = c("month", "day", "year")),
                                                       class = c("dates", "times"))),
                        .Names = c("contact_Date", "contact_posix", "contact_chron"),
                        row.names = c(NA, -3L), class = "data.frame")
 
   table_str <- htmlTable(df_dates, rnames = FALSE)
-  expect_match(table_str, "<tr>[^<]+<td[^>]+>2016-10-16</td>[^<]+<td[^>]+>2016-10-16</td>[^<]+<td[^>]+>16-10-16</td>")
+  expect_match(table_str, "<tr>[^<]+<td[^>]+>2016-10-16</td>[^<]+<td[^>]+>2016-10-16</td>[^<]+<td[^>]+>(20|)16-10-16</td>")
 })
