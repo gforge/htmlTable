@@ -74,6 +74,10 @@ test_that("Numerical matrices",{
 
   expect_equivalent(txtRound(matrix(c(NA, 2.22), ncol=1), 1, txt.NA = "missing")[1,1],
                     "missing")
+
+  expect_error(txtRound(test_mx, digits = c(2, 3, 4, 5)))
+
+  expect_error(txtRound(test_mx, digits = c(2, 3)))
 })
 
 

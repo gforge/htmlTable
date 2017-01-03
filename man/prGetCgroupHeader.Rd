@@ -49,11 +49,7 @@ occur between the columns. This variable contains is of the size \code{ncol(x)-1
 and 0 if there is no cgroup element between.}
 
 \item{css.cell}{The css.cell element allows you to add any possible CSS style to your
-table cells. If you provide a vector the vector it is assummed that the styles should
-be repeated throughout the columns. If you provide a matrix of the same size as your
-\code{x} argument. If have \code{ncol(x) + 1} the first row will correspond to the
-rowname style. Correspondingly if the size is \code{nrow(x) + 1} it is assummed that the
-first row is the header row.}
+table cells. See section below for details.}
 }
 \value{
 \code{string}

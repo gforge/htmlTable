@@ -1,5 +1,11 @@
 NEWS for the htmlTable package
 
+Changes for 1.7.1
+-----------------
+* txtRound now throws an error when provided a too short vector of digits (thanks lemna)
+* css.cell has improved docs and added checkmate to verify format (thanks maverickg)
+* Added concatHtmlTables for merging multiple tables into one string element of class htmlTable
+
 Changes for 1.7
 -----------------
 * Added ability to print matrix & data.frame without any rows, i.e. empty (thanks lemna)

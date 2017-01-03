@@ -123,11 +123,7 @@ rgroup doesn't have a separator).}
 \item{css.total}{The css of the total row}
 
 \item{css.cell}{The css.cell element allows you to add any possible CSS style to your
-table cells. If you provide a vector the vector it is assummed that the styles should
-be repeated throughout the columns. If you provide a matrix of the same size as your
-\code{x} argument. If have \code{ncol(x) + 1} the first row will correspond to the
-rowname style. Correspondingly if the size is \code{nrow(x) + 1} it is assummed that the
-first row is the header row.}
+table cells. See section below for details.}
 
 \item{css.cgroup}{The same as \code{css.class} but for cgroup formatting.}
 
@@ -212,7 +208,7 @@ the "second" spans the last three columns, "a" spans the first two, "b"
 the middle column, and "c" the last two columns.
 }
 
-\section{The \code{rgroup} arguement}{
+\section{The \code{rgroup} argument}{
 
 
  The rgroup allows you to smoothly group rows. Each row within a group
@@ -281,6 +277,23 @@ for compatibility reasons. If you set \code{options(table_counter_roman = TRUE)}
 then the table counter will use Roman numumerals instead of Arabic.
 }
 
+\section{The \code{css.cell} argument}{
+
+
+The \code{css.cell} parameter allows you to add any possible CSS style
+to your table cells.  \code{css.cell} can be either a vector or a matrix.
+
+If  \code{css.cell} is a \emph{vector}, it's assumed that the styles should be repeated
+throughout the columns (that is, each element in css.cell specify the style
+for the whole row of 'x').
+
+In the case of  \code{css.cell} being a \emph{matrix} of the same size of the \code{x} argument,
+each element of \code{x} gets the style from the corresponding element in css.cell.  Additionally,
+the number of rows of \code{css.cell} can be \code{nrow(x) + 1} so the first row of of \code{css.cell}
+specifies the style for the header of \code{x}; also the number of columns of \code{css.cell}
+can be \code{ncol(x) + 1} to include the specification of style for row names of \code{x}.
+}
+
 \section{Empty dataframes}{
 
 An empty dataframe will result in a warning and output an empty table, provided that
@@ -325,12 +338,17 @@ not advized. Most importantly you should try to use
 of html characters \href{http://ascii.cl/htmlcodes.htm}{here}.
 }
 \examples{
+# Store all output into a list in order to
+# output everything at once at the end
+all_tables <- list()
+
 # A simple output
 output <- matrix(1:4,
                  ncol=2,
                  dimnames = list(list("Row 1", "Row 2"),
                                  list("Column 1", "Column 2")))
-htmlTable(output)
+htmlTable(output) ->
+  all_tables[["Basic table"]]
 
 # An advanced output
 output <-
@@ -364,7 +382,8 @@ htmlTable(output, align="r",
           col.columns = c(rep("none", 2),
                           rep("#F5FBFF", 4)),
           col.rgroup = c("none", "#F7F7F7"),
-          css.cell = "padding-left: .5em; padding-right: .2em;")
+          css.cell = "padding-left: .5em; padding-right: .2em;") ->
+  all_tables[["Advanced table"]]
 
 # An advanced empty table
 output <- matrix(ncol = 6,
@@ -385,7 +404,18 @@ htmlTable(output, align="r",
           col.columns = c(rep("none", 2),
                           rep("#F5FBFF", 4)),
           col.rgroup = c("none", "#F7F7F7"),
-          css.cell = "padding-left: .5em; padding-right: .2em;")
+          css.cell = "padding-left: .5em; padding-right: .2em;") ->
+  all_tables[["Empty table"]]
+
+# An example of how to use the css.cell for header styling
+simple_output <- matrix(1:4, ncol=2)
+htmlTable(simple_output,
+          header = LETTERS[1:2],
+          css.cell = rbind(rep("background: lightgrey; font-size: 2em;", times=ncol(simple_output)),
+                           matrix("", ncol=ncol(simple_output), nrow=nrow(simple_output)))) ->
+  all_tables[["Header formatting"]]
+
+concatHtmlTables(all_tables)
 # See vignette("tables", package = "htmlTable")
 # for more examples
 }

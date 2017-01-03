@@ -19,7 +19,7 @@
 #' the "second" spans the last three columns, "a" spans the first two, "b"
 #' the middle column, and "c" the last two columns.
 #'
-#' @section The \code{rgroup} arguement:
+#' @section The \code{rgroup} argument:
 #'
 #'  The rgroup allows you to smoothly group rows. Each row within a group
 #'  receives an indention of two blank spaces and are grouped with their
@@ -79,6 +79,21 @@
 #' instead of \code{\%d} as the software converts all numbers to characters
 #' for compatibility reasons. If you set \code{options(table_counter_roman = TRUE)}
 #' then the table counter will use Roman numumerals instead of Arabic.
+#'
+#'@section The \code{css.cell} argument:
+#'
+#' The \code{css.cell} parameter allows you to add any possible CSS style
+#' to your table cells.  \code{css.cell} can be either a vector or a matrix.
+#'
+#' If  \code{css.cell} is a \emph{vector}, it's assumed that the styles should be repeated
+#' throughout the columns (that is, each element in css.cell specify the style
+#' for the whole row of 'x').
+#'
+#' In the case of  \code{css.cell} being a \emph{matrix} of the same size of the \code{x} argument,
+#' each element of \code{x} gets the style from the corresponding element in css.cell.  Additionally,
+#' the number of rows of \code{css.cell} can be \code{nrow(x) + 1} so the first row of of \code{css.cell}
+#' specifies the style for the header of \code{x}; also the number of columns of \code{css.cell}
+#' can be \code{ncol(x) + 1} to include the specification of style for row names of \code{x}.
 #'
 #'@section Empty dataframes:
 #' An empty dataframe will result in a warning and output an empty table, provided that
@@ -191,11 +206,7 @@
 #' @param css.tspanner.sep The line between different spanners
 #' @param css.total The css of the total row
 #' @param css.cell The css.cell element allows you to add any possible CSS style to your
-#'  table cells. If you provide a vector the vector it is assummed that the styles should
-#'  be repeated throughout the columns. If you provide a matrix of the same size as your
-#'  \code{x} argument. If have \code{ncol(x) + 1} the first row will correspond to the
-#'  rowname style. Correspondingly if the size is \code{nrow(x) + 1} it is assummed that the
-#'  first row is the header row.
+#'  table cells. See section below for details.
 #' @param css.class The html CSS class for the table. This allows directing html
 #'  formatting through \href{http://www.w3schools.com/Css/}{CSS}
 #'  directly at all instances of that class. \emph{Note:} unfortunately the
@@ -255,6 +266,7 @@ htmlTable <- function(x, ...){
 
 #' @importFrom stringr str_trim
 #' @importFrom stringr str_replace
+#' @import checkmate
 #' @import magrittr
 #' @rdname htmlTable
 #' @export
@@ -326,6 +338,7 @@ htmlTable.default <- function(x,
          " length(dim(x)) = ", length(dim(x)) , " != 2")
   }
 
+
   if (missing(rgroup) &&
       !missing(n.rgroup)){
     # Add "" rgroups corresponding to the n.rgroups
@@ -342,16 +355,15 @@ htmlTable.default <- function(x,
   if (missing(rnames)){
     if (any(is.null(rownames(x)) == FALSE))
       rnames <- rownames(x)
-  }
 
-  if (missing(rnames) &&
-        any(is.null(rownames(x))) &&
+    if (any(is.null(rownames(x))) &&
         !missing(rgroup)){
-    warning("You have not specified rnames but you seem to have rgroups.",
-            " If you have the first column as rowname but you want the rgroups",
-            " to result in subhedings with indentation below then, ",
-            " you should change the rnames to the first column and then",
-            " remove it from the table matrix (the x argument object).")
+      warning("You have not specified rnames but you seem to have rgroups.",
+              " If you have the first column as rowname but you want the rgroups",
+              " to result in subhedings with indentation below then, ",
+              " you should change the rnames to the first column and then",
+              " remove it from the table matrix (the x argument object).")
+    }
   }
 
   if (!missing(rowlabel) &&
@@ -591,6 +603,10 @@ htmlTable.default <- function(x,
 
   css.total <- rep(css.total, length.out = length(total))
 
+  assert(
+    check_matrix(css.cell),
+    check_character(css.cell)
+  )
   css.cell <- prPrepareCss(x, css = css.cell,
                            rnames = rnames, header = header)
 
@@ -1090,3 +1106,4 @@ tblNoNext <- function(roman = getOption("table_counter_roman",
 
   return(next_no)
 }
+
