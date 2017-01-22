@@ -23,6 +23,14 @@ test_that("Add zero", {
                txtInt(mtrx[3,1]))
 })
 
+
+test_that("Throw nsmall warning", {
+  expect_warning(txtInt(.5), regexp = "The function can only be served integers")
+  expect_silent(txtInt(.5, nsmall=1))
+  expect_warning(txtInt(c(.5, .5)), regexp = "The function can only be served integers")
+  expect_silent(txtInt(c(.5, .5), nsmall=2))
+})
+
 context('txtPval')
 
 test_that("Add zero", {
@@ -148,3 +156,4 @@ test_that("Character vectors work", {
                       correct_str[i], info = paste("Test case", i))
 
 })
+

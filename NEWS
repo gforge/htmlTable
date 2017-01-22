@@ -1,6 +1,10 @@
 NEWS for the htmlTable package
 
-Changes for 1.7.1
+Changes for 1.8.1
+-----------------
+* txtInt handles nsmall warning when working with non-atomic numbers (issue #23)
+
+Changes for 1.8
 -----------------
 * txtRound now throws an error when provided a too short vector of digits (thanks lemna)
 * css.cell has improved docs and added checkmate to verify format (thanks maverickg)

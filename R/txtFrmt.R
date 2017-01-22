@@ -84,7 +84,7 @@ txtMergeLines <- function(..., html = 5){
 #' @export
 txtInt <- function(x, language = "en", html = TRUE, ...){
   if (length(x) > 1){
-    ret <- sapply(x, txtInt, language=language, html=TRUE)
+    ret <- sapply(x, txtInt, language=language, html=TRUE, ...)
     if (is.matrix(x)){
       ret <- matrix(ret, nrow=nrow(x))
       rownames(ret) <- rownames(x)
