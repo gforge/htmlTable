@@ -95,6 +95,9 @@
 #' specifies the style for the header of \code{x}; also the number of columns of \code{css.cell}
 #' can be \code{ncol(x) + 1} to include the specification of style for row names of \code{x}.
 #'
+#' Note that the \code{text-align} CSS field in the \code{css.cell} argument will be overriden
+#' by the \code{align} argument.
+#'
 #'@section Empty dataframes:
 #' An empty dataframe will result in a warning and output an empty table, provided that
 #' rgroup and n.rgroup are not specified. All other row layout options will be ignored.

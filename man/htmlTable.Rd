@@ -292,6 +292,9 @@ each element of \code{x} gets the style from the corresponding element in css.ce
 the number of rows of \code{css.cell} can be \code{nrow(x) + 1} so the first row of of \code{css.cell}
 specifies the style for the header of \code{x}; also the number of columns of \code{css.cell}
 can be \code{ncol(x) + 1} to include the specification of style for row names of \code{x}.
+
+Note that the \code{text-align} CSS field in the \code{css.cell} argument will be overriden
+by the \code{align} argument.
 }
 
 \section{Empty dataframes}{
