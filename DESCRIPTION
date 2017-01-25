@@ -1,6 +1,6 @@
 Package: htmlTable
-Version: 1.8.0.9000
-Date: 2017-01-03
+Version: 1.9
+Date: 2017-01-25
 Title: Advanced Tables for Markdown/HTML
 Author: Max Gordon <max@gforge.se>
 Maintainer: Max Gordon <max@gforge.se>
@@ -20,8 +20,7 @@ Imports:
     magrittr (>= 1.5),
     methods,
     checkmate,
-    htmlwidgets,
-    htmltools
+    htmlwidgets
 Suggests:
     testthat,
     XML,
