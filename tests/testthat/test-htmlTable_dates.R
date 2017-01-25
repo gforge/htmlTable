@@ -1,7 +1,7 @@
 require(testthat)
-require(lubridate)
-require(htmlTable)
-require(chron)
+require(lubridate, quietly = TRUE, warn.conflicts = FALSE)
+require(htmlTable, quietly = TRUE, warn.conflicts = FALSE)
+require(chron, quietly = TRUE, warn.conflicts = FALSE)
 
 context('dates within htmlTable')
 

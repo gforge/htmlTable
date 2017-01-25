@@ -1,6 +1,6 @@
 library('testthat')
-library('magrittr')
-library('XML')
+library('magrittr', warn.conflicts = FALSE)
+library('XML', warn.conflicts = FALSE)
 context('htmlTable')
 
 # Check that a css.cell passes without errors

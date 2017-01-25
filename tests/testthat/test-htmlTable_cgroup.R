@@ -9,7 +9,7 @@ test_that("Check that dimensions are correct with cgroup usage",{
   table_str <- htmlTable(mx,
                          cgroup=c("a", "b"),
                          n.cgroup=c(1, 2))
-  parsed_table <- readHTMLTable(table_str)[[1]]
+  parsed_table <- readHTMLTable(as.character(table_str))[[1]]
   expect_equal(ncol(parsed_table), ncol(mx) + 1,
                info = "Cols did not match")
   expect_equal(nrow(parsed_table),
@@ -28,7 +28,7 @@ test_that("Check that dimensions are correct with cgroup usage",{
                                       c("a", "b")),
                          n.cgroup=rbind(c(2, NA),
                                         c(1, 2)))
-  parsed_table <- readHTMLTable(table_str)[[1]]
+  parsed_table <- readHTMLTable(as.character(table_str))[[1]]
   expect_equal(ncol(parsed_table), ncol(mx) + 1,
                info="Cols did not match for multilevel cgroup")
 
@@ -38,7 +38,7 @@ test_that("Check that dimensions are correct with cgroup usage",{
                                       c("a", "b")),
                          n.cgroup=rbind(c(2, 1),
                                         c(1, 2)))
-  parsed_table <- readHTMLTable(table_str)[[1]]
+  parsed_table <- readHTMLTable(as.character(table_str))[[1]]
   expect_equal(ncol(parsed_table), ncol(mx) + 2,
                info="Cols did not match for multilevel cgroup")
 
@@ -82,7 +82,7 @@ test_that("Check that dimensions are correct with cgroup usage",{
   expect_match(table_str, "td[^>]*colspan='6'[^>]*>2 rgroup",
                info="The expected number of columns should be 6")
 
-  parsed_table <- readHTMLTable(table_str)[[1]]
+  parsed_table <- readHTMLTable(as.character(table_str))[[1]]
   expect_equal(as.character(parsed_table[1,1]),
                "First tspanner")
   expect_equal(as.character(parsed_table[2,1]),

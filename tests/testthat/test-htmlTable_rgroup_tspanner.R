@@ -47,7 +47,7 @@ test_that("Check that dimensions are correct with rgroup usage",
     suppressWarnings(htmlTable(mx,
                                rgroup=c("test1", "test2"),
                                n.rgroup=c(1,1)))
-  parsed_table <- readHTMLTable(table_str)[[1]]
+  parsed_table <- readHTMLTable(as.character(table_str))[[1]]
   expect_equal(ncol(parsed_table), ncol(mx), info="Cols did not match")
   expect_equal(nrow(parsed_table), nrow(mx) + 2, info="Rows did not match")
   expect_equal(as.character(parsed_table[1,1]),
@@ -76,7 +76,7 @@ test_that("Check that dimensions are correct with rgroup usage",
   expect_match(table_str, "<td[^>]*>second row",
                info="The second row should not have any spacers")
 
-  parsed_table <- readHTMLTable(table_str)[[1]]
+  parsed_table <- readHTMLTable(as.character(table_str))[[1]]
   expect_equal(nrow(parsed_table), nrow(mx) + 1, info="Rows did not match")
 })
 

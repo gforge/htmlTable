@@ -47,7 +47,7 @@ test_that("The rowname should appear",
   colnames(mx) <- sprintf("Col %s", LETTERS[1:NCOL(mx)])
   rownames(mx) <- LETTERS[1:NROW(mx)]
   table_str <- htmlTable(mx)
-  parsed_table <- readHTMLTable(table_str)[[1]]
+  parsed_table <- readHTMLTable(as.character(table_str))[[1]]
   expect_equal(ncol(parsed_table), ncol(mx) + 1)
   expect_match(table_str, "<tr[^>]*>[^>]+>A</td>")
   expect_match(table_str, "<tr[^>]*>[^>]+>B</td>")
@@ -58,7 +58,7 @@ test_that("Check that basic output are the same as the provided matrix",
   mx <- matrix(1:6, ncol=3)
   colnames(mx) <- sprintf("Col %s", LETTERS[1:NCOL(mx)])
   table_str <- htmlTable(mx)
-  parsed_table <- readHTMLTable(table_str)[[1]]
+  parsed_table <- readHTMLTable(as.character(table_str))[[1]]
   expect_equal(ncol(parsed_table), ncol(mx), info="Cols did not match")
   expect_equal(nrow(parsed_table), nrow(mx), info="Rows did not match")
   expect_true(all(mx == parsed_table),
