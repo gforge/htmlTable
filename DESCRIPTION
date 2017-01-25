@@ -20,7 +20,8 @@ Imports:
     magrittr (>= 1.5),
     methods,
     checkmate,
-    htmlwidgets
+    htmlwidgets,
+    htmltools
 Suggests:
     testthat,
     XML,

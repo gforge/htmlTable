@@ -27,7 +27,7 @@ htmlTable(x, ...)
 
 \method{knit_print}{htmlTable}(x, ...)
 
-\method{print}{htmlTable}(x, useViewer, ...)
+\method{print}{htmlTable}(x, ..., view = interactive())
 }
 \arguments{
 \item{x}{The matrix/data.frame with the data. For the \code{print} and \code{knit_print}
@@ -172,14 +172,9 @@ to the entire document.}
 by default all columns but you may want to limit this if you have column colors
 that you want to retain.}
 
-\item{useViewer}{If you are using RStudio there is a viewer thar can render
+\item{view}{If you are using RStudio there is a viewer thar can render
 the table within that is envoced if in \code{\link[base]{interactive}} mode.
-Set this to \code{FALSE} if you want to remove that  functionality. You can
-also force the function to call a specific viewer by setting this to a
-viewer function, e.g. \code{useViewer = utils::browseUrl} if you want to
-override the default RStudio viewer. Another option that does the same is to
-set the \code{options(viewer=utils::browseUrl)} and it will default to that
-particular viewer (this is how RStudio decides on a viewer).
+Set this to \code{FALSE} if you want to remove that  functionality.
 \emph{Note:} If you want to force all output to go through the
 \code{\link[base]{cat}()} the set \code{\link[base]{options}(htmlTable.cat = TRUE)}.}
 }
