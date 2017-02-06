@@ -271,6 +271,7 @@ htmlTable <- function(x, ...){
 #' @importFrom stringr str_replace
 #' @import checkmate
 #' @import magrittr
+#' @import rstudioapi
 #' @rdname htmlTable
 #' @export
 htmlTable.default <- function(x,
@@ -894,10 +895,20 @@ htmlTable.default <- function(x,
   # Fix indentation issue with pandoc v1.13
   table_str %<>% gsub("\t", "", .)
 
-  class(table_str) <- c("html", "htmlTable", class(table_str))
-  attr(table_str, "html") <- TRUE
+  class(table_str) <- c("htmlTable", class(table_str))
   attr(table_str, "...") <- list(...)
-
+  if (rstudioapi::isAvailable()) {
+    contents <- rstudioapi::getActiveDocumentContext()$contents
+    header <- grep("^---$", contents)
+    is_notebook <- ifelse(length(header) == 2,
+                          any(grepl("html_notebook$",
+                                    contents[min(header) : max(header)])),
+                          FALSE)
+    if (is_notebook) {
+      class(table_str) <- c("html", "htmlTable", class(table_str))
+      attr(table_str, "html") <- TRUE
+    }
+  }
   return(table_str)
 }
 

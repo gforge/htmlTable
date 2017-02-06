@@ -340,6 +340,7 @@ not advized. Most importantly you should try to use
 \code{&gt;} instead of \code{>}. You can find a complete list
 of html characters \href{http://ascii.cl/htmlcodes.htm}{here}.
 }
+
 \examples{
 # Store all output into a list in order to
 # output everything at once at the end
@@ -429,4 +430,3 @@ concatHtmlTables(all_tables)
 Other table functions: \code{\link{tblNoLast}},
   \code{\link{tblNoNext}}
 }
-

@@ -20,7 +20,8 @@ Imports:
     magrittr (>= 1.5),
     methods,
     checkmate,
-    htmlwidgets
+    htmlwidgets,
+    rstudioapi (>= 0.6)
 Suggests:
     testthat,
     XML,
@@ -36,4 +37,4 @@ Roxygen: list(wrap = FALSE)
 Encoding: UTF-8
 NeedsCompilation: no
 VignetteBuilder: knitr
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.0
