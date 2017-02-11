@@ -66,6 +66,15 @@
 #' In vignettes and other directly knitted documents you may need to either set
 #' \code{useViewer = FALSE} alternatively set \code{options(htmlTable.cat = TRUE)}.
 #'
+#' @section RStudio's notebook:
+#'
+#' RStudio has an interactive notebook that allows output directly into the document.
+#' In order for the output to be properly formatted it needs to have the \code{class}
+#' of \code{html}. The \code{htmlTable} tries to identify if the environment is a
+#' notebook document (uses the rstudio api and identifies if its a file with and `Rmd`
+#' file ending or if ther is an element with `html_notebook`). If you don't want this
+#' behaviour you can remove it using the `options(htmlTable.skip_notebook = TRUE)`
+#'
 #' @section Table counter:
 #'
 #' If you set the option table_counter you will get a Table 1,2,3
@@ -271,7 +280,6 @@ htmlTable <- function(x, ...){
 #' @importFrom stringr str_replace
 #' @import checkmate
 #' @import magrittr
-#' @importFrom rstudioapi isAvailable getActiveDocumentContext
 #' @rdname htmlTable
 #' @export
 htmlTable.default <- function(x,
@@ -897,19 +905,38 @@ htmlTable.default <- function(x,
 
   class(table_str) <- c("htmlTable", class(table_str))
   attr(table_str, "...") <- list(...)
-  if (rstudioapi::isAvailable()) {
-    contents <- rstudioapi::getActiveDocumentContext()$contents
-    header <- grep("^---$", contents)
-    is_notebook <- ifelse(length(header) == 2,
-                          any(grepl("html_notebook$",
-                                    contents[min(header) : max(header)])),
-                          FALSE)
-    if (is_notebook) {
-      class(table_str) <- c("html", "htmlTable", class(table_str))
-      attr(table_str, "html") <- TRUE
-    }
+
+  # Add html class if this is a table inside a notebook for inline output
+  if (!getOption('htmlTable.skip_notebook', FALSE) && prIsNotebook()) {
+    class(table_str) <- c("html", "htmlTable", class(table_str))
+    attr(table_str, "html") <- TRUE
   }
   return(table_str)
+}
+
+#' Detects if the call is made from within an RStudio Rmd file or a file
+#' with the html_notebook output set.
+#' @importFrom rstudioapi isAvailable getActiveDocumentContext
+#' @keywords internal
+prIsNotebook <- function() {
+  if (!rstudioapi::isAvailable()) {
+    return(FALSE)
+  }
+
+  ctxt <- rstudioapi::getActiveDocumentContext()
+  if (grepl("\\.Rmd$", ctxt$path)) {
+    return(TRUE)
+  }
+
+  # Look for html_notebook within the header if the file hasn't been saved
+  contents <- ctxt$contents
+  header <- grep("^---$", contents)
+  if (length(header) == 2) {
+    return(any(grepl("html_notebook$",
+                     contents[min(header) : max(header)])))
+  }
+
+  return(FALSE)
 }
 
 #' Convert all factors to characters to print them as they expected
