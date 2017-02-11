@@ -230,3 +230,13 @@ test_that("Check rgroup attribute with matrix",{
                          rgroup = rgroup,
                          n.rgroup = c(1, 1)))
 })
+
+test_that("Matrix with rownames and rgroup with 1 element", {
+  a <- matrix(1:4, ncol=2)
+  rownames(a) <- LETTERS[3:4]
+  expect_silent(
+    htmlTable(a,
+              rgroup = LETTERS[1:2],
+              n.rgroup = c(1,1),
+              caption="Site for UVR & Visibility for any mortality indicating melanoma"))
+})

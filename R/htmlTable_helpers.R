@@ -49,6 +49,7 @@ prTblNo <- function (caption) {
 #' @family hidden helper functions for \code{\link{htmlTable}}
 prGetStyle <- function(...){
   mergeNames <- function(sv){
+    sv <- sv[!is.na(sv)]
     if (!is.null(names(sv))){
       sv <-
         mapply(function(n, v){
