@@ -271,7 +271,7 @@ htmlTable <- function(x, ...){
 #' @importFrom stringr str_replace
 #' @import checkmate
 #' @import magrittr
-#' @import rstudioapi
+#' @importFrom rstudioapi isAvailable getActiveDocumentContext
 #' @rdname htmlTable
 #' @export
 htmlTable.default <- function(x,
