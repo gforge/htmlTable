@@ -36,4 +36,3 @@ txtMergeLines("hello", "world", list("A list", "is OK"))
 Other text formatters: \code{\link{txtPval}},
   \code{\link{txtRound}}
 }
-
