@@ -128,6 +128,12 @@ test_that("Supplying a data.frame",{
                test_df$text)
 })
 
+test_that("Supplying a table",{
+  out <- txtRound(table(1:4, 4:1))
+  expect_equal(nrow(out), 4)
+  expect_equal(ncol(out), 4)
+})
+
 test_that("Supplying a vector for the digits",{
   w <- matrix((1:8)/7, ncol=4)
   w_out <- txtRound(w, digits=1:4)

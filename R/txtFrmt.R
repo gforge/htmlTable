@@ -260,6 +260,12 @@ txtRound.data.frame <- function(x, ...){
 
 #' @rdname txtRound
 #' @export
+txtRound.table <- function(x, ...){
+  return(txtRound.matrix(x, ...))
+}
+  
+#' @rdname txtRound
+#' @export
 txtRound.matrix <- function(x, digits = 0, excl.cols, excl.rows, ...){
   if(length(dim(x)) > 2)
     stop("The function only accepts vectors/matrices/data.frames as primary argument")
