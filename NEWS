@@ -1,5 +1,10 @@
 NEWS for the htmlTable package
 
+Changes for 1.9.1
+-----------------
+* fixed output to viewport when not in RStudio notebook (thanks lemna)
+* fixed vector input for txtRound warning
+
 Changes for 1.9
 -----------------
 * txtInt handles nsmall warning when working with non-atomic numbers (issue #23)
