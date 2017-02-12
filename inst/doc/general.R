@@ -3,9 +3,24 @@ library(htmlTable)
 # A simple output
 output <- matrix(1:4,
                  ncol=2,
-                 dimnames = list(list("Row 1", "Row 2"),
-                                 list("Column 1", "Column 2")))
+                 dimnames = list(c("Row 1", "Row 2"),
+                                 c("Column 1", "Column 2")))
 htmlTable(output)
+
+## ------------------------------------------------------------------------
+# A simple output
+output <- matrix(1:4,
+                 ncol=2,
+                 dimnames = list(rows = c("Row 1", "Row 2"),
+                                 cols = c("Column 1", "Column 2")))
+htmlTable(output)
+
+## ------------------------------------------------------------------------
+data("mtcars")
+with(mtcars,
+     table(cyl, gear)) %>% 
+  addmargins %>% 
+  htmlTable()
 
 ## ------------------------------------------------------------------------
 htmlTable(output,  
