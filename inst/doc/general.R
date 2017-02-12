@@ -1,28 +1,33 @@
 ## ------------------------------------------------------------------------
 library(htmlTable)
+library(magrittr)
 # A simple output
-output <- matrix(1:4,
-                 ncol=2,
-                 dimnames = list(c("Row 1", "Row 2"),
-                                 c("Column 1", "Column 2")))
-htmlTable(output)
+matrix(1:4,
+       ncol=2,
+       dimnames = list(c("Row 1", "Row 2"),
+                       c("Column 1", "Column 2"))) %>% 
+  htmlTable
 
 ## ------------------------------------------------------------------------
 # A simple output
-output <- matrix(1:4,
-                 ncol=2,
-                 dimnames = list(rows = c("Row 1", "Row 2"),
-                                 cols = c("Column 1", "Column 2")))
-htmlTable(output)
+matrix(1:4,
+       ncol=2,
+       dimnames = list(rows = c("Row 1", "Row 2"),
+                       cols = c("Column 1", "Column 2"))) %>% 
+  htmlTable
 
 ## ------------------------------------------------------------------------
 data("mtcars")
 with(mtcars,
      table(cyl, gear)) %>% 
   addmargins %>% 
-  htmlTable()
+  htmlTable
 
 ## ------------------------------------------------------------------------
+output <- matrix(1:4,
+       ncol=2,
+       dimnames = list(c("Row 1", "Row 2"),
+                       c("Column 1", "Column 2")))
 htmlTable(output,  
           ctable=c("solid", "double"),
           caption="A table caption above")

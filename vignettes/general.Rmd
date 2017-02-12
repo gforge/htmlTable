@@ -20,23 +20,24 @@ The **htmlTable** package is intended for generating tables using [HTML](http://
 
 ```{r}
 library(htmlTable)
+library(magrittr)
 # A simple output
-output <- matrix(1:4,
-                 ncol=2,
-                 dimnames = list(c("Row 1", "Row 2"),
-                                 c("Column 1", "Column 2")))
-htmlTable(output)
+matrix(1:4,
+       ncol=2,
+       dimnames = list(c("Row 1", "Row 2"),
+                       c("Column 1", "Column 2"))) %>% 
+  htmlTable
 ```
 
 The function is also aware of the dimnames:
 
 ```{r}
 # A simple output
-output <- matrix(1:4,
-                 ncol=2,
-                 dimnames = list(rows = c("Row 1", "Row 2"),
-                                 cols = c("Column 1", "Column 2")))
-htmlTable(output)
+matrix(1:4,
+       ncol=2,
+       dimnames = list(rows = c("Row 1", "Row 2"),
+                       cols = c("Column 1", "Column 2"))) %>% 
+  htmlTable
 ```
 
 This can be convenient when working with the `base::table` function:
@@ -46,7 +47,7 @@ data("mtcars")
 with(mtcars,
      table(cyl, gear)) %>% 
   addmargins %>% 
-  htmlTable()
+  htmlTable
 ```
 
 As of version 1.1 you **no longer need** to specify `results='asis'` for each `knitr` chunk.
@@ -57,6 +58,10 @@ Table caption
 The table caption is simply the table description and can be either located above or below:
 
 ```{r}
+output <- matrix(1:4,
+       ncol=2,
+       dimnames = list(c("Row 1", "Row 2"),
+                       c("Column 1", "Column 2")))
 htmlTable(output,  
           ctable=c("solid", "double"),
           caption="A table caption above")
