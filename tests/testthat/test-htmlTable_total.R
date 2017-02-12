@@ -57,3 +57,18 @@ test_that("Check choosing css.style", {
   expect_match(table_str, "<tr[^>]*>[^>]+color: red[^>]+>3</td>")
   expect_match(table_str, "<tr[^>]*>[^>]+color: green[^>]+>6</td>")
 })
+
+test_that("The total should be added to the output if used with addmargins", {
+  var1 <- LETTERS[1:3]
+  var2 <- LETTERS[c(4:5, 5)]
+  total_out <-
+    table(var1, var2) %>%
+    addmargins %>%
+    htmlTable(css.total = "background: purple")
+
+  expect_match(total_out, "<td[^>]+background: purple[^>]+>[^>]*Sum</td>",
+               info = "Expect the variable name to appear as a cgroup")
+
+  expect_match(total_out, "<th colspan='2'[^>]*>var2",
+               info = "Expect the variable name to appear as a cgroup")
+})

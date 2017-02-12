@@ -500,6 +500,43 @@ htmlTable.default <- function(x,
     }
   }
 
+  # Convert dimnames to something useful
+  if (!is.null(names(dimnames(x)))) {
+    # First dimname is always the variable name for the row
+    dimname4row <- names(dimnames(x))[1]
+    if (!is.null(dimname4row) && dimname4row != "") {
+      # Use rgroup or tspanner as this is visually more separated than rowlabel
+      # if these are available
+      if (missing(rgroup)) {
+        rgroup <- dimname4row
+        n.rgroup <- nrow(x)
+      } else if (missing(tspanner)) {
+        tspanner <- dimname4row
+        n.tspanner <- nrow(x)
+      } else if (missing(rowlabel)) {
+        rowlabel <- dimname4row
+      }
+    }
+
+    # Second dimname is always the variable name for the columns
+    dimname4col <- names(dimnames(x))[2]
+    if (!is.null(dimname4col) && dimname4col != "") {
+      # Use rgroup or tspanner as this is visually more separated than rowlabel
+      # if these are available
+      if (missing(cgroup)) {
+        cgroup <- dimname4col
+        n.cgroup <- ncol(x)
+
+        # If this is a addmargins object we shouldn't have the cspanner including the
+        # sum marker
+        if (!missing(total) && total &&
+            grepl("^sum$", tail(colnames(x), 1), ignore.case = TRUE)) {
+          cgroup %<>% c("")
+          n.cgroup <- c(n.cgroup[1] -1, 1)
+        }
+      }
+    }
+  }
 
   # Sanity check for tspanner
   if (!missing(tspanner)){
@@ -976,12 +1013,19 @@ htmlTable.data.frame <- function(x, ...) {
 }
 
 #' @export
-htmlTable.matrix <- function(x, ...) {
-  # deal gracefully with an empty dataframe - issue a warning.
+htmlTable.matrix <- function(x, total, ...) {
+  # deal gracefully with an empty matrix - issue a warning.
   if(nrow(x) == 0){
     warning(paste(deparse(substitute(x)), "is an empty object"))
   }
-  htmlTable.default(x,...)
+
+  if (all(class(x) == c("table", "matrix")) &&
+      grepl("^sum$", tail(rownames(x), 1), ignore.case = TRUE) &&
+      missing(total)) {
+    total = TRUE
+  }
+
+  htmlTable.default(x, total = total, ...)
 }
 
 #' @importFrom methods setClass

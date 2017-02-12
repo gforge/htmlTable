@@ -93,7 +93,6 @@ test_that("Check that dimensions are correct with cgroup usage",{
                "3 rgroup")
 })
 
-
 test_that("Flexible number of cgroups",{
   mx <- matrix(1:6, ncol=3)
   colnames(mx) <- sprintf("Col %s", LETTERS[1:NCOL(mx)])
@@ -111,4 +110,16 @@ test_that("Flexible number of cgroups",{
                    n.cgroup = 1)
   expect_match(out,
                "colspan='2'[^>]*>__test__<")
+})
+
+
+test_that("Assume last element for n.cgroup",{
+  mx <- matrix(1:6, ncol=3)
+  colnames(mx) <- sprintf("Col %s", LETTERS[1:NCOL(mx)])
+
+  out <- htmlTable(mx,
+                   cgroup = "__test__")
+  expect_match(out,
+               "colspan='3'[^>]*>__test__<")
+
 })
