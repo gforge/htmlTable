@@ -904,8 +904,8 @@ htmlTable.default <- function(x,
                           any(grepl("html_notebook$",
                                     contents[min(header) : max(header)])),
                           FALSE)
-    if (is_notebook) {
-      class(table_str) <- c("html", "htmlTable", class(table_str))
+    if (is_notebook |  isTRUE(.rs.readUiPref("rmd_chunk_output_inline"))) {
+      class(table_str) <- c("html", class(table_str))
       attr(table_str, "html") <- TRUE
     }
   }
