@@ -945,7 +945,7 @@ htmlTable.default <- function(x,
 
   # Add html class if this is a table inside a notebook for inline output
   if (!getOption('htmlTable.skip_notebook', FALSE) && prIsNotebook()) {
-    class(table_str) <- c("html", "htmlTable", class(table_str))
+    class(table_str) <- c("html", class(table_str))
     attr(table_str, "html") <- TRUE
   }
   return(table_str)
