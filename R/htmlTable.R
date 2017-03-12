@@ -698,7 +698,7 @@ htmlTable.default <- function(x,
   tspanner_iterator <- 0
   if(nrow(x) > 0){
   for (row_nr in 1:nrow(x)){
-    rname_style = attr(css.cell, "rnames")[row_nr + !prSkipRownames(rnames)]
+    rname_style = attr(css.cell, "rnames")[row_nr]
 
     # First check if there is a table spanner that should be applied
     if (!missing(tspanner) &&
@@ -838,7 +838,7 @@ htmlTable.default <- function(x,
       table_str %<>%
         sprintf("%s\n\t\t<td style='%s'>%s%s</td>",
                 .,
-                prGetStyle(cell_style,
+                prGetStyle(c(rname_style, cell_style),
                              align=prGetAlign(align, 1)),
                 pdng,
                 rnames[row_nr])
