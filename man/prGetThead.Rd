@@ -87,4 +87,3 @@ defaulting to centered, i.e. \code{\link[base]{paste}(rep('c',ncol(x)),collapse=
 Renders the table head (thead)
 }
 \keyword{internal}
-

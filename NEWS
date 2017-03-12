@@ -1,8 +1,16 @@
 NEWS for the htmlTable package
 
-Changes for 1.9.1
+Changes for 1.10.1
 -----------------
 * Fixed bug with rownames styling (thanks Shira Mitchell)
+
+Changes for 1.10
+-----------------
+* Added conversion of dimnames into row/column labels
+* Added detection of sum row/colum when using base::table
+* fixed cgroup bug with automated n.cgroup calculations
+* fixed output to viewport when not in RStudio notebook (thanks lemna)
+* fixed vector input for txtRound warning
 
 Changes for 1.9
 -----------------

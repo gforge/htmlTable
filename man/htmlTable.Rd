@@ -261,6 +261,17 @@ In vignettes and other directly knitted documents you may need to either set
 \code{useViewer = FALSE} alternatively set \code{options(htmlTable.cat = TRUE)}.
 }
 
+\section{RStudio's notebook}{
+
+
+RStudio has an interactive notebook that allows output directly into the document.
+In order for the output to be properly formatted it needs to have the \code{class}
+of \code{html}. The \code{htmlTable} tries to identify if the environment is a
+notebook document (uses the rstudio api and identifies if its a file with and `Rmd`
+file ending or if ther is an element with `html_notebook`). If you don't want this
+behaviour you can remove it using the `options(htmlTable.skip_notebook = TRUE)`
+}
+
 \section{Table counter}{
 
 

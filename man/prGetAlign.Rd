@@ -20,4 +20,3 @@ pads the string with a left alignment for the rownames.}
 Gets alignment
 }
 \keyword{internal}
-

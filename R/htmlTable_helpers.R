@@ -49,6 +49,7 @@ prTblNo <- function (caption) {
 #' @family hidden helper functions for \code{\link{htmlTable}}
 prGetStyle <- function(...){
   mergeNames <- function(sv){
+    sv <- sv[!is.na(sv)]
     if (!is.null(names(sv))){
       sv <-
         mapply(function(n, v){
@@ -108,9 +109,10 @@ prGetStyle <- function(...){
     stop("Invalid styles detected, one or more styles lack the needed style 'name: value': ",
          paste(paste0("'", styles[!grepl("^[^:]+:.+", styles)], "'"), collapse=", "))
 
-  # Remove empty background colors
-  if (any(grepl("^background-color: none", styles))){
-    styles <- styles[-grep("^background-color: none", styles)]
+  # Remove empty background colors - sometimes a background color appears with
+  #  just background-color:; for some unknown reason
+  if (any(grepl("^background-color:( none|[ ]*;*$)", styles))){
+    styles <- styles[-grep("^background-color:( none|[ ]*;*$)", styles)]
   }
 
   # Merge background colors
@@ -348,28 +350,6 @@ prPrepareCgroup <- function(x, cgroup, n.cgroup, align.cgroup, css.cgroup){
          " at the same time specify the n.cgroup argument.")
   }
 
-  if (missing(align.cgroup)){
-    align.cgroup <- apply(n.cgroup, 1,
-                         function(nc) paste(rep("c", times=sum(!is.na(nc))), collapse=""))
-    align.cgroup <- matrix(align.cgroup,
-                          ncol = 1)
-  }else{
-    if (NROW(align.cgroup) != nrow(n.cgroup))
-      stop("You have different dimensions for your align.cgroup and your cgroups, ",
-           NROW(align.cgroup), " (just) !=", nrow(n.cgroup), " (n.cgroup)")
-
-    # An old leftover behaviour from the latex() function
-    if (NCOL(align.cgroup) > 1)
-      align.cgroup <- apply(align.cgroup, 1, function(x) paste(ifelse(is.na(x), "", x), collapse=""))
-
-    align.cgroup <- mapply(prPrepareAlign,
-                          align = align.cgroup,
-                          x = apply(n.cgroup, 1, function(nc) sum(!is.na(nc))),
-                          rnames=FALSE)
-
-    align.cgroup <- matrix(align.cgroup, ncol=1)
-  }
-
   # Go bottom up as the n.cgroup can be based on the previous
   # n.cgroup row.
   for (i in nrow(cgroup):1){
@@ -454,6 +434,29 @@ prPrepareCgroup <- function(x, cgroup, n.cgroup, align.cgroup, css.cgroup){
       if (!is.na(n.cgroup[i, ii]) && sum(n.cgroup[i, 1:ii], na.rm=TRUE) <= length(cgroup_spacer_cells))
         cgroup_spacer_cells[sum(n.cgroup[i, 1:ii], na.rm=TRUE)] <- 1
     }
+  }
+
+  # Get alignment
+  if (missing(align.cgroup)){
+    align.cgroup <- apply(n.cgroup, 1,
+                          function(nc) paste(rep("c", times=sum(!is.na(nc))), collapse=""))
+    align.cgroup <- matrix(align.cgroup,
+                           ncol = 1)
+  }else{
+    if (NROW(align.cgroup) != nrow(n.cgroup))
+      stop("You have different dimensions for your align.cgroup and your cgroups, ",
+           NROW(align.cgroup), " (just) !=", nrow(n.cgroup), " (n.cgroup)")
+
+    # An old leftover behaviour from the latex() function
+    if (NCOL(align.cgroup) > 1)
+      align.cgroup <- apply(align.cgroup, 1, function(x) paste(ifelse(is.na(x), "", x), collapse=""))
+
+    align.cgroup <- mapply(prPrepareAlign,
+                           align = align.cgroup,
+                           x = apply(n.cgroup, 1, function(nc) sum(!is.na(nc))),
+                           rnames=FALSE)
+
+    align.cgroup <- matrix(align.cgroup, ncol=1)
   }
 
   css.cgroup <- prPrepareCss(x = cgroup, css = css.cgroup)

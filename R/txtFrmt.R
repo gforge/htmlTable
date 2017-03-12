@@ -213,6 +213,10 @@ txtRound.default = function(x, digits = 0, txt.NA = "", dec = ".", ...){
          ": ",
          paste(x, collapse=", "))
 
+  if (length(x) > 1) {
+    return(mapply(txtRound.default, x, digits, txt.NA, dec, ...))
+  }
+
   dec_str <- sprintf("^[^0-9\\%s-]*([\\-]{0,1}(([0-9]*|[0-9]+[ 0-9]+)[\\%s]|)[0-9]+)(|[^0-9]+.*)$",
                      dec, dec)
   if (is.na(x))
@@ -234,11 +238,10 @@ txtRound.default = function(x, digits = 0, txt.NA = "", dec = ".", ...){
       as.numeric
   }
 
-  mapply(function(v, d){
-    if (round(v, d) == 0)
-      v <- 0
-    sprintf(paste0("%.", d, "f"), v)
-  }, x, digits)
+  if (round(x, digits) == 0)
+    x <- 0
+
+  sprintf(paste0("%.", digits, "f"), x)
 }
 
 #' @export
@@ -254,6 +257,64 @@ txtRound.data.frame <- function(x, ...){
 
   return (as.data.frame(x, stringsAsFactors = FALSE))
 }
+
+#' @rdname txtRound
+#' @export
+txtRound.table <- function(x, ...){
+  return(txtRound.matrix(x, ...))
+}
+  
+#' @rdname txtRound
+#' @export
+txtRound.matrix <- function(x, digits = 0, excl.cols, excl.rows, ...){
+  if(length(dim(x)) > 2)
+    stop("The function only accepts vectors/matrices/data.frames as primary argument")
+
+  rows <- 1L:nrow(x)
+  if (!missing(excl.rows)){
+    if (is.character(excl.rows)){
+      excl.rows <- grep(excl.rows, rownames(x))
+    }
+
+    if (length(excl.rows) > 0)
+      rows <- rows[-excl.rows]
+  }
+
+  cols <- 1L:ncol(x)
+  if (!missing(excl.cols)){
+    if (is.character(excl.cols)){
+      excl.cols <- grep(excl.cols, colnames(x))
+    }
+
+    if (length(excl.cols) > 0)
+      cols <- cols[-excl.cols]
+  }
+
+  if (length(cols) == 0)
+    stop("No columns to round")
+
+  if (length(rows) == 0)
+    stop("No rows to round")
+
+  if(length(digits) != 1 & length(digits) != length(cols))
+    stop("You have ",
+         length(digits),
+         " digits specifications but ",
+         length(cols),
+         " columns to apply them to: ",
+         paste(cols, collapse = ", "))
+
+  ret_x <- x
+  for (row in rows){
+    ret_x[row, cols] <-
+      mapply(txtRound, x[row, cols], digits,
+             ...,
+             USE.NAMES = FALSE)
+  }
+
+  return(ret_x)
+}
+
 
 #' @rdname txtRound
 #' @export

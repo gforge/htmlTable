@@ -73,4 +73,3 @@ interactiveTable(output,
                  rnames = c("First", "Second"),
                  col.rgroup = c("#FFF", "#EEF"))
 }
-

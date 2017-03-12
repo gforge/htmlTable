@@ -2,8 +2,10 @@
 % Please edit documentation in R/txtFrmt.R
 \name{txtRound}
 \alias{txtRound}
-\alias{txtRound.data.frame}
 \alias{txtRound.default}
+\alias{txtRound.data.frame}
+\alias{txtRound.table}
+\alias{txtRound.matrix}
 \alias{txtRound.matrix}
 \title{A convenient rounding function}
 \usage{
@@ -12,6 +14,10 @@ txtRound(x, ...)
 \method{txtRound}{default}(x, digits = 0, txt.NA = "", dec = ".", ...)
 
 \method{txtRound}{data.frame}(x, ...)
+
+\method{txtRound}{table}(x, ...)
+
+\method{txtRound}{matrix}(x, digits = 0, excl.cols, excl.rows, ...)
 
 \method{txtRound}{matrix}(x, digits = 0, excl.cols, excl.rows, ...)
 }
@@ -54,4 +60,3 @@ txtRound(mx, 1)
 Other text formatters: \code{\link{txtMergeLines}},
   \code{\link{txtPval}}
 }
-

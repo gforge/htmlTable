@@ -67,4 +67,3 @@ Other hidden helper functions for \code{\link{htmlTable}}: \code{\link{prAddCell
   \code{\link{prPrepareCgroup}}, \code{\link{prTblNo}}
 }
 \keyword{internal}
-

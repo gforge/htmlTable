@@ -16,4 +16,3 @@ The data frame with factors as characters
 \description{
 Convert all factors to characters to print them as they expected
 }
-

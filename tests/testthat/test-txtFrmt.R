@@ -128,15 +128,31 @@ test_that("Supplying a data.frame",{
                test_df$text)
 })
 
+test_that("Supplying a table",{
+  out <- txtRound(table(1:4, 4:1))
+  expect_equal(nrow(out), 4)
+  expect_equal(ncol(out), 4)
+})
+
 test_that("Supplying a vector for the digits",{
   w <- matrix((1:8)/7, ncol=4)
   w_out <- txtRound(w, digits=1:4)
-  txtRound
   for (digits in 1:4)
     expect_equivalent(w_out[,digits],
                       sprintf(paste0("%.", digits, "f"), w[,digits]),
                       paste("Expected the number of digits to be", digits))
 })
+
+test_that("The txtRound should accept without warning a vector",{
+  w <- c(.1, .2, .7)
+  expect_silent(w_out <- txtRound(w))
+  expect_equivalent(w_out, c("0", "0", "1"))
+  w_out <- txtRound(w, digits = 0:2)
+  expect_equivalent(w_out, c("0", "0.2", "0.70"))
+
+  expect_error(txtRound(w, digits = 0:20))
+})
+
 
 test_that("Numbers that round to 0 should not have -, i.e. no -0.0",{
   expect_equal(txtRound(matrix(-.01), digits = 1),

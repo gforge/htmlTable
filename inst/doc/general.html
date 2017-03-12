@@ -12,7 +12,7 @@
 
 <meta name="author" content="Max Gordon" />
 
-<meta name="date" content="2017-01-25" />
+<meta name="date" content="2017-02-12" />
 
 <title>The htmlTable package</title>
 
@@ -70,7 +70,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">The htmlTable package</h1>
 <h4 class="author"><em>Max Gordon</em></h4>
-<h4 class="date"><em>2017-01-25</em></h4>
+<h4 class="date"><em>2017-02-12</em></h4>
 
 
 <div id="TOC">
@@ -96,30 +96,233 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <h1>Basics</h1>
 <p>The <strong>htmlTable</strong> package is intended for generating tables using <a href="http://en.wikipedia.org/wiki/HTML">HTML</a> formatting. This format is compatible with <a href="http://rmarkdown.rstudio.com/">Markdown</a> when used for HTML-output. The most basic table can easily be created by just passing a <code>matrix</code> or a <code>data.frame</code> to the <code>htmlTable</code>-function:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(htmlTable)
+<span class="kw">library</span>(magrittr)
 <span class="co"># A simple output</span>
-output &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="dv">1</span>:<span class="dv">4</span>,
-                 <span class="dt">ncol=</span><span class="dv">2</span>,
-                 <span class="dt">dimnames =</span> <span class="kw">list</span>(<span class="kw">list</span>(<span class="st">&quot;Row 1&quot;</span>, <span class="st">&quot;Row 2&quot;</span>),
-                                 <span class="kw">list</span>(<span class="st">&quot;Column 1&quot;</span>, <span class="st">&quot;Column 2&quot;</span>)))
-<span class="kw">htmlTable</span>(output)</code></pre></div>
-<table class='gmisc_table' style='border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;' >
+<span class="kw">matrix</span>(<span class="dv">1</span>:<span class="dv">4</span>,
+       <span class="dt">ncol=</span><span class="dv">2</span>,
+       <span class="dt">dimnames =</span> <span class="kw">list</span>(<span class="kw">c</span>(<span class="st">&quot;Row 1&quot;</span>, <span class="st">&quot;Row 2&quot;</span>),
+                       <span class="kw">c</span>(<span class="st">&quot;Column 1&quot;</span>, <span class="st">&quot;Column 2&quot;</span>))) %&gt;%<span class="st"> </span>
+<span class="st">  </span>htmlTable</code></pre></div>
+<table class="gmisc_table" style="border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;">
 <thead>
 <tr>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey;'> </th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>Column 1</th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>Column 2</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey;">
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+Column 1
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+Column 2
+</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style='text-align: left;'>Row 1</td>
-<td style='text-align: center;'>1</td>
-<td style='text-align: center;'>3</td>
+<td style="text-align: left;">
+Row 1
+</td>
+<td style="text-align: center;">
+1
+</td>
+<td style="text-align: center;">
+3
+</td>
 </tr>
 <tr>
-<td style='border-bottom: 2px solid grey; text-align: left;'>Row 2</td>
-<td style='border-bottom: 2px solid grey; text-align: center;'>2</td>
-<td style='border-bottom: 2px solid grey; text-align: center;'>4</td>
+<td style="border-bottom: 2px solid grey; text-align: left;">
+Row 2
+</td>
+<td style="border-bottom: 2px solid grey; text-align: center;">
+2
+</td>
+<td style="border-bottom: 2px solid grey; text-align: center;">
+4
+</td>
+</tr>
+</tbody>
+</table>
+<p>The function is also aware of the dimnames:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># A simple output</span>
+<span class="kw">matrix</span>(<span class="dv">1</span>:<span class="dv">4</span>,
+       <span class="dt">ncol=</span><span class="dv">2</span>,
+       <span class="dt">dimnames =</span> <span class="kw">list</span>(<span class="dt">rows =</span> <span class="kw">c</span>(<span class="st">&quot;Row 1&quot;</span>, <span class="st">&quot;Row 2&quot;</span>),
+                       <span class="dt">cols =</span> <span class="kw">c</span>(<span class="st">&quot;Column 1&quot;</span>, <span class="st">&quot;Column 2&quot;</span>))) %&gt;%<span class="st"> </span>
+<span class="st">  </span>htmlTable</code></pre></div>
+<table class="gmisc_table" style="border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;">
+<thead>
+<tr>
+<th style="border-top: 2px solid grey;">
+</th>
+<th colspan="2" style="font-weight: 900; border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+cols
+</th>
+</tr>
+<tr>
+<th style="border-bottom: 1px solid grey;">
+</th>
+<th style="border-bottom: 1px solid grey; text-align: center;">
+Column 1
+</th>
+<th style="border-bottom: 1px solid grey; text-align: center;">
+Column 2
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="3" style="font-weight: 900;">
+rows
+</td>
+</tr>
+<tr style="background-color:;">
+<td style="background-color:; text-align: left;">
+  Row 1
+</td>
+<td style="background-color:; text-align: center;">
+1
+</td>
+<td style="background-color:; text-align: center;">
+3
+</td>
+</tr>
+<tr style="background-color:;">
+<td style="background-color:; border-bottom: 2px solid grey; text-align: left;">
+  Row 2
+</td>
+<td style="background-color:; border-bottom: 2px solid grey; text-align: center;">
+2
+</td>
+<td style="background-color:; border-bottom: 2px solid grey; text-align: center;">
+4
+</td>
+</tr>
+</tbody>
+</table>
+<p>This can be convenient when working with the <code>base::table</code> function:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(<span class="st">&quot;mtcars&quot;</span>)
+<span class="kw">with</span>(mtcars,
+     <span class="kw">table</span>(cyl, gear)) %&gt;%<span class="st"> </span>
+<span class="st">  </span>addmargins %&gt;%<span class="st"> </span>
+<span class="st">  </span>htmlTable</code></pre></div>
+<table class="gmisc_table" style="border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;">
+<thead>
+<tr>
+<th style="border-top: 2px solid grey;">
+</th>
+<th colspan="3" style="font-weight: 900; border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+gear
+</th>
+<th style="border-top: 2px solid grey;; border-bottom: hidden;">
+ 
+</th>
+<th colspan="1" style="font-weight: 900; border-top: 2px solid grey; text-align: center;">
+</th>
+</tr>
+<tr>
+<th style="border-bottom: 1px solid grey;">
+</th>
+<th style="border-bottom: 1px solid grey; text-align: center;">
+3
+</th>
+<th style="border-bottom: 1px solid grey; text-align: center;">
+4
+</th>
+<th style="border-bottom: 1px solid grey; text-align: center;">
+5
+</th>
+<th style="border-bottom: 1px solid grey;" colspan="1">
+ 
+</th>
+<th style="border-bottom: 1px solid grey; text-align: center;">
+Sum
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="6" style="font-weight: 900;">
+cyl
+</td>
+</tr>
+<tr style="background-color:;">
+<td style="background-color:; text-align: left;">
+  4
+</td>
+<td style="background-color:; text-align: center;">
+1
+</td>
+<td style="background-color:; text-align: center;">
+8
+</td>
+<td style="background-color:; text-align: center;">
+2
+</td>
+<td style="background-color:;" colspan="1">
+ 
+</td>
+<td style="background-color:; text-align: center;">
+11
+</td>
+</tr>
+<tr style="background-color:;">
+<td style="background-color:; text-align: left;">
+  6
+</td>
+<td style="background-color:; text-align: center;">
+2
+</td>
+<td style="background-color:; text-align: center;">
+4
+</td>
+<td style="background-color:; text-align: center;">
+1
+</td>
+<td style="background-color:;" colspan="1">
+ 
+</td>
+<td style="background-color:; text-align: center;">
+7
+</td>
+</tr>
+<tr style="background-color:;">
+<td style="background-color:; text-align: left;">
+  8
+</td>
+<td style="background-color:; text-align: center;">
+12
+</td>
+<td style="background-color:; text-align: center;">
+0
+</td>
+<td style="background-color:; text-align: center;">
+2
+</td>
+<td style="background-color:;" colspan="1">
+ 
+</td>
+<td style="background-color:; text-align: center;">
+14
+</td>
+</tr>
+<tr style="background-color:;">
+<td style="background-color:; border-bottom: 2px solid grey; border-top: 1px solid #BEBEBE; font-weight: 900; text-align: left;">
+  Sum
+</td>
+<td style="background-color:; border-bottom: 2px solid grey; border-top: 1px solid #BEBEBE; font-weight: 900; text-align: center;">
+15
+</td>
+<td style="background-color:; border-bottom: 2px solid grey; border-top: 1px solid #BEBEBE; font-weight: 900; text-align: center;">
+12
+</td>
+<td style="background-color:; border-bottom: 2px solid grey; border-top: 1px solid #BEBEBE; font-weight: 900; text-align: center;">
+5
+</td>
+<td style="background-color:; border-bottom: 2px solid grey; border-top: 1px solid #BEBEBE; font-weight: 900;" colspan="1">
+ 
+</td>
+<td style="background-color:; border-bottom: 2px solid grey; border-top: 1px solid #BEBEBE; font-weight: 900; text-align: center;">
+32
+</td>
 </tr>
 </tbody>
 </table>
@@ -127,29 +330,53 @@ output &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class=
 <div id="table-caption" class="section level2">
 <h2>Table caption</h2>
 <p>The table caption is simply the table description and can be either located above or below:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">htmlTable</span>(output,  
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">output &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="dv">1</span>:<span class="dv">4</span>,
+       <span class="dt">ncol=</span><span class="dv">2</span>,
+       <span class="dt">dimnames =</span> <span class="kw">list</span>(<span class="kw">c</span>(<span class="st">&quot;Row 1&quot;</span>, <span class="st">&quot;Row 2&quot;</span>),
+                       <span class="kw">c</span>(<span class="st">&quot;Column 1&quot;</span>, <span class="st">&quot;Column 2&quot;</span>)))
+<span class="kw">htmlTable</span>(output,  
           <span class="dt">ctable=</span><span class="kw">c</span>(<span class="st">&quot;solid&quot;</span>, <span class="st">&quot;double&quot;</span>),
           <span class="dt">caption=</span><span class="st">&quot;A table caption above&quot;</span>)</code></pre></div>
-<table class='gmisc_table' style='border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;' >
+<table class="gmisc_table" style="border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;">
 <thead>
-<tr><td colspan='3' style='text-align: left;'>
-A table caption above</td></tr>
 <tr>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey;'> </th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>Column 1</th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>Column 2</th>
+<td colspan="3" style="text-align: left;">
+A table caption above
+</td>
+</tr>
+<tr>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey;">
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+Column 1
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+Column 2
+</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style='text-align: left;'>Row 1</td>
-<td style='text-align: center;'>1</td>
-<td style='text-align: center;'>3</td>
+<td style="text-align: left;">
+Row 1
+</td>
+<td style="text-align: center;">
+1
+</td>
+<td style="text-align: center;">
+3
+</td>
 </tr>
 <tr>
-<td style='border-bottom: 4px double grey; text-align: left;'>Row 2</td>
-<td style='border-bottom: 4px double grey; text-align: center;'>2</td>
-<td style='border-bottom: 4px double grey; text-align: center;'>4</td>
+<td style="border-bottom: 4px double grey; text-align: left;">
+Row 2
+</td>
+<td style="border-bottom: 4px double grey; text-align: center;">
+2
+</td>
+<td style="border-bottom: 4px double grey; text-align: center;">
+4
+</td>
 </tr>
 </tbody>
 </table>
@@ -157,28 +384,48 @@ A table caption above</td></tr>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">htmlTable</span>(output, 
           <span class="dt">pos.caption =</span> <span class="st">&quot;bottom&quot;</span>,
           <span class="dt">caption=</span><span class="st">&quot;A table caption below&quot;</span>)</code></pre></div>
-<table class='gmisc_table' style='border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;' >
+<table class="gmisc_table" style="border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;">
 <thead>
 <tr>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey;'> </th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>Column 1</th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>Column 2</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey;">
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+Column 1
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+Column 2
+</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style='text-align: left;'>Row 1</td>
-<td style='text-align: center;'>1</td>
-<td style='text-align: center;'>3</td>
+<td style="text-align: left;">
+Row 1
+</td>
+<td style="text-align: center;">
+1
+</td>
+<td style="text-align: center;">
+3
+</td>
 </tr>
 <tr>
-<td style='border-bottom: 2px solid grey; text-align: left;'>Row 2</td>
-<td style='border-bottom: 2px solid grey; text-align: center;'>2</td>
-<td style='border-bottom: 2px solid grey; text-align: center;'>4</td>
+<td style="border-bottom: 2px solid grey; text-align: left;">
+Row 2
+</td>
+<td style="border-bottom: 2px solid grey; text-align: center;">
+2
+</td>
+<td style="border-bottom: 2px solid grey; text-align: center;">
+4
+</td>
 </tr>
 </tbody>
-<tr><td colspan='3' style='text-align: left;'>
-A table caption below</td></tr>
+<tr>
+<td colspan="3" style="text-align: left;">
+A table caption below
+</td>
+</tr>
 </table>
 </div>
 <div id="cell-alignment" class="section level2">
@@ -189,23 +436,41 @@ A table caption below</td></tr>
           <span class="dt">align =</span> <span class="st">&quot;lcr&quot;</span>,
           <span class="dt">header =</span> <span class="kw">c</span>(<span class="st">&quot;'l' = left&quot;</span>, <span class="st">&quot;'c' = center&quot;</span>, <span class="st">&quot;'r' = right&quot;</span>),
           <span class="dt">caption =</span> <span class="st">&quot;The alignment is set through the align options. Available alternatives are l, r, c as designated by the below table.&quot;</span>)</code></pre></div>
-<table class='gmisc_table' style='border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;' >
+<table class="gmisc_table" style="border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;">
 <thead>
-<tr><td colspan='4' style='text-align: left;'>
-The alignment is set through the align options. Available alternatives are l, r, c as designated by the below table.</td></tr>
 <tr>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey;'> </th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>'l' = left</th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>'c' = center</th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>'r' = right</th>
+<td colspan="4" style="text-align: left;">
+The alignment is set through the align options. Available alternatives are l, r, c as designated by the below table.
+</td>
+</tr>
+<tr>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey;">
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+‘l’ = left
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+‘c’ = center
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+‘r’ = right
+</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style='border-bottom: 2px solid grey; text-align: left;'>Row 1</td>
-<td style='border-bottom: 2px solid grey; text-align: left;'>1</td>
-<td style='border-bottom: 2px solid grey; text-align: center;'>2</td>
-<td style='border-bottom: 2px solid grey; text-align: right;'>3</td>
+<td style="border-bottom: 2px solid grey; text-align: left;">
+Row 1
+</td>
+<td style="border-bottom: 2px solid grey; text-align: left;">
+1
+</td>
+<td style="border-bottom: 2px solid grey; text-align: center;">
+2
+</td>
+<td style="border-bottom: 2px solid grey; text-align: right;">
+3
+</td>
 </tr>
 </tbody>
 </table>
@@ -216,23 +481,41 @@ The alignment is set through the align options. Available alternatives are l, r,
           <span class="dt">align.header =</span> <span class="st">&quot;lcr&quot;</span>,
           <span class="dt">header =</span> <span class="kw">c</span>(<span class="st">&quot;'l' = left&quot;</span>, <span class="st">&quot;'c' = center&quot;</span>, <span class="st">&quot;'r' = right&quot;</span>),
           <span class="dt">caption =</span> <span class="st">&quot;The alignment is set through the align options. Available alternatives are l, r, c as designated by the below table.&quot;</span>)</code></pre></div>
-<table class='gmisc_table' style='border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;' >
+<table class="gmisc_table" style="border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;">
 <thead>
-<tr><td colspan='4' style='text-align: left;'>
-The alignment is set through the align options. Available alternatives are l, r, c as designated by the below table.</td></tr>
 <tr>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey;'> </th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: left;'>'l' = left</th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>'c' = center</th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: right;'>'r' = right</th>
+<td colspan="4" style="text-align: left;">
+The alignment is set through the align options. Available alternatives are l, r, c as designated by the below table.
+</td>
+</tr>
+<tr>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey;">
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: left;">
+‘l’ = left
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+‘c’ = center
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: right;">
+‘r’ = right
+</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style='border-bottom: 2px solid grey; text-align: center;'>Row 1</td>
-<td style='border-bottom: 2px solid grey; text-align: left;'>1</td>
-<td style='border-bottom: 2px solid grey; text-align: center;'>2</td>
-<td style='border-bottom: 2px solid grey; text-align: right;'>3</td>
+<td style="border-bottom: 2px solid grey; text-align: center;">
+Row 1
+</td>
+<td style="border-bottom: 2px solid grey; text-align: left;">
+1
+</td>
+<td style="border-bottom: 2px solid grey; text-align: center;">
+2
+</td>
+<td style="border-bottom: 2px solid grey; text-align: right;">
+3
+</td>
 </tr>
 </tbody>
 </table>
@@ -276,93 +559,230 @@ for (nr in <span class="dv">1</span>:<span class="kw">nrow</span>(mx)){
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">htmlTable</span>(mx, 
           <span class="dt">rgroup =</span> <span class="kw">paste</span>(<span class="st">&quot;Group&quot;</span>, LETTERS[<span class="dv">1</span>:<span class="dv">3</span>]),
           <span class="dt">n.rgroup =</span> <span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">4</span>,<span class="kw">nrow</span>(mx) -<span class="st"> </span><span class="dv">6</span>))</code></pre></div>
-<table class='gmisc_table' style='border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;' >
+<table class="gmisc_table" style="border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;">
 <thead>
 <tr>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey;'> </th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>1st hdr</th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>2nd hdr</th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>3rd hdr</th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>4th hdr</th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>5th hdr</th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>6th hdr</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey;">
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+1st hdr
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+2nd hdr
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+3rd hdr
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+4th hdr
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+5th hdr
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+6th hdr
+</th>
 </tr>
 </thead>
-<tbody> 
-<tr><td colspan='7' style='font-weight: 900;'>Group A</td></tr>
+<tbody>
 <tr>
-<td style='text-align: left;'>&nbsp;&nbsp;1st row</td>
-<td style='text-align: center;'>1:1</td>
-<td style='text-align: center;'>1:2</td>
-<td style='text-align: center;'>1:3</td>
-<td style='text-align: center;'>1:4</td>
-<td style='text-align: center;'>1:5</td>
-<td style='text-align: center;'>1:6</td>
+<td colspan="7" style="font-weight: 900;">
+Group A
+</td>
 </tr>
 <tr>
-<td style='text-align: left;'>&nbsp;&nbsp;2nd row</td>
-<td style='text-align: center;'>2:1</td>
-<td style='text-align: center;'>2:2</td>
-<td style='text-align: center;'>2:3</td>
-<td style='text-align: center;'>2:4</td>
-<td style='text-align: center;'>2:5</td>
-<td style='text-align: center;'>2:6</td>
-</tr> 
-<tr><td colspan='7' style='font-weight: 900;'>Group B</td></tr>
-<tr>
-<td style='text-align: left;'>&nbsp;&nbsp;3rd row</td>
-<td style='text-align: center;'>3:1</td>
-<td style='text-align: center;'>3:2</td>
-<td style='text-align: center;'>3:3</td>
-<td style='text-align: center;'>3:4</td>
-<td style='text-align: center;'>3:5</td>
-<td style='text-align: center;'>3:6</td>
+<td style="text-align: left;">
+  1st row
+</td>
+<td style="text-align: center;">
+1:1
+</td>
+<td style="text-align: center;">
+1:2
+</td>
+<td style="text-align: center;">
+1:3
+</td>
+<td style="text-align: center;">
+1:4
+</td>
+<td style="text-align: center;">
+1:5
+</td>
+<td style="text-align: center;">
+1:6
+</td>
 </tr>
 <tr>
-<td style='text-align: left;'>&nbsp;&nbsp;4th row</td>
-<td style='text-align: center;'>4:1</td>
-<td style='text-align: center;'>4:2</td>
-<td style='text-align: center;'>4:3</td>
-<td style='text-align: center;'>4:4</td>
-<td style='text-align: center;'>4:5</td>
-<td style='text-align: center;'>4:6</td>
+<td style="text-align: left;">
+  2nd row
+</td>
+<td style="text-align: center;">
+2:1
+</td>
+<td style="text-align: center;">
+2:2
+</td>
+<td style="text-align: center;">
+2:3
+</td>
+<td style="text-align: center;">
+2:4
+</td>
+<td style="text-align: center;">
+2:5
+</td>
+<td style="text-align: center;">
+2:6
+</td>
 </tr>
 <tr>
-<td style='text-align: left;'>&nbsp;&nbsp;5th row</td>
-<td style='text-align: center;'>5:1</td>
-<td style='text-align: center;'>5:2</td>
-<td style='text-align: center;'>5:3</td>
-<td style='text-align: center;'>5:4</td>
-<td style='text-align: center;'>5:5</td>
-<td style='text-align: center;'>5:6</td>
+<td colspan="7" style="font-weight: 900;">
+Group B
+</td>
 </tr>
 <tr>
-<td style='text-align: left;'>&nbsp;&nbsp;6th row</td>
-<td style='text-align: center;'>6:1</td>
-<td style='text-align: center;'>6:2</td>
-<td style='text-align: center;'>6:3</td>
-<td style='text-align: center;'>6:4</td>
-<td style='text-align: center;'>6:5</td>
-<td style='text-align: center;'>6:6</td>
-</tr> 
-<tr><td colspan='7' style='font-weight: 900;'>Group C</td></tr>
-<tr>
-<td style='text-align: left;'>&nbsp;&nbsp;7th row</td>
-<td style='text-align: center;'>7:1</td>
-<td style='text-align: center;'>7:2</td>
-<td style='text-align: center;'>7:3</td>
-<td style='text-align: center;'>7:4</td>
-<td style='text-align: center;'>7:5</td>
-<td style='text-align: center;'>7:6</td>
+<td style="text-align: left;">
+  3rd row
+</td>
+<td style="text-align: center;">
+3:1
+</td>
+<td style="text-align: center;">
+3:2
+</td>
+<td style="text-align: center;">
+3:3
+</td>
+<td style="text-align: center;">
+3:4
+</td>
+<td style="text-align: center;">
+3:5
+</td>
+<td style="text-align: center;">
+3:6
+</td>
 </tr>
 <tr>
-<td style='border-bottom: 2px solid grey; text-align: left;'>&nbsp;&nbsp;8th row</td>
-<td style='border-bottom: 2px solid grey; text-align: center;'>8:1</td>
-<td style='border-bottom: 2px solid grey; text-align: center;'>8:2</td>
-<td style='border-bottom: 2px solid grey; text-align: center;'>8:3</td>
-<td style='border-bottom: 2px solid grey; text-align: center;'>8:4</td>
-<td style='border-bottom: 2px solid grey; text-align: center;'>8:5</td>
-<td style='border-bottom: 2px solid grey; text-align: center;'>8:6</td>
+<td style="text-align: left;">
+  4th row
+</td>
+<td style="text-align: center;">
+4:1
+</td>
+<td style="text-align: center;">
+4:2
+</td>
+<td style="text-align: center;">
+4:3
+</td>
+<td style="text-align: center;">
+4:4
+</td>
+<td style="text-align: center;">
+4:5
+</td>
+<td style="text-align: center;">
+4:6
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+  5th row
+</td>
+<td style="text-align: center;">
+5:1
+</td>
+<td style="text-align: center;">
+5:2
+</td>
+<td style="text-align: center;">
+5:3
+</td>
+<td style="text-align: center;">
+5:4
+</td>
+<td style="text-align: center;">
+5:5
+</td>
+<td style="text-align: center;">
+5:6
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+  6th row
+</td>
+<td style="text-align: center;">
+6:1
+</td>
+<td style="text-align: center;">
+6:2
+</td>
+<td style="text-align: center;">
+6:3
+</td>
+<td style="text-align: center;">
+6:4
+</td>
+<td style="text-align: center;">
+6:5
+</td>
+<td style="text-align: center;">
+6:6
+</td>
+</tr>
+<tr>
+<td colspan="7" style="font-weight: 900;">
+Group C
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+  7th row
+</td>
+<td style="text-align: center;">
+7:1
+</td>
+<td style="text-align: center;">
+7:2
+</td>
+<td style="text-align: center;">
+7:3
+</td>
+<td style="text-align: center;">
+7:4
+</td>
+<td style="text-align: center;">
+7:5
+</td>
+<td style="text-align: center;">
+7:6
+</td>
+</tr>
+<tr>
+<td style="border-bottom: 2px solid grey; text-align: left;">
+  8th row
+</td>
+<td style="border-bottom: 2px solid grey; text-align: center;">
+8:1
+</td>
+<td style="border-bottom: 2px solid grey; text-align: center;">
+8:2
+</td>
+<td style="border-bottom: 2px solid grey; text-align: center;">
+8:3
+</td>
+<td style="border-bottom: 2px solid grey; text-align: center;">
+8:4
+</td>
+<td style="border-bottom: 2px solid grey; text-align: center;">
+8:5
+</td>
+<td style="border-bottom: 2px solid grey; text-align: center;">
+8:6
+</td>
 </tr>
 </tbody>
 </table>
@@ -370,92 +790,225 @@ for (nr in <span class="dv">1</span>:<span class="kw">nrow</span>(mx)){
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">htmlTable</span>(mx, 
           <span class="dt">rgroup =</span> <span class="kw">c</span>(<span class="kw">paste</span>(<span class="st">&quot;Group&quot;</span>, LETTERS[<span class="dv">1</span>:<span class="dv">2</span>]), <span class="st">&quot;&quot;</span>),
           <span class="dt">n.rgroup =</span> <span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">4</span>,<span class="kw">nrow</span>(mx) -<span class="st"> </span><span class="dv">6</span>))</code></pre></div>
-<table class='gmisc_table' style='border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;' >
+<table class="gmisc_table" style="border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;">
 <thead>
 <tr>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey;'> </th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>1st hdr</th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>2nd hdr</th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>3rd hdr</th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>4th hdr</th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>5th hdr</th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>6th hdr</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey;">
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+1st hdr
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+2nd hdr
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+3rd hdr
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+4th hdr
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+5th hdr
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+6th hdr
+</th>
 </tr>
 </thead>
-<tbody> 
-<tr><td colspan='7' style='font-weight: 900;'>Group A</td></tr>
+<tbody>
 <tr>
-<td style='text-align: left;'>&nbsp;&nbsp;1st row</td>
-<td style='text-align: center;'>1:1</td>
-<td style='text-align: center;'>1:2</td>
-<td style='text-align: center;'>1:3</td>
-<td style='text-align: center;'>1:4</td>
-<td style='text-align: center;'>1:5</td>
-<td style='text-align: center;'>1:6</td>
+<td colspan="7" style="font-weight: 900;">
+Group A
+</td>
 </tr>
 <tr>
-<td style='text-align: left;'>&nbsp;&nbsp;2nd row</td>
-<td style='text-align: center;'>2:1</td>
-<td style='text-align: center;'>2:2</td>
-<td style='text-align: center;'>2:3</td>
-<td style='text-align: center;'>2:4</td>
-<td style='text-align: center;'>2:5</td>
-<td style='text-align: center;'>2:6</td>
-</tr> 
-<tr><td colspan='7' style='font-weight: 900;'>Group B</td></tr>
-<tr>
-<td style='text-align: left;'>&nbsp;&nbsp;3rd row</td>
-<td style='text-align: center;'>3:1</td>
-<td style='text-align: center;'>3:2</td>
-<td style='text-align: center;'>3:3</td>
-<td style='text-align: center;'>3:4</td>
-<td style='text-align: center;'>3:5</td>
-<td style='text-align: center;'>3:6</td>
+<td style="text-align: left;">
+  1st row
+</td>
+<td style="text-align: center;">
+1:1
+</td>
+<td style="text-align: center;">
+1:2
+</td>
+<td style="text-align: center;">
+1:3
+</td>
+<td style="text-align: center;">
+1:4
+</td>
+<td style="text-align: center;">
+1:5
+</td>
+<td style="text-align: center;">
+1:6
+</td>
 </tr>
 <tr>
-<td style='text-align: left;'>&nbsp;&nbsp;4th row</td>
-<td style='text-align: center;'>4:1</td>
-<td style='text-align: center;'>4:2</td>
-<td style='text-align: center;'>4:3</td>
-<td style='text-align: center;'>4:4</td>
-<td style='text-align: center;'>4:5</td>
-<td style='text-align: center;'>4:6</td>
+<td style="text-align: left;">
+  2nd row
+</td>
+<td style="text-align: center;">
+2:1
+</td>
+<td style="text-align: center;">
+2:2
+</td>
+<td style="text-align: center;">
+2:3
+</td>
+<td style="text-align: center;">
+2:4
+</td>
+<td style="text-align: center;">
+2:5
+</td>
+<td style="text-align: center;">
+2:6
+</td>
 </tr>
 <tr>
-<td style='text-align: left;'>&nbsp;&nbsp;5th row</td>
-<td style='text-align: center;'>5:1</td>
-<td style='text-align: center;'>5:2</td>
-<td style='text-align: center;'>5:3</td>
-<td style='text-align: center;'>5:4</td>
-<td style='text-align: center;'>5:5</td>
-<td style='text-align: center;'>5:6</td>
+<td colspan="7" style="font-weight: 900;">
+Group B
+</td>
 </tr>
 <tr>
-<td style='text-align: left;'>&nbsp;&nbsp;6th row</td>
-<td style='text-align: center;'>6:1</td>
-<td style='text-align: center;'>6:2</td>
-<td style='text-align: center;'>6:3</td>
-<td style='text-align: center;'>6:4</td>
-<td style='text-align: center;'>6:5</td>
-<td style='text-align: center;'>6:6</td>
+<td style="text-align: left;">
+  3rd row
+</td>
+<td style="text-align: center;">
+3:1
+</td>
+<td style="text-align: center;">
+3:2
+</td>
+<td style="text-align: center;">
+3:3
+</td>
+<td style="text-align: center;">
+3:4
+</td>
+<td style="text-align: center;">
+3:5
+</td>
+<td style="text-align: center;">
+3:6
+</td>
 </tr>
 <tr>
-<td style='text-align: left;'>7th row</td>
-<td style='text-align: center;'>7:1</td>
-<td style='text-align: center;'>7:2</td>
-<td style='text-align: center;'>7:3</td>
-<td style='text-align: center;'>7:4</td>
-<td style='text-align: center;'>7:5</td>
-<td style='text-align: center;'>7:6</td>
+<td style="text-align: left;">
+  4th row
+</td>
+<td style="text-align: center;">
+4:1
+</td>
+<td style="text-align: center;">
+4:2
+</td>
+<td style="text-align: center;">
+4:3
+</td>
+<td style="text-align: center;">
+4:4
+</td>
+<td style="text-align: center;">
+4:5
+</td>
+<td style="text-align: center;">
+4:6
+</td>
 </tr>
 <tr>
-<td style='border-bottom: 2px solid grey; text-align: left;'>8th row</td>
-<td style='border-bottom: 2px solid grey; text-align: center;'>8:1</td>
-<td style='border-bottom: 2px solid grey; text-align: center;'>8:2</td>
-<td style='border-bottom: 2px solid grey; text-align: center;'>8:3</td>
-<td style='border-bottom: 2px solid grey; text-align: center;'>8:4</td>
-<td style='border-bottom: 2px solid grey; text-align: center;'>8:5</td>
-<td style='border-bottom: 2px solid grey; text-align: center;'>8:6</td>
+<td style="text-align: left;">
+  5th row
+</td>
+<td style="text-align: center;">
+5:1
+</td>
+<td style="text-align: center;">
+5:2
+</td>
+<td style="text-align: center;">
+5:3
+</td>
+<td style="text-align: center;">
+5:4
+</td>
+<td style="text-align: center;">
+5:5
+</td>
+<td style="text-align: center;">
+5:6
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+  6th row
+</td>
+<td style="text-align: center;">
+6:1
+</td>
+<td style="text-align: center;">
+6:2
+</td>
+<td style="text-align: center;">
+6:3
+</td>
+<td style="text-align: center;">
+6:4
+</td>
+<td style="text-align: center;">
+6:5
+</td>
+<td style="text-align: center;">
+6:6
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+7th row
+</td>
+<td style="text-align: center;">
+7:1
+</td>
+<td style="text-align: center;">
+7:2
+</td>
+<td style="text-align: center;">
+7:3
+</td>
+<td style="text-align: center;">
+7:4
+</td>
+<td style="text-align: center;">
+7:5
+</td>
+<td style="text-align: center;">
+7:6
+</td>
+</tr>
+<tr>
+<td style="border-bottom: 2px solid grey; text-align: left;">
+8th row
+</td>
+<td style="border-bottom: 2px solid grey; text-align: center;">
+8:1
+</td>
+<td style="border-bottom: 2px solid grey; text-align: center;">
+8:2
+</td>
+<td style="border-bottom: 2px solid grey; text-align: center;">
+8:3
+</td>
+<td style="border-bottom: 2px solid grey; text-align: center;">
+8:4
+</td>
+<td style="border-bottom: 2px solid grey; text-align: center;">
+8:5
+</td>
+<td style="border-bottom: 2px solid grey; text-align: center;">
+8:6
+</td>
 </tr>
 </tbody>
 </table>
@@ -464,92 +1017,225 @@ for (nr in <span class="dv">1</span>:<span class="kw">nrow</span>(mx)){
           <span class="dt">css.rgroup =</span> <span class="st">&quot;&quot;</span>,
           <span class="dt">rgroup =</span> <span class="kw">c</span>(<span class="kw">paste</span>(<span class="st">&quot;Group&quot;</span>, LETTERS[<span class="dv">1</span>:<span class="dv">2</span>]), <span class="st">&quot;&quot;</span>),
           <span class="dt">n.rgroup =</span> <span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">4</span>,<span class="kw">nrow</span>(mx) -<span class="st"> </span><span class="dv">6</span>))</code></pre></div>
-<table class='gmisc_table' style='border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;' >
+<table class="gmisc_table" style="border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;">
 <thead>
 <tr>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey;'> </th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>1st hdr</th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>2nd hdr</th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>3rd hdr</th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>4th hdr</th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>5th hdr</th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>6th hdr</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey;">
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+1st hdr
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+2nd hdr
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+3rd hdr
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+4th hdr
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+5th hdr
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+6th hdr
+</th>
 </tr>
 </thead>
-<tbody> 
-<tr><td colspan='7' style=''>Group A</td></tr>
+<tbody>
 <tr>
-<td style='text-align: left;'>&nbsp;&nbsp;1st row</td>
-<td style='text-align: center;'>1:1</td>
-<td style='text-align: center;'>1:2</td>
-<td style='text-align: center;'>1:3</td>
-<td style='text-align: center;'>1:4</td>
-<td style='text-align: center;'>1:5</td>
-<td style='text-align: center;'>1:6</td>
+<td colspan="7" style>
+Group A
+</td>
 </tr>
 <tr>
-<td style='text-align: left;'>&nbsp;&nbsp;2nd row</td>
-<td style='text-align: center;'>2:1</td>
-<td style='text-align: center;'>2:2</td>
-<td style='text-align: center;'>2:3</td>
-<td style='text-align: center;'>2:4</td>
-<td style='text-align: center;'>2:5</td>
-<td style='text-align: center;'>2:6</td>
-</tr> 
-<tr><td colspan='7' style=''>Group B</td></tr>
-<tr>
-<td style='text-align: left;'>&nbsp;&nbsp;3rd row</td>
-<td style='text-align: center;'>3:1</td>
-<td style='text-align: center;'>3:2</td>
-<td style='text-align: center;'>3:3</td>
-<td style='text-align: center;'>3:4</td>
-<td style='text-align: center;'>3:5</td>
-<td style='text-align: center;'>3:6</td>
+<td style="text-align: left;">
+  1st row
+</td>
+<td style="text-align: center;">
+1:1
+</td>
+<td style="text-align: center;">
+1:2
+</td>
+<td style="text-align: center;">
+1:3
+</td>
+<td style="text-align: center;">
+1:4
+</td>
+<td style="text-align: center;">
+1:5
+</td>
+<td style="text-align: center;">
+1:6
+</td>
 </tr>
 <tr>
-<td style='text-align: left;'>&nbsp;&nbsp;4th row</td>
-<td style='text-align: center;'>4:1</td>
-<td style='text-align: center;'>4:2</td>
-<td style='text-align: center;'>4:3</td>
-<td style='text-align: center;'>4:4</td>
-<td style='text-align: center;'>4:5</td>
-<td style='text-align: center;'>4:6</td>
+<td style="text-align: left;">
+  2nd row
+</td>
+<td style="text-align: center;">
+2:1
+</td>
+<td style="text-align: center;">
+2:2
+</td>
+<td style="text-align: center;">
+2:3
+</td>
+<td style="text-align: center;">
+2:4
+</td>
+<td style="text-align: center;">
+2:5
+</td>
+<td style="text-align: center;">
+2:6
+</td>
 </tr>
 <tr>
-<td style='text-align: left;'>&nbsp;&nbsp;5th row</td>
-<td style='text-align: center;'>5:1</td>
-<td style='text-align: center;'>5:2</td>
-<td style='text-align: center;'>5:3</td>
-<td style='text-align: center;'>5:4</td>
-<td style='text-align: center;'>5:5</td>
-<td style='text-align: center;'>5:6</td>
+<td colspan="7" style>
+Group B
+</td>
 </tr>
 <tr>
-<td style='text-align: left;'>&nbsp;&nbsp;6th row</td>
-<td style='text-align: center;'>6:1</td>
-<td style='text-align: center;'>6:2</td>
-<td style='text-align: center;'>6:3</td>
-<td style='text-align: center;'>6:4</td>
-<td style='text-align: center;'>6:5</td>
-<td style='text-align: center;'>6:6</td>
+<td style="text-align: left;">
+  3rd row
+</td>
+<td style="text-align: center;">
+3:1
+</td>
+<td style="text-align: center;">
+3:2
+</td>
+<td style="text-align: center;">
+3:3
+</td>
+<td style="text-align: center;">
+3:4
+</td>
+<td style="text-align: center;">
+3:5
+</td>
+<td style="text-align: center;">
+3:6
+</td>
 </tr>
 <tr>
-<td style='text-align: left;'>7th row</td>
-<td style='text-align: center;'>7:1</td>
-<td style='text-align: center;'>7:2</td>
-<td style='text-align: center;'>7:3</td>
-<td style='text-align: center;'>7:4</td>
-<td style='text-align: center;'>7:5</td>
-<td style='text-align: center;'>7:6</td>
+<td style="text-align: left;">
+  4th row
+</td>
+<td style="text-align: center;">
+4:1
+</td>
+<td style="text-align: center;">
+4:2
+</td>
+<td style="text-align: center;">
+4:3
+</td>
+<td style="text-align: center;">
+4:4
+</td>
+<td style="text-align: center;">
+4:5
+</td>
+<td style="text-align: center;">
+4:6
+</td>
 </tr>
 <tr>
-<td style='border-bottom: 2px solid grey; text-align: left;'>8th row</td>
-<td style='border-bottom: 2px solid grey; text-align: center;'>8:1</td>
-<td style='border-bottom: 2px solid grey; text-align: center;'>8:2</td>
-<td style='border-bottom: 2px solid grey; text-align: center;'>8:3</td>
-<td style='border-bottom: 2px solid grey; text-align: center;'>8:4</td>
-<td style='border-bottom: 2px solid grey; text-align: center;'>8:5</td>
-<td style='border-bottom: 2px solid grey; text-align: center;'>8:6</td>
+<td style="text-align: left;">
+  5th row
+</td>
+<td style="text-align: center;">
+5:1
+</td>
+<td style="text-align: center;">
+5:2
+</td>
+<td style="text-align: center;">
+5:3
+</td>
+<td style="text-align: center;">
+5:4
+</td>
+<td style="text-align: center;">
+5:5
+</td>
+<td style="text-align: center;">
+5:6
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+  6th row
+</td>
+<td style="text-align: center;">
+6:1
+</td>
+<td style="text-align: center;">
+6:2
+</td>
+<td style="text-align: center;">
+6:3
+</td>
+<td style="text-align: center;">
+6:4
+</td>
+<td style="text-align: center;">
+6:5
+</td>
+<td style="text-align: center;">
+6:6
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+7th row
+</td>
+<td style="text-align: center;">
+7:1
+</td>
+<td style="text-align: center;">
+7:2
+</td>
+<td style="text-align: center;">
+7:3
+</td>
+<td style="text-align: center;">
+7:4
+</td>
+<td style="text-align: center;">
+7:5
+</td>
+<td style="text-align: center;">
+7:6
+</td>
+</tr>
+<tr>
+<td style="border-bottom: 2px solid grey; text-align: left;">
+8th row
+</td>
+<td style="border-bottom: 2px solid grey; text-align: center;">
+8:1
+</td>
+<td style="border-bottom: 2px solid grey; text-align: center;">
+8:2
+</td>
+<td style="border-bottom: 2px solid grey; text-align: center;">
+8:3
+</td>
+<td style="border-bottom: 2px solid grey; text-align: center;">
+8:4
+</td>
+<td style="border-bottom: 2px solid grey; text-align: center;">
+8:5
+</td>
+<td style="border-bottom: 2px solid grey; text-align: center;">
+8:6
+</td>
 </tr>
 </tbody>
 </table>
@@ -559,93 +1245,228 @@ for (nr in <span class="dv">1</span>:<span class="kw">nrow</span>(mx)){
 <span class="kw">htmlTable</span>(mx, 
           <span class="dt">rgroup =</span> rgroup,
           <span class="dt">n.rgroup =</span> <span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">4</span>,<span class="kw">nrow</span>(mx) -<span class="st"> </span><span class="dv">6</span>))</code></pre></div>
-<table class='gmisc_table' style='border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;' >
+<table class="gmisc_table" style="border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;">
 <thead>
 <tr>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey;'> </th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>1st hdr</th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>2nd hdr</th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>3rd hdr</th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>4th hdr</th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>5th hdr</th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>6th hdr</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey;">
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+1st hdr
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+2nd hdr
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+3rd hdr
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+4th hdr
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+5th hdr
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+6th hdr
+</th>
 </tr>
 </thead>
-<tbody> 
-<tr><td colspan='7' style='font-weight: 900;'>Group A</td></tr>
+<tbody>
 <tr>
-<td style='text-align: left;'>&nbsp;&nbsp;1st row</td>
-<td style='text-align: center;'>1:1</td>
-<td style='text-align: center;'>1:2</td>
-<td style='text-align: center;'>1:3</td>
-<td style='text-align: center;'>1:4</td>
-<td style='text-align: center;'>1:5</td>
-<td style='text-align: center;'>1:6</td>
+<td colspan="7" style="font-weight: 900;">
+Group A
+</td>
 </tr>
 <tr>
-<td style='text-align: left;'>&nbsp;&nbsp;2nd row</td>
-<td style='text-align: center;'>2:1</td>
-<td style='text-align: center;'>2:2</td>
-<td style='text-align: center;'>2:3</td>
-<td style='text-align: center;'>2:4</td>
-<td style='text-align: center;'>2:5</td>
-<td style='text-align: center;'>2:6</td>
-</tr> 
-<tr><td colspan='6' style='font-weight: 900;'>Group B</td>
-<td style='font-weight: 900; text-align: center;'>More</td></tr>
-<tr>
-<td style='text-align: left;'>&nbsp;&nbsp;3rd row</td>
-<td style='text-align: center;'>3:1</td>
-<td style='text-align: center;'>3:2</td>
-<td style='text-align: center;'>3:3</td>
-<td style='text-align: center;'>3:4</td>
-<td style='text-align: center;'>3:5</td>
-<td style='text-align: center;'>3:6</td>
+<td style="text-align: left;">
+  1st row
+</td>
+<td style="text-align: center;">
+1:1
+</td>
+<td style="text-align: center;">
+1:2
+</td>
+<td style="text-align: center;">
+1:3
+</td>
+<td style="text-align: center;">
+1:4
+</td>
+<td style="text-align: center;">
+1:5
+</td>
+<td style="text-align: center;">
+1:6
+</td>
 </tr>
 <tr>
-<td style='text-align: left;'>&nbsp;&nbsp;4th row</td>
-<td style='text-align: center;'>4:1</td>
-<td style='text-align: center;'>4:2</td>
-<td style='text-align: center;'>4:3</td>
-<td style='text-align: center;'>4:4</td>
-<td style='text-align: center;'>4:5</td>
-<td style='text-align: center;'>4:6</td>
+<td style="text-align: left;">
+  2nd row
+</td>
+<td style="text-align: center;">
+2:1
+</td>
+<td style="text-align: center;">
+2:2
+</td>
+<td style="text-align: center;">
+2:3
+</td>
+<td style="text-align: center;">
+2:4
+</td>
+<td style="text-align: center;">
+2:5
+</td>
+<td style="text-align: center;">
+2:6
+</td>
 </tr>
 <tr>
-<td style='text-align: left;'>&nbsp;&nbsp;5th row</td>
-<td style='text-align: center;'>5:1</td>
-<td style='text-align: center;'>5:2</td>
-<td style='text-align: center;'>5:3</td>
-<td style='text-align: center;'>5:4</td>
-<td style='text-align: center;'>5:5</td>
-<td style='text-align: center;'>5:6</td>
+<td colspan="6" style="font-weight: 900;">
+Group B
+</td>
+<td style="font-weight: 900; text-align: center;">
+More
+</td>
 </tr>
 <tr>
-<td style='text-align: left;'>&nbsp;&nbsp;6th row</td>
-<td style='text-align: center;'>6:1</td>
-<td style='text-align: center;'>6:2</td>
-<td style='text-align: center;'>6:3</td>
-<td style='text-align: center;'>6:4</td>
-<td style='text-align: center;'>6:5</td>
-<td style='text-align: center;'>6:6</td>
+<td style="text-align: left;">
+  3rd row
+</td>
+<td style="text-align: center;">
+3:1
+</td>
+<td style="text-align: center;">
+3:2
+</td>
+<td style="text-align: center;">
+3:3
+</td>
+<td style="text-align: center;">
+3:4
+</td>
+<td style="text-align: center;">
+3:5
+</td>
+<td style="text-align: center;">
+3:6
+</td>
 </tr>
 <tr>
-<td style='text-align: left;'>7th row</td>
-<td style='text-align: center;'>7:1</td>
-<td style='text-align: center;'>7:2</td>
-<td style='text-align: center;'>7:3</td>
-<td style='text-align: center;'>7:4</td>
-<td style='text-align: center;'>7:5</td>
-<td style='text-align: center;'>7:6</td>
+<td style="text-align: left;">
+  4th row
+</td>
+<td style="text-align: center;">
+4:1
+</td>
+<td style="text-align: center;">
+4:2
+</td>
+<td style="text-align: center;">
+4:3
+</td>
+<td style="text-align: center;">
+4:4
+</td>
+<td style="text-align: center;">
+4:5
+</td>
+<td style="text-align: center;">
+4:6
+</td>
 </tr>
 <tr>
-<td style='border-bottom: 2px solid grey; text-align: left;'>8th row</td>
-<td style='border-bottom: 2px solid grey; text-align: center;'>8:1</td>
-<td style='border-bottom: 2px solid grey; text-align: center;'>8:2</td>
-<td style='border-bottom: 2px solid grey; text-align: center;'>8:3</td>
-<td style='border-bottom: 2px solid grey; text-align: center;'>8:4</td>
-<td style='border-bottom: 2px solid grey; text-align: center;'>8:5</td>
-<td style='border-bottom: 2px solid grey; text-align: center;'>8:6</td>
+<td style="text-align: left;">
+  5th row
+</td>
+<td style="text-align: center;">
+5:1
+</td>
+<td style="text-align: center;">
+5:2
+</td>
+<td style="text-align: center;">
+5:3
+</td>
+<td style="text-align: center;">
+5:4
+</td>
+<td style="text-align: center;">
+5:5
+</td>
+<td style="text-align: center;">
+5:6
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+  6th row
+</td>
+<td style="text-align: center;">
+6:1
+</td>
+<td style="text-align: center;">
+6:2
+</td>
+<td style="text-align: center;">
+6:3
+</td>
+<td style="text-align: center;">
+6:4
+</td>
+<td style="text-align: center;">
+6:5
+</td>
+<td style="text-align: center;">
+6:6
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+7th row
+</td>
+<td style="text-align: center;">
+7:1
+</td>
+<td style="text-align: center;">
+7:2
+</td>
+<td style="text-align: center;">
+7:3
+</td>
+<td style="text-align: center;">
+7:4
+</td>
+<td style="text-align: center;">
+7:5
+</td>
+<td style="text-align: center;">
+7:6
+</td>
+</tr>
+<tr>
+<td style="border-bottom: 2px solid grey; text-align: left;">
+8th row
+</td>
+<td style="border-bottom: 2px solid grey; text-align: center;">
+8:1
+</td>
+<td style="border-bottom: 2px solid grey; text-align: center;">
+8:2
+</td>
+<td style="border-bottom: 2px solid grey; text-align: center;">
+8:3
+</td>
+<td style="border-bottom: 2px solid grey; text-align: center;">
+8:4
+</td>
+<td style="border-bottom: 2px solid grey; text-align: center;">
+8:5
+</td>
+<td style="border-bottom: 2px solid grey; text-align: center;">
+8:6
+</td>
 </tr>
 </tbody>
 </table>
@@ -656,104 +1477,255 @@ for (nr in <span class="dv">1</span>:<span class="kw">nrow</span>(mx)){
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">htmlTable</span>(mx,
           <span class="dt">cgroup =</span> <span class="kw">c</span>(<span class="st">&quot;Cgroup 1&quot;</span>, <span class="st">&quot;Cgroup 2&quot;</span>),
           <span class="dt">n.cgroup =</span> <span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">4</span>))</code></pre></div>
-<table class='gmisc_table' style='border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;' >
+<table class="gmisc_table" style="border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;">
 <thead>
 <tr>
-<th style='border-top: 2px solid grey;'></th>
-<th colspan='2' style='font-weight: 900; border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>Cgroup 1</th><th style='border-top: 2px solid grey;; border-bottom: hidden;'>&nbsp;</th>
-<th colspan='4' style='font-weight: 900; border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>Cgroup 2</th>
+<th style="border-top: 2px solid grey;">
+</th>
+<th colspan="2" style="font-weight: 900; border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+Cgroup 1
+</th>
+<th style="border-top: 2px solid grey;; border-bottom: hidden;">
+ 
+</th>
+<th colspan="4" style="font-weight: 900; border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+Cgroup 2
+</th>
 </tr>
 <tr>
-<th style='border-bottom: 1px solid grey;'> </th>
-<th style='border-bottom: 1px solid grey; text-align: center;'>1st hdr</th>
-<th style='border-bottom: 1px solid grey; text-align: center;'>2nd hdr</th>
-<th style='border-bottom: 1px solid grey;' colspan='1'>&nbsp;</th>
-<th style='border-bottom: 1px solid grey; text-align: center;'>3rd hdr</th>
-<th style='border-bottom: 1px solid grey; text-align: center;'>4th hdr</th>
-<th style='border-bottom: 1px solid grey; text-align: center;'>5th hdr</th>
-<th style='border-bottom: 1px solid grey; text-align: center;'>6th hdr</th>
+<th style="border-bottom: 1px solid grey;">
+</th>
+<th style="border-bottom: 1px solid grey; text-align: center;">
+1st hdr
+</th>
+<th style="border-bottom: 1px solid grey; text-align: center;">
+2nd hdr
+</th>
+<th style="border-bottom: 1px solid grey;" colspan="1">
+ 
+</th>
+<th style="border-bottom: 1px solid grey; text-align: center;">
+3rd hdr
+</th>
+<th style="border-bottom: 1px solid grey; text-align: center;">
+4th hdr
+</th>
+<th style="border-bottom: 1px solid grey; text-align: center;">
+5th hdr
+</th>
+<th style="border-bottom: 1px solid grey; text-align: center;">
+6th hdr
+</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style='text-align: left;'>1st row</td>
-<td style='text-align: center;'>1:1</td>
-<td style='text-align: center;'>1:2</td>
-<td style='' colspan='1'>&nbsp;</td>
-<td style='text-align: center;'>1:3</td>
-<td style='text-align: center;'>1:4</td>
-<td style='text-align: center;'>1:5</td>
-<td style='text-align: center;'>1:6</td>
+<td style="text-align: left;">
+1st row
+</td>
+<td style="text-align: center;">
+1:1
+</td>
+<td style="text-align: center;">
+1:2
+</td>
+<td style colspan="1">
+ 
+</td>
+<td style="text-align: center;">
+1:3
+</td>
+<td style="text-align: center;">
+1:4
+</td>
+<td style="text-align: center;">
+1:5
+</td>
+<td style="text-align: center;">
+1:6
+</td>
 </tr>
 <tr>
-<td style='text-align: left;'>2nd row</td>
-<td style='text-align: center;'>2:1</td>
-<td style='text-align: center;'>2:2</td>
-<td style='' colspan='1'>&nbsp;</td>
-<td style='text-align: center;'>2:3</td>
-<td style='text-align: center;'>2:4</td>
-<td style='text-align: center;'>2:5</td>
-<td style='text-align: center;'>2:6</td>
+<td style="text-align: left;">
+2nd row
+</td>
+<td style="text-align: center;">
+2:1
+</td>
+<td style="text-align: center;">
+2:2
+</td>
+<td style colspan="1">
+ 
+</td>
+<td style="text-align: center;">
+2:3
+</td>
+<td style="text-align: center;">
+2:4
+</td>
+<td style="text-align: center;">
+2:5
+</td>
+<td style="text-align: center;">
+2:6
+</td>
 </tr>
 <tr>
-<td style='text-align: left;'>3rd row</td>
-<td style='text-align: center;'>3:1</td>
-<td style='text-align: center;'>3:2</td>
-<td style='' colspan='1'>&nbsp;</td>
-<td style='text-align: center;'>3:3</td>
-<td style='text-align: center;'>3:4</td>
-<td style='text-align: center;'>3:5</td>
-<td style='text-align: center;'>3:6</td>
+<td style="text-align: left;">
+3rd row
+</td>
+<td style="text-align: center;">
+3:1
+</td>
+<td style="text-align: center;">
+3:2
+</td>
+<td style colspan="1">
+ 
+</td>
+<td style="text-align: center;">
+3:3
+</td>
+<td style="text-align: center;">
+3:4
+</td>
+<td style="text-align: center;">
+3:5
+</td>
+<td style="text-align: center;">
+3:6
+</td>
 </tr>
 <tr>
-<td style='text-align: left;'>4th row</td>
-<td style='text-align: center;'>4:1</td>
-<td style='text-align: center;'>4:2</td>
-<td style='' colspan='1'>&nbsp;</td>
-<td style='text-align: center;'>4:3</td>
-<td style='text-align: center;'>4:4</td>
-<td style='text-align: center;'>4:5</td>
-<td style='text-align: center;'>4:6</td>
+<td style="text-align: left;">
+4th row
+</td>
+<td style="text-align: center;">
+4:1
+</td>
+<td style="text-align: center;">
+4:2
+</td>
+<td style colspan="1">
+ 
+</td>
+<td style="text-align: center;">
+4:3
+</td>
+<td style="text-align: center;">
+4:4
+</td>
+<td style="text-align: center;">
+4:5
+</td>
+<td style="text-align: center;">
+4:6
+</td>
 </tr>
 <tr>
-<td style='text-align: left;'>5th row</td>
-<td style='text-align: center;'>5:1</td>
-<td style='text-align: center;'>5:2</td>
-<td style='' colspan='1'>&nbsp;</td>
-<td style='text-align: center;'>5:3</td>
-<td style='text-align: center;'>5:4</td>
-<td style='text-align: center;'>5:5</td>
-<td style='text-align: center;'>5:6</td>
+<td style="text-align: left;">
+5th row
+</td>
+<td style="text-align: center;">
+5:1
+</td>
+<td style="text-align: center;">
+5:2
+</td>
+<td style colspan="1">
+ 
+</td>
+<td style="text-align: center;">
+5:3
+</td>
+<td style="text-align: center;">
+5:4
+</td>
+<td style="text-align: center;">
+5:5
+</td>
+<td style="text-align: center;">
+5:6
+</td>
 </tr>
 <tr>
-<td style='text-align: left;'>6th row</td>
-<td style='text-align: center;'>6:1</td>
-<td style='text-align: center;'>6:2</td>
-<td style='' colspan='1'>&nbsp;</td>
-<td style='text-align: center;'>6:3</td>
-<td style='text-align: center;'>6:4</td>
-<td style='text-align: center;'>6:5</td>
-<td style='text-align: center;'>6:6</td>
+<td style="text-align: left;">
+6th row
+</td>
+<td style="text-align: center;">
+6:1
+</td>
+<td style="text-align: center;">
+6:2
+</td>
+<td style colspan="1">
+ 
+</td>
+<td style="text-align: center;">
+6:3
+</td>
+<td style="text-align: center;">
+6:4
+</td>
+<td style="text-align: center;">
+6:5
+</td>
+<td style="text-align: center;">
+6:6
+</td>
 </tr>
 <tr>
-<td style='text-align: left;'>7th row</td>
-<td style='text-align: center;'>7:1</td>
-<td style='text-align: center;'>7:2</td>
-<td style='' colspan='1'>&nbsp;</td>
-<td style='text-align: center;'>7:3</td>
-<td style='text-align: center;'>7:4</td>
-<td style='text-align: center;'>7:5</td>
-<td style='text-align: center;'>7:6</td>
+<td style="text-align: left;">
+7th row
+</td>
+<td style="text-align: center;">
+7:1
+</td>
+<td style="text-align: center;">
+7:2
+</td>
+<td style colspan="1">
+ 
+</td>
+<td style="text-align: center;">
+7:3
+</td>
+<td style="text-align: center;">
+7:4
+</td>
+<td style="text-align: center;">
+7:5
+</td>
+<td style="text-align: center;">
+7:6
+</td>
 </tr>
 <tr>
-<td style='border-bottom: 2px solid grey; text-align: left;'>8th row</td>
-<td style='border-bottom: 2px solid grey; text-align: center;'>8:1</td>
-<td style='border-bottom: 2px solid grey; text-align: center;'>8:2</td>
-<td style='border-bottom: 2px solid grey;' colspan='1'>&nbsp;</td>
-<td style='border-bottom: 2px solid grey; text-align: center;'>8:3</td>
-<td style='border-bottom: 2px solid grey; text-align: center;'>8:4</td>
-<td style='border-bottom: 2px solid grey; text-align: center;'>8:5</td>
-<td style='border-bottom: 2px solid grey; text-align: center;'>8:6</td>
+<td style="border-bottom: 2px solid grey; text-align: left;">
+8th row
+</td>
+<td style="border-bottom: 2px solid grey; text-align: center;">
+8:1
+</td>
+<td style="border-bottom: 2px solid grey; text-align: center;">
+8:2
+</td>
+<td style="border-bottom: 2px solid grey;" colspan="1">
+ 
+</td>
+<td style="border-bottom: 2px solid grey; text-align: center;">
+8:3
+</td>
+<td style="border-bottom: 2px solid grey; text-align: center;">
+8:4
+</td>
+<td style="border-bottom: 2px solid grey; text-align: center;">
+8:5
+</td>
+<td style="border-bottom: 2px solid grey; text-align: center;">
+8:6
+</td>
 </tr>
 </tbody>
 </table>
@@ -763,119 +1735,299 @@ for (nr in <span class="dv">1</span>:<span class="kw">nrow</span>(mx)){
                          <span class="kw">c</span>(<span class="st">&quot;&quot;</span>, <span class="st">&quot;Cgroup 1&quot;</span>, <span class="st">&quot;Cgroup 2&quot;</span>)),
           <span class="dt">n.cgroup =</span> <span class="kw">rbind</span>(<span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="ot">NA</span>),
                            <span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">2</span>)))</code></pre></div>
-<table class='gmisc_table' style='border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;' >
+<table class="gmisc_table" style="border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;">
 <thead>
 <tr>
-<th style='border-top: 2px solid grey;'></th>
-<th colspan='2' style='font-weight: 900; border-top: 2px solid grey; text-align: center;'></th><th style='border-top: 2px solid grey;; border-bottom: hidden;'>&nbsp;</th>
-<th colspan='5' style='font-weight: 900; border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>Column spanners</th>
+<th style="border-top: 2px solid grey;">
+</th>
+<th colspan="2" style="font-weight: 900; border-top: 2px solid grey; text-align: center;">
+</th>
+<th style="border-top: 2px solid grey;; border-bottom: hidden;">
+ 
+</th>
+<th colspan="5" style="font-weight: 900; border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+Column spanners
+</th>
 </tr>
 <tr>
-<th style=''></th>
-<th colspan='2' style='font-weight: 900; text-align: center;'></th><th style='; border-bottom: hidden;'>&nbsp;</th>
-<th colspan='2' style='font-weight: 900; border-bottom: 1px solid grey; text-align: center;'>Cgroup 1</th><th style='; border-bottom: hidden;'>&nbsp;</th>
-<th colspan='2' style='font-weight: 900; border-bottom: 1px solid grey; text-align: center;'>Cgroup 2</th>
+<th style>
+</th>
+<th colspan="2" style="font-weight: 900; text-align: center;">
+</th>
+<th style="; border-bottom: hidden;">
+ 
+</th>
+<th colspan="2" style="font-weight: 900; border-bottom: 1px solid grey; text-align: center;">
+Cgroup 1
+</th>
+<th style="; border-bottom: hidden;">
+ 
+</th>
+<th colspan="2" style="font-weight: 900; border-bottom: 1px solid grey; text-align: center;">
+Cgroup 2
+</th>
 </tr>
 <tr>
-<th style='border-bottom: 1px solid grey;'> </th>
-<th style='border-bottom: 1px solid grey; text-align: center;'>1st hdr</th>
-<th style='border-bottom: 1px solid grey; text-align: center;'>2nd hdr</th>
-<th style='border-bottom: 1px solid grey;' colspan='1'>&nbsp;</th>
-<th style='border-bottom: 1px solid grey; text-align: center;'>3rd hdr</th>
-<th style='border-bottom: 1px solid grey; text-align: center;'>4th hdr</th>
-<th style='border-bottom: 1px solid grey;' colspan='1'>&nbsp;</th>
-<th style='border-bottom: 1px solid grey; text-align: center;'>5th hdr</th>
-<th style='border-bottom: 1px solid grey; text-align: center;'>6th hdr</th>
+<th style="border-bottom: 1px solid grey;">
+</th>
+<th style="border-bottom: 1px solid grey; text-align: center;">
+1st hdr
+</th>
+<th style="border-bottom: 1px solid grey; text-align: center;">
+2nd hdr
+</th>
+<th style="border-bottom: 1px solid grey;" colspan="1">
+ 
+</th>
+<th style="border-bottom: 1px solid grey; text-align: center;">
+3rd hdr
+</th>
+<th style="border-bottom: 1px solid grey; text-align: center;">
+4th hdr
+</th>
+<th style="border-bottom: 1px solid grey;" colspan="1">
+ 
+</th>
+<th style="border-bottom: 1px solid grey; text-align: center;">
+5th hdr
+</th>
+<th style="border-bottom: 1px solid grey; text-align: center;">
+6th hdr
+</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style='text-align: left;'>1st row</td>
-<td style='text-align: center;'>1:1</td>
-<td style='text-align: center;'>1:2</td>
-<td style='' colspan='1'>&nbsp;</td>
-<td style='text-align: center;'>1:3</td>
-<td style='text-align: center;'>1:4</td>
-<td style='' colspan='1'>&nbsp;</td>
-<td style='text-align: center;'>1:5</td>
-<td style='text-align: center;'>1:6</td>
+<td style="text-align: left;">
+1st row
+</td>
+<td style="text-align: center;">
+1:1
+</td>
+<td style="text-align: center;">
+1:2
+</td>
+<td style colspan="1">
+ 
+</td>
+<td style="text-align: center;">
+1:3
+</td>
+<td style="text-align: center;">
+1:4
+</td>
+<td style colspan="1">
+ 
+</td>
+<td style="text-align: center;">
+1:5
+</td>
+<td style="text-align: center;">
+1:6
+</td>
 </tr>
 <tr>
-<td style='text-align: left;'>2nd row</td>
-<td style='text-align: center;'>2:1</td>
-<td style='text-align: center;'>2:2</td>
-<td style='' colspan='1'>&nbsp;</td>
-<td style='text-align: center;'>2:3</td>
-<td style='text-align: center;'>2:4</td>
-<td style='' colspan='1'>&nbsp;</td>
-<td style='text-align: center;'>2:5</td>
-<td style='text-align: center;'>2:6</td>
+<td style="text-align: left;">
+2nd row
+</td>
+<td style="text-align: center;">
+2:1
+</td>
+<td style="text-align: center;">
+2:2
+</td>
+<td style colspan="1">
+ 
+</td>
+<td style="text-align: center;">
+2:3
+</td>
+<td style="text-align: center;">
+2:4
+</td>
+<td style colspan="1">
+ 
+</td>
+<td style="text-align: center;">
+2:5
+</td>
+<td style="text-align: center;">
+2:6
+</td>
 </tr>
 <tr>
-<td style='text-align: left;'>3rd row</td>
-<td style='text-align: center;'>3:1</td>
-<td style='text-align: center;'>3:2</td>
-<td style='' colspan='1'>&nbsp;</td>
-<td style='text-align: center;'>3:3</td>
-<td style='text-align: center;'>3:4</td>
-<td style='' colspan='1'>&nbsp;</td>
-<td style='text-align: center;'>3:5</td>
-<td style='text-align: center;'>3:6</td>
+<td style="text-align: left;">
+3rd row
+</td>
+<td style="text-align: center;">
+3:1
+</td>
+<td style="text-align: center;">
+3:2
+</td>
+<td style colspan="1">
+ 
+</td>
+<td style="text-align: center;">
+3:3
+</td>
+<td style="text-align: center;">
+3:4
+</td>
+<td style colspan="1">
+ 
+</td>
+<td style="text-align: center;">
+3:5
+</td>
+<td style="text-align: center;">
+3:6
+</td>
 </tr>
 <tr>
-<td style='text-align: left;'>4th row</td>
-<td style='text-align: center;'>4:1</td>
-<td style='text-align: center;'>4:2</td>
-<td style='' colspan='1'>&nbsp;</td>
-<td style='text-align: center;'>4:3</td>
-<td style='text-align: center;'>4:4</td>
-<td style='' colspan='1'>&nbsp;</td>
-<td style='text-align: center;'>4:5</td>
-<td style='text-align: center;'>4:6</td>
+<td style="text-align: left;">
+4th row
+</td>
+<td style="text-align: center;">
+4:1
+</td>
+<td style="text-align: center;">
+4:2
+</td>
+<td style colspan="1">
+ 
+</td>
+<td style="text-align: center;">
+4:3
+</td>
+<td style="text-align: center;">
+4:4
+</td>
+<td style colspan="1">
+ 
+</td>
+<td style="text-align: center;">
+4:5
+</td>
+<td style="text-align: center;">
+4:6
+</td>
 </tr>
 <tr>
-<td style='text-align: left;'>5th row</td>
-<td style='text-align: center;'>5:1</td>
-<td style='text-align: center;'>5:2</td>
-<td style='' colspan='1'>&nbsp;</td>
-<td style='text-align: center;'>5:3</td>
-<td style='text-align: center;'>5:4</td>
-<td style='' colspan='1'>&nbsp;</td>
-<td style='text-align: center;'>5:5</td>
-<td style='text-align: center;'>5:6</td>
+<td style="text-align: left;">
+5th row
+</td>
+<td style="text-align: center;">
+5:1
+</td>
+<td style="text-align: center;">
+5:2
+</td>
+<td style colspan="1">
+ 
+</td>
+<td style="text-align: center;">
+5:3
+</td>
+<td style="text-align: center;">
+5:4
+</td>
+<td style colspan="1">
+ 
+</td>
+<td style="text-align: center;">
+5:5
+</td>
+<td style="text-align: center;">
+5:6
+</td>
 </tr>
 <tr>
-<td style='text-align: left;'>6th row</td>
-<td style='text-align: center;'>6:1</td>
-<td style='text-align: center;'>6:2</td>
-<td style='' colspan='1'>&nbsp;</td>
-<td style='text-align: center;'>6:3</td>
-<td style='text-align: center;'>6:4</td>
-<td style='' colspan='1'>&nbsp;</td>
-<td style='text-align: center;'>6:5</td>
-<td style='text-align: center;'>6:6</td>
+<td style="text-align: left;">
+6th row
+</td>
+<td style="text-align: center;">
+6:1
+</td>
+<td style="text-align: center;">
+6:2
+</td>
+<td style colspan="1">
+ 
+</td>
+<td style="text-align: center;">
+6:3
+</td>
+<td style="text-align: center;">
+6:4
+</td>
+<td style colspan="1">
+ 
+</td>
+<td style="text-align: center;">
+6:5
+</td>
+<td style="text-align: center;">
+6:6
+</td>
 </tr>
 <tr>
-<td style='text-align: left;'>7th row</td>
-<td style='text-align: center;'>7:1</td>
-<td style='text-align: center;'>7:2</td>
-<td style='' colspan='1'>&nbsp;</td>
-<td style='text-align: center;'>7:3</td>
-<td style='text-align: center;'>7:4</td>
-<td style='' colspan='1'>&nbsp;</td>
-<td style='text-align: center;'>7:5</td>
-<td style='text-align: center;'>7:6</td>
+<td style="text-align: left;">
+7th row
+</td>
+<td style="text-align: center;">
+7:1
+</td>
+<td style="text-align: center;">
+7:2
+</td>
+<td style colspan="1">
+ 
+</td>
+<td style="text-align: center;">
+7:3
+</td>
+<td style="text-align: center;">
+7:4
+</td>
+<td style colspan="1">
+ 
+</td>
+<td style="text-align: center;">
+7:5
+</td>
+<td style="text-align: center;">
+7:6
+</td>
 </tr>
 <tr>
-<td style='border-bottom: 2px solid grey; text-align: left;'>8th row</td>
-<td style='border-bottom: 2px solid grey; text-align: center;'>8:1</td>
-<td style='border-bottom: 2px solid grey; text-align: center;'>8:2</td>
-<td style='border-bottom: 2px solid grey;' colspan='1'>&nbsp;</td>
-<td style='border-bottom: 2px solid grey; text-align: center;'>8:3</td>
-<td style='border-bottom: 2px solid grey; text-align: center;'>8:4</td>
-<td style='border-bottom: 2px solid grey;' colspan='1'>&nbsp;</td>
-<td style='border-bottom: 2px solid grey; text-align: center;'>8:5</td>
-<td style='border-bottom: 2px solid grey; text-align: center;'>8:6</td>
+<td style="border-bottom: 2px solid grey; text-align: left;">
+8th row
+</td>
+<td style="border-bottom: 2px solid grey; text-align: center;">
+8:1
+</td>
+<td style="border-bottom: 2px solid grey; text-align: center;">
+8:2
+</td>
+<td style="border-bottom: 2px solid grey;" colspan="1">
+ 
+</td>
+<td style="border-bottom: 2px solid grey; text-align: center;">
+8:3
+</td>
+<td style="border-bottom: 2px solid grey; text-align: center;">
+8:4
+</td>
+<td style="border-bottom: 2px solid grey;" colspan="1">
+ 
+</td>
+<td style="border-bottom: 2px solid grey; text-align: center;">
+8:5
+</td>
+<td style="border-bottom: 2px solid grey; text-align: center;">
+8:6
+</td>
 </tr>
 </tbody>
 </table>
@@ -885,128 +2037,326 @@ for (nr in <span class="dv">1</span>:<span class="kw">nrow</span>(mx)){
                          <span class="kw">c</span>(<span class="st">&quot;&quot;</span>, <span class="st">&quot;Cgroup 1&quot;</span>, <span class="st">&quot;Cgroup 2&quot;</span>)),
           <span class="dt">n.cgroup =</span> <span class="kw">rbind</span>(<span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">5</span>,<span class="ot">NA</span>),
                            <span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">1</span>,<span class="dv">3</span>)))</code></pre></div>
-<table class='gmisc_table' style='border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;' >
+<table class="gmisc_table" style="border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;">
 <thead>
 <tr>
-<th style='border-top: 2px solid grey;'></th>
-<th colspan='1' style='font-weight: 900; border-top: 2px solid grey; text-align: center;'></th><th style='border-top: 2px solid grey;; border-bottom: hidden;'>&nbsp;</th>
-<th colspan='7' style='font-weight: 900; border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>Column spanners</th>
+<th style="border-top: 2px solid grey;">
+</th>
+<th colspan="1" style="font-weight: 900; border-top: 2px solid grey; text-align: center;">
+</th>
+<th style="border-top: 2px solid grey;; border-bottom: hidden;">
+ 
+</th>
+<th colspan="7" style="font-weight: 900; border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+Column spanners
+</th>
 </tr>
 <tr>
-<th style=''></th>
-<th colspan='3' style='font-weight: 900; text-align: center;'></th><th style='; border-bottom: hidden;'>&nbsp;</th>
-<th colspan='1' style='font-weight: 900; border-bottom: 1px solid grey; text-align: center;'>Cgroup 1</th><th style='; border-bottom: hidden;'>&nbsp;</th>
-<th colspan='3' style='font-weight: 900; border-bottom: 1px solid grey; text-align: center;'>Cgroup 2</th>
+<th style>
+</th>
+<th colspan="3" style="font-weight: 900; text-align: center;">
+</th>
+<th style="; border-bottom: hidden;">
+ 
+</th>
+<th colspan="1" style="font-weight: 900; border-bottom: 1px solid grey; text-align: center;">
+Cgroup 1
+</th>
+<th style="; border-bottom: hidden;">
+ 
+</th>
+<th colspan="3" style="font-weight: 900; border-bottom: 1px solid grey; text-align: center;">
+Cgroup 2
+</th>
 </tr>
 <tr>
-<th style='border-bottom: 1px solid grey;'> </th>
-<th style='border-bottom: 1px solid grey; text-align: center;'>1st hdr</th>
-<th style='border-bottom: 1px solid grey;' colspan='1'>&nbsp;</th>
-<th style='border-bottom: 1px solid grey; text-align: center;'>2nd hdr</th>
-<th style='border-bottom: 1px solid grey;' colspan='1'>&nbsp;</th>
-<th style='border-bottom: 1px solid grey; text-align: center;'>3rd hdr</th>
-<th style='border-bottom: 1px solid grey;' colspan='1'>&nbsp;</th>
-<th style='border-bottom: 1px solid grey; text-align: center;'>4th hdr</th>
-<th style='border-bottom: 1px solid grey; text-align: center;'>5th hdr</th>
-<th style='border-bottom: 1px solid grey; text-align: center;'>6th hdr</th>
+<th style="border-bottom: 1px solid grey;">
+</th>
+<th style="border-bottom: 1px solid grey; text-align: center;">
+1st hdr
+</th>
+<th style="border-bottom: 1px solid grey;" colspan="1">
+ 
+</th>
+<th style="border-bottom: 1px solid grey; text-align: center;">
+2nd hdr
+</th>
+<th style="border-bottom: 1px solid grey;" colspan="1">
+ 
+</th>
+<th style="border-bottom: 1px solid grey; text-align: center;">
+3rd hdr
+</th>
+<th style="border-bottom: 1px solid grey;" colspan="1">
+ 
+</th>
+<th style="border-bottom: 1px solid grey; text-align: center;">
+4th hdr
+</th>
+<th style="border-bottom: 1px solid grey; text-align: center;">
+5th hdr
+</th>
+<th style="border-bottom: 1px solid grey; text-align: center;">
+6th hdr
+</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style='text-align: left;'>1st row</td>
-<td style='text-align: center;'>1:1</td>
-<td style='' colspan='1'>&nbsp;</td>
-<td style='text-align: center;'>1:2</td>
-<td style='' colspan='1'>&nbsp;</td>
-<td style='text-align: center;'>1:3</td>
-<td style='' colspan='1'>&nbsp;</td>
-<td style='text-align: center;'>1:4</td>
-<td style='text-align: center;'>1:5</td>
-<td style='text-align: center;'>1:6</td>
+<td style="text-align: left;">
+1st row
+</td>
+<td style="text-align: center;">
+1:1
+</td>
+<td style colspan="1">
+ 
+</td>
+<td style="text-align: center;">
+1:2
+</td>
+<td style colspan="1">
+ 
+</td>
+<td style="text-align: center;">
+1:3
+</td>
+<td style colspan="1">
+ 
+</td>
+<td style="text-align: center;">
+1:4
+</td>
+<td style="text-align: center;">
+1:5
+</td>
+<td style="text-align: center;">
+1:6
+</td>
 </tr>
 <tr>
-<td style='text-align: left;'>2nd row</td>
-<td style='text-align: center;'>2:1</td>
-<td style='' colspan='1'>&nbsp;</td>
-<td style='text-align: center;'>2:2</td>
-<td style='' colspan='1'>&nbsp;</td>
-<td style='text-align: center;'>2:3</td>
-<td style='' colspan='1'>&nbsp;</td>
-<td style='text-align: center;'>2:4</td>
-<td style='text-align: center;'>2:5</td>
-<td style='text-align: center;'>2:6</td>
+<td style="text-align: left;">
+2nd row
+</td>
+<td style="text-align: center;">
+2:1
+</td>
+<td style colspan="1">
+ 
+</td>
+<td style="text-align: center;">
+2:2
+</td>
+<td style colspan="1">
+ 
+</td>
+<td style="text-align: center;">
+2:3
+</td>
+<td style colspan="1">
+ 
+</td>
+<td style="text-align: center;">
+2:4
+</td>
+<td style="text-align: center;">
+2:5
+</td>
+<td style="text-align: center;">
+2:6
+</td>
 </tr>
 <tr>
-<td style='text-align: left;'>3rd row</td>
-<td style='text-align: center;'>3:1</td>
-<td style='' colspan='1'>&nbsp;</td>
-<td style='text-align: center;'>3:2</td>
-<td style='' colspan='1'>&nbsp;</td>
-<td style='text-align: center;'>3:3</td>
-<td style='' colspan='1'>&nbsp;</td>
-<td style='text-align: center;'>3:4</td>
-<td style='text-align: center;'>3:5</td>
-<td style='text-align: center;'>3:6</td>
+<td style="text-align: left;">
+3rd row
+</td>
+<td style="text-align: center;">
+3:1
+</td>
+<td style colspan="1">
+ 
+</td>
+<td style="text-align: center;">
+3:2
+</td>
+<td style colspan="1">
+ 
+</td>
+<td style="text-align: center;">
+3:3
+</td>
+<td style colspan="1">
+ 
+</td>
+<td style="text-align: center;">
+3:4
+</td>
+<td style="text-align: center;">
+3:5
+</td>
+<td style="text-align: center;">
+3:6
+</td>
 </tr>
 <tr>
-<td style='text-align: left;'>4th row</td>
-<td style='text-align: center;'>4:1</td>
-<td style='' colspan='1'>&nbsp;</td>
-<td style='text-align: center;'>4:2</td>
-<td style='' colspan='1'>&nbsp;</td>
-<td style='text-align: center;'>4:3</td>
-<td style='' colspan='1'>&nbsp;</td>
-<td style='text-align: center;'>4:4</td>
-<td style='text-align: center;'>4:5</td>
-<td style='text-align: center;'>4:6</td>
+<td style="text-align: left;">
+4th row
+</td>
+<td style="text-align: center;">
+4:1
+</td>
+<td style colspan="1">
+ 
+</td>
+<td style="text-align: center;">
+4:2
+</td>
+<td style colspan="1">
+ 
+</td>
+<td style="text-align: center;">
+4:3
+</td>
+<td style colspan="1">
+ 
+</td>
+<td style="text-align: center;">
+4:4
+</td>
+<td style="text-align: center;">
+4:5
+</td>
+<td style="text-align: center;">
+4:6
+</td>
 </tr>
 <tr>
-<td style='text-align: left;'>5th row</td>
-<td style='text-align: center;'>5:1</td>
-<td style='' colspan='1'>&nbsp;</td>
-<td style='text-align: center;'>5:2</td>
-<td style='' colspan='1'>&nbsp;</td>
-<td style='text-align: center;'>5:3</td>
-<td style='' colspan='1'>&nbsp;</td>
-<td style='text-align: center;'>5:4</td>
-<td style='text-align: center;'>5:5</td>
-<td style='text-align: center;'>5:6</td>
+<td style="text-align: left;">
+5th row
+</td>
+<td style="text-align: center;">
+5:1
+</td>
+<td style colspan="1">
+ 
+</td>
+<td style="text-align: center;">
+5:2
+</td>
+<td style colspan="1">
+ 
+</td>
+<td style="text-align: center;">
+5:3
+</td>
+<td style colspan="1">
+ 
+</td>
+<td style="text-align: center;">
+5:4
+</td>
+<td style="text-align: center;">
+5:5
+</td>
+<td style="text-align: center;">
+5:6
+</td>
 </tr>
 <tr>
-<td style='text-align: left;'>6th row</td>
-<td style='text-align: center;'>6:1</td>
-<td style='' colspan='1'>&nbsp;</td>
-<td style='text-align: center;'>6:2</td>
-<td style='' colspan='1'>&nbsp;</td>
-<td style='text-align: center;'>6:3</td>
-<td style='' colspan='1'>&nbsp;</td>
-<td style='text-align: center;'>6:4</td>
-<td style='text-align: center;'>6:5</td>
-<td style='text-align: center;'>6:6</td>
+<td style="text-align: left;">
+6th row
+</td>
+<td style="text-align: center;">
+6:1
+</td>
+<td style colspan="1">
+ 
+</td>
+<td style="text-align: center;">
+6:2
+</td>
+<td style colspan="1">
+ 
+</td>
+<td style="text-align: center;">
+6:3
+</td>
+<td style colspan="1">
+ 
+</td>
+<td style="text-align: center;">
+6:4
+</td>
+<td style="text-align: center;">
+6:5
+</td>
+<td style="text-align: center;">
+6:6
+</td>
 </tr>
 <tr>
-<td style='text-align: left;'>7th row</td>
-<td style='text-align: center;'>7:1</td>
-<td style='' colspan='1'>&nbsp;</td>
-<td style='text-align: center;'>7:2</td>
-<td style='' colspan='1'>&nbsp;</td>
-<td style='text-align: center;'>7:3</td>
-<td style='' colspan='1'>&nbsp;</td>
-<td style='text-align: center;'>7:4</td>
-<td style='text-align: center;'>7:5</td>
-<td style='text-align: center;'>7:6</td>
+<td style="text-align: left;">
+7th row
+</td>
+<td style="text-align: center;">
+7:1
+</td>
+<td style colspan="1">
+ 
+</td>
+<td style="text-align: center;">
+7:2
+</td>
+<td style colspan="1">
+ 
+</td>
+<td style="text-align: center;">
+7:3
+</td>
+<td style colspan="1">
+ 
+</td>
+<td style="text-align: center;">
+7:4
+</td>
+<td style="text-align: center;">
+7:5
+</td>
+<td style="text-align: center;">
+7:6
+</td>
 </tr>
 <tr>
-<td style='border-bottom: 2px solid grey; text-align: left;'>8th row</td>
-<td style='border-bottom: 2px solid grey; text-align: center;'>8:1</td>
-<td style='border-bottom: 2px solid grey;' colspan='1'>&nbsp;</td>
-<td style='border-bottom: 2px solid grey; text-align: center;'>8:2</td>
-<td style='border-bottom: 2px solid grey;' colspan='1'>&nbsp;</td>
-<td style='border-bottom: 2px solid grey; text-align: center;'>8:3</td>
-<td style='border-bottom: 2px solid grey;' colspan='1'>&nbsp;</td>
-<td style='border-bottom: 2px solid grey; text-align: center;'>8:4</td>
-<td style='border-bottom: 2px solid grey; text-align: center;'>8:5</td>
-<td style='border-bottom: 2px solid grey; text-align: center;'>8:6</td>
+<td style="border-bottom: 2px solid grey; text-align: left;">
+8th row
+</td>
+<td style="border-bottom: 2px solid grey; text-align: center;">
+8:1
+</td>
+<td style="border-bottom: 2px solid grey;" colspan="1">
+ 
+</td>
+<td style="border-bottom: 2px solid grey; text-align: center;">
+8:2
+</td>
+<td style="border-bottom: 2px solid grey;" colspan="1">
+ 
+</td>
+<td style="border-bottom: 2px solid grey; text-align: center;">
+8:3
+</td>
+<td style="border-bottom: 2px solid grey;" colspan="1">
+ 
+</td>
+<td style="border-bottom: 2px solid grey; text-align: center;">
+8:4
+</td>
+<td style="border-bottom: 2px solid grey; text-align: center;">
+8:5
+</td>
+<td style="border-bottom: 2px solid grey; text-align: center;">
+8:6
+</td>
 </tr>
 </tbody>
 </table>
@@ -1017,93 +2367,230 @@ for (nr in <span class="dv">1</span>:<span class="kw">nrow</span>(mx)){
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">htmlTable</span>(mx, 
           <span class="dt">tspanner =</span> <span class="kw">paste</span>(<span class="st">&quot;Spanner&quot;</span>, LETTERS[<span class="dv">1</span>:<span class="dv">3</span>]),
           <span class="dt">n.tspanner =</span> <span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">4</span>,<span class="kw">nrow</span>(mx) -<span class="st"> </span><span class="dv">6</span>))</code></pre></div>
-<table class='gmisc_table' style='border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;' >
+<table class="gmisc_table" style="border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;">
 <thead>
 <tr>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey;'> </th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>1st hdr</th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>2nd hdr</th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>3rd hdr</th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>4th hdr</th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>5th hdr</th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>6th hdr</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey;">
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+1st hdr
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+2nd hdr
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+3rd hdr
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+4th hdr
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+5th hdr
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+6th hdr
+</th>
 </tr>
 </thead>
 <tbody>
-<tr><td colspan='7' style='font-weight: 900; text-align: left;'>Spanner A</td></tr>
 <tr>
-<td style='text-align: left;'>1st row</td>
-<td style='text-align: center;'>1:1</td>
-<td style='text-align: center;'>1:2</td>
-<td style='text-align: center;'>1:3</td>
-<td style='text-align: center;'>1:4</td>
-<td style='text-align: center;'>1:5</td>
-<td style='text-align: center;'>1:6</td>
+<td colspan="7" style="font-weight: 900; text-align: left;">
+Spanner A
+</td>
 </tr>
 <tr>
-<td style='text-align: left;'>2nd row</td>
-<td style='text-align: center;'>2:1</td>
-<td style='text-align: center;'>2:2</td>
-<td style='text-align: center;'>2:3</td>
-<td style='text-align: center;'>2:4</td>
-<td style='text-align: center;'>2:5</td>
-<td style='text-align: center;'>2:6</td>
-</tr>
-<tr><td colspan='7' style='font-weight: 900; text-align: left; border-top: 1px solid #BEBEBE;'>Spanner B</td></tr>
-<tr>
-<td style='text-align: left;'>3rd row</td>
-<td style='text-align: center;'>3:1</td>
-<td style='text-align: center;'>3:2</td>
-<td style='text-align: center;'>3:3</td>
-<td style='text-align: center;'>3:4</td>
-<td style='text-align: center;'>3:5</td>
-<td style='text-align: center;'>3:6</td>
-</tr>
-<tr>
-<td style='text-align: left;'>4th row</td>
-<td style='text-align: center;'>4:1</td>
-<td style='text-align: center;'>4:2</td>
-<td style='text-align: center;'>4:3</td>
-<td style='text-align: center;'>4:4</td>
-<td style='text-align: center;'>4:5</td>
-<td style='text-align: center;'>4:6</td>
+<td style="text-align: left;">
+1st row
+</td>
+<td style="text-align: center;">
+1:1
+</td>
+<td style="text-align: center;">
+1:2
+</td>
+<td style="text-align: center;">
+1:3
+</td>
+<td style="text-align: center;">
+1:4
+</td>
+<td style="text-align: center;">
+1:5
+</td>
+<td style="text-align: center;">
+1:6
+</td>
 </tr>
 <tr>
-<td style='text-align: left;'>5th row</td>
-<td style='text-align: center;'>5:1</td>
-<td style='text-align: center;'>5:2</td>
-<td style='text-align: center;'>5:3</td>
-<td style='text-align: center;'>5:4</td>
-<td style='text-align: center;'>5:5</td>
-<td style='text-align: center;'>5:6</td>
+<td style="text-align: left;">
+2nd row
+</td>
+<td style="text-align: center;">
+2:1
+</td>
+<td style="text-align: center;">
+2:2
+</td>
+<td style="text-align: center;">
+2:3
+</td>
+<td style="text-align: center;">
+2:4
+</td>
+<td style="text-align: center;">
+2:5
+</td>
+<td style="text-align: center;">
+2:6
+</td>
 </tr>
 <tr>
-<td style='text-align: left;'>6th row</td>
-<td style='text-align: center;'>6:1</td>
-<td style='text-align: center;'>6:2</td>
-<td style='text-align: center;'>6:3</td>
-<td style='text-align: center;'>6:4</td>
-<td style='text-align: center;'>6:5</td>
-<td style='text-align: center;'>6:6</td>
-</tr>
-<tr><td colspan='7' style='font-weight: 900; text-align: left; border-top: 1px solid #BEBEBE;'>Spanner C</td></tr>
-<tr>
-<td style='text-align: left;'>7th row</td>
-<td style='text-align: center;'>7:1</td>
-<td style='text-align: center;'>7:2</td>
-<td style='text-align: center;'>7:3</td>
-<td style='text-align: center;'>7:4</td>
-<td style='text-align: center;'>7:5</td>
-<td style='text-align: center;'>7:6</td>
+<td colspan="7" style="font-weight: 900; text-align: left; border-top: 1px solid #BEBEBE;">
+Spanner B
+</td>
 </tr>
 <tr>
-<td style='border-bottom: 2px solid grey; text-align: left;'>8th row</td>
-<td style='border-bottom: 2px solid grey; text-align: center;'>8:1</td>
-<td style='border-bottom: 2px solid grey; text-align: center;'>8:2</td>
-<td style='border-bottom: 2px solid grey; text-align: center;'>8:3</td>
-<td style='border-bottom: 2px solid grey; text-align: center;'>8:4</td>
-<td style='border-bottom: 2px solid grey; text-align: center;'>8:5</td>
-<td style='border-bottom: 2px solid grey; text-align: center;'>8:6</td>
+<td style="text-align: left;">
+3rd row
+</td>
+<td style="text-align: center;">
+3:1
+</td>
+<td style="text-align: center;">
+3:2
+</td>
+<td style="text-align: center;">
+3:3
+</td>
+<td style="text-align: center;">
+3:4
+</td>
+<td style="text-align: center;">
+3:5
+</td>
+<td style="text-align: center;">
+3:6
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+4th row
+</td>
+<td style="text-align: center;">
+4:1
+</td>
+<td style="text-align: center;">
+4:2
+</td>
+<td style="text-align: center;">
+4:3
+</td>
+<td style="text-align: center;">
+4:4
+</td>
+<td style="text-align: center;">
+4:5
+</td>
+<td style="text-align: center;">
+4:6
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+5th row
+</td>
+<td style="text-align: center;">
+5:1
+</td>
+<td style="text-align: center;">
+5:2
+</td>
+<td style="text-align: center;">
+5:3
+</td>
+<td style="text-align: center;">
+5:4
+</td>
+<td style="text-align: center;">
+5:5
+</td>
+<td style="text-align: center;">
+5:6
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+6th row
+</td>
+<td style="text-align: center;">
+6:1
+</td>
+<td style="text-align: center;">
+6:2
+</td>
+<td style="text-align: center;">
+6:3
+</td>
+<td style="text-align: center;">
+6:4
+</td>
+<td style="text-align: center;">
+6:5
+</td>
+<td style="text-align: center;">
+6:6
+</td>
+</tr>
+<tr>
+<td colspan="7" style="font-weight: 900; text-align: left; border-top: 1px solid #BEBEBE;">
+Spanner C
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+7th row
+</td>
+<td style="text-align: center;">
+7:1
+</td>
+<td style="text-align: center;">
+7:2
+</td>
+<td style="text-align: center;">
+7:3
+</td>
+<td style="text-align: center;">
+7:4
+</td>
+<td style="text-align: center;">
+7:5
+</td>
+<td style="text-align: center;">
+7:6
+</td>
+</tr>
+<tr>
+<td style="border-bottom: 2px solid grey; text-align: left;">
+8th row
+</td>
+<td style="border-bottom: 2px solid grey; text-align: center;">
+8:1
+</td>
+<td style="border-bottom: 2px solid grey; text-align: center;">
+8:2
+</td>
+<td style="border-bottom: 2px solid grey; text-align: center;">
+8:3
+</td>
+<td style="border-bottom: 2px solid grey; text-align: center;">
+8:4
+</td>
+<td style="border-bottom: 2px solid grey; text-align: center;">
+8:5
+</td>
+<td style="border-bottom: 2px solid grey; text-align: center;">
+8:6
+</td>
 </tr>
 </tbody>
 </table>
@@ -1112,45 +2599,100 @@ for (nr in <span class="dv">1</span>:<span class="kw">nrow</span>(mx)){
 <h2>Total row</h2>
 <p>Many financial tables use the concept of a total row at the end that sums the above elements:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">htmlTable</span>(mx[<span class="dv">1</span>:<span class="dv">3</span>,], <span class="dt">total=</span><span class="ot">TRUE</span>)</code></pre></div>
-<table class='gmisc_table' style='border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;' >
+<table class="gmisc_table" style="border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;">
 <thead>
 <tr>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey;'> </th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>1st hdr</th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>2nd hdr</th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>3rd hdr</th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>4th hdr</th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>5th hdr</th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>6th hdr</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey;">
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+1st hdr
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+2nd hdr
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+3rd hdr
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+4th hdr
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+5th hdr
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+6th hdr
+</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style='text-align: left;'>1st row</td>
-<td style='text-align: center;'>1:1</td>
-<td style='text-align: center;'>1:2</td>
-<td style='text-align: center;'>1:3</td>
-<td style='text-align: center;'>1:4</td>
-<td style='text-align: center;'>1:5</td>
-<td style='text-align: center;'>1:6</td>
+<td style="text-align: left;">
+1st row
+</td>
+<td style="text-align: center;">
+1:1
+</td>
+<td style="text-align: center;">
+1:2
+</td>
+<td style="text-align: center;">
+1:3
+</td>
+<td style="text-align: center;">
+1:4
+</td>
+<td style="text-align: center;">
+1:5
+</td>
+<td style="text-align: center;">
+1:6
+</td>
 </tr>
 <tr>
-<td style='text-align: left;'>2nd row</td>
-<td style='text-align: center;'>2:1</td>
-<td style='text-align: center;'>2:2</td>
-<td style='text-align: center;'>2:3</td>
-<td style='text-align: center;'>2:4</td>
-<td style='text-align: center;'>2:5</td>
-<td style='text-align: center;'>2:6</td>
+<td style="text-align: left;">
+2nd row
+</td>
+<td style="text-align: center;">
+2:1
+</td>
+<td style="text-align: center;">
+2:2
+</td>
+<td style="text-align: center;">
+2:3
+</td>
+<td style="text-align: center;">
+2:4
+</td>
+<td style="text-align: center;">
+2:5
+</td>
+<td style="text-align: center;">
+2:6
+</td>
 </tr>
 <tr>
-<td style='border-bottom: 2px solid grey; border-top: 1px solid #BEBEBE; font-weight: 900; text-align: left;'>3rd row</td>
-<td style='border-bottom: 2px solid grey; border-top: 1px solid #BEBEBE; font-weight: 900; text-align: center;'>3:1</td>
-<td style='border-bottom: 2px solid grey; border-top: 1px solid #BEBEBE; font-weight: 900; text-align: center;'>3:2</td>
-<td style='border-bottom: 2px solid grey; border-top: 1px solid #BEBEBE; font-weight: 900; text-align: center;'>3:3</td>
-<td style='border-bottom: 2px solid grey; border-top: 1px solid #BEBEBE; font-weight: 900; text-align: center;'>3:4</td>
-<td style='border-bottom: 2px solid grey; border-top: 1px solid #BEBEBE; font-weight: 900; text-align: center;'>3:5</td>
-<td style='border-bottom: 2px solid grey; border-top: 1px solid #BEBEBE; font-weight: 900; text-align: center;'>3:6</td>
+<td style="border-bottom: 2px solid grey; border-top: 1px solid #BEBEBE; font-weight: 900; text-align: left;">
+3rd row
+</td>
+<td style="border-bottom: 2px solid grey; border-top: 1px solid #BEBEBE; font-weight: 900; text-align: center;">
+3:1
+</td>
+<td style="border-bottom: 2px solid grey; border-top: 1px solid #BEBEBE; font-weight: 900; text-align: center;">
+3:2
+</td>
+<td style="border-bottom: 2px solid grey; border-top: 1px solid #BEBEBE; font-weight: 900; text-align: center;">
+3:3
+</td>
+<td style="border-bottom: 2px solid grey; border-top: 1px solid #BEBEBE; font-weight: 900; text-align: center;">
+3:4
+</td>
+<td style="border-bottom: 2px solid grey; border-top: 1px solid #BEBEBE; font-weight: 900; text-align: center;">
+3:5
+</td>
+<td style="border-bottom: 2px solid grey; border-top: 1px solid #BEBEBE; font-weight: 900; text-align: center;">
+3:6
+</td>
 </tr>
 </tbody>
 </table>
@@ -1162,93 +2704,230 @@ for (nr in <span class="dv">1</span>:<span class="kw">nrow</span>(mx)){
                         <span class="st">&quot;border-top: 1px solid grey; font-weight: 900&quot;</span>),
           <span class="dt">tspanner =</span> <span class="kw">paste</span>(<span class="st">&quot;Spanner&quot;</span>, LETTERS[<span class="dv">1</span>:<span class="dv">3</span>]),
           <span class="dt">n.tspanner =</span> <span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">4</span>,<span class="kw">nrow</span>(mx) -<span class="st"> </span><span class="dv">6</span>))</code></pre></div>
-<table class='gmisc_table' style='border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;' >
+<table class="gmisc_table" style="border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;">
 <thead>
 <tr>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey;'> </th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>1st hdr</th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>2nd hdr</th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>3rd hdr</th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>4th hdr</th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>5th hdr</th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>6th hdr</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey;">
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+1st hdr
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+2nd hdr
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+3rd hdr
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+4th hdr
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+5th hdr
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+6th hdr
+</th>
 </tr>
 </thead>
 <tbody>
-<tr><td colspan='7' style='font-weight: 900; text-align: left;'>Spanner A</td></tr>
 <tr>
-<td style='text-align: left;'>1st row</td>
-<td style='text-align: center;'>1:1</td>
-<td style='text-align: center;'>1:2</td>
-<td style='text-align: center;'>1:3</td>
-<td style='text-align: center;'>1:4</td>
-<td style='text-align: center;'>1:5</td>
-<td style='text-align: center;'>1:6</td>
+<td colspan="7" style="font-weight: 900; text-align: left;">
+Spanner A
+</td>
 </tr>
 <tr>
-<td style='border-top: 1px dashed grey; text-align: left;'>2nd row</td>
-<td style='border-top: 1px dashed grey; text-align: center;'>2:1</td>
-<td style='border-top: 1px dashed grey; text-align: center;'>2:2</td>
-<td style='border-top: 1px dashed grey; text-align: center;'>2:3</td>
-<td style='border-top: 1px dashed grey; text-align: center;'>2:4</td>
-<td style='border-top: 1px dashed grey; text-align: center;'>2:5</td>
-<td style='border-top: 1px dashed grey; text-align: center;'>2:6</td>
-</tr>
-<tr><td colspan='7' style='font-weight: 900; text-align: left; border-top: 1px solid #BEBEBE;'>Spanner B</td></tr>
-<tr>
-<td style='text-align: left;'>3rd row</td>
-<td style='text-align: center;'>3:1</td>
-<td style='text-align: center;'>3:2</td>
-<td style='text-align: center;'>3:3</td>
-<td style='text-align: center;'>3:4</td>
-<td style='text-align: center;'>3:5</td>
-<td style='text-align: center;'>3:6</td>
-</tr>
-<tr>
-<td style='text-align: left;'>4th row</td>
-<td style='text-align: center;'>4:1</td>
-<td style='text-align: center;'>4:2</td>
-<td style='text-align: center;'>4:3</td>
-<td style='text-align: center;'>4:4</td>
-<td style='text-align: center;'>4:5</td>
-<td style='text-align: center;'>4:6</td>
+<td style="text-align: left;">
+1st row
+</td>
+<td style="text-align: center;">
+1:1
+</td>
+<td style="text-align: center;">
+1:2
+</td>
+<td style="text-align: center;">
+1:3
+</td>
+<td style="text-align: center;">
+1:4
+</td>
+<td style="text-align: center;">
+1:5
+</td>
+<td style="text-align: center;">
+1:6
+</td>
 </tr>
 <tr>
-<td style='text-align: left;'>5th row</td>
-<td style='text-align: center;'>5:1</td>
-<td style='text-align: center;'>5:2</td>
-<td style='text-align: center;'>5:3</td>
-<td style='text-align: center;'>5:4</td>
-<td style='text-align: center;'>5:5</td>
-<td style='text-align: center;'>5:6</td>
+<td style="border-top: 1px dashed grey; text-align: left;">
+2nd row
+</td>
+<td style="border-top: 1px dashed grey; text-align: center;">
+2:1
+</td>
+<td style="border-top: 1px dashed grey; text-align: center;">
+2:2
+</td>
+<td style="border-top: 1px dashed grey; text-align: center;">
+2:3
+</td>
+<td style="border-top: 1px dashed grey; text-align: center;">
+2:4
+</td>
+<td style="border-top: 1px dashed grey; text-align: center;">
+2:5
+</td>
+<td style="border-top: 1px dashed grey; text-align: center;">
+2:6
+</td>
 </tr>
 <tr>
-<td style='border-top: 1px dashed grey; text-align: left;'>6th row</td>
-<td style='border-top: 1px dashed grey; text-align: center;'>6:1</td>
-<td style='border-top: 1px dashed grey; text-align: center;'>6:2</td>
-<td style='border-top: 1px dashed grey; text-align: center;'>6:3</td>
-<td style='border-top: 1px dashed grey; text-align: center;'>6:4</td>
-<td style='border-top: 1px dashed grey; text-align: center;'>6:5</td>
-<td style='border-top: 1px dashed grey; text-align: center;'>6:6</td>
-</tr>
-<tr><td colspan='7' style='font-weight: 900; text-align: left; border-top: 1px solid #BEBEBE;'>Spanner C</td></tr>
-<tr>
-<td style='text-align: left;'>7th row</td>
-<td style='text-align: center;'>7:1</td>
-<td style='text-align: center;'>7:2</td>
-<td style='text-align: center;'>7:3</td>
-<td style='text-align: center;'>7:4</td>
-<td style='text-align: center;'>7:5</td>
-<td style='text-align: center;'>7:6</td>
+<td colspan="7" style="font-weight: 900; text-align: left; border-top: 1px solid #BEBEBE;">
+Spanner B
+</td>
 </tr>
 <tr>
-<td style='border-bottom: 2px solid grey; border-top: 1px solid grey; font-weight: 900; text-align: left;'>8th row</td>
-<td style='border-bottom: 2px solid grey; border-top: 1px solid grey; font-weight: 900; text-align: center;'>8:1</td>
-<td style='border-bottom: 2px solid grey; border-top: 1px solid grey; font-weight: 900; text-align: center;'>8:2</td>
-<td style='border-bottom: 2px solid grey; border-top: 1px solid grey; font-weight: 900; text-align: center;'>8:3</td>
-<td style='border-bottom: 2px solid grey; border-top: 1px solid grey; font-weight: 900; text-align: center;'>8:4</td>
-<td style='border-bottom: 2px solid grey; border-top: 1px solid grey; font-weight: 900; text-align: center;'>8:5</td>
-<td style='border-bottom: 2px solid grey; border-top: 1px solid grey; font-weight: 900; text-align: center;'>8:6</td>
+<td style="text-align: left;">
+3rd row
+</td>
+<td style="text-align: center;">
+3:1
+</td>
+<td style="text-align: center;">
+3:2
+</td>
+<td style="text-align: center;">
+3:3
+</td>
+<td style="text-align: center;">
+3:4
+</td>
+<td style="text-align: center;">
+3:5
+</td>
+<td style="text-align: center;">
+3:6
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+4th row
+</td>
+<td style="text-align: center;">
+4:1
+</td>
+<td style="text-align: center;">
+4:2
+</td>
+<td style="text-align: center;">
+4:3
+</td>
+<td style="text-align: center;">
+4:4
+</td>
+<td style="text-align: center;">
+4:5
+</td>
+<td style="text-align: center;">
+4:6
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+5th row
+</td>
+<td style="text-align: center;">
+5:1
+</td>
+<td style="text-align: center;">
+5:2
+</td>
+<td style="text-align: center;">
+5:3
+</td>
+<td style="text-align: center;">
+5:4
+</td>
+<td style="text-align: center;">
+5:5
+</td>
+<td style="text-align: center;">
+5:6
+</td>
+</tr>
+<tr>
+<td style="border-top: 1px dashed grey; text-align: left;">
+6th row
+</td>
+<td style="border-top: 1px dashed grey; text-align: center;">
+6:1
+</td>
+<td style="border-top: 1px dashed grey; text-align: center;">
+6:2
+</td>
+<td style="border-top: 1px dashed grey; text-align: center;">
+6:3
+</td>
+<td style="border-top: 1px dashed grey; text-align: center;">
+6:4
+</td>
+<td style="border-top: 1px dashed grey; text-align: center;">
+6:5
+</td>
+<td style="border-top: 1px dashed grey; text-align: center;">
+6:6
+</td>
+</tr>
+<tr>
+<td colspan="7" style="font-weight: 900; text-align: left; border-top: 1px solid #BEBEBE;">
+Spanner C
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+7th row
+</td>
+<td style="text-align: center;">
+7:1
+</td>
+<td style="text-align: center;">
+7:2
+</td>
+<td style="text-align: center;">
+7:3
+</td>
+<td style="text-align: center;">
+7:4
+</td>
+<td style="text-align: center;">
+7:5
+</td>
+<td style="text-align: center;">
+7:6
+</td>
+</tr>
+<tr>
+<td style="border-bottom: 2px solid grey; border-top: 1px solid grey; font-weight: 900; text-align: left;">
+8th row
+</td>
+<td style="border-bottom: 2px solid grey; border-top: 1px solid grey; font-weight: 900; text-align: center;">
+8:1
+</td>
+<td style="border-bottom: 2px solid grey; border-top: 1px solid grey; font-weight: 900; text-align: center;">
+8:2
+</td>
+<td style="border-bottom: 2px solid grey; border-top: 1px solid grey; font-weight: 900; text-align: center;">
+8:3
+</td>
+<td style="border-bottom: 2px solid grey; border-top: 1px solid grey; font-weight: 900; text-align: center;">
+8:4
+</td>
+<td style="border-bottom: 2px solid grey; border-top: 1px solid grey; font-weight: 900; text-align: center;">
+8:5
+</td>
+<td style="border-bottom: 2px solid grey; border-top: 1px solid grey; font-weight: 900; text-align: center;">
+8:6
+</td>
 </tr>
 </tbody>
 </table>
@@ -1259,26 +2938,46 @@ for (nr in <span class="dv">1</span>:<span class="kw">nrow</span>(mx)){
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">options</span>(<span class="dt">table_counter =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">htmlTable</span>(mx[<span class="dv">1</span>:<span class="dv">2</span>,<span class="dv">1</span>:<span class="dv">2</span>], 
           <span class="dt">caption=</span><span class="st">&quot;A table caption with a numbering&quot;</span>)</code></pre></div>
-<table class='gmisc_table' style='border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;'  id='table_1'>
+<table class="gmisc_table" style="border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;" id="table_1">
 <thead>
-<tr><td colspan='3' style='text-align: left;'>
-Table 1:  A table caption with a numbering</td></tr>
 <tr>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey;'> </th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>1st hdr</th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>2nd hdr</th>
+<td colspan="3" style="text-align: left;">
+Table 1: A table caption with a numbering
+</td>
+</tr>
+<tr>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey;">
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+1st hdr
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+2nd hdr
+</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style='text-align: left;'>1st row</td>
-<td style='text-align: center;'>1:1</td>
-<td style='text-align: center;'>1:2</td>
+<td style="text-align: left;">
+1st row
+</td>
+<td style="text-align: center;">
+1:1
+</td>
+<td style="text-align: center;">
+1:2
+</td>
 </tr>
 <tr>
-<td style='border-bottom: 2px solid grey; text-align: left;'>2nd row</td>
-<td style='border-bottom: 2px solid grey; text-align: center;'>2:1</td>
-<td style='border-bottom: 2px solid grey; text-align: center;'>2:2</td>
+<td style="border-bottom: 2px solid grey; text-align: left;">
+2nd row
+</td>
+<td style="border-bottom: 2px solid grey; text-align: center;">
+2:1
+</td>
+<td style="border-bottom: 2px solid grey; text-align: center;">
+2:2
+</td>
 </tr>
 </tbody>
 </table>
@@ -1289,26 +2988,46 @@ Table 1:  A table caption with a numbering</td></tr>
 <pre><code>## [1] 2</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">htmlTable</span>(mx[<span class="dv">1</span>:<span class="dv">2</span>,<span class="dv">1</span>:<span class="dv">2</span>], 
           <span class="dt">caption=</span><span class="st">&quot;Another table with numbering&quot;</span>)</code></pre></div>
-<table class='gmisc_table' style='border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;'  id='table_2'>
+<table class="gmisc_table" style="border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;" id="table_2">
 <thead>
-<tr><td colspan='3' style='text-align: left;'>
-Table 2:  Another table with numbering</td></tr>
 <tr>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey;'> </th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>1st hdr</th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>2nd hdr</th>
+<td colspan="3" style="text-align: left;">
+Table 2: Another table with numbering
+</td>
+</tr>
+<tr>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey;">
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+1st hdr
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+2nd hdr
+</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style='text-align: left;'>1st row</td>
-<td style='text-align: center;'>1:1</td>
-<td style='text-align: center;'>1:2</td>
+<td style="text-align: left;">
+1st row
+</td>
+<td style="text-align: center;">
+1:1
+</td>
+<td style="text-align: center;">
+1:2
+</td>
 </tr>
 <tr>
-<td style='border-bottom: 2px solid grey; text-align: left;'>2nd row</td>
-<td style='border-bottom: 2px solid grey; text-align: center;'>2:1</td>
-<td style='border-bottom: 2px solid grey; text-align: center;'>2:2</td>
+<td style="border-bottom: 2px solid grey; text-align: left;">
+2nd row
+</td>
+<td style="border-bottom: 2px solid grey; text-align: center;">
+2:1
+</td>
+<td style="border-bottom: 2px solid grey; text-align: center;">
+2:2
+</td>
 </tr>
 </tbody>
 </table>
@@ -1320,28 +3039,50 @@ Table 2:  Another table with numbering</td></tr>
 <p>The footer usually contains specifics regarding variables and is always located at the foot of the table:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">htmlTable</span>(mx[<span class="dv">1</span>:<span class="dv">2</span>,<span class="dv">1</span>:<span class="dv">2</span>], 
           <span class="dt">tfoot=</span><span class="st">&quot;A table footer&quot;</span>)</code></pre></div>
-<table class='gmisc_table' style='border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;' >
+<table class="gmisc_table" style="border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;">
 <thead>
 <tr>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey;'> </th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>1st hdr</th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>2nd hdr</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey;">
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+1st hdr
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+2nd hdr
+</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style='text-align: left;'>1st row</td>
-<td style='text-align: center;'>1:1</td>
-<td style='text-align: center;'>1:2</td>
+<td style="text-align: left;">
+1st row
+</td>
+<td style="text-align: center;">
+1:1
+</td>
+<td style="text-align: center;">
+1:2
+</td>
 </tr>
 <tr>
-<td style='border-bottom: 2px solid grey; text-align: left;'>2nd row</td>
-<td style='border-bottom: 2px solid grey; text-align: center;'>2:1</td>
-<td style='border-bottom: 2px solid grey; text-align: center;'>2:2</td>
+<td style="border-bottom: 2px solid grey; text-align: left;">
+2nd row
+</td>
+<td style="border-bottom: 2px solid grey; text-align: center;">
+2:1
+</td>
+<td style="border-bottom: 2px solid grey; text-align: center;">
+2:2
+</td>
 </tr>
 </tbody>
-<tfoot><tr><td colspan='3'>
-A table footer</td></tr></tfoot>
+<tfoot>
+<tr>
+<td colspan="3">
+A table footer
+</td>
+</tr>
+</tfoot>
 </table>
 </div>
 <div id="zebra-coloring-or-banded-colors" class="section level2">
@@ -1349,90 +3090,215 @@ A table footer</td></tr></tfoot>
 <p>Zebra coloring is also know as an alternating color pattern or row shading. It is most commonly applied to rows:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">htmlTable</span>(mx, 
           <span class="dt">col.rgroup =</span> <span class="kw">c</span>(<span class="st">&quot;none&quot;</span>, <span class="st">&quot;#F7F7F7&quot;</span>))</code></pre></div>
-<table class='gmisc_table' style='border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;' >
+<table class="gmisc_table" style="border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;">
 <thead>
 <tr>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey;'> </th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>1st hdr</th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>2nd hdr</th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>3rd hdr</th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>4th hdr</th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>5th hdr</th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>6th hdr</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey;">
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+1st hdr
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+2nd hdr
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+3rd hdr
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+4th hdr
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+5th hdr
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+6th hdr
+</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style='text-align: left;'>1st row</td>
-<td style='text-align: center;'>1:1</td>
-<td style='text-align: center;'>1:2</td>
-<td style='text-align: center;'>1:3</td>
-<td style='text-align: center;'>1:4</td>
-<td style='text-align: center;'>1:5</td>
-<td style='text-align: center;'>1:6</td>
+<td style="text-align: left;">
+1st row
+</td>
+<td style="text-align: center;">
+1:1
+</td>
+<td style="text-align: center;">
+1:2
+</td>
+<td style="text-align: center;">
+1:3
+</td>
+<td style="text-align: center;">
+1:4
+</td>
+<td style="text-align: center;">
+1:5
+</td>
+<td style="text-align: center;">
+1:6
+</td>
 </tr>
-<tr style='background-color: #f7f7f7;'>
-<td style='background-color: #f7f7f7; text-align: left;'>2nd row</td>
-<td style='background-color: #f7f7f7; text-align: center;'>2:1</td>
-<td style='background-color: #f7f7f7; text-align: center;'>2:2</td>
-<td style='background-color: #f7f7f7; text-align: center;'>2:3</td>
-<td style='background-color: #f7f7f7; text-align: center;'>2:4</td>
-<td style='background-color: #f7f7f7; text-align: center;'>2:5</td>
-<td style='background-color: #f7f7f7; text-align: center;'>2:6</td>
-</tr>
-<tr>
-<td style='text-align: left;'>3rd row</td>
-<td style='text-align: center;'>3:1</td>
-<td style='text-align: center;'>3:2</td>
-<td style='text-align: center;'>3:3</td>
-<td style='text-align: center;'>3:4</td>
-<td style='text-align: center;'>3:5</td>
-<td style='text-align: center;'>3:6</td>
-</tr>
-<tr style='background-color: #f7f7f7;'>
-<td style='background-color: #f7f7f7; text-align: left;'>4th row</td>
-<td style='background-color: #f7f7f7; text-align: center;'>4:1</td>
-<td style='background-color: #f7f7f7; text-align: center;'>4:2</td>
-<td style='background-color: #f7f7f7; text-align: center;'>4:3</td>
-<td style='background-color: #f7f7f7; text-align: center;'>4:4</td>
-<td style='background-color: #f7f7f7; text-align: center;'>4:5</td>
-<td style='background-color: #f7f7f7; text-align: center;'>4:6</td>
-</tr>
-<tr>
-<td style='text-align: left;'>5th row</td>
-<td style='text-align: center;'>5:1</td>
-<td style='text-align: center;'>5:2</td>
-<td style='text-align: center;'>5:3</td>
-<td style='text-align: center;'>5:4</td>
-<td style='text-align: center;'>5:5</td>
-<td style='text-align: center;'>5:6</td>
-</tr>
-<tr style='background-color: #f7f7f7;'>
-<td style='background-color: #f7f7f7; text-align: left;'>6th row</td>
-<td style='background-color: #f7f7f7; text-align: center;'>6:1</td>
-<td style='background-color: #f7f7f7; text-align: center;'>6:2</td>
-<td style='background-color: #f7f7f7; text-align: center;'>6:3</td>
-<td style='background-color: #f7f7f7; text-align: center;'>6:4</td>
-<td style='background-color: #f7f7f7; text-align: center;'>6:5</td>
-<td style='background-color: #f7f7f7; text-align: center;'>6:6</td>
+<tr style="background-color: #f7f7f7;">
+<td style="background-color: #f7f7f7; text-align: left;">
+2nd row
+</td>
+<td style="background-color: #f7f7f7; text-align: center;">
+2:1
+</td>
+<td style="background-color: #f7f7f7; text-align: center;">
+2:2
+</td>
+<td style="background-color: #f7f7f7; text-align: center;">
+2:3
+</td>
+<td style="background-color: #f7f7f7; text-align: center;">
+2:4
+</td>
+<td style="background-color: #f7f7f7; text-align: center;">
+2:5
+</td>
+<td style="background-color: #f7f7f7; text-align: center;">
+2:6
+</td>
 </tr>
 <tr>
-<td style='text-align: left;'>7th row</td>
-<td style='text-align: center;'>7:1</td>
-<td style='text-align: center;'>7:2</td>
-<td style='text-align: center;'>7:3</td>
-<td style='text-align: center;'>7:4</td>
-<td style='text-align: center;'>7:5</td>
-<td style='text-align: center;'>7:6</td>
+<td style="text-align: left;">
+3rd row
+</td>
+<td style="text-align: center;">
+3:1
+</td>
+<td style="text-align: center;">
+3:2
+</td>
+<td style="text-align: center;">
+3:3
+</td>
+<td style="text-align: center;">
+3:4
+</td>
+<td style="text-align: center;">
+3:5
+</td>
+<td style="text-align: center;">
+3:6
+</td>
 </tr>
-<tr style='background-color: #f7f7f7;'>
-<td style='background-color: #f7f7f7; border-bottom: 2px solid grey; text-align: left;'>8th row</td>
-<td style='background-color: #f7f7f7; border-bottom: 2px solid grey; text-align: center;'>8:1</td>
-<td style='background-color: #f7f7f7; border-bottom: 2px solid grey; text-align: center;'>8:2</td>
-<td style='background-color: #f7f7f7; border-bottom: 2px solid grey; text-align: center;'>8:3</td>
-<td style='background-color: #f7f7f7; border-bottom: 2px solid grey; text-align: center;'>8:4</td>
-<td style='background-color: #f7f7f7; border-bottom: 2px solid grey; text-align: center;'>8:5</td>
-<td style='background-color: #f7f7f7; border-bottom: 2px solid grey; text-align: center;'>8:6</td>
+<tr style="background-color: #f7f7f7;">
+<td style="background-color: #f7f7f7; text-align: left;">
+4th row
+</td>
+<td style="background-color: #f7f7f7; text-align: center;">
+4:1
+</td>
+<td style="background-color: #f7f7f7; text-align: center;">
+4:2
+</td>
+<td style="background-color: #f7f7f7; text-align: center;">
+4:3
+</td>
+<td style="background-color: #f7f7f7; text-align: center;">
+4:4
+</td>
+<td style="background-color: #f7f7f7; text-align: center;">
+4:5
+</td>
+<td style="background-color: #f7f7f7; text-align: center;">
+4:6
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+5th row
+</td>
+<td style="text-align: center;">
+5:1
+</td>
+<td style="text-align: center;">
+5:2
+</td>
+<td style="text-align: center;">
+5:3
+</td>
+<td style="text-align: center;">
+5:4
+</td>
+<td style="text-align: center;">
+5:5
+</td>
+<td style="text-align: center;">
+5:6
+</td>
+</tr>
+<tr style="background-color: #f7f7f7;">
+<td style="background-color: #f7f7f7; text-align: left;">
+6th row
+</td>
+<td style="background-color: #f7f7f7; text-align: center;">
+6:1
+</td>
+<td style="background-color: #f7f7f7; text-align: center;">
+6:2
+</td>
+<td style="background-color: #f7f7f7; text-align: center;">
+6:3
+</td>
+<td style="background-color: #f7f7f7; text-align: center;">
+6:4
+</td>
+<td style="background-color: #f7f7f7; text-align: center;">
+6:5
+</td>
+<td style="background-color: #f7f7f7; text-align: center;">
+6:6
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+7th row
+</td>
+<td style="text-align: center;">
+7:1
+</td>
+<td style="text-align: center;">
+7:2
+</td>
+<td style="text-align: center;">
+7:3
+</td>
+<td style="text-align: center;">
+7:4
+</td>
+<td style="text-align: center;">
+7:5
+</td>
+<td style="text-align: center;">
+7:6
+</td>
+</tr>
+<tr style="background-color: #f7f7f7;">
+<td style="background-color: #f7f7f7; border-bottom: 2px solid grey; text-align: left;">
+8th row
+</td>
+<td style="background-color: #f7f7f7; border-bottom: 2px solid grey; text-align: center;">
+8:1
+</td>
+<td style="background-color: #f7f7f7; border-bottom: 2px solid grey; text-align: center;">
+8:2
+</td>
+<td style="background-color: #f7f7f7; border-bottom: 2px solid grey; text-align: center;">
+8:3
+</td>
+<td style="background-color: #f7f7f7; border-bottom: 2px solid grey; text-align: center;">
+8:4
+</td>
+<td style="background-color: #f7f7f7; border-bottom: 2px solid grey; text-align: center;">
+8:5
+</td>
+<td style="background-color: #f7f7f7; border-bottom: 2px solid grey; text-align: center;">
+8:6
+</td>
 </tr>
 </tbody>
 </table>
@@ -1441,182 +3307,440 @@ A table footer</td></tr></tfoot>
           <span class="dt">col.rgroup =</span> <span class="kw">c</span>(<span class="st">&quot;none&quot;</span>, <span class="st">&quot;#F7F7F7&quot;</span>),
           <span class="dt">rgroup =</span> <span class="kw">c</span>(<span class="kw">paste</span>(<span class="st">&quot;Group&quot;</span>, LETTERS[<span class="dv">1</span>:<span class="dv">2</span>]), <span class="st">&quot;&quot;</span>),
           <span class="dt">n.rgroup =</span> <span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">2</span>,<span class="kw">nrow</span>(mx) -<span class="st"> </span><span class="dv">4</span>))</code></pre></div>
-<table class='gmisc_table' style='border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;' >
+<table class="gmisc_table" style="border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;">
 <thead>
 <tr>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey;'> </th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>1st hdr</th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>2nd hdr</th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>3rd hdr</th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>4th hdr</th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>5th hdr</th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>6th hdr</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey;">
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+1st hdr
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+2nd hdr
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+3rd hdr
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+4th hdr
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+5th hdr
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+6th hdr
+</th>
 </tr>
 </thead>
-<tbody> 
-<tr><td colspan='7' style='font-weight: 900;'>Group A</td></tr>
+<tbody>
 <tr>
-<td style='text-align: left;'>&nbsp;&nbsp;1st row</td>
-<td style='text-align: center;'>1:1</td>
-<td style='text-align: center;'>1:2</td>
-<td style='text-align: center;'>1:3</td>
-<td style='text-align: center;'>1:4</td>
-<td style='text-align: center;'>1:5</td>
-<td style='text-align: center;'>1:6</td>
+<td colspan="7" style="font-weight: 900;">
+Group A
+</td>
 </tr>
 <tr>
-<td style='text-align: left;'>&nbsp;&nbsp;2nd row</td>
-<td style='text-align: center;'>2:1</td>
-<td style='text-align: center;'>2:2</td>
-<td style='text-align: center;'>2:3</td>
-<td style='text-align: center;'>2:4</td>
-<td style='text-align: center;'>2:5</td>
-<td style='text-align: center;'>2:6</td>
-</tr> 
-<tr><td colspan='7' style='font-weight: 900; background-color: #f7f7f7;'>Group B</td></tr>
-<tr style='background-color: #f7f7f7;'>
-<td style='background-color: #f7f7f7; text-align: left;'>&nbsp;&nbsp;3rd row</td>
-<td style='background-color: #f7f7f7; text-align: center;'>3:1</td>
-<td style='background-color: #f7f7f7; text-align: center;'>3:2</td>
-<td style='background-color: #f7f7f7; text-align: center;'>3:3</td>
-<td style='background-color: #f7f7f7; text-align: center;'>3:4</td>
-<td style='background-color: #f7f7f7; text-align: center;'>3:5</td>
-<td style='background-color: #f7f7f7; text-align: center;'>3:6</td>
-</tr>
-<tr style='background-color: #f7f7f7;'>
-<td style='background-color: #f7f7f7; text-align: left;'>&nbsp;&nbsp;4th row</td>
-<td style='background-color: #f7f7f7; text-align: center;'>4:1</td>
-<td style='background-color: #f7f7f7; text-align: center;'>4:2</td>
-<td style='background-color: #f7f7f7; text-align: center;'>4:3</td>
-<td style='background-color: #f7f7f7; text-align: center;'>4:4</td>
-<td style='background-color: #f7f7f7; text-align: center;'>4:5</td>
-<td style='background-color: #f7f7f7; text-align: center;'>4:6</td>
+<td style="text-align: left;">
+  1st row
+</td>
+<td style="text-align: center;">
+1:1
+</td>
+<td style="text-align: center;">
+1:2
+</td>
+<td style="text-align: center;">
+1:3
+</td>
+<td style="text-align: center;">
+1:4
+</td>
+<td style="text-align: center;">
+1:5
+</td>
+<td style="text-align: center;">
+1:6
+</td>
 </tr>
 <tr>
-<td style='text-align: left;'>5th row</td>
-<td style='text-align: center;'>5:1</td>
-<td style='text-align: center;'>5:2</td>
-<td style='text-align: center;'>5:3</td>
-<td style='text-align: center;'>5:4</td>
-<td style='text-align: center;'>5:5</td>
-<td style='text-align: center;'>5:6</td>
-</tr>
-<tr style='background-color: #f7f7f7;'>
-<td style='background-color: #f7f7f7; text-align: left;'>6th row</td>
-<td style='background-color: #f7f7f7; text-align: center;'>6:1</td>
-<td style='background-color: #f7f7f7; text-align: center;'>6:2</td>
-<td style='background-color: #f7f7f7; text-align: center;'>6:3</td>
-<td style='background-color: #f7f7f7; text-align: center;'>6:4</td>
-<td style='background-color: #f7f7f7; text-align: center;'>6:5</td>
-<td style='background-color: #f7f7f7; text-align: center;'>6:6</td>
+<td style="text-align: left;">
+  2nd row
+</td>
+<td style="text-align: center;">
+2:1
+</td>
+<td style="text-align: center;">
+2:2
+</td>
+<td style="text-align: center;">
+2:3
+</td>
+<td style="text-align: center;">
+2:4
+</td>
+<td style="text-align: center;">
+2:5
+</td>
+<td style="text-align: center;">
+2:6
+</td>
 </tr>
 <tr>
-<td style='text-align: left;'>7th row</td>
-<td style='text-align: center;'>7:1</td>
-<td style='text-align: center;'>7:2</td>
-<td style='text-align: center;'>7:3</td>
-<td style='text-align: center;'>7:4</td>
-<td style='text-align: center;'>7:5</td>
-<td style='text-align: center;'>7:6</td>
+<td colspan="7" style="font-weight: 900; background-color: #f7f7f7;">
+Group B
+</td>
 </tr>
-<tr style='background-color: #f7f7f7;'>
-<td style='background-color: #f7f7f7; border-bottom: 2px solid grey; text-align: left;'>8th row</td>
-<td style='background-color: #f7f7f7; border-bottom: 2px solid grey; text-align: center;'>8:1</td>
-<td style='background-color: #f7f7f7; border-bottom: 2px solid grey; text-align: center;'>8:2</td>
-<td style='background-color: #f7f7f7; border-bottom: 2px solid grey; text-align: center;'>8:3</td>
-<td style='background-color: #f7f7f7; border-bottom: 2px solid grey; text-align: center;'>8:4</td>
-<td style='background-color: #f7f7f7; border-bottom: 2px solid grey; text-align: center;'>8:5</td>
-<td style='background-color: #f7f7f7; border-bottom: 2px solid grey; text-align: center;'>8:6</td>
+<tr style="background-color: #f7f7f7;">
+<td style="background-color: #f7f7f7; text-align: left;">
+  3rd row
+</td>
+<td style="background-color: #f7f7f7; text-align: center;">
+3:1
+</td>
+<td style="background-color: #f7f7f7; text-align: center;">
+3:2
+</td>
+<td style="background-color: #f7f7f7; text-align: center;">
+3:3
+</td>
+<td style="background-color: #f7f7f7; text-align: center;">
+3:4
+</td>
+<td style="background-color: #f7f7f7; text-align: center;">
+3:5
+</td>
+<td style="background-color: #f7f7f7; text-align: center;">
+3:6
+</td>
+</tr>
+<tr style="background-color: #f7f7f7;">
+<td style="background-color: #f7f7f7; text-align: left;">
+  4th row
+</td>
+<td style="background-color: #f7f7f7; text-align: center;">
+4:1
+</td>
+<td style="background-color: #f7f7f7; text-align: center;">
+4:2
+</td>
+<td style="background-color: #f7f7f7; text-align: center;">
+4:3
+</td>
+<td style="background-color: #f7f7f7; text-align: center;">
+4:4
+</td>
+<td style="background-color: #f7f7f7; text-align: center;">
+4:5
+</td>
+<td style="background-color: #f7f7f7; text-align: center;">
+4:6
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+5th row
+</td>
+<td style="text-align: center;">
+5:1
+</td>
+<td style="text-align: center;">
+5:2
+</td>
+<td style="text-align: center;">
+5:3
+</td>
+<td style="text-align: center;">
+5:4
+</td>
+<td style="text-align: center;">
+5:5
+</td>
+<td style="text-align: center;">
+5:6
+</td>
+</tr>
+<tr style="background-color: #f7f7f7;">
+<td style="background-color: #f7f7f7; text-align: left;">
+6th row
+</td>
+<td style="background-color: #f7f7f7; text-align: center;">
+6:1
+</td>
+<td style="background-color: #f7f7f7; text-align: center;">
+6:2
+</td>
+<td style="background-color: #f7f7f7; text-align: center;">
+6:3
+</td>
+<td style="background-color: #f7f7f7; text-align: center;">
+6:4
+</td>
+<td style="background-color: #f7f7f7; text-align: center;">
+6:5
+</td>
+<td style="background-color: #f7f7f7; text-align: center;">
+6:6
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+7th row
+</td>
+<td style="text-align: center;">
+7:1
+</td>
+<td style="text-align: center;">
+7:2
+</td>
+<td style="text-align: center;">
+7:3
+</td>
+<td style="text-align: center;">
+7:4
+</td>
+<td style="text-align: center;">
+7:5
+</td>
+<td style="text-align: center;">
+7:6
+</td>
+</tr>
+<tr style="background-color: #f7f7f7;">
+<td style="background-color: #f7f7f7; border-bottom: 2px solid grey; text-align: left;">
+8th row
+</td>
+<td style="background-color: #f7f7f7; border-bottom: 2px solid grey; text-align: center;">
+8:1
+</td>
+<td style="background-color: #f7f7f7; border-bottom: 2px solid grey; text-align: center;">
+8:2
+</td>
+<td style="background-color: #f7f7f7; border-bottom: 2px solid grey; text-align: center;">
+8:3
+</td>
+<td style="background-color: #f7f7f7; border-bottom: 2px solid grey; text-align: center;">
+8:4
+</td>
+<td style="background-color: #f7f7f7; border-bottom: 2px solid grey; text-align: center;">
+8:5
+</td>
+<td style="background-color: #f7f7f7; border-bottom: 2px solid grey; text-align: center;">
+8:6
+</td>
 </tr>
 </tbody>
 </table>
 <p>We can also color the columns:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">htmlTable</span>(mx, 
           <span class="dt">col.columns =</span> <span class="kw">c</span>(<span class="st">&quot;none&quot;</span>, <span class="st">&quot;#F7F7F7&quot;</span>))</code></pre></div>
-<table class='gmisc_table' style='border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;' >
+<table class="gmisc_table" style="border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;">
 <thead>
 <tr>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey;'> </th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>1st hdr</th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>2nd hdr</th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>3rd hdr</th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>4th hdr</th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>5th hdr</th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>6th hdr</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey;">
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+1st hdr
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+2nd hdr
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+3rd hdr
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+4th hdr
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+5th hdr
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+6th hdr
+</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style='text-align: left;'>1st row</td>
-<td style='text-align: center;'>1:1</td>
-<td style='text-align: center; background-color: #f7f7f7;'>1:2</td>
-<td style='text-align: center;'>1:3</td>
-<td style='text-align: center; background-color: #f7f7f7;'>1:4</td>
-<td style='text-align: center;'>1:5</td>
-<td style='text-align: center; background-color: #f7f7f7;'>1:6</td>
+<td style="text-align: left;">
+1st row
+</td>
+<td style="text-align: center;">
+1:1
+</td>
+<td style="text-align: center; background-color: #f7f7f7;">
+1:2
+</td>
+<td style="text-align: center;">
+1:3
+</td>
+<td style="text-align: center; background-color: #f7f7f7;">
+1:4
+</td>
+<td style="text-align: center;">
+1:5
+</td>
+<td style="text-align: center; background-color: #f7f7f7;">
+1:6
+</td>
 </tr>
 <tr>
-<td style='text-align: left;'>2nd row</td>
-<td style='text-align: center;'>2:1</td>
-<td style='text-align: center; background-color: #f7f7f7;'>2:2</td>
-<td style='text-align: center;'>2:3</td>
-<td style='text-align: center; background-color: #f7f7f7;'>2:4</td>
-<td style='text-align: center;'>2:5</td>
-<td style='text-align: center; background-color: #f7f7f7;'>2:6</td>
+<td style="text-align: left;">
+2nd row
+</td>
+<td style="text-align: center;">
+2:1
+</td>
+<td style="text-align: center; background-color: #f7f7f7;">
+2:2
+</td>
+<td style="text-align: center;">
+2:3
+</td>
+<td style="text-align: center; background-color: #f7f7f7;">
+2:4
+</td>
+<td style="text-align: center;">
+2:5
+</td>
+<td style="text-align: center; background-color: #f7f7f7;">
+2:6
+</td>
 </tr>
 <tr>
-<td style='text-align: left;'>3rd row</td>
-<td style='text-align: center;'>3:1</td>
-<td style='text-align: center; background-color: #f7f7f7;'>3:2</td>
-<td style='text-align: center;'>3:3</td>
-<td style='text-align: center; background-color: #f7f7f7;'>3:4</td>
-<td style='text-align: center;'>3:5</td>
-<td style='text-align: center; background-color: #f7f7f7;'>3:6</td>
+<td style="text-align: left;">
+3rd row
+</td>
+<td style="text-align: center;">
+3:1
+</td>
+<td style="text-align: center; background-color: #f7f7f7;">
+3:2
+</td>
+<td style="text-align: center;">
+3:3
+</td>
+<td style="text-align: center; background-color: #f7f7f7;">
+3:4
+</td>
+<td style="text-align: center;">
+3:5
+</td>
+<td style="text-align: center; background-color: #f7f7f7;">
+3:6
+</td>
 </tr>
 <tr>
-<td style='text-align: left;'>4th row</td>
-<td style='text-align: center;'>4:1</td>
-<td style='text-align: center; background-color: #f7f7f7;'>4:2</td>
-<td style='text-align: center;'>4:3</td>
-<td style='text-align: center; background-color: #f7f7f7;'>4:4</td>
-<td style='text-align: center;'>4:5</td>
-<td style='text-align: center; background-color: #f7f7f7;'>4:6</td>
+<td style="text-align: left;">
+4th row
+</td>
+<td style="text-align: center;">
+4:1
+</td>
+<td style="text-align: center; background-color: #f7f7f7;">
+4:2
+</td>
+<td style="text-align: center;">
+4:3
+</td>
+<td style="text-align: center; background-color: #f7f7f7;">
+4:4
+</td>
+<td style="text-align: center;">
+4:5
+</td>
+<td style="text-align: center; background-color: #f7f7f7;">
+4:6
+</td>
 </tr>
 <tr>
-<td style='text-align: left;'>5th row</td>
-<td style='text-align: center;'>5:1</td>
-<td style='text-align: center; background-color: #f7f7f7;'>5:2</td>
-<td style='text-align: center;'>5:3</td>
-<td style='text-align: center; background-color: #f7f7f7;'>5:4</td>
-<td style='text-align: center;'>5:5</td>
-<td style='text-align: center; background-color: #f7f7f7;'>5:6</td>
+<td style="text-align: left;">
+5th row
+</td>
+<td style="text-align: center;">
+5:1
+</td>
+<td style="text-align: center; background-color: #f7f7f7;">
+5:2
+</td>
+<td style="text-align: center;">
+5:3
+</td>
+<td style="text-align: center; background-color: #f7f7f7;">
+5:4
+</td>
+<td style="text-align: center;">
+5:5
+</td>
+<td style="text-align: center; background-color: #f7f7f7;">
+5:6
+</td>
 </tr>
 <tr>
-<td style='text-align: left;'>6th row</td>
-<td style='text-align: center;'>6:1</td>
-<td style='text-align: center; background-color: #f7f7f7;'>6:2</td>
-<td style='text-align: center;'>6:3</td>
-<td style='text-align: center; background-color: #f7f7f7;'>6:4</td>
-<td style='text-align: center;'>6:5</td>
-<td style='text-align: center; background-color: #f7f7f7;'>6:6</td>
+<td style="text-align: left;">
+6th row
+</td>
+<td style="text-align: center;">
+6:1
+</td>
+<td style="text-align: center; background-color: #f7f7f7;">
+6:2
+</td>
+<td style="text-align: center;">
+6:3
+</td>
+<td style="text-align: center; background-color: #f7f7f7;">
+6:4
+</td>
+<td style="text-align: center;">
+6:5
+</td>
+<td style="text-align: center; background-color: #f7f7f7;">
+6:6
+</td>
 </tr>
 <tr>
-<td style='text-align: left;'>7th row</td>
-<td style='text-align: center;'>7:1</td>
-<td style='text-align: center; background-color: #f7f7f7;'>7:2</td>
-<td style='text-align: center;'>7:3</td>
-<td style='text-align: center; background-color: #f7f7f7;'>7:4</td>
-<td style='text-align: center;'>7:5</td>
-<td style='text-align: center; background-color: #f7f7f7;'>7:6</td>
+<td style="text-align: left;">
+7th row
+</td>
+<td style="text-align: center;">
+7:1
+</td>
+<td style="text-align: center; background-color: #f7f7f7;">
+7:2
+</td>
+<td style="text-align: center;">
+7:3
+</td>
+<td style="text-align: center; background-color: #f7f7f7;">
+7:4
+</td>
+<td style="text-align: center;">
+7:5
+</td>
+<td style="text-align: center; background-color: #f7f7f7;">
+7:6
+</td>
 </tr>
 <tr>
-<td style='border-bottom: 2px solid grey; text-align: left;'>8th row</td>
-<td style='border-bottom: 2px solid grey; text-align: center;'>8:1</td>
-<td style='border-bottom: 2px solid grey; text-align: center; background-color: #f7f7f7;'>8:2</td>
-<td style='border-bottom: 2px solid grey; text-align: center;'>8:3</td>
-<td style='border-bottom: 2px solid grey; text-align: center; background-color: #f7f7f7;'>8:4</td>
-<td style='border-bottom: 2px solid grey; text-align: center;'>8:5</td>
-<td style='border-bottom: 2px solid grey; text-align: center; background-color: #f7f7f7;'>8:6</td>
+<td style="border-bottom: 2px solid grey; text-align: left;">
+8th row
+</td>
+<td style="border-bottom: 2px solid grey; text-align: center;">
+8:1
+</td>
+<td style="border-bottom: 2px solid grey; text-align: center; background-color: #f7f7f7;">
+8:2
+</td>
+<td style="border-bottom: 2px solid grey; text-align: center;">
+8:3
+</td>
+<td style="border-bottom: 2px solid grey; text-align: center; background-color: #f7f7f7;">
+8:4
+</td>
+<td style="border-bottom: 2px solid grey; text-align: center;">
+8:5
+</td>
+<td style="border-bottom: 2px solid grey; text-align: center; background-color: #f7f7f7;">
+8:6
+</td>
 </tr>
 </tbody>
 </table>
@@ -1624,90 +3748,215 @@ A table footer</td></tr></tfoot>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">htmlTable</span>(mx, 
           <span class="dt">col.rgroup =</span> <span class="kw">c</span>(<span class="st">&quot;none&quot;</span>, <span class="st">&quot;#F9FAF0&quot;</span>),
           <span class="dt">col.columns =</span> <span class="kw">c</span>(<span class="st">&quot;none&quot;</span>, <span class="st">&quot;#F1F0FA&quot;</span>))</code></pre></div>
-<table class='gmisc_table' style='border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;' >
+<table class="gmisc_table" style="border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;">
 <thead>
 <tr>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey;'> </th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>1st hdr</th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>2nd hdr</th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>3rd hdr</th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>4th hdr</th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>5th hdr</th>
-<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>6th hdr</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey;">
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+1st hdr
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+2nd hdr
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+3rd hdr
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+4th hdr
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+5th hdr
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+6th hdr
+</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style='text-align: left;'>1st row</td>
-<td style='text-align: center;'>1:1</td>
-<td style='text-align: center; background-color: #f1f0fa;'>1:2</td>
-<td style='text-align: center;'>1:3</td>
-<td style='text-align: center; background-color: #f1f0fa;'>1:4</td>
-<td style='text-align: center;'>1:5</td>
-<td style='text-align: center; background-color: #f1f0fa;'>1:6</td>
+<td style="text-align: left;">
+1st row
+</td>
+<td style="text-align: center;">
+1:1
+</td>
+<td style="text-align: center; background-color: #f1f0fa;">
+1:2
+</td>
+<td style="text-align: center;">
+1:3
+</td>
+<td style="text-align: center; background-color: #f1f0fa;">
+1:4
+</td>
+<td style="text-align: center;">
+1:5
+</td>
+<td style="text-align: center; background-color: #f1f0fa;">
+1:6
+</td>
 </tr>
-<tr style='background-color: #f9faf0;'>
-<td style='background-color: #f9faf0; text-align: left;'>2nd row</td>
-<td style='background-color: #f9faf0; text-align: center;'>2:1</td>
-<td style='text-align: center; background-color: #F4F4F4;'>2:2</td>
-<td style='background-color: #f9faf0; text-align: center;'>2:3</td>
-<td style='text-align: center; background-color: #F4F4F4;'>2:4</td>
-<td style='background-color: #f9faf0; text-align: center;'>2:5</td>
-<td style='text-align: center; background-color: #F4F4F4;'>2:6</td>
-</tr>
-<tr>
-<td style='text-align: left;'>3rd row</td>
-<td style='text-align: center;'>3:1</td>
-<td style='text-align: center; background-color: #f1f0fa;'>3:2</td>
-<td style='text-align: center;'>3:3</td>
-<td style='text-align: center; background-color: #f1f0fa;'>3:4</td>
-<td style='text-align: center;'>3:5</td>
-<td style='text-align: center; background-color: #f1f0fa;'>3:6</td>
-</tr>
-<tr style='background-color: #f9faf0;'>
-<td style='background-color: #f9faf0; text-align: left;'>4th row</td>
-<td style='background-color: #f9faf0; text-align: center;'>4:1</td>
-<td style='text-align: center; background-color: #F4F4F4;'>4:2</td>
-<td style='background-color: #f9faf0; text-align: center;'>4:3</td>
-<td style='text-align: center; background-color: #F4F4F4;'>4:4</td>
-<td style='background-color: #f9faf0; text-align: center;'>4:5</td>
-<td style='text-align: center; background-color: #F4F4F4;'>4:6</td>
-</tr>
-<tr>
-<td style='text-align: left;'>5th row</td>
-<td style='text-align: center;'>5:1</td>
-<td style='text-align: center; background-color: #f1f0fa;'>5:2</td>
-<td style='text-align: center;'>5:3</td>
-<td style='text-align: center; background-color: #f1f0fa;'>5:4</td>
-<td style='text-align: center;'>5:5</td>
-<td style='text-align: center; background-color: #f1f0fa;'>5:6</td>
-</tr>
-<tr style='background-color: #f9faf0;'>
-<td style='background-color: #f9faf0; text-align: left;'>6th row</td>
-<td style='background-color: #f9faf0; text-align: center;'>6:1</td>
-<td style='text-align: center; background-color: #F4F4F4;'>6:2</td>
-<td style='background-color: #f9faf0; text-align: center;'>6:3</td>
-<td style='text-align: center; background-color: #F4F4F4;'>6:4</td>
-<td style='background-color: #f9faf0; text-align: center;'>6:5</td>
-<td style='text-align: center; background-color: #F4F4F4;'>6:6</td>
+<tr style="background-color: #f9faf0;">
+<td style="background-color: #f9faf0; text-align: left;">
+2nd row
+</td>
+<td style="background-color: #f9faf0; text-align: center;">
+2:1
+</td>
+<td style="text-align: center; background-color: #F4F4F4;">
+2:2
+</td>
+<td style="background-color: #f9faf0; text-align: center;">
+2:3
+</td>
+<td style="text-align: center; background-color: #F4F4F4;">
+2:4
+</td>
+<td style="background-color: #f9faf0; text-align: center;">
+2:5
+</td>
+<td style="text-align: center; background-color: #F4F4F4;">
+2:6
+</td>
 </tr>
 <tr>
-<td style='text-align: left;'>7th row</td>
-<td style='text-align: center;'>7:1</td>
-<td style='text-align: center; background-color: #f1f0fa;'>7:2</td>
-<td style='text-align: center;'>7:3</td>
-<td style='text-align: center; background-color: #f1f0fa;'>7:4</td>
-<td style='text-align: center;'>7:5</td>
-<td style='text-align: center; background-color: #f1f0fa;'>7:6</td>
+<td style="text-align: left;">
+3rd row
+</td>
+<td style="text-align: center;">
+3:1
+</td>
+<td style="text-align: center; background-color: #f1f0fa;">
+3:2
+</td>
+<td style="text-align: center;">
+3:3
+</td>
+<td style="text-align: center; background-color: #f1f0fa;">
+3:4
+</td>
+<td style="text-align: center;">
+3:5
+</td>
+<td style="text-align: center; background-color: #f1f0fa;">
+3:6
+</td>
 </tr>
-<tr style='background-color: #f9faf0;'>
-<td style='background-color: #f9faf0; border-bottom: 2px solid grey; text-align: left;'>8th row</td>
-<td style='background-color: #f9faf0; border-bottom: 2px solid grey; text-align: center;'>8:1</td>
-<td style='border-bottom: 2px solid grey; text-align: center; background-color: #F4F4F4;'>8:2</td>
-<td style='background-color: #f9faf0; border-bottom: 2px solid grey; text-align: center;'>8:3</td>
-<td style='border-bottom: 2px solid grey; text-align: center; background-color: #F4F4F4;'>8:4</td>
-<td style='background-color: #f9faf0; border-bottom: 2px solid grey; text-align: center;'>8:5</td>
-<td style='border-bottom: 2px solid grey; text-align: center; background-color: #F4F4F4;'>8:6</td>
+<tr style="background-color: #f9faf0;">
+<td style="background-color: #f9faf0; text-align: left;">
+4th row
+</td>
+<td style="background-color: #f9faf0; text-align: center;">
+4:1
+</td>
+<td style="text-align: center; background-color: #F4F4F4;">
+4:2
+</td>
+<td style="background-color: #f9faf0; text-align: center;">
+4:3
+</td>
+<td style="text-align: center; background-color: #F4F4F4;">
+4:4
+</td>
+<td style="background-color: #f9faf0; text-align: center;">
+4:5
+</td>
+<td style="text-align: center; background-color: #F4F4F4;">
+4:6
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+5th row
+</td>
+<td style="text-align: center;">
+5:1
+</td>
+<td style="text-align: center; background-color: #f1f0fa;">
+5:2
+</td>
+<td style="text-align: center;">
+5:3
+</td>
+<td style="text-align: center; background-color: #f1f0fa;">
+5:4
+</td>
+<td style="text-align: center;">
+5:5
+</td>
+<td style="text-align: center; background-color: #f1f0fa;">
+5:6
+</td>
+</tr>
+<tr style="background-color: #f9faf0;">
+<td style="background-color: #f9faf0; text-align: left;">
+6th row
+</td>
+<td style="background-color: #f9faf0; text-align: center;">
+6:1
+</td>
+<td style="text-align: center; background-color: #F4F4F4;">
+6:2
+</td>
+<td style="background-color: #f9faf0; text-align: center;">
+6:3
+</td>
+<td style="text-align: center; background-color: #F4F4F4;">
+6:4
+</td>
+<td style="background-color: #f9faf0; text-align: center;">
+6:5
+</td>
+<td style="text-align: center; background-color: #F4F4F4;">
+6:6
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+7th row
+</td>
+<td style="text-align: center;">
+7:1
+</td>
+<td style="text-align: center; background-color: #f1f0fa;">
+7:2
+</td>
+<td style="text-align: center;">
+7:3
+</td>
+<td style="text-align: center; background-color: #f1f0fa;">
+7:4
+</td>
+<td style="text-align: center;">
+7:5
+</td>
+<td style="text-align: center; background-color: #f1f0fa;">
+7:6
+</td>
+</tr>
+<tr style="background-color: #f9faf0;">
+<td style="background-color: #f9faf0; border-bottom: 2px solid grey; text-align: left;">
+8th row
+</td>
+<td style="background-color: #f9faf0; border-bottom: 2px solid grey; text-align: center;">
+8:1
+</td>
+<td style="border-bottom: 2px solid grey; text-align: center; background-color: #F4F4F4;">
+8:2
+</td>
+<td style="background-color: #f9faf0; border-bottom: 2px solid grey; text-align: center;">
+8:3
+</td>
+<td style="border-bottom: 2px solid grey; text-align: center; background-color: #F4F4F4;">
+8:4
+</td>
+<td style="background-color: #f9faf0; border-bottom: 2px solid grey; text-align: center;">
+8:5
+</td>
+<td style="border-bottom: 2px solid grey; text-align: center; background-color: #F4F4F4;">
+8:6
+</td>
 </tr>
 </tbody>
 </table>
@@ -1730,149 +3979,376 @@ A table footer</td></tr></tfoot>
                           <span class="kw">rep</span>(<span class="st">&quot;#F5FBFF&quot;</span>, <span class="dv">4</span>)),
           <span class="dt">col.rgroup =</span> <span class="kw">c</span>(<span class="st">&quot;none&quot;</span>, <span class="st">&quot;#F7F7F7&quot;</span>),
           <span class="dt">css.cell =</span> <span class="st">&quot;padding-left: .5em; padding-right: .2em;&quot;</span>)</code></pre></div>
-<table class='gmisc_table' style='border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;' >
+<table class="gmisc_table" style="border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;">
 <thead>
-<tr><td colspan='9' style='text-align: left;'>
-A table with column spanners, row groups, and zebra striping</td></tr>
 <tr>
-<th style='border-top: 2px solid grey;'></th>
-<th colspan='2' style='font-weight: 900; border-top: 2px solid grey; text-align: center;'></th><th style='border-top: 2px solid grey;; border-bottom: hidden;'>&nbsp;</th>
-<th colspan='5' style='font-weight: 900; border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>Column spanners</th>
+<td colspan="9" style="text-align: left;">
+A table with column spanners, row groups, and zebra striping
+</td>
 </tr>
 <tr>
-<th style=''></th>
-<th colspan='2' style='font-weight: 900; text-align: center;'></th><th style='; border-bottom: hidden;'>&nbsp;</th>
-<th colspan='2' style='font-weight: 900; border-bottom: 1px solid grey; text-align: center;'>Cgroup 1</th><th style='; border-bottom: hidden;'>&nbsp;</th>
-<th colspan='2' style='font-weight: 900; border-bottom: 1px solid grey; text-align: center;'>Cgroup 2&dagger;</th>
+<th style="border-top: 2px solid grey;">
+</th>
+<th colspan="2" style="font-weight: 900; border-top: 2px solid grey; text-align: center;">
+</th>
+<th style="border-top: 2px solid grey;; border-bottom: hidden;">
+ 
+</th>
+<th colspan="5" style="font-weight: 900; border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+Column spanners
+</th>
 </tr>
 <tr>
-<th style='border-bottom: 1px solid grey;'> </th>
-<th style='border-bottom: 1px solid grey; text-align: center;'>1st hdr</th>
-<th style='border-bottom: 1px solid grey; text-align: center;'>2nd hdr</th>
-<th style='border-bottom: 1px solid grey;' colspan='1'>&nbsp;</th>
-<th style='border-bottom: 1px solid grey; text-align: center;'>3rd hdr</th>
-<th style='border-bottom: 1px solid grey; text-align: center;'>4th hdr</th>
-<th style='border-bottom: 1px solid grey;' colspan='1'>&nbsp;</th>
-<th style='border-bottom: 1px solid grey; text-align: center;'>5th hdr</th>
-<th style='border-bottom: 1px solid grey; text-align: center;'>6th hdr</th>
+<th style>
+</th>
+<th colspan="2" style="font-weight: 900; text-align: center;">
+</th>
+<th style="; border-bottom: hidden;">
+ 
+</th>
+<th colspan="2" style="font-weight: 900; border-bottom: 1px solid grey; text-align: center;">
+Cgroup 1
+</th>
+<th style="; border-bottom: hidden;">
+ 
+</th>
+<th colspan="2" style="font-weight: 900; border-bottom: 1px solid grey; text-align: center;">
+Cgroup 2†
+</th>
+</tr>
+<tr>
+<th style="border-bottom: 1px solid grey;">
+</th>
+<th style="border-bottom: 1px solid grey; text-align: center;">
+1st hdr
+</th>
+<th style="border-bottom: 1px solid grey; text-align: center;">
+2nd hdr
+</th>
+<th style="border-bottom: 1px solid grey;" colspan="1">
+ 
+</th>
+<th style="border-bottom: 1px solid grey; text-align: center;">
+3rd hdr
+</th>
+<th style="border-bottom: 1px solid grey; text-align: center;">
+4th hdr
+</th>
+<th style="border-bottom: 1px solid grey;" colspan="1">
+ 
+</th>
+<th style="border-bottom: 1px solid grey; text-align: center;">
+5th hdr
+</th>
+<th style="border-bottom: 1px solid grey; text-align: center;">
+6th hdr
+</th>
 </tr>
 </thead>
-<tbody> 
-<tr><td colspan='2' style='font-weight: 900;'>Group A</td>
-<td style='padding-left: .5em; padding-right: .2em; font-weight: 900; text-align: right;'></td>
-<td style='font-weight: 900;' colspan='1'>&nbsp;</td>
-<td style='padding-left: .5em; padding-right: .2em; font-weight: 900; text-align: right; background-color: #f5fbff;'></td>
-<td style='padding-left: .5em; padding-right: .2em; font-weight: 900; text-align: right; background-color: #f5fbff;'></td>
-<td style='font-weight: 900; background-color: #f5fbff;' colspan='1'>&nbsp;</td>
-<td style='padding-left: .5em; padding-right: .2em; font-weight: 900; text-align: right; background-color: #f5fbff;'></td>
-<td style='padding-left: .5em; padding-right: .2em; font-weight: 900; text-align: right; background-color: #f5fbff;'></td></tr>
+<tbody>
 <tr>
-<td style='text-align: left;'>&nbsp;&nbsp;1st row</td>
-<td style='padding-left: .5em; padding-right: .2em; text-align: right;'>1:1</td>
-<td style='padding-left: .5em; padding-right: .2em; text-align: right;'>1:2</td>
-<td style='' colspan='1'>&nbsp;</td>
-<td style='padding-left: .5em; padding-right: .2em; text-align: right; background-color: #f5fbff;'>1:3</td>
-<td style='padding-left: .5em; padding-right: .2em; text-align: right; background-color: #f5fbff;'>1:4</td>
-<td style='background-color: #f5fbff;' colspan='1'>&nbsp;</td>
-<td style='padding-left: .5em; padding-right: .2em; text-align: right; background-color: #f5fbff;'>1:5</td>
-<td style='padding-left: .5em; padding-right: .2em; text-align: right; background-color: #f5fbff;'>1:6</td>
-</tr>
-<tr>
-<td style='text-align: left;'>&nbsp;&nbsp;2nd row</td>
-<td style='padding-left: .5em; padding-right: .2em; text-align: right;'>2:1</td>
-<td style='padding-left: .5em; padding-right: .2em; text-align: right;'>2:2</td>
-<td style='' colspan='1'>&nbsp;</td>
-<td style='padding-left: .5em; padding-right: .2em; text-align: right; background-color: #f5fbff;'>2:3</td>
-<td style='padding-left: .5em; padding-right: .2em; text-align: right; background-color: #f5fbff;'>2:4</td>
-<td style='background-color: #f5fbff;' colspan='1'>&nbsp;</td>
-<td style='padding-left: .5em; padding-right: .2em; text-align: right; background-color: #f5fbff;'>2:5</td>
-<td style='padding-left: .5em; padding-right: .2em; text-align: right; background-color: #f5fbff;'>2:6</td>
-</tr> 
-<tr><td colspan='2' style='font-weight: 900; background-color: #f7f7f7;'>Group B</td>
-<td style='padding-left: .5em; padding-right: .2em; font-weight: 900; background-color: #f7f7f7; text-align: right;'></td>
-<td style='font-weight: 900; background-color: #f7f7f7;' colspan='1'>&nbsp;</td>
-<td style='padding-left: .5em; padding-right: .2em; font-weight: 900; text-align: right; background-color: #F6F9FB;'></td>
-<td style='padding-left: .5em; padding-right: .2em; font-weight: 900; text-align: right; background-color: #F6F9FB;'></td>
-<td style='font-weight: 900; background-color: #F6F9FB;' colspan='1'>&nbsp;</td>
-<td style='padding-left: .5em; padding-right: .2em; font-weight: 900; text-align: right; background-color: #F6F9FB;'></td>
-<td style='padding-left: .5em; padding-right: .2em; font-weight: 900; text-align: right; background-color: #F6F9FB;'></td></tr>
-<tr style='background-color: #f7f7f7;'>
-<td style='background-color: #f7f7f7; text-align: left;'>&nbsp;&nbsp;3rd row</td>
-<td style='padding-left: .5em; padding-right: .2em; background-color: #f7f7f7; text-align: right;'>3:1</td>
-<td style='padding-left: .5em; padding-right: .2em; background-color: #f7f7f7; text-align: right;'>3:2</td>
-<td style='background-color: #f7f7f7;' colspan='1'>&nbsp;</td>
-<td style='padding-left: .5em; padding-right: .2em; text-align: right; background-color: #F6F9FB;'>3:3</td>
-<td style='padding-left: .5em; padding-right: .2em; text-align: right; background-color: #F6F9FB;'>3:4</td>
-<td style='background-color: #F6F9FB;' colspan='1'>&nbsp;</td>
-<td style='padding-left: .5em; padding-right: .2em; text-align: right; background-color: #F6F9FB;'>3:5</td>
-<td style='padding-left: .5em; padding-right: .2em; text-align: right; background-color: #F6F9FB;'>3:6</td>
-</tr>
-<tr style='background-color: #f7f7f7;'>
-<td style='background-color: #f7f7f7; text-align: left;'>&nbsp;&nbsp;4th row</td>
-<td style='padding-left: .5em; padding-right: .2em; background-color: #f7f7f7; text-align: right;'>4:1</td>
-<td style='padding-left: .5em; padding-right: .2em; background-color: #f7f7f7; text-align: right;'>4:2</td>
-<td style='background-color: #f7f7f7;' colspan='1'>&nbsp;</td>
-<td style='padding-left: .5em; padding-right: .2em; text-align: right; background-color: #F6F9FB;'>4:3</td>
-<td style='padding-left: .5em; padding-right: .2em; text-align: right; background-color: #F6F9FB;'>4:4</td>
-<td style='background-color: #F6F9FB;' colspan='1'>&nbsp;</td>
-<td style='padding-left: .5em; padding-right: .2em; text-align: right; background-color: #F6F9FB;'>4:5</td>
-<td style='padding-left: .5em; padding-right: .2em; text-align: right; background-color: #F6F9FB;'>4:6</td>
-</tr>
-<tr style='background-color: #f7f7f7;'>
-<td style='background-color: #f7f7f7; text-align: left;'>&nbsp;&nbsp;5th row</td>
-<td style='padding-left: .5em; padding-right: .2em; background-color: #f7f7f7; text-align: right;'>5:1</td>
-<td style='padding-left: .5em; padding-right: .2em; background-color: #f7f7f7; text-align: right;'>5:2</td>
-<td style='background-color: #f7f7f7;' colspan='1'>&nbsp;</td>
-<td style='padding-left: .5em; padding-right: .2em; text-align: right; background-color: #F6F9FB;'>5:3</td>
-<td style='padding-left: .5em; padding-right: .2em; text-align: right; background-color: #F6F9FB;'>5:4</td>
-<td style='background-color: #F6F9FB;' colspan='1'>&nbsp;</td>
-<td style='padding-left: .5em; padding-right: .2em; text-align: right; background-color: #F6F9FB;'>5:5</td>
-<td style='padding-left: .5em; padding-right: .2em; text-align: right; background-color: #F6F9FB;'>5:6</td>
-</tr>
-<tr style='background-color: #f7f7f7;'>
-<td style='background-color: #f7f7f7; text-align: left;'>&nbsp;&nbsp;6th row</td>
-<td style='padding-left: .5em; padding-right: .2em; background-color: #f7f7f7; text-align: right;'>6:1</td>
-<td style='padding-left: .5em; padding-right: .2em; background-color: #f7f7f7; text-align: right;'>6:2</td>
-<td style='background-color: #f7f7f7;' colspan='1'>&nbsp;</td>
-<td style='padding-left: .5em; padding-right: .2em; text-align: right; background-color: #F6F9FB;'>6:3</td>
-<td style='padding-left: .5em; padding-right: .2em; text-align: right; background-color: #F6F9FB;'>6:4</td>
-<td style='background-color: #F6F9FB;' colspan='1'>&nbsp;</td>
-<td style='padding-left: .5em; padding-right: .2em; text-align: right; background-color: #F6F9FB;'>6:5</td>
-<td style='padding-left: .5em; padding-right: .2em; text-align: right; background-color: #F6F9FB;'>6:6</td>
-</tr> 
-<tr><td colspan='2' style='font-weight: 900;'>Group C</td>
-<td style='padding-left: .5em; padding-right: .2em; font-weight: 900; text-align: right;'></td>
-<td style='font-weight: 900;' colspan='1'>&nbsp;</td>
-<td style='padding-left: .5em; padding-right: .2em; font-weight: 900; text-align: right; background-color: #f5fbff;'></td>
-<td style='padding-left: .5em; padding-right: .2em; font-weight: 900; text-align: right; background-color: #f5fbff;'></td>
-<td style='font-weight: 900; background-color: #f5fbff;' colspan='1'>&nbsp;</td>
-<td style='padding-left: .5em; padding-right: .2em; font-weight: 900; text-align: right; background-color: #f5fbff;'></td>
-<td style='padding-left: .5em; padding-right: .2em; font-weight: 900; text-align: right; background-color: #f5fbff;'></td></tr>
-<tr>
-<td style='text-align: left;'>&nbsp;&nbsp;7th row</td>
-<td style='padding-left: .5em; padding-right: .2em; text-align: right;'>7:1</td>
-<td style='padding-left: .5em; padding-right: .2em; text-align: right;'>7:2</td>
-<td style='' colspan='1'>&nbsp;</td>
-<td style='padding-left: .5em; padding-right: .2em; text-align: right; background-color: #f5fbff;'>7:3</td>
-<td style='padding-left: .5em; padding-right: .2em; text-align: right; background-color: #f5fbff;'>7:4</td>
-<td style='background-color: #f5fbff;' colspan='1'>&nbsp;</td>
-<td style='padding-left: .5em; padding-right: .2em; text-align: right; background-color: #f5fbff;'>7:5</td>
-<td style='padding-left: .5em; padding-right: .2em; text-align: right; background-color: #f5fbff;'>7:6</td>
+<td colspan="2" style="font-weight: 900;">
+Group A
+</td>
+<td style="padding-left: .5em; padding-right: .2em; font-weight: 900; text-align: right;">
+</td>
+<td style="font-weight: 900;" colspan="1">
+ 
+</td>
+<td style="padding-left: .5em; padding-right: .2em; font-weight: 900; text-align: right; background-color: #f5fbff;">
+</td>
+<td style="padding-left: .5em; padding-right: .2em; font-weight: 900; text-align: right; background-color: #f5fbff;">
+</td>
+<td style="font-weight: 900; background-color: #f5fbff;" colspan="1">
+ 
+</td>
+<td style="padding-left: .5em; padding-right: .2em; font-weight: 900; text-align: right; background-color: #f5fbff;">
+</td>
+<td style="padding-left: .5em; padding-right: .2em; font-weight: 900; text-align: right; background-color: #f5fbff;">
+</td>
 </tr>
 <tr>
-<td style='border-bottom: 2px solid grey; text-align: left;'>&nbsp;&nbsp;8th row</td>
-<td style='padding-left: .5em; padding-right: .2em; border-bottom: 2px solid grey; text-align: right;'>8:1</td>
-<td style='padding-left: .5em; padding-right: .2em; border-bottom: 2px solid grey; text-align: right;'>8:2</td>
-<td style='border-bottom: 2px solid grey;' colspan='1'>&nbsp;</td>
-<td style='padding-left: .5em; padding-right: .2em; border-bottom: 2px solid grey; text-align: right; background-color: #f5fbff;'>8:3</td>
-<td style='padding-left: .5em; padding-right: .2em; border-bottom: 2px solid grey; text-align: right; background-color: #f5fbff;'>8:4</td>
-<td style='border-bottom: 2px solid grey; background-color: #f5fbff;' colspan='1'>&nbsp;</td>
-<td style='padding-left: .5em; padding-right: .2em; border-bottom: 2px solid grey; text-align: right; background-color: #f5fbff;'>8:5</td>
-<td style='padding-left: .5em; padding-right: .2em; border-bottom: 2px solid grey; text-align: right; background-color: #f5fbff;'>8:6</td>
+<td style="text-align: left;">
+  1st row
+</td>
+<td style="padding-left: .5em; padding-right: .2em; text-align: right;">
+1:1
+</td>
+<td style="padding-left: .5em; padding-right: .2em; text-align: right;">
+1:2
+</td>
+<td style colspan="1">
+ 
+</td>
+<td style="padding-left: .5em; padding-right: .2em; text-align: right; background-color: #f5fbff;">
+1:3
+</td>
+<td style="padding-left: .5em; padding-right: .2em; text-align: right; background-color: #f5fbff;">
+1:4
+</td>
+<td style="background-color: #f5fbff;" colspan="1">
+ 
+</td>
+<td style="padding-left: .5em; padding-right: .2em; text-align: right; background-color: #f5fbff;">
+1:5
+</td>
+<td style="padding-left: .5em; padding-right: .2em; text-align: right; background-color: #f5fbff;">
+1:6
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+  2nd row
+</td>
+<td style="padding-left: .5em; padding-right: .2em; text-align: right;">
+2:1
+</td>
+<td style="padding-left: .5em; padding-right: .2em; text-align: right;">
+2:2
+</td>
+<td style colspan="1">
+ 
+</td>
+<td style="padding-left: .5em; padding-right: .2em; text-align: right; background-color: #f5fbff;">
+2:3
+</td>
+<td style="padding-left: .5em; padding-right: .2em; text-align: right; background-color: #f5fbff;">
+2:4
+</td>
+<td style="background-color: #f5fbff;" colspan="1">
+ 
+</td>
+<td style="padding-left: .5em; padding-right: .2em; text-align: right; background-color: #f5fbff;">
+2:5
+</td>
+<td style="padding-left: .5em; padding-right: .2em; text-align: right; background-color: #f5fbff;">
+2:6
+</td>
+</tr>
+<tr>
+<td colspan="2" style="font-weight: 900; background-color: #f7f7f7;">
+Group B
+</td>
+<td style="padding-left: .5em; padding-right: .2em; font-weight: 900; background-color: #f7f7f7; text-align: right;">
+</td>
+<td style="font-weight: 900; background-color: #f7f7f7;" colspan="1">
+ 
+</td>
+<td style="padding-left: .5em; padding-right: .2em; font-weight: 900; text-align: right; background-color: #F6F9FB;">
+</td>
+<td style="padding-left: .5em; padding-right: .2em; font-weight: 900; text-align: right; background-color: #F6F9FB;">
+</td>
+<td style="font-weight: 900; background-color: #F6F9FB;" colspan="1">
+ 
+</td>
+<td style="padding-left: .5em; padding-right: .2em; font-weight: 900; text-align: right; background-color: #F6F9FB;">
+</td>
+<td style="padding-left: .5em; padding-right: .2em; font-weight: 900; text-align: right; background-color: #F6F9FB;">
+</td>
+</tr>
+<tr style="background-color: #f7f7f7;">
+<td style="background-color: #f7f7f7; text-align: left;">
+  3rd row
+</td>
+<td style="padding-left: .5em; padding-right: .2em; background-color: #f7f7f7; text-align: right;">
+3:1
+</td>
+<td style="padding-left: .5em; padding-right: .2em; background-color: #f7f7f7; text-align: right;">
+3:2
+</td>
+<td style="background-color: #f7f7f7;" colspan="1">
+ 
+</td>
+<td style="padding-left: .5em; padding-right: .2em; text-align: right; background-color: #F6F9FB;">
+3:3
+</td>
+<td style="padding-left: .5em; padding-right: .2em; text-align: right; background-color: #F6F9FB;">
+3:4
+</td>
+<td style="background-color: #F6F9FB;" colspan="1">
+ 
+</td>
+<td style="padding-left: .5em; padding-right: .2em; text-align: right; background-color: #F6F9FB;">
+3:5
+</td>
+<td style="padding-left: .5em; padding-right: .2em; text-align: right; background-color: #F6F9FB;">
+3:6
+</td>
+</tr>
+<tr style="background-color: #f7f7f7;">
+<td style="background-color: #f7f7f7; text-align: left;">
+  4th row
+</td>
+<td style="padding-left: .5em; padding-right: .2em; background-color: #f7f7f7; text-align: right;">
+4:1
+</td>
+<td style="padding-left: .5em; padding-right: .2em; background-color: #f7f7f7; text-align: right;">
+4:2
+</td>
+<td style="background-color: #f7f7f7;" colspan="1">
+ 
+</td>
+<td style="padding-left: .5em; padding-right: .2em; text-align: right; background-color: #F6F9FB;">
+4:3
+</td>
+<td style="padding-left: .5em; padding-right: .2em; text-align: right; background-color: #F6F9FB;">
+4:4
+</td>
+<td style="background-color: #F6F9FB;" colspan="1">
+ 
+</td>
+<td style="padding-left: .5em; padding-right: .2em; text-align: right; background-color: #F6F9FB;">
+4:5
+</td>
+<td style="padding-left: .5em; padding-right: .2em; text-align: right; background-color: #F6F9FB;">
+4:6
+</td>
+</tr>
+<tr style="background-color: #f7f7f7;">
+<td style="background-color: #f7f7f7; text-align: left;">
+  5th row
+</td>
+<td style="padding-left: .5em; padding-right: .2em; background-color: #f7f7f7; text-align: right;">
+5:1
+</td>
+<td style="padding-left: .5em; padding-right: .2em; background-color: #f7f7f7; text-align: right;">
+5:2
+</td>
+<td style="background-color: #f7f7f7;" colspan="1">
+ 
+</td>
+<td style="padding-left: .5em; padding-right: .2em; text-align: right; background-color: #F6F9FB;">
+5:3
+</td>
+<td style="padding-left: .5em; padding-right: .2em; text-align: right; background-color: #F6F9FB;">
+5:4
+</td>
+<td style="background-color: #F6F9FB;" colspan="1">
+ 
+</td>
+<td style="padding-left: .5em; padding-right: .2em; text-align: right; background-color: #F6F9FB;">
+5:5
+</td>
+<td style="padding-left: .5em; padding-right: .2em; text-align: right; background-color: #F6F9FB;">
+5:6
+</td>
+</tr>
+<tr style="background-color: #f7f7f7;">
+<td style="background-color: #f7f7f7; text-align: left;">
+  6th row
+</td>
+<td style="padding-left: .5em; padding-right: .2em; background-color: #f7f7f7; text-align: right;">
+6:1
+</td>
+<td style="padding-left: .5em; padding-right: .2em; background-color: #f7f7f7; text-align: right;">
+6:2
+</td>
+<td style="background-color: #f7f7f7;" colspan="1">
+ 
+</td>
+<td style="padding-left: .5em; padding-right: .2em; text-align: right; background-color: #F6F9FB;">
+6:3
+</td>
+<td style="padding-left: .5em; padding-right: .2em; text-align: right; background-color: #F6F9FB;">
+6:4
+</td>
+<td style="background-color: #F6F9FB;" colspan="1">
+ 
+</td>
+<td style="padding-left: .5em; padding-right: .2em; text-align: right; background-color: #F6F9FB;">
+6:5
+</td>
+<td style="padding-left: .5em; padding-right: .2em; text-align: right; background-color: #F6F9FB;">
+6:6
+</td>
+</tr>
+<tr>
+<td colspan="2" style="font-weight: 900;">
+Group C
+</td>
+<td style="padding-left: .5em; padding-right: .2em; font-weight: 900; text-align: right;">
+</td>
+<td style="font-weight: 900;" colspan="1">
+ 
+</td>
+<td style="padding-left: .5em; padding-right: .2em; font-weight: 900; text-align: right; background-color: #f5fbff;">
+</td>
+<td style="padding-left: .5em; padding-right: .2em; font-weight: 900; text-align: right; background-color: #f5fbff;">
+</td>
+<td style="font-weight: 900; background-color: #f5fbff;" colspan="1">
+ 
+</td>
+<td style="padding-left: .5em; padding-right: .2em; font-weight: 900; text-align: right; background-color: #f5fbff;">
+</td>
+<td style="padding-left: .5em; padding-right: .2em; font-weight: 900; text-align: right; background-color: #f5fbff;">
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+  7th row
+</td>
+<td style="padding-left: .5em; padding-right: .2em; text-align: right;">
+7:1
+</td>
+<td style="padding-left: .5em; padding-right: .2em; text-align: right;">
+7:2
+</td>
+<td style colspan="1">
+ 
+</td>
+<td style="padding-left: .5em; padding-right: .2em; text-align: right; background-color: #f5fbff;">
+7:3
+</td>
+<td style="padding-left: .5em; padding-right: .2em; text-align: right; background-color: #f5fbff;">
+7:4
+</td>
+<td style="background-color: #f5fbff;" colspan="1">
+ 
+</td>
+<td style="padding-left: .5em; padding-right: .2em; text-align: right; background-color: #f5fbff;">
+7:5
+</td>
+<td style="padding-left: .5em; padding-right: .2em; text-align: right; background-color: #f5fbff;">
+7:6
+</td>
+</tr>
+<tr>
+<td style="border-bottom: 2px solid grey; text-align: left;">
+  8th row
+</td>
+<td style="padding-left: .5em; padding-right: .2em; border-bottom: 2px solid grey; text-align: right;">
+8:1
+</td>
+<td style="padding-left: .5em; padding-right: .2em; border-bottom: 2px solid grey; text-align: right;">
+8:2
+</td>
+<td style="border-bottom: 2px solid grey;" colspan="1">
+ 
+</td>
+<td style="padding-left: .5em; padding-right: .2em; border-bottom: 2px solid grey; text-align: right; background-color: #f5fbff;">
+8:3
+</td>
+<td style="padding-left: .5em; padding-right: .2em; border-bottom: 2px solid grey; text-align: right; background-color: #f5fbff;">
+8:4
+</td>
+<td style="border-bottom: 2px solid grey; background-color: #f5fbff;" colspan="1">
+ 
+</td>
+<td style="padding-left: .5em; padding-right: .2em; border-bottom: 2px solid grey; text-align: right; background-color: #f5fbff;">
+8:5
+</td>
+<td style="padding-left: .5em; padding-right: .2em; border-bottom: 2px solid grey; text-align: right; background-color: #f5fbff;">
+8:6
+</td>
 </tr>
 </tbody>
-<tfoot><tr><td colspan='9'>
-&dagger; A table footer commment</td></tr></tfoot>
+<tfoot>
+<tr>
+<td colspan="9">
+† A table footer commment
+</td>
+</tr>
+</tfoot>
 </table>
 </div>
 </div>
