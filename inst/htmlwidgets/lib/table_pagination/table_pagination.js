@@ -107,16 +107,25 @@ function table_pagination(table, nav_id, select_entries_div_id, options) {
   // <div><label> Show <select>[10|25|100]</select> entries</label></div>
   var select_entries_div = document.getElementById(select_entries_div_id);
   $(select_entries_div).empty();
+
+  // Get the possible entries per page:
+  var select_entries_allowed = options.number_of_entries;
+  if (select_entries_allowed.length === 0) {
+    select_entries_allowed = [10, 25, 100];
+  }
+
+  // If select_entries_allowed is a scalar, do not offer a select:
+  if (!$.isArray(select_entries_allowed)) {
+    refresh_table(table, nav_id, 0, +select_entries_allowed);
+    return;
+  }
+  // Otherwise show the select menu:
   var label_entries = document.createElement('label');
   var select_entries = document.createElement('select');
   var select_entries_id = select_entries_div_id.concat('_select');
   $(label_entries).attr('for', select_entries_id);
   $(label_entries).append('Show ');
   $(select_entries).attr('id', select_entries_id);
-  var select_entries_allowed = options.number_of_entries;
-  if (select_entries_allowed.length === 0) {
-    select_entries_allowed = [10, 25, 100];
-  }
   for (var i=0;i<select_entries_allowed.length;i++) {
     var option = document.createElement('option');
     $(option).attr('value', select_entries_allowed[i]);
