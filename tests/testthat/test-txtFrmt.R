@@ -173,3 +173,11 @@ test_that("Character vectors work", {
 
 })
 
+
+test_that("Peter's issues raised in #34",{
+  expect_silent(txtRound(c(1, 2, 3, 4)))
+
+  expect_silent(txtRound(c(1, 2, 3, NA)))
+
+  expect_silent(txtRound(c(NA, NA, NA, NA)))
+})
