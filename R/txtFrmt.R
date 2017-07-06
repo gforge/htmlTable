@@ -233,7 +233,7 @@ txtRound.default = function(x, digits = 0, txt.NA = "", dec = ".", ...){
     # remove any spaces indicating thousands
     # and convert to numeric
     x <-
-      sub(dec_str, "\\1", x) %>%
+      sub(dec_str, "\\1", format(as.numeric(x), scientific = FALSE, nsmall = 20)) %>%
       gsub(" ", "", .) %>%
       as.numeric
   }
@@ -263,7 +263,7 @@ txtRound.data.frame <- function(x, ...){
 txtRound.table <- function(x, ...){
   return(txtRound.matrix(x, ...))
 }
-  
+
 #' @rdname txtRound
 #' @export
 txtRound.matrix <- function(x, digits = 0, excl.cols, excl.rows, ...){
