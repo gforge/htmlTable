@@ -382,3 +382,8 @@ test_that("An empty dataframe returns an empty table with a warning", {
                            tfoot = "This is a footnote"))
 
 })
+
+test_that("HTML code is properly escaped", {
+  expect_match(
+    object = htmlTable(data.frame(a = "<3"), rnames = FALSE),
+    regexp = "&lt;3")})

@@ -21,6 +21,7 @@ Imports:
     methods,
     checkmate,
     htmlwidgets,
+    htmltools,
     rstudioapi (>= 0.6)
 Suggests:
     testthat,

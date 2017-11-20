@@ -260,6 +260,7 @@
 #'  (at least that is how my 2010 version behaves). You can additinally use the
 #'  \code{options(htmlTableCompat = "html")} if you want a change to apply
 #'  to the entire document.
+#' @param escape.html logical: should HTML characters be escaped? Defaults to TRUE.
 #' @return \code{string} Returns a string of class htmlTable
 #'
 #' @example inst/examples/htmlTable_example.R
@@ -278,6 +279,7 @@ htmlTable <- function(x, ...){
 
 #' @importFrom stringr str_trim
 #' @importFrom stringr str_replace
+#' @importFrom htmltools htmlEscape
 #' @import checkmate
 #' @import magrittr
 #' @rdname htmlTable
@@ -336,8 +338,13 @@ htmlTable.default <- function(x,
                               ctable = TRUE,
                               compatibility = getOption("htmlTableCompat", "LibreOffice"),
                               cspan.rgroup = "all",
+                              escape.html = TRUE,
                               ...)
 {
+  if (isTRUE(escape.html)) {
+    x <- htmlEscape(x)
+  }
+
   if (is.null(dim(x))){
     if (!is.numeric(x) && !is.character(x)){
       x <- as.character(x)
