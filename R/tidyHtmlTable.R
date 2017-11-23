@@ -21,7 +21,7 @@
 #' \code{htmlTable} function
 #' @return Returns html code that will build a pretty table
 #' @export
-#' @seealso \code{\link[htmlTable]{htmlTable}}
+#' @seealso \code{\link{htmlTable}}
 #' @examples
 #' \dontrun{
 #' library(tidyverse)
@@ -182,22 +182,22 @@ tidyHtmlTable.data.frame <- function(x,
 
   # Get names and indices for column groups
   if(!is.null(cgroup1)) {
-    cgroup1 <- rle(col_ref_tbl %>% dplyr::pull(cgroup1))$value
+    cgroup1_out <- rle(col_ref_tbl %>% dplyr::pull(cgroup1))$value
     n.cgroup1 <- rle(col_ref_tbl %>% dplyr::pull(cgroup1))$lengths
     if(!is.null(cgroup2)) {
-      cgroup2 <- rle(col_ref_tbl %>% dplyr::pull(cgroup2))$value
+      cgroup2_out <- rle(col_ref_tbl %>% dplyr::pull(cgroup2))$value
       n.cgroup2 <- rle(col_ref_tbl %>% dplyr::pull(cgroup2))$lengths
-      len_diff <- length(cgroup1) - length(cgroup2)
+      len_diff <- length(cgroup1_out) - length(cgroup2_out)
       if (len_diff < 0) {
         stop("cgroup2 cannot contain more categories than cgroup1")
       } else if (len_diff > 0) {
-        cgroup2 <- c(cgroup2, rep(NA, len_diff))
+        cgroup2_out <- c(cgroup2, rep(NA, len_diff))
         n.cgroup2 <- c(n.cgroup2, rep(NA, len_diff))
       }
-      cgroup1 <- rbind(cgroup2, cgroup1)
+      cgroup1_out <- rbind(cgroup2, cgroup1)
       n.cgroup1 <- rbind(n.cgroup2, n.cgroup1)
     }
-    htmlTable_args$cgroup <- cgroup1
+    htmlTable_args$cgroup <- cgroup1_out
     htmlTable_args$n.cgroup <- n.cgroup1
   }
 
