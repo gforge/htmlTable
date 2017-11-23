@@ -1,12 +1,11 @@
 #' Generate an htmlTable using a ggplot2-like interface
 #'
-#' A wrapper script for \code{htmlTable} that will build a table using
-#' tidy data and mapping elements of the table to specific columns of the input
-#' data.
+#' Builds an \code{htmlTable} by mapping columns from the input data, \code{x},
+#' to elements of output \code{htmlTable} (e.g. rnames, headers, etc.)
 #'
-#' @param x Tidy data used to build the table
-#' @param value The individual values which will fill each cell of the
-#' table
+#' @param x Tidy data used to build the \code{htmlTable}
+#' @param value The column containing values filling individual cells of the
+#' output \code{htmlTable}
 #' @param header The column in \code{x} specifying column headings
 #' @param rnames The column in \code{x} specifying row names
 #' @param rgroup The column in \code{x} specifying row groups
@@ -204,6 +203,7 @@ tidyHtmlTable.data.frame <- function(x,
   do.call(htmlTable::htmlTable, htmlTable_args)
 }
 
+# Removes rows containing NA values in any mapped columns from the tidy dataset
 remove_na_rows <- function(x, ...) {
   cols <- as.character(get_col_vars(...))
   na.log <- x %>%
@@ -228,6 +228,8 @@ remove_na_rows <- function(x, ...) {
   return(x[keep.idx,])
 }
 
+# This checks to make sure that the mapping columns of the tidy dataset
+# uniquely specify a given value
 check_uniqueness <- function(x, ...) {
   # Get arguments
   args <- simplify_arg_list(...)
@@ -245,12 +247,17 @@ check_uniqueness <- function(x, ...) {
   }
 }
 
+# Converts arguments from ... into a list and removes those that have been set
+# to NULL
 simplify_arg_list <- function(...) {
   x <- list(...)
   idx <- sapply(x, is.null)
   return(x[!idx])
 }
 
+# This function gets arguments from ..., removes those that are NULL,
+# and then subsets those that should map tidy data columns to htmlTable
+# parameters
 get_col_vars <- function(...) {
   out <- simplify_arg_list(...)
   return(out[names(out) %in%
@@ -260,6 +267,8 @@ get_col_vars <- function(...) {
                  "tspanner")])
 }
 
+# Checks a variety of assumptions about input arguments and prepares an
+# appropriate error message if those assumptions are violated
 argument_checker <- function(x, ...) {
 
   # Check that all the input are characters

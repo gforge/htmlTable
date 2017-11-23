@@ -9,10 +9,10 @@ tidyHtmlTable(x, value = "value", header = "header", rnames = "rnames",
   tspanner = NULL, hidden_tspanner = NULL, ...)
 }
 \arguments{
-\item{x}{Tidy data used to build the table}
+\item{x}{Tidy data used to build the \code{htmlTable}}
 
-\item{value}{The individual values which will fill each cell of the
-table}
+\item{value}{The column containing values filling individual cells of the
+output \code{htmlTable}}
 
 \item{header}{The column in \code{x} specifying column headings}
 
@@ -39,9 +39,8 @@ groups}
 Returns html code that will build a pretty table
 }
 \description{
-A wrapper script for \code{htmlTable} that will build a table using
-tidy data and mapping elements of the table to specific columns of the input
-data.
+Builds an \code{htmlTable} by mapping columns from the input data, \code{x},
+to elements of output \code{htmlTable} (e.g. rnames, headers, etc.)
 }
 \examples{
 \dontrun{
