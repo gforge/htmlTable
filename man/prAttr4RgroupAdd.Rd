@@ -20,4 +20,3 @@ Gets the add element attribute if it exists. If non-existant it will
 return NULL.
 }
 \keyword{internal}
-

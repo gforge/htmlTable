@@ -20,4 +20,3 @@ merging with next. If there is an uneven number of colors the middle
 color is mixed with both left and right side.
 }
 \keyword{internal}
-

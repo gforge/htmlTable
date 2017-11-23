@@ -49,4 +49,3 @@ Other hidden helper functions for \code{\link{htmlTable}}: \code{\link{prAddSemi
   \code{\link{prPrepareCgroup}}, \code{\link{prTblNo}}
 }
 \keyword{internal}
-

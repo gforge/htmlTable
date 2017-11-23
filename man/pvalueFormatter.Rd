@@ -16,4 +16,3 @@ Deprecated use \code{\link{txtPval}} instead
 pvalueFormatter(c(0.10234,0.010234, 0.0010234, 0.000010234))
 }
 \keyword{internal}
-

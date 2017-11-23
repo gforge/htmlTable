@@ -101,4 +101,3 @@ concatHtmlTables(all_tables)
 # See vignette("tables", package = "htmlTable")
 # for more examples
 }
-

@@ -22,4 +22,3 @@ prPrepareColors(clr, n, ng, gtxt)
 Prepares the alternating colors
 }
 \keyword{internal}
-

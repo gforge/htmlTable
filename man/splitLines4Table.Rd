@@ -16,4 +16,3 @@ See \code{\link{txtMergeLines}}
 splitLines4Table("hello", "world")
 }
 \keyword{internal}
-

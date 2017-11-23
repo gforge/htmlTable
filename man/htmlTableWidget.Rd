@@ -34,4 +34,3 @@ an htmlwidget showing the paginated table
 \description{
 This widget renders a table with pagination into an htmlwidget
 }
-

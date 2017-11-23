@@ -31,4 +31,3 @@ header, defaulting to \code{\link[base]{colnames}(x)}}
 Prepares the cell style
 }
 \keyword{internal}
-

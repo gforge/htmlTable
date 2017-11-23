@@ -46,4 +46,3 @@ txtPval(c(0.10234,0.010234, 0.0010234, 0.000010234))
 Other text formatters: \code{\link{txtMergeLines}},
   \code{\link{txtRound}}
 }
-

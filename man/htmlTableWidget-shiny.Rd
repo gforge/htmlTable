@@ -36,4 +36,3 @@ htmlTableWidgetOutput("mywidget")
 renderHtmlTableWidget({htmlTableWidget(iris)})
 }
 }
-
