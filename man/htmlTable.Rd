@@ -23,7 +23,7 @@ htmlTable(x, ...)
   col.columns = "none", padding.rgroup = "&nbsp;&nbsp;",
   padding.tspanner = "", ctable = TRUE,
   compatibility = getOption("htmlTableCompat", "LibreOffice"),
-  cspan.rgroup = "all", ...)
+  cspan.rgroup = "all", escape.html = TRUE, ...)
 
 \method{knit_print}{htmlTable}(x, ...)
 
@@ -171,6 +171,8 @@ to the entire document.}
 \item{cspan.rgroup}{The number of columns that an \code{rgroup} should span. It spans
 by default all columns but you may want to limit this if you have column colors
 that you want to retain.}
+
+\item{escape.html}{logical: should HTML characters be escaped? Defaults to TRUE.}
 
 \item{useViewer}{If you are using RStudio there is a viewer thar can render
 the table within that is envoced if in \code{\link[base]{interactive}} mode.
