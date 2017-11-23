@@ -20,7 +20,9 @@ Imports:
     magrittr (>= 1.5),
     methods,
     checkmate,
-    htmlwidgets
+    htmlwidgets,
+    tidyr (>= 0.7.2),
+    dplyr (>= 0.7.4)
 Suggests:
     testthat,
     XML,
