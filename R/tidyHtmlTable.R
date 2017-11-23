@@ -311,7 +311,7 @@ get_col_tbl <- function(x,
   out <- x %>%
     dplyr::select(cols) %>%
     unique %>%
-    dplyr::arrange_(.dots = cols) %>%
+    dplyr::arrange_at(cols) %>%
     # This is necessary in order to not generate NA values when setting
     # hidden elements to ""
     dplyr::mutate_if(is.factor, as.character)
@@ -331,7 +331,7 @@ get_row_tbl <- function(x,
   out <- x %>%
     dplyr::select(cols) %>%
     unique %>%
-    dplyr::arrange_(.dots = cols) %>%
+    dplyr::arrange_at(cols) %>%
     # This is necessary in order to not generate NA values when setting
     # hidden elements to ""
     dplyr::mutate_if(is.factor, as.character)

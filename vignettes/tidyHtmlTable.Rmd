@@ -27,7 +27,7 @@ of key and value columns.
 library(magrittr)
 library(tidyr)
 library(dplyr)
-library(tidyHtmlTable)
+library(htmlTable)
 library(tibble)
 td <- mtcars %>%
     rownames_to_column %>%
@@ -82,4 +82,3 @@ tidy_summary  %>%
                  rnames = "gear",
                  rgroup = "cyl")
 ```
-
