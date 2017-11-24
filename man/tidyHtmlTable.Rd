@@ -20,7 +20,7 @@ output \code{htmlTable}}
 
 \item{rgroup}{The column in \code{x} specifying row groups}
 
-\item{hidden_rgroup}{rgroups that will be hidden.}
+\item{hidden_rgroup}{rgroup values that will be hidden.}
 
 \item{cgroup1}{The column in \code{x} specifying the inner most column
 groups}
@@ -30,7 +30,7 @@ groups}
 
 \item{tspanner}{The column in \code{x} specifying tspanner groups}
 
-\item{hidden_tspanner}{tspanners that will be hidden.}
+\item{hidden_tspanner}{tspanner values that will be hidden.}
 
 \item{...}{Additional arguments that will be passed to the inner
 \code{htmlTable} function}
@@ -40,8 +40,56 @@ Returns html code that will build a pretty table
 }
 \description{
 Builds an \code{htmlTable} by mapping columns from the input data, \code{x},
-to elements of output \code{htmlTable} (e.g. rnames, headers, etc.)
+to elements of an output \code{htmlTable} (e.g. rnames, header, etc.)
 }
+\section{Column-mapping parameters}{
+
+  The \code{tidyHtmlTable} function is designed to work like ggplot2 in that
+  columns from \code{x} are mapped to specific parameters from the
+  \code{htmlTable} function. At minimum, \code{x} must contain the names
+  of columns mapping to \code{rnames}, \code{header}, and \code{rnames}.
+  \code{header} and \code{rnames} retain the same meaning as in the
+  htmlTable function. \code{value} contains the individual values that will
+  be used to fill each cell within the output \code{htmlTable}.
+
+  A full list of parameters from \code{htmlTable} which may be mapped to
+  columns within \code{x} include:
+
+  \itemize{
+    \item \code{value}
+    \item \code{header}
+    \item \code{rnames}
+    \item \code{rgroup}
+    \item \code{cgroup1}
+    \item \code{cgroup2}
+    \item \code{tspanner}
+  }
+
+  Note that unlike in \code{htmlTable} which contains \code{cgroup},
+  and which may specify a variable number of column groups,
+  \code{tidyhtmlTable} contains the parameters \code{cgroup1} and
+  \code{cgroup2}. These parameters correspond to the inward most and outward
+  most column groups respectively.
+
+  Also note that the coordinates of each \code{value} within \code{x} must be
+  unambiguously mapped to a position within the output \code{htmlTable}.
+  Therefore, the each row-wise combination the variables specified above
+  contained in \code{x} must be unique.
+}
+
+\section{Hidden values}{
+
+  \code{htmlTable} Allows for some values within \code{rgroup},
+  \code{cgroup}, etc. to be specified as \code{""}. The following parameters
+  allow for specific values to be treated as if they were a string of length
+  zero in the \code{htmlTable} function.
+
+  \itemize{
+    \item \code{hidden_rgroup}
+    \item \code{hidden_tspanner}
+  }
+}
+
 \examples{
 \dontrun{
 library(tidyverse)
