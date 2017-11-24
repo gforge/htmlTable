@@ -386,4 +386,30 @@ test_that("An empty dataframe returns an empty table with a warning", {
 test_that("HTML code is properly escaped", {
   expect_match(
     object = htmlTable(data.frame(a = "<3"), rnames = FALSE),
-    regexp = "&lt;3")})
+    regexp = "&lt;3")
+
+  df_test <- data.frame(a = c("<3", "<3"),
+                        b = c("&2", ">2"),
+                        stringsAsFactors = FALSE)
+  matrix_test <- as.matrix(df_test,
+                           ncol = 2)
+  tibble_test <- tibble::as.tibble(df_test)
+
+  expect_identical(htmlTable(df_test,
+                             rnames = FALSE),
+                   structure("<table class='gmisc_table' style='border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;' >\n<thead>\n<tr>\n<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>a</th>\n<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>b</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td style='text-align: center;'>&lt;3</td>\n<td style='text-align: center;'>&amp;2</td>\n</tr>\n<tr>\n<td style='border-bottom: 2px solid grey; text-align: center;'>&lt;3</td>\n<td style='border-bottom: 2px solid grey; text-align: center;'>&gt;2</td>\n</tr>\n</tbody>\n</table>",
+                             class = c("htmlTable","character"),
+                             ... = list()))
+
+  expect_identical(htmlTable(matrix_test,
+                             rnames = FALSE),
+                   structure("<table class='gmisc_table' style='border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;' >\n<thead>\n<tr>\n<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>a</th>\n<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>b</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td style='text-align: center;'>&lt;3</td>\n<td style='text-align: center;'>&amp;2</td>\n</tr>\n<tr>\n<td style='border-bottom: 2px solid grey; text-align: center;'>&lt;3</td>\n<td style='border-bottom: 2px solid grey; text-align: center;'>&gt;2</td>\n</tr>\n</tbody>\n</table>",
+                             class = c("htmlTable","character"),
+                             ... = list()))
+
+  expect_identical(htmlTable(tibble_test,
+                             rnames = FALSE),
+                   structure("<table class='gmisc_table' style='border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;' >\n<thead>\n<tr>\n<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>a</th>\n<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>b</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td style='text-align: center;'>&lt;3</td>\n<td style='text-align: center;'>&amp;2</td>\n</tr>\n<tr>\n<td style='border-bottom: 2px solid grey; text-align: center;'>&lt;3</td>\n<td style='border-bottom: 2px solid grey; text-align: center;'>&gt;2</td>\n</tr>\n</tbody>\n</table>",
+                             class = c("htmlTable","character"),
+                             ... = list()))
+  })

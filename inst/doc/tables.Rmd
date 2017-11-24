@@ -208,7 +208,7 @@ htmlTable(txtRound(mx, 1),
           cspan.rgroup = 1)
 ```
 
-If you want to further add to the visual hints you can use specific HTML-code and insert it into the cells. Here we will color the &Delta;<sub>std</sub> according to color.
+If you want to further add to the visual hints you can use specific HTML-code and insert it into the cells. Here we will color the &Delta;<sub>std</sub> according to color. By default htmlTable escapes HTML characters. If we want the HTML code to be interpreted correctly we need to make sure that this does not happen, by specifying `escape.html = FALSE`.
 
 ```{r}
 cols_2_clr <- grep("&Delta;<sub>std</sub>", colnames(mx))
@@ -249,7 +249,8 @@ htmlTable(out_mx,
           n.rgroup = rep(5, 3),
           tfoot = txtMergeLines("&Delta;<sub>int</sub> correspnds to the change since start",
                                 "&Delta;<sub>std</sub> corresponds to the change compared to national average"),
-          cspan.rgroup = 1)
+          cspan.rgroup = 1,
+          escape.html = FALSE)
 ```
 
 Although a graph most likely does the visualization task better, tables are good at conveying detailed information. It is in my mind without doubt easier in the latest version to find the pattern in the data.

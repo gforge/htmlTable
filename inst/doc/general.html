@@ -4,7 +4,7 @@
 
 <head>
 
-<meta charset="utf-8">
+<meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 
@@ -12,7 +12,7 @@
 
 <meta name="author" content="Max Gordon" />
 
-<meta name="date" content="2017-02-12" />
+<meta name="date" content="2017-11-24" />
 
 <title>The htmlTable package</title>
 
@@ -70,7 +70,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">The htmlTable package</h1>
 <h4 class="author"><em>Max Gordon</em></h4>
-<h4 class="date"><em>2017-02-12</em></h4>
+<h4 class="date"><em>2017-11-24</em></h4>
 
 
 <div id="TOC">
@@ -98,10 +98,10 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(htmlTable)
 <span class="kw">library</span>(magrittr)
 <span class="co"># A simple output</span>
-<span class="kw">matrix</span>(<span class="dv">1</span>:<span class="dv">4</span>,
+<span class="kw">matrix</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">4</span>,
        <span class="dt">ncol=</span><span class="dv">2</span>,
        <span class="dt">dimnames =</span> <span class="kw">list</span>(<span class="kw">c</span>(<span class="st">&quot;Row 1&quot;</span>, <span class="st">&quot;Row 2&quot;</span>),
-                       <span class="kw">c</span>(<span class="st">&quot;Column 1&quot;</span>, <span class="st">&quot;Column 2&quot;</span>))) %&gt;%<span class="st"> </span>
+                       <span class="kw">c</span>(<span class="st">&quot;Column 1&quot;</span>, <span class="st">&quot;Column 2&quot;</span>))) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span>htmlTable</code></pre></div>
 <table class="gmisc_table" style="border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;">
 <thead>
@@ -143,10 +143,10 @@ Row 2
 </table>
 <p>The function is also aware of the dimnames:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># A simple output</span>
-<span class="kw">matrix</span>(<span class="dv">1</span>:<span class="dv">4</span>,
+<span class="kw">matrix</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">4</span>,
        <span class="dt">ncol=</span><span class="dv">2</span>,
        <span class="dt">dimnames =</span> <span class="kw">list</span>(<span class="dt">rows =</span> <span class="kw">c</span>(<span class="st">&quot;Row 1&quot;</span>, <span class="st">&quot;Row 2&quot;</span>),
-                       <span class="dt">cols =</span> <span class="kw">c</span>(<span class="st">&quot;Column 1&quot;</span>, <span class="st">&quot;Column 2&quot;</span>))) %&gt;%<span class="st"> </span>
+                       <span class="dt">cols =</span> <span class="kw">c</span>(<span class="st">&quot;Column 1&quot;</span>, <span class="st">&quot;Column 2&quot;</span>))) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span>htmlTable</code></pre></div>
 <table class="gmisc_table" style="border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;">
 <thead>
@@ -174,25 +174,25 @@ Column 2
 rows
 </td>
 </tr>
-<tr style="background-color:;">
-<td style="background-color:; text-align: left;">
+<tr>
+<td style="text-align: left;">
   Row 1
 </td>
-<td style="background-color:; text-align: center;">
+<td style="text-align: center;">
 1
 </td>
-<td style="background-color:; text-align: center;">
+<td style="text-align: center;">
 3
 </td>
 </tr>
-<tr style="background-color:;">
-<td style="background-color:; border-bottom: 2px solid grey; text-align: left;">
+<tr>
+<td style="border-bottom: 2px solid grey; text-align: left;">
   Row 2
 </td>
-<td style="background-color:; border-bottom: 2px solid grey; text-align: center;">
+<td style="border-bottom: 2px solid grey; text-align: center;">
 2
 </td>
-<td style="background-color:; border-bottom: 2px solid grey; text-align: center;">
+<td style="border-bottom: 2px solid grey; text-align: center;">
 4
 </td>
 </tr>
@@ -201,8 +201,8 @@ rows
 <p>This can be convenient when working with the <code>base::table</code> function:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(<span class="st">&quot;mtcars&quot;</span>)
 <span class="kw">with</span>(mtcars,
-     <span class="kw">table</span>(cyl, gear)) %&gt;%<span class="st"> </span>
-<span class="st">  </span>addmargins %&gt;%<span class="st"> </span>
+     <span class="kw">table</span>(cyl, gear)) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span>addmargins <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span>htmlTable</code></pre></div>
 <table class="gmisc_table" style="border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;">
 <thead>
@@ -244,83 +244,83 @@ Sum
 cyl
 </td>
 </tr>
-<tr style="background-color:;">
-<td style="background-color:; text-align: left;">
+<tr>
+<td style="text-align: left;">
   4
 </td>
-<td style="background-color:; text-align: center;">
+<td style="text-align: center;">
 1
 </td>
-<td style="background-color:; text-align: center;">
+<td style="text-align: center;">
 8
 </td>
-<td style="background-color:; text-align: center;">
+<td style="text-align: center;">
 2
 </td>
-<td style="background-color:;" colspan="1">
+<td style colspan="1">
  
 </td>
-<td style="background-color:; text-align: center;">
+<td style="text-align: center;">
 11
 </td>
 </tr>
-<tr style="background-color:;">
-<td style="background-color:; text-align: left;">
+<tr>
+<td style="text-align: left;">
   6
 </td>
-<td style="background-color:; text-align: center;">
+<td style="text-align: center;">
 2
 </td>
-<td style="background-color:; text-align: center;">
+<td style="text-align: center;">
 4
 </td>
-<td style="background-color:; text-align: center;">
+<td style="text-align: center;">
 1
 </td>
-<td style="background-color:;" colspan="1">
+<td style colspan="1">
  
 </td>
-<td style="background-color:; text-align: center;">
+<td style="text-align: center;">
 7
 </td>
 </tr>
-<tr style="background-color:;">
-<td style="background-color:; text-align: left;">
+<tr>
+<td style="text-align: left;">
   8
 </td>
-<td style="background-color:; text-align: center;">
+<td style="text-align: center;">
 12
 </td>
-<td style="background-color:; text-align: center;">
+<td style="text-align: center;">
 0
 </td>
-<td style="background-color:; text-align: center;">
+<td style="text-align: center;">
 2
 </td>
-<td style="background-color:;" colspan="1">
+<td style colspan="1">
  
 </td>
-<td style="background-color:; text-align: center;">
+<td style="text-align: center;">
 14
 </td>
 </tr>
-<tr style="background-color:;">
-<td style="background-color:; border-bottom: 2px solid grey; border-top: 1px solid #BEBEBE; font-weight: 900; text-align: left;">
+<tr>
+<td style="border-bottom: 2px solid grey; border-top: 1px solid #BEBEBE; font-weight: 900; text-align: left;">
   Sum
 </td>
-<td style="background-color:; border-bottom: 2px solid grey; border-top: 1px solid #BEBEBE; font-weight: 900; text-align: center;">
+<td style="border-bottom: 2px solid grey; border-top: 1px solid #BEBEBE; font-weight: 900; text-align: center;">
 15
 </td>
-<td style="background-color:; border-bottom: 2px solid grey; border-top: 1px solid #BEBEBE; font-weight: 900; text-align: center;">
+<td style="border-bottom: 2px solid grey; border-top: 1px solid #BEBEBE; font-weight: 900; text-align: center;">
 12
 </td>
-<td style="background-color:; border-bottom: 2px solid grey; border-top: 1px solid #BEBEBE; font-weight: 900; text-align: center;">
+<td style="border-bottom: 2px solid grey; border-top: 1px solid #BEBEBE; font-weight: 900; text-align: center;">
 5
 </td>
-<td style="background-color:; border-bottom: 2px solid grey; border-top: 1px solid #BEBEBE; font-weight: 900;" colspan="1">
+<td style="border-bottom: 2px solid grey; border-top: 1px solid #BEBEBE; font-weight: 900;" colspan="1">
  
 </td>
-<td style="background-color:; border-bottom: 2px solid grey; border-top: 1px solid #BEBEBE; font-weight: 900; text-align: center;">
+<td style="border-bottom: 2px solid grey; border-top: 1px solid #BEBEBE; font-weight: 900; text-align: center;">
 32
 </td>
 </tr>
@@ -330,7 +330,7 @@ cyl
 <div id="table-caption" class="section level2">
 <h2>Table caption</h2>
 <p>The table caption is simply the table description and can be either located above or below:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">output &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="dv">1</span>:<span class="dv">4</span>,
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">output &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">4</span>,
        <span class="dt">ncol=</span><span class="dv">2</span>,
        <span class="dt">dimnames =</span> <span class="kw">list</span>(<span class="kw">c</span>(<span class="st">&quot;Row 1&quot;</span>, <span class="st">&quot;Row 2&quot;</span>),
                        <span class="kw">c</span>(<span class="st">&quot;Column 1&quot;</span>, <span class="st">&quot;Column 2&quot;</span>)))
@@ -431,7 +431,7 @@ A table caption below
 <div id="cell-alignment" class="section level2">
 <h2>Cell alignment</h2>
 <p>Cell alignment is specified through the <code>align</code>, <code>align.header</code>, <code>align.cgroup</code> arguments. For aligning the cell values just use <code>align</code>. The argument can accept either a vector or a string, although supplying it with a string is the simplest option as in the example below:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">htmlTable</span>(<span class="dv">1</span>:<span class="dv">3</span>, 
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">htmlTable</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>, 
           <span class="dt">rnames =</span> <span class="st">&quot;Row 1&quot;</span>,
           <span class="dt">align =</span> <span class="st">&quot;lcr&quot;</span>,
           <span class="dt">header =</span> <span class="kw">c</span>(<span class="st">&quot;'l' = left&quot;</span>, <span class="st">&quot;'c' = center&quot;</span>, <span class="st">&quot;'r' = right&quot;</span>),
@@ -475,7 +475,7 @@ Row 1
 </tbody>
 </table>
 <p>Note that you can specify a string shorter than the number of columns. This can be useful if you have plenty of columns and you simply want all remaining columns to keep the alignment of the last column. To align the row name you can just add another letter to the string while the header is aligned through the <code>align.header</code> argument:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">htmlTable</span>(<span class="dv">1</span>:<span class="dv">3</span>, 
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">htmlTable</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>, 
           <span class="dt">rnames =</span> <span class="st">&quot;Row 1&quot;</span>,
           <span class="dt">align =</span> <span class="st">&quot;clcr&quot;</span>,
           <span class="dt">align.header =</span> <span class="st">&quot;lcr&quot;</span>,
@@ -540,15 +540,15 @@ Row 1
 <span class="st">  </span><span class="kw">matrix</span>(<span class="dt">ncol=</span><span class="dv">6</span>, <span class="dt">nrow=</span><span class="dv">8</span>)
 <span class="kw">rownames</span>(mx) &lt;-<span class="st"> </span><span class="kw">paste</span>(<span class="kw">c</span>(<span class="st">&quot;1st&quot;</span>, <span class="st">&quot;2nd&quot;</span>,
                         <span class="st">&quot;3rd&quot;</span>,
-                        <span class="kw">paste0</span>(<span class="dv">4</span>:<span class="dv">8</span>, <span class="st">&quot;th&quot;</span>)),
+                        <span class="kw">paste0</span>(<span class="dv">4</span><span class="op">:</span><span class="dv">8</span>, <span class="st">&quot;th&quot;</span>)),
                       <span class="st">&quot;row&quot;</span>)
 <span class="kw">colnames</span>(mx) &lt;-<span class="st"> </span><span class="kw">paste</span>(<span class="kw">c</span>(<span class="st">&quot;1st&quot;</span>, <span class="st">&quot;2nd&quot;</span>,
                         <span class="st">&quot;3rd&quot;</span>, 
-                        <span class="kw">paste0</span>(<span class="dv">4</span>:<span class="dv">6</span>, <span class="st">&quot;th&quot;</span>)),
+                        <span class="kw">paste0</span>(<span class="dv">4</span><span class="op">:</span><span class="dv">6</span>, <span class="st">&quot;th&quot;</span>)),
                       <span class="st">&quot;hdr&quot;</span>)
 
-for (nr in <span class="dv">1</span>:<span class="kw">nrow</span>(mx)){
-  for (nc in <span class="dv">1</span>:<span class="kw">ncol</span>(mx)){
+<span class="cf">for</span> (nr <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(mx)){
+  <span class="cf">for</span> (nc <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">ncol</span>(mx)){
     mx[nr, nc] &lt;-
 <span class="st">      </span><span class="kw">paste0</span>(nr, <span class="st">&quot;:&quot;</span>, nc)
   }
@@ -557,8 +557,8 @@ for (nr in <span class="dv">1</span>:<span class="kw">nrow</span>(mx)){
 <h2>Row groups</h2>
 <p>The purpose of the row groups is to group variables that belong to the same group, e.g. a factored variable with more than two levels often benefit from grouping variables together.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">htmlTable</span>(mx, 
-          <span class="dt">rgroup =</span> <span class="kw">paste</span>(<span class="st">&quot;Group&quot;</span>, LETTERS[<span class="dv">1</span>:<span class="dv">3</span>]),
-          <span class="dt">n.rgroup =</span> <span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">4</span>,<span class="kw">nrow</span>(mx) -<span class="st"> </span><span class="dv">6</span>))</code></pre></div>
+          <span class="dt">rgroup =</span> <span class="kw">paste</span>(<span class="st">&quot;Group&quot;</span>, LETTERS[<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>]),
+          <span class="dt">n.rgroup =</span> <span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">4</span>,<span class="kw">nrow</span>(mx) <span class="op">-</span><span class="st"> </span><span class="dv">6</span>))</code></pre></div>
 <table class="gmisc_table" style="border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;">
 <thead>
 <tr>
@@ -788,8 +788,8 @@ Group C
 </table>
 <p>We can easily mix row groups with regular variables by having an empty row group name <code>&quot;&quot;</code>:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">htmlTable</span>(mx, 
-          <span class="dt">rgroup =</span> <span class="kw">c</span>(<span class="kw">paste</span>(<span class="st">&quot;Group&quot;</span>, LETTERS[<span class="dv">1</span>:<span class="dv">2</span>]), <span class="st">&quot;&quot;</span>),
-          <span class="dt">n.rgroup =</span> <span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">4</span>,<span class="kw">nrow</span>(mx) -<span class="st"> </span><span class="dv">6</span>))</code></pre></div>
+          <span class="dt">rgroup =</span> <span class="kw">c</span>(<span class="kw">paste</span>(<span class="st">&quot;Group&quot;</span>, LETTERS[<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>]), <span class="st">&quot;&quot;</span>),
+          <span class="dt">n.rgroup =</span> <span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">4</span>,<span class="kw">nrow</span>(mx) <span class="op">-</span><span class="st"> </span><span class="dv">6</span>))</code></pre></div>
 <table class="gmisc_table" style="border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;">
 <thead>
 <tr>
@@ -1015,8 +1015,8 @@ Group B
 <p>When mixing row groups with variables without row groups we may want to omit the bold formatting of the row group label:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">htmlTable</span>(mx, 
           <span class="dt">css.rgroup =</span> <span class="st">&quot;&quot;</span>,
-          <span class="dt">rgroup =</span> <span class="kw">c</span>(<span class="kw">paste</span>(<span class="st">&quot;Group&quot;</span>, LETTERS[<span class="dv">1</span>:<span class="dv">2</span>]), <span class="st">&quot;&quot;</span>),
-          <span class="dt">n.rgroup =</span> <span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">4</span>,<span class="kw">nrow</span>(mx) -<span class="st"> </span><span class="dv">6</span>))</code></pre></div>
+          <span class="dt">rgroup =</span> <span class="kw">c</span>(<span class="kw">paste</span>(<span class="st">&quot;Group&quot;</span>, LETTERS[<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>]), <span class="st">&quot;&quot;</span>),
+          <span class="dt">n.rgroup =</span> <span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">4</span>,<span class="kw">nrow</span>(mx) <span class="op">-</span><span class="st"> </span><span class="dv">6</span>))</code></pre></div>
 <table class="gmisc_table" style="border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;">
 <thead>
 <tr>
@@ -1240,11 +1240,11 @@ Group B
 </tbody>
 </table>
 <p>The <code>rgroup</code> is most commonly a single row without any additional cells but sometimes you may want to have a p-value or similar at the end of the row. This can be achieved by setting the ‘add’ attribute to the <code>rgroup</code>:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">rgroup &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="kw">paste</span>(<span class="st">&quot;Group&quot;</span>, LETTERS[<span class="dv">1</span>:<span class="dv">2</span>]), <span class="st">&quot;&quot;</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">rgroup &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="kw">paste</span>(<span class="st">&quot;Group&quot;</span>, LETTERS[<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>]), <span class="st">&quot;&quot;</span>)
 <span class="kw">attr</span>(rgroup, <span class="st">&quot;add&quot;</span>) &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="st">`</span><span class="dt">2</span><span class="st">`</span> =<span class="st"> &quot;More&quot;</span>)
 <span class="kw">htmlTable</span>(mx, 
           <span class="dt">rgroup =</span> rgroup,
-          <span class="dt">n.rgroup =</span> <span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">4</span>,<span class="kw">nrow</span>(mx) -<span class="st"> </span><span class="dv">6</span>))</code></pre></div>
+          <span class="dt">n.rgroup =</span> <span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">4</span>,<span class="kw">nrow</span>(mx) <span class="op">-</span><span class="st"> </span><span class="dv">6</span>))</code></pre></div>
 <table class="gmisc_table" style="border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;">
 <thead>
 <tr>
@@ -2365,8 +2365,8 @@ Cgroup 2
 <h2>Table spanners</h2>
 <p>A table spanner is similar to rgroup but has the primary purpose of combining 2 or more tables with the same columns into one:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">htmlTable</span>(mx, 
-          <span class="dt">tspanner =</span> <span class="kw">paste</span>(<span class="st">&quot;Spanner&quot;</span>, LETTERS[<span class="dv">1</span>:<span class="dv">3</span>]),
-          <span class="dt">n.tspanner =</span> <span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">4</span>,<span class="kw">nrow</span>(mx) -<span class="st"> </span><span class="dv">6</span>))</code></pre></div>
+          <span class="dt">tspanner =</span> <span class="kw">paste</span>(<span class="st">&quot;Spanner&quot;</span>, LETTERS[<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>]),
+          <span class="dt">n.tspanner =</span> <span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">4</span>,<span class="kw">nrow</span>(mx) <span class="op">-</span><span class="st"> </span><span class="dv">6</span>))</code></pre></div>
 <table class="gmisc_table" style="border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;">
 <thead>
 <tr>
@@ -2598,7 +2598,7 @@ Spanner C
 <div id="total-row" class="section level2">
 <h2>Total row</h2>
 <p>Many financial tables use the concept of a total row at the end that sums the above elements:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">htmlTable</span>(mx[<span class="dv">1</span>:<span class="dv">3</span>,], <span class="dt">total=</span><span class="ot">TRUE</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">htmlTable</span>(mx[<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>,], <span class="dt">total=</span><span class="ot">TRUE</span>)</code></pre></div>
 <table class="gmisc_table" style="border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;">
 <thead>
 <tr>
@@ -2702,8 +2702,8 @@ Spanner C
           <span class="dt">css.total =</span> <span class="kw">c</span>(<span class="st">&quot;border-top: 1px dashed grey;&quot;</span>,
                         <span class="st">&quot;border-top: 1px dashed grey;&quot;</span>,
                         <span class="st">&quot;border-top: 1px solid grey; font-weight: 900&quot;</span>),
-          <span class="dt">tspanner =</span> <span class="kw">paste</span>(<span class="st">&quot;Spanner&quot;</span>, LETTERS[<span class="dv">1</span>:<span class="dv">3</span>]),
-          <span class="dt">n.tspanner =</span> <span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">4</span>,<span class="kw">nrow</span>(mx) -<span class="st"> </span><span class="dv">6</span>))</code></pre></div>
+          <span class="dt">tspanner =</span> <span class="kw">paste</span>(<span class="st">&quot;Spanner&quot;</span>, LETTERS[<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>]),
+          <span class="dt">n.tspanner =</span> <span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">4</span>,<span class="kw">nrow</span>(mx) <span class="op">-</span><span class="st"> </span><span class="dv">6</span>))</code></pre></div>
 <table class="gmisc_table" style="border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;">
 <thead>
 <tr>
@@ -2936,7 +2936,7 @@ Spanner C
 <h2>Table numbering</h2>
 <p>The htmlTable has built-in numbering, initialized by:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">options</span>(<span class="dt">table_counter =</span> <span class="ot">TRUE</span>)</code></pre></div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">htmlTable</span>(mx[<span class="dv">1</span>:<span class="dv">2</span>,<span class="dv">1</span>:<span class="dv">2</span>], 
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">htmlTable</span>(mx[<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>], 
           <span class="dt">caption=</span><span class="st">&quot;A table caption with a numbering&quot;</span>)</code></pre></div>
 <table class="gmisc_table" style="border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;" id="table_1">
 <thead>
@@ -2986,7 +2986,7 @@ Table 1: A table caption with a numbering
 <pre><code>## [1] 1</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">tblNoNext</span>()</code></pre></div>
 <pre><code>## [1] 2</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">htmlTable</span>(mx[<span class="dv">1</span>:<span class="dv">2</span>,<span class="dv">1</span>:<span class="dv">2</span>], 
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">htmlTable</span>(mx[<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>], 
           <span class="dt">caption=</span><span class="st">&quot;Another table with numbering&quot;</span>)</code></pre></div>
 <table class="gmisc_table" style="border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;" id="table_2">
 <thead>
@@ -3037,7 +3037,7 @@ Table 2: Another table with numbering
 <div id="table-footer" class="section level2">
 <h2>Table footer</h2>
 <p>The footer usually contains specifics regarding variables and is always located at the foot of the table:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">htmlTable</span>(mx[<span class="dv">1</span>:<span class="dv">2</span>,<span class="dv">1</span>:<span class="dv">2</span>], 
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">htmlTable</span>(mx[<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>], 
           <span class="dt">tfoot=</span><span class="st">&quot;A table footer&quot;</span>)</code></pre></div>
 <table class="gmisc_table" style="border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;">
 <thead>
@@ -3305,8 +3305,8 @@ A table footer
 <p>The zebra coloring in <code>htmlTable</code> is unique in that it follows the rgroups. The zebra striping is centered around the rgroup although rows with no set rgroup, i.e. “” will have alternating colors event though they programatically are within the same group:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">htmlTable</span>(mx, 
           <span class="dt">col.rgroup =</span> <span class="kw">c</span>(<span class="st">&quot;none&quot;</span>, <span class="st">&quot;#F7F7F7&quot;</span>),
-          <span class="dt">rgroup =</span> <span class="kw">c</span>(<span class="kw">paste</span>(<span class="st">&quot;Group&quot;</span>, LETTERS[<span class="dv">1</span>:<span class="dv">2</span>]), <span class="st">&quot;&quot;</span>),
-          <span class="dt">n.rgroup =</span> <span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">2</span>,<span class="kw">nrow</span>(mx) -<span class="st"> </span><span class="dv">4</span>))</code></pre></div>
+          <span class="dt">rgroup =</span> <span class="kw">c</span>(<span class="kw">paste</span>(<span class="st">&quot;Group&quot;</span>, LETTERS[<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>]), <span class="st">&quot;&quot;</span>),
+          <span class="dt">n.rgroup =</span> <span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">2</span>,<span class="kw">nrow</span>(mx) <span class="op">-</span><span class="st"> </span><span class="dv">4</span>))</code></pre></div>
 <table class="gmisc_table" style="border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;">
 <thead>
 <tr>
@@ -3966,8 +3966,8 @@ Group B
 <p>Now if we want to do everything in one table it may look like this:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">htmlTable</span>(mx, 
           <span class="dt">align=</span><span class="st">&quot;r&quot;</span>,
-          <span class="dt">rgroup =</span> <span class="kw">paste</span>(<span class="st">&quot;Group&quot;</span>, LETTERS[<span class="dv">1</span>:<span class="dv">3</span>]),
-          <span class="dt">n.rgroup =</span> <span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">4</span>,<span class="kw">nrow</span>(mx) -<span class="st"> </span><span class="dv">6</span>),
+          <span class="dt">rgroup =</span> <span class="kw">paste</span>(<span class="st">&quot;Group&quot;</span>, LETTERS[<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>]),
+          <span class="dt">n.rgroup =</span> <span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">4</span>,<span class="kw">nrow</span>(mx) <span class="op">-</span><span class="st"> </span><span class="dv">6</span>),
           <span class="dt">cgroup =</span> <span class="kw">rbind</span>(<span class="kw">c</span>(<span class="st">&quot;&quot;</span>, <span class="st">&quot;Column spanners&quot;</span>, <span class="ot">NA</span>),
                          <span class="kw">c</span>(<span class="st">&quot;&quot;</span>, <span class="st">&quot;Cgroup 1&quot;</span>, <span class="st">&quot;Cgroup 2&amp;dagger;&quot;</span>)),
           <span class="dt">n.cgroup =</span> <span class="kw">rbind</span>(<span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="ot">NA</span>),
@@ -4360,7 +4360,7 @@ Group C
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
 </script>
