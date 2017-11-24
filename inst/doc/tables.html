@@ -4,7 +4,7 @@
 
 <head>
 
-<meta charset="utf-8">
+<meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 
@@ -12,7 +12,7 @@
 
 <meta name="author" content="Max Gordon" />
 
-<meta name="date" content="2017-02-12" />
+<meta name="date" content="2017-11-24" />
 
 <title>Tables with htmlTable and some alternatives</title>
 
@@ -70,7 +70,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">Tables with htmlTable and some alternatives</h1>
 <h4 class="author"><em>Max Gordon</em></h4>
-<h4 class="date"><em>2017-02-12</em></h4>
+<h4 class="date"><em>2017-11-24</em></h4>
 
 
 <div id="TOC">
@@ -110,7 +110,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <h2>The <code>htmlTable</code>-package</h2>
 <p>I developed the <code>htmlTable</code> in order to get tables matching those available in top medical journals. After finding no HTML-alternative to the <code>Hmisc::latex</code> function on <a href="http://stackoverflow.com/questions/11950703/html-with-multicolumn-table-in-markdown-using-knitr">Stack Overflow</a> I wrote a basic function allowing column spanners and row groups. Below is a basic example on these two:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">output &lt;-<span class="st"> </span>
-<span class="st">  </span><span class="kw">matrix</span>(<span class="kw">paste</span>(<span class="st">&quot;Content&quot;</span>, LETTERS[<span class="dv">1</span>:<span class="dv">16</span>]), 
+<span class="st">  </span><span class="kw">matrix</span>(<span class="kw">paste</span>(<span class="st">&quot;Content&quot;</span>, LETTERS[<span class="dv">1</span><span class="op">:</span><span class="dv">16</span>]), 
          <span class="dt">ncol=</span><span class="dv">4</span>, <span class="dt">byrow =</span> <span class="ot">TRUE</span>)
 
 <span class="kw">library</span>(htmlTable)
@@ -274,12 +274,12 @@ Content P
 
 <span class="co"># The SCB has three other coulmns and one value column</span>
 <span class="kw">library</span>(reshape)
-SCB$region &lt;-<span class="st"> </span><span class="kw">relevel</span>(SCB$region, <span class="st">&quot;Sweden&quot;</span>)
-SCB &lt;-<span class="st"> </span><span class="kw">cast</span>(SCB, year ~<span class="st"> </span>region +<span class="st"> </span>sex, <span class="dt">value =</span> <span class="st">&quot;values&quot;</span>)
+SCB<span class="op">$</span>region &lt;-<span class="st"> </span><span class="kw">relevel</span>(SCB<span class="op">$</span>region, <span class="st">&quot;Sweden&quot;</span>)
+SCB &lt;-<span class="st"> </span><span class="kw">cast</span>(SCB, year <span class="op">~</span><span class="st"> </span>region <span class="op">+</span><span class="st"> </span>sex, <span class="dt">value =</span> <span class="st">&quot;values&quot;</span>)
 
 <span class="co"># Set rownames to be year</span>
-<span class="kw">rownames</span>(SCB) &lt;-<span class="st"> </span>SCB$year
-SCB$year &lt;-<span class="st"> </span><span class="ot">NULL</span>
+<span class="kw">rownames</span>(SCB) &lt;-<span class="st"> </span>SCB<span class="op">$</span>year
+SCB<span class="op">$</span>year &lt;-<span class="st"> </span><span class="ot">NULL</span>
 
 <span class="co"># The dataset now has the rows</span>
 <span class="kw">names</span>(SCB)</code></pre></div>
@@ -338,42 +338,42 @@ Age
 </tr>
 </table>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mx &lt;-<span class="st"> </span><span class="ot">NULL</span>
-for (n in <span class="kw">names</span>(SCB)){
+<span class="cf">for</span> (n <span class="cf">in</span> <span class="kw">names</span>(SCB)){
   tmp &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;Sweden_&quot;</span>, <span class="kw">strsplit</span>(n, <span class="st">&quot;_&quot;</span>)[[<span class="dv">1</span>]][<span class="dv">2</span>])
   mx &lt;-<span class="st"> </span><span class="kw">cbind</span>(mx,
               <span class="kw">cbind</span>(SCB[[n]], 
-                    SCB[[n]] -<span class="st"> </span>SCB[[n]][<span class="dv">1</span>],
-                    SCB[[n]] -<span class="st"> </span>SCB[[tmp]]))
+                    SCB[[n]] <span class="op">-</span><span class="st"> </span>SCB[[n]][<span class="dv">1</span>],
+                    SCB[[n]] <span class="op">-</span><span class="st"> </span>SCB[[tmp]]))
 }
 <span class="kw">rownames</span>(mx) &lt;-<span class="st"> </span><span class="kw">rownames</span>(SCB)
 <span class="kw">colnames</span>(mx) &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="kw">c</span>(<span class="st">&quot;Age&quot;</span>, 
                       <span class="st">&quot;&amp;Delta;&lt;sub&gt;int&lt;/sub&gt;&quot;</span>,
                       <span class="st">&quot;&amp;Delta;&lt;sub&gt;std&lt;/sub&gt;&quot;</span>), 
                     <span class="dt">times =</span> <span class="kw">ncol</span>(SCB))
-mx &lt;-<span class="st"> </span>mx[,<span class="kw">c</span>(-<span class="dv">3</span>, -<span class="dv">6</span>)]
+mx &lt;-<span class="st"> </span>mx[,<span class="kw">c</span>(<span class="op">-</span><span class="dv">3</span>, <span class="op">-</span><span class="dv">6</span>)]
 
 <span class="co"># This automated generation of cgroup elements is </span>
 <span class="co"># somewhat of an overkill</span>
 cgroup &lt;-<span class="st"> </span>
 <span class="st">  </span><span class="kw">unique</span>(<span class="kw">sapply</span>(<span class="kw">names</span>(SCB), 
-                function(x) <span class="kw">strsplit</span>(x, <span class="st">&quot;_&quot;</span>)[[<span class="dv">1</span>]][<span class="dv">1</span>], 
+                <span class="cf">function</span>(x) <span class="kw">strsplit</span>(x, <span class="st">&quot;_&quot;</span>)[[<span class="dv">1</span>]][<span class="dv">1</span>], 
                 <span class="dt">USE.NAMES =</span> <span class="ot">FALSE</span>))
 n.cgroup &lt;-<span class="st"> </span>
 <span class="st">  </span><span class="kw">sapply</span>(cgroup, 
-         function(x) <span class="kw">sum</span>(<span class="kw">grepl</span>(<span class="kw">paste0</span>(<span class="st">&quot;^&quot;</span>, x), <span class="kw">names</span>(SCB))), 
-         <span class="dt">USE.NAMES =</span> <span class="ot">FALSE</span>)*<span class="dv">3</span>
-n.cgroup[cgroup ==<span class="st"> &quot;Sweden&quot;</span>] &lt;-
-<span class="st">  </span>n.cgroup[cgroup ==<span class="st"> &quot;Sweden&quot;</span>] -<span class="st"> </span><span class="dv">2</span>
+         <span class="cf">function</span>(x) <span class="kw">sum</span>(<span class="kw">grepl</span>(<span class="kw">paste0</span>(<span class="st">&quot;^&quot;</span>, x), <span class="kw">names</span>(SCB))), 
+         <span class="dt">USE.NAMES =</span> <span class="ot">FALSE</span>)<span class="op">*</span><span class="dv">3</span>
+n.cgroup[cgroup <span class="op">==</span><span class="st"> &quot;Sweden&quot;</span>] &lt;-
+<span class="st">  </span>n.cgroup[cgroup <span class="op">==</span><span class="st"> &quot;Sweden&quot;</span>] <span class="op">-</span><span class="st"> </span><span class="dv">2</span>
 
 cgroup &lt;-<span class="st"> </span>
-<span class="st">  </span><span class="kw">rbind</span>(<span class="kw">c</span>(cgroup, <span class="kw">rep</span>(<span class="ot">NA</span>, <span class="kw">ncol</span>(SCB) -<span class="st"> </span><span class="kw">length</span>(cgroup))),
-        Hmisc::<span class="kw">capitalize</span>(
+<span class="st">  </span><span class="kw">rbind</span>(<span class="kw">c</span>(cgroup, <span class="kw">rep</span>(<span class="ot">NA</span>, <span class="kw">ncol</span>(SCB) <span class="op">-</span><span class="st"> </span><span class="kw">length</span>(cgroup))),
+        Hmisc<span class="op">::</span><span class="kw">capitalize</span>(
           <span class="kw">sapply</span>(<span class="kw">names</span>(SCB), 
-                 function(x) <span class="kw">strsplit</span>(x, <span class="st">&quot;_&quot;</span>)[[<span class="dv">1</span>]][<span class="dv">2</span>],
+                 <span class="cf">function</span>(x) <span class="kw">strsplit</span>(x, <span class="st">&quot;_&quot;</span>)[[<span class="dv">1</span>]][<span class="dv">2</span>],
                  <span class="dt">USE.NAMES =</span> <span class="ot">FALSE</span>)))
 n.cgroup &lt;-<span class="st"> </span>
-<span class="st">  </span><span class="kw">rbind</span>(<span class="kw">c</span>(n.cgroup, <span class="kw">rep</span>(<span class="ot">NA</span>, <span class="kw">ncol</span>(SCB) -<span class="st"> </span><span class="kw">length</span>(n.cgroup))),
-        <span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">2</span>, <span class="kw">rep</span>(<span class="dv">3</span>, <span class="kw">ncol</span>(cgroup) -<span class="st"> </span><span class="dv">2</span>)))
+<span class="st">  </span><span class="kw">rbind</span>(<span class="kw">c</span>(n.cgroup, <span class="kw">rep</span>(<span class="ot">NA</span>, <span class="kw">ncol</span>(SCB) <span class="op">-</span><span class="st"> </span><span class="kw">length</span>(n.cgroup))),
+        <span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">2</span>, <span class="kw">rep</span>(<span class="dv">3</span>, <span class="kw">ncol</span>(cgroup) <span class="op">-</span><span class="st"> </span><span class="dv">2</span>)))
 
 <span class="kw">print</span>(cgroup)</code></pre></div>
 <pre><code>##      [,1]     [,2]                [,3]               [,4]            
@@ -3556,7 +3556,7 @@ Third period
 <p>If we still feel that we want more separation it is always possible to add colors.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">htmlTable</span>(<span class="kw">txtRound</span>(mx, <span class="dv">1</span>), 
           <span class="dt">col.columns =</span> <span class="kw">c</span>(<span class="kw">rep</span>(<span class="st">&quot;#E6E6F0&quot;</span>, <span class="dv">4</span>),
-                          <span class="kw">rep</span>(<span class="st">&quot;none&quot;</span>, <span class="kw">ncol</span>(mx) -<span class="st"> </span><span class="dv">4</span>)),
+                          <span class="kw">rep</span>(<span class="st">&quot;none&quot;</span>, <span class="kw">ncol</span>(mx) <span class="op">-</span><span class="st"> </span><span class="dv">4</span>)),
           <span class="dt">align=</span><span class="st">&quot;rrrr|r&quot;</span>,
           <span class="dt">cgroup =</span> cgroup,
           <span class="dt">n.cgroup =</span> n.cgroup,
@@ -5143,7 +5143,7 @@ Third period
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">htmlTable</span>(<span class="kw">txtRound</span>(mx, <span class="dv">1</span>),
           <span class="dt">col.rgroup =</span> <span class="kw">c</span>(<span class="st">&quot;none&quot;</span>, <span class="st">&quot;#FFFFCC&quot;</span>),
           <span class="dt">col.columns =</span> <span class="kw">c</span>(<span class="kw">rep</span>(<span class="st">&quot;#EFEFF0&quot;</span>, <span class="dv">4</span>),
-                          <span class="kw">rep</span>(<span class="st">&quot;none&quot;</span>, <span class="kw">ncol</span>(mx) -<span class="st"> </span><span class="dv">4</span>)),
+                          <span class="kw">rep</span>(<span class="st">&quot;none&quot;</span>, <span class="kw">ncol</span>(mx) <span class="op">-</span><span class="st"> </span><span class="dv">4</span>)),
           <span class="dt">align=</span><span class="st">&quot;rrrr|r&quot;</span>,
           <span class="dt">cgroup =</span> cgroup,
           <span class="dt">n.cgroup =</span> n.cgroup,
@@ -6925,22 +6925,22 @@ Age
 </tr>
 </tfoot>
 </table>
-<p>If you want to further add to the visual hints you can use specific HTML-code and insert it into the cells. Here we will color the Δ<sub>std</sub> according to color.</p>
+<p>If you want to further add to the visual hints you can use specific HTML-code and insert it into the cells. Here we will color the Δ<sub>std</sub> according to color. By default htmlTable escapes HTML characters. If we want the HTML code to be interpreted correctly we need to make sure that this does not happen, by specifying <code>escape.html = FALSE</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cols_2_clr &lt;-<span class="st"> </span><span class="kw">grep</span>(<span class="st">&quot;&amp;Delta;&lt;sub&gt;std&lt;/sub&gt;&quot;</span>, <span class="kw">colnames</span>(mx))
 <span class="co"># We need a copy as the formatting causes the matrix to loos</span>
 <span class="co"># its numerical property</span>
 out_mx &lt;-<span class="st"> </span><span class="kw">txtRound</span>(mx, <span class="dv">1</span>)
 
 min_delta &lt;-<span class="st"> </span><span class="kw">min</span>(mx[,cols_2_clr])
-span_delta &lt;-<span class="st"> </span><span class="kw">max</span>(mx[,cols_2_clr]) -<span class="st"> </span><span class="kw">min</span>(mx[,cols_2_clr]) 
-for (col in cols_2_clr){
-  out_mx[, col] &lt;-<span class="st"> </span><span class="kw">mapply</span>(function(val, strength)
+span_delta &lt;-<span class="st"> </span><span class="kw">max</span>(mx[,cols_2_clr]) <span class="op">-</span><span class="st"> </span><span class="kw">min</span>(mx[,cols_2_clr]) 
+<span class="cf">for</span> (col <span class="cf">in</span> cols_2_clr){
+  out_mx[, col] &lt;-<span class="st"> </span><span class="kw">mapply</span>(<span class="cf">function</span>(val, strength)
     <span class="kw">paste0</span>(<span class="st">&quot;&lt;span style='font-weight: 900; color: &quot;</span>, 
            <span class="kw">colorRampPalette</span>(<span class="kw">c</span>(<span class="st">&quot;#009900&quot;</span>, <span class="st">&quot;#000000&quot;</span>, <span class="st">&quot;#990033&quot;</span>))(<span class="dv">101</span>)[strength],
            <span class="st">&quot;'&gt;&quot;</span>,
            val, <span class="st">&quot;&lt;/span&gt;&quot;</span>), 
     <span class="dt">val =</span> out_mx[,col], 
-    <span class="dt">strength =</span> <span class="kw">round</span>((mx[,col] -<span class="st"> </span>min_delta)/span_delta*<span class="dv">100</span> +<span class="st"> </span><span class="dv">1</span>),
+    <span class="dt">strength =</span> <span class="kw">round</span>((mx[,col] <span class="op">-</span><span class="st"> </span>min_delta)<span class="op">/</span>span_delta<span class="op">*</span><span class="dv">100</span> <span class="op">+</span><span class="st"> </span><span class="dv">1</span>),
     <span class="dt">USE.NAMES =</span> <span class="ot">FALSE</span>)
 }
 
@@ -6954,7 +6954,7 @@ for (col in cols_2_clr){
           <span class="dt">rowlabel=</span><span class="st">&quot;Year&quot;</span>, 
           <span class="dt">col.rgroup =</span> <span class="kw">c</span>(<span class="st">&quot;none&quot;</span>, <span class="st">&quot;#FFFFCC&quot;</span>),
           <span class="dt">col.columns =</span> <span class="kw">c</span>(<span class="kw">rep</span>(<span class="st">&quot;#EFEFF0&quot;</span>, <span class="dv">4</span>),
-                          <span class="kw">rep</span>(<span class="st">&quot;none&quot;</span>, <span class="kw">ncol</span>(mx) -<span class="st"> </span><span class="dv">4</span>)),
+                          <span class="kw">rep</span>(<span class="st">&quot;none&quot;</span>, <span class="kw">ncol</span>(mx) <span class="op">-</span><span class="st"> </span><span class="dv">4</span>)),
           <span class="dt">align=</span><span class="st">&quot;rrrr|r&quot;</span>,
           <span class="dt">cgroup =</span> cgroup,
           <span class="dt">n.cgroup =</span> n.cgroup,
@@ -6964,7 +6964,8 @@ for (col in cols_2_clr){
           <span class="dt">n.rgroup =</span> <span class="kw">rep</span>(<span class="dv">5</span>, <span class="dv">3</span>),
           <span class="dt">tfoot =</span> <span class="kw">txtMergeLines</span>(<span class="st">&quot;&amp;Delta;&lt;sub&gt;int&lt;/sub&gt; correspnds to the change since start&quot;</span>,
                                 <span class="st">&quot;&amp;Delta;&lt;sub&gt;std&lt;/sub&gt; corresponds to the change compared to national average&quot;</span>),
-          <span class="dt">cspan.rgroup =</span> <span class="dv">1</span>)</code></pre></div>
+          <span class="dt">cspan.rgroup =</span> <span class="dv">1</span>,
+          <span class="dt">escape.html =</span> <span class="ot">FALSE</span>)</code></pre></div>
 <table class="gmisc_table" style="border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;">
 <thead>
 <tr>
@@ -8758,7 +8759,7 @@ zt &lt;-<span class="st"> </span><span class="kw">ztable</span>(out_mx,
 <span class="st">             population of students.&quot;</span>,
              <span class="dt">zebra.type =</span> <span class="dv">1</span>,
              <span class="dt">zebra =</span> <span class="st">&quot;peach&quot;</span>,
-             <span class="dt">align=</span><span class="kw">paste</span>(<span class="kw">rep</span>(<span class="st">&quot;r&quot;</span>, <span class="kw">ncol</span>(out_mx) +<span class="st"> </span><span class="dv">1</span>), <span class="dt">collapse =</span> <span class="st">&quot;&quot;</span>))
+             <span class="dt">align=</span><span class="kw">paste</span>(<span class="kw">rep</span>(<span class="st">&quot;r&quot;</span>, <span class="kw">ncol</span>(out_mx) <span class="op">+</span><span class="st"> </span><span class="dv">1</span>), <span class="dt">collapse =</span> <span class="st">&quot;&quot;</span>))
 <span class="co"># zt &lt;- addcgroup(zt,</span>
 <span class="co">#                 cgroup = cgroup,</span>
 <span class="co">#                 n.cgroup = n.cgroup)</span>
@@ -9948,7 +9949,7 @@ Age
 <h3>The <code>xtable</code>-package</h3>
 <p>The <code>xtable</code> is a solution that delivers both HTML and LaTeX. The syntax is very similar to <code>kable</code>:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">output &lt;-<span class="st"> </span>
-<span class="st">  </span><span class="kw">matrix</span>(<span class="kw">sprintf</span>(<span class="st">&quot;Content %s&quot;</span>, LETTERS[<span class="dv">1</span>:<span class="dv">4</span>]),
+<span class="st">  </span><span class="kw">matrix</span>(<span class="kw">sprintf</span>(<span class="st">&quot;Content %s&quot;</span>, LETTERS[<span class="dv">1</span><span class="op">:</span><span class="dv">4</span>]),
          <span class="dt">ncol=</span><span class="dv">2</span>, <span class="dt">byrow=</span><span class="ot">TRUE</span>)
 <span class="kw">colnames</span>(output) &lt;-<span class="st"> </span>
 <span class="st">  </span><span class="kw">c</span>(<span class="st">&quot;1st header&quot;</span>, <span class="st">&quot;2nd header&quot;</span>)
@@ -9960,8 +9961,8 @@ Age
              <span class="dt">caption=</span><span class="st">&quot;A test table&quot;</span>, 
              <span class="dt">align =</span> <span class="kw">c</span>(<span class="st">&quot;l&quot;</span>, <span class="st">&quot;c&quot;</span>, <span class="st">&quot;r&quot;</span>)), 
       <span class="dt">type=</span><span class="st">&quot;html&quot;</span>)</code></pre></div>
-<!-- html table generated in R 3.3.2 by xtable 1.8-2 package -->
-<!-- Sun Feb 12 14:20:40 2017 -->
+<!-- html table generated in R 3.4.2 by xtable 1.8-2 package -->
+<!-- Fri Nov 24 01:39:03 2017 -->
 <table border="1">
 <caption align="bottom">
 A test table
@@ -10076,11 +10077,11 @@ Content C   | Content D
 <p>Another option is to use the pander function that can help with text-formatting inside a markdown-compatible table (Thanks Gergely Daróczi for the tip). Here’s a simple example:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(pander)
 <span class="kw">pandoc.table</span>(output, <span class="dt">emphasize.rows =</span> <span class="dv">1</span>, <span class="dt">emphasize.strong.cols =</span> <span class="dv">2</span>)</code></pre></div>
-<table style="width:58%;">
+<table style="width:62%;">
 <colgroup>
 <col width="19%"></col>
-<col width="18%"></col>
-<col width="20%"></col>
+<col width="19%"></col>
+<col width="23%"></col>
 </colgroup>
 <thead>
 <tr class="header">
@@ -10202,7 +10203,7 @@ Content C   | Content D
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
 </script>

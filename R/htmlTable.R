@@ -342,7 +342,9 @@ htmlTable.default <- function(x,
                               ...)
 {
   if (isTRUE(escape.html)) {
-    x <- htmlEscape(x)
+    attributes_x <- attributes(x)
+    x <- lapply(x, htmlEscape)
+    attributes(x) <- attributes_x
   }
 
   if (is.null(dim(x))){
