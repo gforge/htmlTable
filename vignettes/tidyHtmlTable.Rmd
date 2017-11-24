@@ -29,10 +29,12 @@ library(tidyr)
 library(dplyr)
 library(htmlTable)
 library(tibble)
+
 td <- mtcars %>%
     rownames_to_column %>%
     select(rowname, cyl, gear, hp, mpg, qsec) %>%
     gather(per_metric, value, hp, mpg, qsec)
+
 ```
 
 Now we will compute 4 summary statistics for each of the 3 performance metrics.
@@ -69,7 +71,6 @@ tidy_summary  %>%
                  cell_value = "value", 
                  rnames = "summary_stat",
                  rgroup = "per_metric")
-
 ```
 
 ### Example 2

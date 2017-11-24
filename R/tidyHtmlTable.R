@@ -58,6 +58,11 @@ tidyHtmlTable <- function(x,
 }
 
 #' @export
+tidyHtmlTable.default <- function(x, ...) {
+  stop("x must be of class data.frame")
+}
+
+#' @export
 tidyHtmlTable.data.frame <- function(x,
                                      value = "value",
                                      header = "header",
@@ -106,7 +111,6 @@ tidyHtmlTable.data.frame <- function(x,
 
   # Hide row groups specified in hidden_rgroup
   if (!(is.null(hidden_rgroup))) {
-
     row_ref_tbl <- row_ref_tbl %>%
       mutate_at(rgroup,
                 function(x){ifelse(x %in% hidden_rgroup, "", x)})
@@ -114,7 +118,6 @@ tidyHtmlTable.data.frame <- function(x,
 
   # Hide tspanners specified in hidden_tspanner
   if (!(is.null(hidden_tspanner))) {
-
     row_ref_tbl <- row_ref_tbl %>%
       mutate_at(tspanner,
                 function(x){ifelse(x %in% hidden_tspanner, "", x)})
@@ -225,7 +228,7 @@ remove_na_rows <- function(x, ...) {
                    paste(na.cols, collapse = ", "), ". ",
                    removed, " row(s) in the tidy dataset were removed."))
   }
-  return(x[keep.idx,])
+  return(x %>% dplyr::filter(keep.idx))
 }
 
 # This checks to make sure that the mapping columns of the tidy dataset
@@ -270,6 +273,11 @@ get_col_vars <- function(...) {
 # Checks a variety of assumptions about input arguments and prepares an
 # appropriate error message if those assumptions are violated
 argument_checker <- function(x, ...) {
+
+  # Check if x is a grouped tbl_df
+  if(dplyr::is.grouped_df(x)) {
+    stop("x cannot be a grouped_df")
+  }
 
   # Check that all the input are characters
   all_args <- simplify_arg_list(...)
@@ -317,7 +325,6 @@ get_col_tbl <- function(x,
     dplyr::mutate_if(is.factor, as.character)
 
   out$c_idx <- 1:nrow(out)
-
   return(out)
 }
 
@@ -337,7 +344,6 @@ get_row_tbl <- function(x,
     dplyr::mutate_if(is.factor, as.character)
 
   out$r_idx <- 1:nrow(out)
-
   return(out)
 }
 
@@ -353,9 +359,10 @@ add_col_idx <- function(x,
                 cgroup1 = cgroup1,
                 cgroup2 = cgroup2)
 
-  out <- x %>%
-    dplyr::left_join(col_idx_df, cols)
-
+  out <- suppressWarnings(
+    x %>%
+      dplyr::left_join(col_idx_df, cols)
+      )
   return(out)
 }
 
@@ -371,8 +378,9 @@ add_row_idx <- function(x,
                 rgroup = rgroup,
                 tspanner = tspanner)
 
-  out <- x %>%
-    dplyr::left_join(row_idx_df, by = cols)
-
+  out <- suppressWarnings(
+      x %>%
+        dplyr::left_join(row_idx_df, by = cols)
+  )
   return(out)
 }
