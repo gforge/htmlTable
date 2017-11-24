@@ -33,8 +33,7 @@ Suggests:
     rmarkdown,
     pander,
     chron,
-    lubridate,
-    knitr
+    lubridate
 Roxygen: list(wrap = FALSE)
 Encoding: UTF-8
 NeedsCompilation: no

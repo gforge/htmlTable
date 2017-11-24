@@ -156,15 +156,15 @@ tidyHtmlTable.data.frame <- function(x,
   # Hide row groups specified in hidden_rgroup
   if (!(is.null(hidden_rgroup))) {
     row_ref_tbl <- row_ref_tbl %>%
-      mutate_at(rgroup,
-                function(x){ifelse(x %in% hidden_rgroup, "", x)})
+      dplyr::mutate_at(rgroup,
+                       function(x){ifelse(x %in% hidden_rgroup, "", x)})
   }
 
   # Hide tspanners specified in hidden_tspanner
   if (!(is.null(hidden_tspanner))) {
     row_ref_tbl <- row_ref_tbl %>%
-      mutate_at(tspanner,
-                function(x){ifelse(x %in% hidden_tspanner, "", x)})
+      dplyr::mutate_at(tspanner,
+                       function(x){ifelse(x %in% hidden_tspanner, "", x)})
   }
 
   col_ref_tbl <- x %>%
@@ -406,7 +406,7 @@ add_col_idx <- function(x,
   out <- suppressWarnings(
     x %>%
       dplyr::left_join(col_idx_df, cols)
-      )
+    )
   return(out)
 }
 
@@ -425,6 +425,6 @@ add_row_idx <- function(x,
   out <- suppressWarnings(
       x %>%
         dplyr::left_join(row_idx_df, by = cols)
-  )
+    )
   return(out)
 }
