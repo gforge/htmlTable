@@ -2,8 +2,8 @@
 % Please edit documentation in R/txtFrmt.R
 \name{txtRound}
 \alias{txtRound}
-\alias{txtRound.data.frame}
 \alias{txtRound.default}
+\alias{txtRound.data.frame}
 \alias{txtRound.matrix}
 \title{A convenient rounding function}
 \usage{
@@ -54,4 +54,3 @@ txtRound(mx, 1)
 Other text formatters: \code{\link{txtMergeLines}},
   \code{\link{txtPval}}
 }
-

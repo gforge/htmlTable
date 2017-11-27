@@ -17,4 +17,3 @@ surpress rownames for \code{data.frames}.}
 Returns if rownames should be printed for the htmlTable
 }
 \keyword{internal}
-

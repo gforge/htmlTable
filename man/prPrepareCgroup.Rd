@@ -42,4 +42,3 @@ Other hidden helper functions for \code{\link{htmlTable}}: \code{\link{prAddCell
   \code{\link{prPrepareAlign}}, \code{\link{prTblNo}}
 }
 \keyword{internal}
-

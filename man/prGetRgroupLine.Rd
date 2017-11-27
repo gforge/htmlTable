@@ -51,4 +51,3 @@ spacer cells}
 Gets the number of rgroup htmlLine
 }
 \keyword{internal}
-

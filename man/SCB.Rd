@@ -42,11 +42,10 @@ for (i in 1:length(Swe_ltrs)){
 save(SCB, file = "data/SCB.rda")
 }
 }
-\author{
-Max Gordon \email{max@gforge.se}
-}
 \references{
 \url{http://scb.se}
 }
+\author{
+Max Gordon \email{max@gforge.se}
+}
 \keyword{data}
-
