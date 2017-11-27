@@ -10,5 +10,7 @@
 # RStudio files
 .Rproj.user
 
+# Doc stuff to ignore
 tests/visual_tests/*.html
 tests/visual_tests/*.css
+inst/doc
