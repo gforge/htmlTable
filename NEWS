@@ -1,5 +1,10 @@
 NEWS for the htmlTable package
 
+Changes for 1.11.0
+-----------------
+* Strings are now escaped using htmltools::htmlEscape - issue #40 (thanks Peter Konings)
+* Tidy data interface - issue #42 (thanks Stephen Gragg)
+
 Changes for 1.10.1
 -----------------
 * Fixed bug with rownames styling (thanks Shira Mitchell)
@@ -9,7 +14,7 @@ Changes for 1.10
 * Added conversion of dimnames into row/column labels
 * Added detection of sum row/colum when using base::table
 * fixed cgroup bug with automated n.cgroup calculations
-* fixed output to viewport when not in RStudio notebook (thanks lemna)
+* fixed output to viewport when not in RStudio notebook (thanks Peter Konings)
 * fixed vector input for txtRound warning
 
 Changes for 1.9
@@ -19,14 +24,14 @@ Changes for 1.9
 
 Changes for 1.8
 -----------------
-* txtRound now throws an error when provided a too short vector of digits (thanks lemna)
+* txtRound now throws an error when provided a too short vector of digits (thanks Peter Konings)
 * css.cell has improved docs and added checkmate to verify format (thanks maverickg)
 * Added concatHtmlTables for merging multiple tables into one string element of class htmlTable
 * Fixed CRAN bugs in dev version
 
 Changes for 1.7
 -----------------
-* Added ability to print matrix & data.frame without any rows, i.e. empty (thanks lemna)
+* Added ability to print matrix & data.frame without any rows, i.e. empty (thanks Peter Konings)
 * Added table border flexibility via the ctable argument (Thanks raredd)
 * Added option of having row-group separators for no-named row groups (Thanks, prof. Harrell)
 * Fixed bug with outputting dates (issue #14)

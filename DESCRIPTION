@@ -1,8 +1,12 @@
 Package: htmlTable
-Version: 1.10.1
-Date: 2017-03-12
+Version: 1.11.0
+Date: 2017-11-27
 Title: Advanced Tables for Markdown/HTML
-Author: Max Gordon <max@gforge.se>
+Authors@R: c(
+  person("Max", "Gordon", email = "max@gforge.se",
+         role = c("aut", "cre")),
+  person("Stephen", "Gragg", role=c("aut")),
+  person("Peter", "Konings", role=c("aut")))
 Maintainer: Max Gordon <max@gforge.se>
 Description: Tables with state-of-the-art layout elements such as row spanners,
     column spanners, table spanners, zebra striping, and more. While allowing
@@ -22,7 +26,9 @@ Imports:
     checkmate,
     htmlwidgets,
     htmltools,
-    rstudioapi (>= 0.6)
+    rstudioapi (>= 0.6),
+    tidyr (>= 0.7.2),
+    dplyr (>= 0.7.4)
 Suggests:
     testthat,
     XML,
