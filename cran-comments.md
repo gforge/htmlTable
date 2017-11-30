@@ -1,5 +1,5 @@
 ## Test environments
-* Ubuntu install, R 3.3.1
+* Ubuntu install, R 3.4.2
 * Docker rocker/r-devel for develop environment
 
 ## R CMD check results
