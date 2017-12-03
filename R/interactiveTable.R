@@ -75,7 +75,7 @@ interactiveTable.default <- function(x, ...,
     # Pass false to allow warning later on
     minimized.columns <- FALSE
   }
-  tbl <- htmlTable(x, ...)
+  tbl <- htmlTable(x, escape.html=FALSE, ...)
   return(interactiveTable(tbl,
                           txt.maxlen = 20,
                           button = button,

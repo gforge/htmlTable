@@ -965,11 +965,11 @@ htmlTable.default <- function(x,
 #' @importFrom rstudioapi isAvailable getActiveDocumentContext
 #' @keywords internal
 prIsNotebook <- function() {
-  if (!rstudioapi::isAvailable()) {
+  if (!isAvailable()) {
     return(FALSE)
   }
 
-  ctxt <- rstudioapi::getActiveDocumentContext()
+  ctxt <- getActiveDocumentContext()
   if (grepl("\\.Rmd$", ctxt$path)) {
     return(TRUE)
   }
