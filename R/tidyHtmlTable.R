@@ -47,13 +47,13 @@
 #'     \item \code{hidden_tspanner}
 #'   }
 #' @section Additional dependencies:
-#'  In order to run this function you also must have \code{\link{dplyr}} and
-#'  \code{\link{tidyr}} packages installed. These have been removed due to
+#'  In order to run this function you also must have \code{\link[dplyr]{dplyr}} and
+#'  \code{\link[tidyr]{tidyr}} packages installed. These have been removed due to
 #'  the additional 20 Mb that these dependencies added (issue #47). The particular
 #'  functions required are:
 #'
 #'  \itemize{
-#'    \item \code{\link{dplyr}}:
+#'    \item \code{\link[dplyr]{dplyr}}:
 #'    \code{mutate_at},
 #'    \code{select},
 #'    \code{pull},
@@ -63,7 +63,7 @@
 #'    \code{mutate_if},
 #'    \code{is.grouped_df},
 #'    \code{left_join}
-#'    \item \code{\link{tidyr}}: \code{spread}
+#'    \item \code{\link[tidyr]{tidyr}}: \code{spread}
 #'  }
 #'
 #' @param x Tidy data used to build the \code{htmlTable}

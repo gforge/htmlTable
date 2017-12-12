@@ -7,3 +7,4 @@ r_packages:
   - Hmisc
   - dplyr
   - tidyr
+  - pxweb
