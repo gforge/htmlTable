@@ -1,5 +1,9 @@
 NEWS for the htmlTable package
 
+Changes for 1.11.1
+-----------------
+* Removed tidyr and dplyr from dependencies (issue #47)
+
 Changes for 1.11.0
 -----------------
 * Strings are now escaped using htmltools::htmlEscape - issue #40 (thanks Peter Konings)
