@@ -137,13 +137,8 @@ tidyHtmlTable.data.frame <- function(x,
                                      tspanner = NULL,
                                      hidden_tspanner = NULL,
                                      ...) {
+
   # You need the suggested package for this function
-  safeLoadPkg <- function(pkg) {
-    if (!requireNamespace(pkg, quietly = TRUE)) {
-      stop("The package ", pkg, " is needed for this function to work. Please install it.",
-           call. = FALSE)
-    }
-  }
   safeLoadPkg("dplyr")
   safeLoadPkg("tidyr")
 
@@ -275,6 +270,14 @@ tidyHtmlTable.data.frame <- function(x,
   }
 
   do.call(htmlTable, htmlTable_args)
+}
+
+# You need the suggested package for this function
+safeLoadPkg <- function(pkg) {
+  if (!requireNamespace(pkg, quietly = TRUE)) {
+    stop("The package ", pkg, " is needed for this function to work. Please install it.",
+         call. = FALSE)
+  }
 }
 
 # Removes rows containing NA values in any mapped columns from the tidy dataset
