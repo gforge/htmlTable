@@ -90,6 +90,28 @@ to elements of an output \code{htmlTable} (e.g. rnames, header, etc.)
   }
 }
 
+\section{Additional dependencies}{
+
+ In order to run this function you also must have \code{\link[dplyr]{dplyr}} and
+ \code{\link[tidyr]{tidyr}} packages installed. These have been removed due to
+ the additional 20 Mb that these dependencies added (issue #47). The particular
+ functions required are:
+
+ \itemize{
+   \item \code{\link[dplyr]{dplyr}}:
+   \code{mutate_at},
+   \code{select},
+   \code{pull},
+   \code{slice},
+   \code{filter},
+   \code{arrange_at},
+   \code{mutate_if},
+   \code{is.grouped_df},
+   \code{left_join}
+   \item \code{\link[tidyr]{tidyr}}: \code{spread}
+ }
+}
+
 \examples{
 \dontrun{
 library(tidyverse)

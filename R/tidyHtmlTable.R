@@ -46,6 +46,25 @@
 #'     \item \code{hidden_rgroup}
 #'     \item \code{hidden_tspanner}
 #'   }
+#' @section Additional dependencies:
+#'  In order to run this function you also must have \code{\link[dplyr]{dplyr}} and
+#'  \code{\link[tidyr]{tidyr}} packages installed. These have been removed due to
+#'  the additional 20 Mb that these dependencies added (issue #47). The particular
+#'  functions required are:
+#'
+#'  \itemize{
+#'    \item \code{\link[dplyr]{dplyr}}:
+#'    \code{mutate_at},
+#'    \code{select},
+#'    \code{pull},
+#'    \code{slice},
+#'    \code{filter},
+#'    \code{arrange_at},
+#'    \code{mutate_if},
+#'    \code{is.grouped_df},
+#'    \code{left_join}
+#'    \item \code{\link[tidyr]{tidyr}}: \code{spread}
+#'  }
 #'
 #' @param x Tidy data used to build the \code{htmlTable}
 #' @param value The column containing values filling individual cells of the
@@ -118,6 +137,15 @@ tidyHtmlTable.data.frame <- function(x,
                                      tspanner = NULL,
                                      hidden_tspanner = NULL,
                                      ...) {
+  # You need the suggested package for this function
+  safeLoadPkg <- function(pkg) {
+    if (!requireNamespace(pkg, quietly = TRUE)) {
+      stop("The package ", pkg, " is needed for this function to work. Please install it.",
+           call. = FALSE)
+    }
+  }
+  safeLoadPkg("dplyr")
+  safeLoadPkg("tidyr")
 
   argument_checker(x,
                    value = value,

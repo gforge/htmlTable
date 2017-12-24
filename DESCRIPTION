@@ -1,6 +1,6 @@
 Package: htmlTable
-Version: 1.11.0
-Date: 2017-11-27
+Version: 1.11.1
+Date: 2017-12-12
 Title: Advanced Tables for Markdown/HTML
 Authors@R: c(
   person("Max", "Gordon", email = "max@gforge.se",
@@ -26,9 +26,7 @@ Imports:
     checkmate,
     htmlwidgets,
     htmltools,
-    rstudioapi (>= 0.6),
-    tidyr (>= 0.7.2),
-    dplyr (>= 0.7.4)
+    rstudioapi (>= 0.6)
 Suggests:
     testthat,
     XML,
@@ -40,7 +38,9 @@ Suggests:
     pander,
     chron,
     lubridate,
-    tibble
+    tibble,
+    tidyr (>= 0.7.2),
+    dplyr (>= 0.7.4)
 Roxygen: list(wrap = FALSE)
 Encoding: UTF-8
 NeedsCompilation: no
