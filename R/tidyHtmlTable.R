@@ -87,8 +87,6 @@
 #'                   rnames = "summary_stat",
 #'                   rgroup = "per_metric")
 #' }
-#' @importFrom dplyr mutate_at select pull slice filter arrange_at mutate_if is.grouped_df left_join
-#' @importFrom tidyr spread
 tidyHtmlTable <- function(x,
                           value = "value",
                           header = "header",
@@ -158,14 +156,14 @@ tidyHtmlTable.data.frame <- function(x,
   # Hide row groups specified in hidden_rgroup
   if (!(is.null(hidden_rgroup))) {
     row_ref_tbl <- row_ref_tbl %>%
-      mutate_at(rgroup,
+      dplyr::mutate_at(rgroup,
                 function(x){ifelse(x %in% hidden_rgroup, "", x)})
   }
 
   # Hide tspanners specified in hidden_tspanner
   if (!(is.null(hidden_tspanner))) {
     row_ref_tbl <- row_ref_tbl %>%
-      mutate_at(tspanner,
+      dplyr::mutate_at(tspanner,
                 function(x){ifelse(x %in% hidden_tspanner, "", x)})
   }
 
@@ -183,57 +181,57 @@ tidyHtmlTable.data.frame <- function(x,
     add_row_idx(rnames = rnames,
                 rgroup = rgroup,
                 tspanner = tspanner) %>%
-    select(to_select) %>%
-    mutate_at(value, as.character) %>%
+    dplyr::select(to_select) %>%
+    dplyr::mutate_at(value, as.character) %>%
     # Spread will fill missing values (both explict and implicit) with the
     # same value, so we need to convert these values to a character if we want
     # them to show up correctly in the final table
-    spread(key = "c_idx",
+    tidyr::spread(key = "c_idx",
            value = value,
            fill = "")
   formatted_df$r_idx <- NULL
 
   # Get names and indices for row groups and tspanners
   htmlTable_args <- list(x = formatted_df,
-                         rnames = row_ref_tbl %>% pull(rnames),
-                         header = col_ref_tbl %>% pull(header),
+                         rnames = row_ref_tbl %>% dplyr::pull(rnames),
+                         header = col_ref_tbl %>% dplyr::pull(header),
                          ...)
 
   if (!is.null(rgroup)) {
 
     # This will take care of a problem in which adjacent row groups
     # with the same value will cause rgroup and tspanner collision
-    comp_val <- row_ref_tbl %>% pull(rgroup)
+    comp_val <- row_ref_tbl %>% dplyr::pull(rgroup)
 
     if (!is.null(tspanner)) {
       comp_val <- paste0(comp_val,
-                         row_ref_tbl %>% pull(tspanner))
+                         row_ref_tbl %>% dplyr::pull(tspanner))
     }
 
     lens <- rle(comp_val)$lengths
     idx <- cumsum(lens)
 
     htmlTable_args$rgroup <- row_ref_tbl %>%
-      slice(idx) %>%
-      pull(rgroup)
+      dplyr::slice(idx) %>%
+      dplyr::pull(rgroup)
 
     htmlTable_args$n.rgroup <- lens
   }
 
   if (!is.null(tspanner)) {
     htmlTable_args$tspanner <-
-      rle(row_ref_tbl %>% pull(tspanner))$value
+      rle(row_ref_tbl %>% dplyr::pull(tspanner))$value
     htmlTable_args$n.tspanner <-
-      rle(row_ref_tbl %>% pull(tspanner))$lengths
+      rle(row_ref_tbl %>% dplyr::pull(tspanner))$lengths
   }
 
   # Get names and indices for column groups
   if(!is.null(cgroup1)) {
-    cgroup1_out <- rle(col_ref_tbl %>% pull(cgroup1))$value
-    n.cgroup1 <- rle(col_ref_tbl %>% pull(cgroup1))$lengths
+    cgroup1_out <- rle(col_ref_tbl %>% dplyr::pull(cgroup1))$value
+    n.cgroup1 <- rle(col_ref_tbl %>% dplyr::pull(cgroup1))$lengths
     if(!is.null(cgroup2)) {
-      cgroup2_out <- rle(col_ref_tbl %>% pull(cgroup2))$value
-      n.cgroup2 <- rle(col_ref_tbl %>% pull(cgroup2))$lengths
+      cgroup2_out <- rle(col_ref_tbl %>% dplyr::pull(cgroup2))$value
+      n.cgroup2 <- rle(col_ref_tbl %>% dplyr::pull(cgroup2))$lengths
       len_diff <- length(cgroup1_out) - length(cgroup2_out)
       if (len_diff < 0) {
         stop("cgroup2 cannot contain more categories than cgroup1")
@@ -255,7 +253,7 @@ tidyHtmlTable.data.frame <- function(x,
 remove_na_rows <- function(x, ...) {
   cols <- as.character(get_col_vars(...))
   na.log <- x %>%
-    select(cols) %>%
+    dplyr::select(cols) %>%
     is.na
 
   na.row.sums <- na.log %>%
@@ -273,7 +271,7 @@ remove_na_rows <- function(x, ...) {
                    paste(na.cols, collapse = ", "), ". ",
                    removed, " row(s) in the tidy dataset were removed."))
   }
-  return(x %>% filter(keep.idx))
+  return(x %>% dplyr::filter(keep.idx))
 }
 
 # This checks to make sure that the mapping columns of the tidy dataset
@@ -283,7 +281,7 @@ check_uniqueness <- function(x, ...) {
   args <- simplify_arg_list(...)
   cols <- as.character(args)
   dupes <- x %>%
-    select(cols) %>%
+    dplyr::select(cols) %>%
     duplicated
   if (sum(dupes) != 0) {
 
@@ -320,7 +318,7 @@ get_col_vars <- function(...) {
 argument_checker <- function(x, ...) {
 
   # Check if x is a grouped tbl_df
-  if(is.grouped_df(x)) {
+  if(dplyr::is.grouped_df(x)) {
     stop("x cannot be a grouped_df")
   }
 
@@ -362,12 +360,12 @@ get_col_tbl <- function(x,
   cols <- c(cgroup2, cgroup1, header)
 
   out <- x %>%
-    select(cols) %>%
+    dplyr::select(cols) %>%
     unique %>%
-    arrange_at(cols) %>%
+    dplyr::arrange_at(cols) %>%
     # This is necessary in order to not generate NA values when setting
     # hidden elements to ""
-    mutate_if(is.factor, as.character)
+    dplyr::mutate_if(is.factor, as.character)
 
   out$c_idx <- 1:nrow(out)
   return(out)
@@ -381,12 +379,12 @@ get_row_tbl <- function(x,
   cols <- c(tspanner, rgroup, rnames)
 
   out <- x %>%
-    select(cols) %>%
+    dplyr::select(cols) %>%
     unique %>%
-    arrange_at(cols) %>%
+    dplyr::arrange_at(cols) %>%
     # This is necessary in order to not generate NA values when setting
     # hidden elements to ""
-    mutate_if(is.factor, as.character)
+    dplyr::mutate_if(is.factor, as.character)
 
   out$r_idx <- 1:nrow(out)
   return(out)
@@ -406,7 +404,7 @@ add_col_idx <- function(x,
 
   out <- suppressWarnings(
     x %>%
-      left_join(col_idx_df, cols)
+      dplyr::left_join(col_idx_df, cols)
   )
   return(out)
 }
@@ -425,7 +423,7 @@ add_row_idx <- function(x,
 
   out <- suppressWarnings(
     x %>%
-      left_join(row_idx_df, by = cols)
+      dplyr::left_join(row_idx_df, by = cols)
   )
   return(out)
 }
