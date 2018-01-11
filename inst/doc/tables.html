@@ -12,7 +12,7 @@
 
 <meta name="author" content="Max Gordon" />
 
-<meta name="date" content="2018-01-09" />
+<meta name="date" content="2018-01-11" />
 
 <title>Tables with htmlTable and some alternatives</title>
 
@@ -70,7 +70,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">Tables with htmlTable and some alternatives</h1>
 <h4 class="author"><em>Max Gordon</em></h4>
-<h4 class="date"><em>2018-01-09</em></h4>
+<h4 class="date"><em>2018-01-11</em></h4>
 
 
 <div id="TOC">
@@ -6925,7 +6925,7 @@ Age
 </tr>
 </tfoot>
 </table>
-<p>If you want to further add to the visual hints you can use specific HTML-code and insert it into the cells. Here we will color the Δ<sub>std</sub> according to color. By default htmlTable escapes HTML characters. If we want the HTML code to be interpreted correctly we need to make sure that this does not happen, by specifying <code>escape.html = FALSE</code>.</p>
+<p>If you want to further add to the visual hints you can use specific HTML-code and insert it into the cells. Here we will color the Δ<sub>std</sub> according to color. By default htmlTable does not escape HTML characters.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cols_2_clr &lt;-<span class="st"> </span><span class="kw">grep</span>(<span class="st">&quot;&amp;Delta;&lt;sub&gt;std&lt;/sub&gt;&quot;</span>, <span class="kw">colnames</span>(mx))
 <span class="co"># We need a copy as the formatting causes the matrix to loos</span>
 <span class="co"># its numerical property</span>
@@ -6962,10 +6962,9 @@ span_delta &lt;-<span class="st"> </span><span class="kw">max</span>(mx[,cols_2_
                      <span class="st">&quot;2nd&amp;nbsp;period&quot;</span>,
                      <span class="st">&quot;3rd&amp;nbsp;period&quot;</span>),
           <span class="dt">n.rgroup =</span> <span class="kw">rep</span>(<span class="dv">5</span>, <span class="dv">3</span>),
-          <span class="dt">tfoot =</span> <span class="kw">txtMergeLines</span>(<span class="st">&quot;&amp;Delta;&lt;sub&gt;int&lt;/sub&gt; correspnds to the change since start&quot;</span>,
+          <span class="dt">tfoot =</span> <span class="kw">txtMergeLines</span>(<span class="st">&quot;&amp;Delta;&lt;sub&gt;int&lt;/sub&gt; corresponds to the change since start&quot;</span>,
                                 <span class="st">&quot;&amp;Delta;&lt;sub&gt;std&lt;/sub&gt; corresponds to the change compared to national average&quot;</span>),
-          <span class="dt">cspan.rgroup =</span> <span class="dv">1</span>,
-          <span class="dt">escape.html =</span> <span class="ot">FALSE</span>)</code></pre></div>
+          <span class="dt">cspan.rgroup =</span> <span class="dv">1</span>)</code></pre></div>
 <table class="gmisc_table" style="border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;">
 <thead>
 <tr>
@@ -8735,7 +8734,7 @@ Age
 <tfoot>
 <tr>
 <td colspan="30">
-Δ<sub>int</sub> correspnds to the change since start<br><br> Δ<sub>std</sub> corresponds to the change compared to national average
+Δ<sub>int</sub> corresponds to the change since start<br><br> Δ<sub>std</sub> corresponds to the change compared to national average
 </td>
 </tr>
 </tfoot>
@@ -9962,7 +9961,7 @@ Age
              <span class="dt">align =</span> <span class="kw">c</span>(<span class="st">&quot;l&quot;</span>, <span class="st">&quot;c&quot;</span>, <span class="st">&quot;r&quot;</span>)), 
       <span class="dt">type=</span><span class="st">&quot;html&quot;</span>)</code></pre></div>
 <!-- html table generated in R 3.4.3 by xtable 1.8-2 package -->
-<!-- Tue Jan 09 14:23:16 2018 -->
+<!-- Thu Jan 11 15:05:29 2018 -->
 <table border="1">
 <caption align="bottom">
 A test table
