@@ -151,7 +151,7 @@ txtPval <- function(pvalues,
   sapply(pvalues, function(x, lim.2dec, lim.sig, lt_sign){
     if (is.na(as.numeric(x))){
       warning("The value: '", x, "' is non-numeric and txtPval",
-              " can't therfore handle it")
+              " can't therefore handle it")
       return (x)
     }
 
@@ -263,7 +263,7 @@ txtRound.data.frame <- function(x, ...){
 txtRound.table <- function(x, ...){
   return(txtRound.matrix(x, ...))
 }
-  
+
 #' @rdname txtRound
 #' @export
 txtRound.matrix <- function(x, digits = 0, excl.cols, excl.rows, ...){
