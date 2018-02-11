@@ -1,17 +1,21 @@
 NEWS for the htmlTable package
 
+Changes for 1.11.3
+------------------
+* Fix single-row css.cell bug (Issue #54)
+
 Changes for 1.11.2
------------------
+------------------
 * Set htmlEscape to default to FALSE as some features depend on the ability to be able to
   send html formatted strings.
 
 
 Changes for 1.11.1
------------------
+------------------
 * Removed tidyr and dplyr from dependencies (issue #47)
 
 Changes for 1.11.0
------------------
+------------------
 * Strings are now escaped using htmltools::htmlEscape - issue #40 (thanks Peter Konings)
 * Tidy data interface - issue #42 (thanks Stephen Gragg)
 
