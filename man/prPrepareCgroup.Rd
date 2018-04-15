@@ -37,6 +37,7 @@ some preparation for the cgroup options is required.
 \seealso{
 Other hidden helper functions for \code{\link{htmlTable}}: \code{\link{prAddCells}},
   \code{\link{prAddSemicolon2StrEnd}},
+  \code{\link{prEscapeHtml}},
   \code{\link{prGetCgroupHeader}},
   \code{\link{prGetRowlabelPos}}, \code{\link{prGetStyle}},
   \code{\link{prPrepareAlign}}, \code{\link{prTblNo}}

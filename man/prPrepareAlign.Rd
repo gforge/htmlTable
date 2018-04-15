@@ -35,6 +35,7 @@ correct number of columns.
 \seealso{
 Other hidden helper functions for \code{\link{htmlTable}}: \code{\link{prAddCells}},
   \code{\link{prAddSemicolon2StrEnd}},
+  \code{\link{prEscapeHtml}},
   \code{\link{prGetCgroupHeader}},
   \code{\link{prGetRowlabelPos}}, \code{\link{prGetStyle}},
   \code{\link{prPrepareCgroup}}, \code{\link{prTblNo}}

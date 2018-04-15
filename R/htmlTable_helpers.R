@@ -38,11 +38,11 @@ prTblNo <- function (caption) {
 #' this also replaces $ signs in order to remove the MathJax
 #' issue.
 #'
-#' @param x
-#'
 #' @importFrom htmltools htmlEscape
 #'
+#' @inheritParams htmlTable
 #' @return \code{x} without the html entities
+#' @family hidden helper functions for \code{\link{htmlTable}}
 prEscapeHtml <- function(x) {
   attributes_x <- attributes(x)
   x <- lapply(x, htmlEscape)

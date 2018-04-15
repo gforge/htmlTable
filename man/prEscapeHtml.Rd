@@ -7,7 +7,8 @@
 prEscapeHtml(x)
 }
 \arguments{
-\item{x}{}
+\item{x}{The matrix/data.frame with the data. For the \code{print} and \code{knit_print}
+it takes a string of the class \code{htmlTable} as \code{x} argument.}
 }
 \value{
 \code{x} without the html entities
@@ -16,4 +17,12 @@ prEscapeHtml(x)
 Removes the htmlEntities from table input data. Note that
 this also replaces $ signs in order to remove the MathJax
 issue.
+}
+\seealso{
+Other hidden helper functions for \code{\link{htmlTable}}: \code{\link{prAddCells}},
+  \code{\link{prAddSemicolon2StrEnd}},
+  \code{\link{prGetCgroupHeader}},
+  \code{\link{prGetRowlabelPos}}, \code{\link{prGetStyle}},
+  \code{\link{prPrepareAlign}},
+  \code{\link{prPrepareCgroup}}, \code{\link{prTblNo}}
 }
