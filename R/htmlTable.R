@@ -277,8 +277,7 @@ htmlTable <- function(x, ...){
 
 `.` <- "magrittr RCM check issue"
 
-#' @importFrom stringr str_trim
-#' @importFrom stringr str_replace
+#' @importFrom stringr str_replace str_replace_all str_trim
 #' @importFrom htmltools htmlEscape
 #' @import checkmate
 #' @import magrittr
@@ -342,9 +341,7 @@ htmlTable.default <- function(x,
                               ...)
 {
   if (isTRUE(escape.html)) {
-    attributes_x <- attributes(x)
-    x <- lapply(x, htmlEscape)
-    attributes(x) <- attributes_x
+    x <- prEscapeHtml(x)
   }
 
   if (is.null(dim(x))){

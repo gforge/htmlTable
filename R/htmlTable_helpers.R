@@ -32,6 +32,25 @@ prTblNo <- function (caption) {
   return(out)
 }
 
+#' Remove html entities from table
+#'
+#' Removes the htmlEntities from table input data. Note that
+#' this also replaces $ signs in order to remove the MathJax
+#' issue.
+#'
+#' @param x
+#'
+#' @importFrom htmltools htmlEscape
+#'
+#' @return \code{x} without the html entities
+prEscapeHtml <- function(x) {
+  attributes_x <- attributes(x)
+  x <- lapply(x, htmlEscape)
+  x <- lapply(x, function(x) str_replace_all(x, "\\$", "&#36;"))
+  attributes(x) <- attributes_x
+  return (x)
+}
+
 #' Gets the CSS style element
 #'
 #' A funciton for checking, merging, and more

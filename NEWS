@@ -1,5 +1,9 @@
 NEWS for the htmlTable package
 
+Changes for 1.11.4
+------------------
+* Fix $ MathJax bug (Issue #57)
+
 Changes for 1.11.3
 ------------------
 * Fix single-row css.cell bug (Issue #54)
