@@ -233,7 +233,7 @@ txtRound.default = function(x, digits = 0, txt.NA = "", dec = ".", ...){
     # remove any spaces indicating thousands
     # and convert to numeric
     x <-
-      sub(dec_str, "\\1", x) %>%
+      sub(dec_str, "\\1", format(as.numeric(x), scientific = FALSE, nsmall = 20)) %>%
       gsub(" ", "", .) %>%
       as.numeric
   }

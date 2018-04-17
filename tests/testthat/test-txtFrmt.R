@@ -181,3 +181,9 @@ test_that("Peter's issues raised in #34",{
 
   expect_silent(txtRound(c(NA, NA, NA, NA)))
 })
+
+test_that("Numbers displayed in scientific notation", {
+  test_str <- c("3e001", "3.2e-30", "1.693213e-01", "2.1e10")
+  expect_equivalent(txtRound(test_str, digits = 3),
+                    sprintf("%.3f", as.numeric(test_str)))
+})
