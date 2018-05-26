@@ -1,6 +1,6 @@
 Package: htmlTable
 Version: 1.11.4
-Date: 2018-04-15
+Date: 2018-05-25
 Title: Advanced Tables for Markdown/HTML
 Authors@R: c(
   person("Max", "Gordon", email = "max@gforge.se",
@@ -13,7 +13,7 @@ Description: Tables with state-of-the-art layout elements such as row spanners,
     advanced layout, the underlying css-structure is simple in order to maximize
     compatibility with word processors such as 'MS Word' or 'LibreOffice'. The package
     also contains a few text formatting functions that help outputting text
-    compatible with HTML/'LaTeX'.
+    compatible with HTML/LaTeX.
 License: GPL (>= 3)
 URL: http://gforge.se/packages/
 BugReports: https://github.com/gforge/htmlTable/issues
