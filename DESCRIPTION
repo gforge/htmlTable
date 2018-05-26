@@ -1,5 +1,5 @@
 Package: htmlTable
-Version: 1.11.4
+Version: 1.12
 Date: 2018-05-25
 Title: Advanced Tables for Markdown/HTML
 Authors@R: c(

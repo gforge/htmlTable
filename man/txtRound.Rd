@@ -11,7 +11,8 @@
 \usage{
 txtRound(x, ...)
 
-\method{txtRound}{default}(x, digits = 0, txt.NA = "", dec = ".", ...)
+\method{txtRound}{default}(x, digits = 0, txt.NA = "", dec = ".",
+  scientific, ...)
 
 \method{txtRound}{data.frame}(x, ...)
 
@@ -34,6 +35,8 @@ If you provide a vector each element will apply to the corresponding columns.}
 \item{dec}{The decimal marker. If the text is in non-english decimal
 and string formatted you need to change this to the apropriate decimal
 indicator.}
+
+\item{scientific}{If the value should be in scientific format.}
 
 \item{excl.cols}{Columns to exclude from the rounding procedure.
 This can be either a number or regular expression. Skipped if x is a vector.}

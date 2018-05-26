@@ -181,3 +181,19 @@ test_that("Peter's issues raised in #34",{
 
   expect_silent(txtRound(c(NA, NA, NA, NA)))
 })
+
+test_that("Scientific notation",{
+  expect_equal(txtRound("1.1234", 1), "1.1")
+
+  expect_equal(txtRound("1.1234e1", 1), "1.12e+01")
+
+  expect_equal(txtRound("1.1234e+01", 1), "1.12e+01")
+
+  expect_equal(txtRound("1.1234321e2", 2), "1.1234e+02")
+
+  # Doesn't work due to depares(substitute()) limitations
+  # expect_equal(txtRound(1.1234321e2, 2), "1.1234e+02")
+
+  expect_equal(txtRound(1.1234321e2, 2, scientific = TRUE), "1.1234e+02")
+  expect_equal(txtRound("1.1234321e2", 2, scientific = FALSE), "112.34")
+})
