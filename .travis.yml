@@ -7,4 +7,3 @@ r_packages:
   - Hmisc
   - dplyr
   - tidyr
-# No longer on CRAN!?  - pxweb
