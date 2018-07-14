@@ -1,5 +1,9 @@
 NEWS for the htmlTable package
 
+Changes for 1.12.1
+------------------
+* Force encoding for print.htmlTable when outputting a table using the viewer (Issue #61)
+
 Changes for 1.12
 ----------------
 * Added scientific notation to txtRound (Issue #35)

@@ -1098,7 +1098,7 @@ print.htmlTable<- function(x, useViewer, ...){
                       "</head>",
                       "<body>",
                       "<div style=\"margin: 0 auto; display: table; margin-top: 1em;\">",
-                      x,
+                      enc2utf8(x),
                       "</div>",
                       "</body>",
                       "</html>", sep="\n")
