@@ -43,6 +43,7 @@ Adds a row of cells <td>val</td><td>...</td> to a table string for
 }
 \seealso{
 Other hidden helper functions for \code{\link{htmlTable}}: \code{\link{prAddSemicolon2StrEnd}},
+  \code{\link{prEscapeHtml}},
   \code{\link{prGetCgroupHeader}},
   \code{\link{prGetRowlabelPos}}, \code{\link{prGetStyle}},
   \code{\link{prPrepareAlign}},

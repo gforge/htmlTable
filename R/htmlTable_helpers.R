@@ -32,6 +32,25 @@ prTblNo <- function (caption) {
   return(out)
 }
 
+#' Remove html entities from table
+#'
+#' Removes the htmlEntities from table input data. Note that
+#' this also replaces $ signs in order to remove the MathJax
+#' issue.
+#'
+#' @importFrom htmltools htmlEscape
+#'
+#' @inheritParams htmlTable
+#' @return \code{x} without the html entities
+#' @family hidden helper functions for \code{\link{htmlTable}}
+prEscapeHtml <- function(x) {
+  attributes_x <- attributes(x)
+  x <- lapply(x, htmlEscape)
+  x <- lapply(x, function(x) str_replace_all(x, "\\$", "&#36;"))
+  attributes(x) <- attributes_x
+  return (x)
+}
+
 #' Gets the CSS style element
 #'
 #' A funciton for checking, merging, and more
@@ -808,7 +827,7 @@ prPrepareCss <- function(x, css, rnames, header, name = deparse(substitute(css))
       }
 
       css <-
-        css[,-1]
+        css[,-1,drop=FALSE]
     }else if (ncol(css) != ncol(x)){
       stop("There is an invalid number of columns for the ", name ," matrix.",
            " Your x argument has '", ncol(x), "' columns",
@@ -821,7 +840,7 @@ prPrepareCss <- function(x, css, rnames, header, name = deparse(substitute(css))
     if (nrow(css) == nrow(x) + 1 &&
           !missing(header)){
       css.header <- css[1,]
-      css <- css[-1,]
+      css <- css[-1,,drop=FALSE]
     }else if(nrow(css) != nrow(x)){
       stop("There is an invalid number of rows for the ", name ," matrix.",
            " Your x argument has '", nrow(x), "' rows",

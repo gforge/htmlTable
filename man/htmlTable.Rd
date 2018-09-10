@@ -297,8 +297,8 @@ The \code{css.cell} parameter allows you to add any possible CSS style
 to your table cells.  \code{css.cell} can be either a vector or a matrix.
 
 If  \code{css.cell} is a \emph{vector}, it's assumed that the styles should be repeated
-throughout the columns (that is, each element in css.cell specify the style
-for the whole row of 'x').
+throughout the rows (that is, each element in css.cell specifies the style
+for a whole column of 'x').
 
 In the case of  \code{css.cell} being a \emph{matrix} of the same size of the \code{x} argument,
 each element of \code{x} gets the style from the corresponding element in css.cell.  Additionally,

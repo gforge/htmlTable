@@ -95,8 +95,8 @@
 #' to your table cells.  \code{css.cell} can be either a vector or a matrix.
 #'
 #' If  \code{css.cell} is a \emph{vector}, it's assumed that the styles should be repeated
-#' throughout the columns (that is, each element in css.cell specify the style
-#' for the whole row of 'x').
+#' throughout the rows (that is, each element in css.cell specifies the style
+#' for a whole column of 'x').
 #'
 #' In the case of  \code{css.cell} being a \emph{matrix} of the same size of the \code{x} argument,
 #' each element of \code{x} gets the style from the corresponding element in css.cell.  Additionally,
@@ -260,6 +260,9 @@
 #'  (at least that is how my 2010 version behaves). You can additinally use the
 #'  \code{options(htmlTableCompat = "html")} if you want a change to apply
 #'  to the entire document.
+#'  MS Excel sometimes misinterprets certain cell data when opening HTML-tables (eg. 1/2 becomes 1. February). 
+#'  To avoid this please specify the correct Microsoft Office format for each cell in the table using the css.cell-argument. 
+#'  To make MS Excel interpret everything as text use "mso-number-format:\"\\@\"". 
 #' @param escape.html logical: should HTML characters be escaped? Defaults to FALSE.
 #' @return \code{string} Returns a string of class htmlTable
 #'
@@ -277,8 +280,7 @@ htmlTable <- function(x, ...){
 
 `.` <- "magrittr RCM check issue"
 
-#' @importFrom stringr str_trim
-#' @importFrom stringr str_replace
+#' @importFrom stringr str_replace str_replace_all str_trim
 #' @importFrom htmltools htmlEscape
 #' @import checkmate
 #' @import magrittr
@@ -342,9 +344,7 @@ htmlTable.default <- function(x,
                               ...)
 {
   if (isTRUE(escape.html)) {
-    attributes_x <- attributes(x)
-    x <- lapply(x, htmlEscape)
-    attributes(x) <- attributes_x
+    x <- prEscapeHtml(x)
   }
 
   if (is.null(dim(x))){

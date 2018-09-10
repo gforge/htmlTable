@@ -151,7 +151,7 @@ txtPval <- function(pvalues,
   sapply(pvalues, function(x, lim.2dec, lim.sig, lt_sign){
     if (is.na(as.numeric(x))){
       warning("The value: '", x, "' is non-numeric and txtPval",
-              " can't therfore handle it")
+              " can't therefore handle it")
       return (x)
     }
 
@@ -186,6 +186,7 @@ txtPval <- function(pvalues,
 #' @param dec The decimal marker. If the text is in non-english decimal
 #'  and string formatted you need to change this to the apropriate decimal
 #'  indicator.
+#' @param scientific If the value should be in scientific format.
 #' @param ... Passed to next method
 #' @return \code{matrix/data.frame}
 #'
@@ -204,7 +205,12 @@ txtRound <- function(x, ...){
 
 #' @export
 #' @rdname txtRound
-txtRound.default = function(x, digits = 0, txt.NA = "", dec = ".", ...){
+txtRound.default = function(x,
+                            digits = 0,
+                            txt.NA = "",
+                            dec = ".",
+                            scientific,
+                            ...){
   if(length(digits) != 1 & length(digits) != length(x))
     stop("You have ",
          length(digits),
@@ -217,17 +223,21 @@ txtRound.default = function(x, digits = 0, txt.NA = "", dec = ".", ...){
     return(mapply(txtRound.default, x, digits, txt.NA, dec, ...))
   }
 
-  dec_str <- sprintf("^[^0-9\\%s-]*([\\-]{0,1}(([0-9]*|[0-9]+[ 0-9]+)[\\%s]|)[0-9]+)(|[^0-9]+.*)$",
+  dec_str <- sprintf("^[^0-9\\%s-]*([\\-]{0,1}(([0-9]*|[0-9]+[ 0-9]+)[\\%s]|)[0-9]+(e[+]{0,1}[0-9]+|))(|[^0-9]+.*)$",
                      dec, dec)
   if (is.na(x))
     return(txt.NA)
   if (!is.numeric(x) &&
       !grepl(dec_str, x))
     return(x)
+
   if (is.character(x) &&
       grepl(dec_str, x)){
     if (dec != ".")
       x <- gsub(dec, ".", x)
+    if (grepl("[0-9.]+e[+]{0,1}[0-9]+", x) && missing(scientific)) {
+      scientific <- TRUE
+    }
 
     # Select the first occurring number
     # remove any spaces indicating thousands
@@ -240,6 +250,11 @@ txtRound.default = function(x, digits = 0, txt.NA = "", dec = ".", ...){
 
   if (round(x, digits) == 0)
     x <- 0
+
+  if (!missing(scientific) && scientific) {
+    x <- round(x, digits)
+    return(format(x, scientific = TRUE))
+  }
 
   sprintf(paste0("%.", digits, "f"), x)
 }
@@ -263,7 +278,7 @@ txtRound.data.frame <- function(x, ...){
 txtRound.table <- function(x, ...){
   return(txtRound.matrix(x, ...))
 }
-  
+
 #' @rdname txtRound
 #' @export
 txtRound.matrix <- function(x, digits = 0, excl.cols, excl.rows, ...){

@@ -62,6 +62,7 @@ within the <th> elements on top of the table. Used by
 \seealso{
 Other hidden helper functions for \code{\link{htmlTable}}: \code{\link{prAddCells}},
   \code{\link{prAddSemicolon2StrEnd}},
+  \code{\link{prEscapeHtml}},
   \code{\link{prGetRowlabelPos}}, \code{\link{prGetStyle}},
   \code{\link{prPrepareAlign}},
   \code{\link{prPrepareCgroup}}, \code{\link{prTblNo}}
