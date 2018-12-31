@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/gforge/htmlTable.svg?branch=master)](https://travis-ci.org/gforge/htmlTable)
+[![](https://cranlogs.r-pkg.org/badges/htmlTable)](https://cran.r-project.org/package=htmlTable)
 
 Basics
 ======
