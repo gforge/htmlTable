@@ -10,14 +10,20 @@
 #' @section Multiple rows of column spanners \code{cgroup}:
 #'
 #' If you want to have a column spanner in multiple levels you can
-#' set the \code{cgroup} and \code{n.cgroup} arguments to matrices.
-#' If the different levels have different number of elements you
-#' need to set the ones that lack elements to NA. For instance
+#' set the \code{cgroup} and \code{n.cgroup} arguments to a \code{matrix} or
+#'  \code{list}.
+#'
+#' If the different levels have different number of elements and you have
+#' provided a **matrix** you need to set the ones that lack elements to NA. For instance
 #' \code{cgroup = rbind(c("first", "second", NA), c("a", "b", "c"))}.
 #' And the corresponding n,cgroup would be \code{n.cgroup = rbind(c(1, 2, NA), c(2, 1, 2))}.
 #' for a table consisting of 5 columns. The "first" spans the first two columns,
 #' the "second" spans the last three columns, "a" spans the first two, "b"
 #' the middle column, and "c" the last two columns.
+#'
+#' It is recommended to use `list` as you will not have to bother with the `NA`.
+#'
+#' If you want leav a cgroup empty then simply provide `""` as the cgroup.
 #'
 #' @section The \code{rgroup} argument:
 #'
@@ -188,11 +194,11 @@
 #'  default so that each row group contains the same number of rows. If you want additional
 #'  rgroup column elements to the cells you can sett the "add" attribute to \code{rgroup} through
 #'  \code{attr(rgroup, "add")}, see below explaining section.
-#' @param cgroup A vector or a matrix of character strings defining major column header. The default
+#' @param cgroup A vector, matrix or list of character strings defining major column header. The default
 #'  is to have none. These elements are also known as \emph{column spanners}. If you want a column \emph{not}
 #'  to have a spanner then put that column as "". If you pass cgroup and \code{n.crgroup} as
 #'  matrices you can have column spanners for several rows. See cgroup section below for details.
-#' @param n.cgroup An integer vector or matrix containing the number of columns for which each element in
+#' @param n.cgroup An integer vector, matrix or list containing the number of columns for which each element in
 #'  cgroup is a heading. For example, specify \code{cgroup=c("Major_1","Major_2")},
 #'  \code{n.cgroup=c(3,3)} if \code{"Major_1"} is to span columns 1-3 and
 #'  \code{"Major_2"} is to span columns 4-6.
@@ -363,11 +369,6 @@ htmlTable.default <- function(x,
     rgroup = rep("", length.out=length(n.rgroup))
   }
 
-  ## this will convert color names to hexadecimal (easier for user)
-  ## but also leaves hex format unchanged
-  col.rgroup <- prPrepareColors(col.rgroup, n = nrow(x), ng = n.rgroup, gtxt = rgroup)
-  col.columns <- prPrepareColors(col.columns, ncol(x))
-
   # Unfortunately in knitr there seems to be some issue when the
   # rnames is specified immediately as: rnames=rownames(x)
   if (missing(rnames)){
@@ -422,13 +423,16 @@ htmlTable.default <- function(x,
       rgroup <- rgroup[n.rgroup >= 1]
       n.rgroup <- n.rgroup[n.rgroup >= 1]
     }
+
     # Sanity check for rgroup
     if (sum(n.rgroup) >  nrow(x)){
       stop("Your rows are fewer than suggested by the n.rgroup,",
            " i.e. ", sum(n.rgroup) , "(n.rgroup) > ", nrow(x), "(rows in x)")
-    }else if (sum(n.rgroup) < nrow(x) &&
-              (length(n.rgroup) == length(rgroup) - 1 ||
-               length(n.rgroup) == length(rgroup))){
+    }
+
+    if (sum(n.rgroup) < nrow(x) &&
+        (length(n.rgroup) == length(rgroup) - 1 ||
+         length(n.rgroup) == length(rgroup))){
       # Add an empty rgroup if missing
       if (length(n.rgroup) == length(rgroup))
         rgroup <- c(rgroup, "")
@@ -471,6 +475,11 @@ htmlTable.default <- function(x,
 
     cspan.rgroup <- rep(cspan.rgroup, length.out = length(rgroup))
   }
+
+  ## this will convert color names to hexadecimal (easier for user)
+  ## but also leaves hex format unchanged
+  col.rgroup <- prPrepareColors(col.rgroup, n = nrow(x), ng = n.rgroup, gtxt = rgroup)
+  col.columns <- prPrepareColors(col.columns, ncol(x))
 
   if (!missing(tspanner)){
 
@@ -549,6 +558,19 @@ htmlTable.default <- function(x,
     if (missing(n.tspanner))
       stop("You need to specify the argument n.tspanner if you want to use table spanners")
 
+    if (any(n.tspanner < 1)) {
+      stop("You have  provided invalid number of rows in the n.tspanner argument - minimum is 1, you have: ",
+           vector2string(n.tspanner),
+           " where no. ", vector2string(which(n.tspanner)),
+           " was less than 1")
+    }
+    if (length(n.tspanner) == length(tspanner) - 1) {
+      n.tspanner = append(n.tspanner, nrow(x) - sum(n.tspanner))
+    }
+    if (any(n.tspanner < 1)) {
+      stop("You have more tspannners than n.tspanner while the number of rows doesn't leave room for more tspanners")
+    }
+
     if(sum(n.tspanner) !=  nrow(x))
       stop(sprintf("Your rows don't match in the n.tspanner, i.e. %d != %d",
                    sum(n.tspanner), nrow(x)))
@@ -562,8 +584,8 @@ htmlTable.default <- function(x,
                tspanner[i],
                " (no. ", i, ") with rgroup splits.",
                " The missing row splitter should be on row number ", rows,
-               " and is not in the n.rgroup list: ", paste(n.rgroup, collapse=", "),
-               " note, it should match the cumulative sum n.rgroup", paste(cumsum(n.rgroup), collapse=", "))
+               " and is not in the n.rgroup list: ", vector2string(n.rgroup),
+               " note, it should match the cumulative sum n.rgroup", vector2string(cumsum(n.rgroup)))
       }
     }
   }

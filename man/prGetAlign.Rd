@@ -19,4 +19,5 @@ pads the string with a left alignment for the rownames.}
 \description{
 Gets alignment
 }
+\concept{hidden helper functions for}
 \keyword{internal}

@@ -23,3 +23,4 @@ options(org_opts)
 Other table functions: \code{\link{htmlTable}},
   \code{\link{tblNoNext}}
 }
+\concept{table functions}

@@ -9,8 +9,8 @@
 \usage{
 htmlTable(x, ...)
 
-\method{htmlTable}{default}(x, header, rnames, rowlabel, caption, tfoot, label,
-  rgroup, n.rgroup, cgroup, n.cgroup, tspanner, n.tspanner, total,
+\method{htmlTable}{default}(x, header, rnames, rowlabel, caption, tfoot,
+  label, rgroup, n.rgroup, cgroup, n.cgroup, tspanner, n.tspanner, total,
   align = paste(rep("c", ncol(x)), collapse = ""),
   align.header = paste(rep("c", ncol(x)), collapse = ""), align.cgroup,
   css.rgroup = "font-weight: 900;", css.rgroup.sep = "",
@@ -72,12 +72,12 @@ default so that each row group contains the same number of rows. If you want add
 rgroup column elements to the cells you can sett the "add" attribute to \code{rgroup} through
 \code{attr(rgroup, "add")}, see below explaining section.}
 
-\item{cgroup}{A vector or a matrix of character strings defining major column header. The default
+\item{cgroup}{A vector, matrix or list of character strings defining major column header. The default
 is to have none. These elements are also known as \emph{column spanners}. If you want a column \emph{not}
 to have a spanner then put that column as "". If you pass cgroup and \code{n.crgroup} as
 matrices you can have column spanners for several rows. See cgroup section below for details.}
 
-\item{n.cgroup}{An integer vector or matrix containing the number of columns for which each element in
+\item{n.cgroup}{An integer vector, matrix or list containing the number of columns for which each element in
 cgroup is a heading. For example, specify \code{cgroup=c("Major_1","Major_2")},
 \code{n.cgroup=c(3,3)} if \code{"Major_1"} is to span columns 1-3 and
 \code{"Major_2"} is to span columns 4-6.
@@ -200,14 +200,20 @@ maximum compatibility with LibreOffice/OpenOffice.
 
 
 If you want to have a column spanner in multiple levels you can
-set the \code{cgroup} and \code{n.cgroup} arguments to matrices.
-If the different levels have different number of elements you
-need to set the ones that lack elements to NA. For instance
+set the \code{cgroup} and \code{n.cgroup} arguments to a \code{matrix} or
+ \code{list}.
+
+If the different levels have different number of elements and you have
+provided a **matrix** you need to set the ones that lack elements to NA. For instance
 \code{cgroup = rbind(c("first", "second", NA), c("a", "b", "c"))}.
 And the corresponding n,cgroup would be \code{n.cgroup = rbind(c(1, 2, NA), c(2, 1, 2))}.
 for a table consisting of 5 columns. The "first" spans the first two columns,
 the "second" spans the last three columns, "a" spans the first two, "b"
 the middle column, and "c" the last two columns.
+
+It is recommended to use `list` as you will not have to bother with the `NA`.
+
+If you want leav a cgroup empty then simply provide `""` as the cgroup.
 }
 
 \section{The \code{rgroup} argument}{
@@ -443,3 +449,4 @@ concatHtmlTables(all_tables)
 Other table functions: \code{\link{tblNoLast}},
   \code{\link{tblNoNext}}
 }
+\concept{table functions}

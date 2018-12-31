@@ -6,7 +6,6 @@
 \alias{txtRound.data.frame}
 \alias{txtRound.table}
 \alias{txtRound.matrix}
-\alias{txtRound.matrix}
 \title{A convenient rounding function}
 \usage{
 txtRound(x, ...)
@@ -63,3 +62,4 @@ txtRound(mx, 1)
 Other text formatters: \code{\link{txtMergeLines}},
   \code{\link{txtPval}}
 }
+\concept{text formatters}

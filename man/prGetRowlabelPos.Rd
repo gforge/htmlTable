@@ -7,7 +7,7 @@
 prGetRowlabelPos(cgroup, pos.rowlabel, header)
 }
 \arguments{
-\item{cgroup}{A vector or a matrix of character strings defining major column header. The default
+\item{cgroup}{A vector, matrix or list of character strings defining major column header. The default
 is to have none. These elements are also known as \emph{column spanners}. If you want a column \emph{not}
 to have a spanner then put that column as "". If you pass cgroup and \code{n.crgroup} as
 matrices you can have column spanners for several rows. See cgroup section below for details.}
@@ -35,4 +35,5 @@ Other hidden helper functions for \code{\link{htmlTable}}: \code{\link{prAddCell
   \code{\link{prGetStyle}}, \code{\link{prPrepareAlign}},
   \code{\link{prPrepareCgroup}}, \code{\link{prTblNo}}
 }
+\concept{hidden helper functions for \code{\link{htmlTable}}}
 \keyword{internal}

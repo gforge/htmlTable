@@ -4,8 +4,9 @@
 \alias{prGetRgroupLine}
 \title{Gets the number of rgroup htmlLine}
 \usage{
-prGetRgroupLine(x, total_columns, rgroup, rgroup_iterator, cspan, rnames, align,
-  style, cgroup_spacer_cells, col.columns, css.row, padding.tspanner)
+prGetRgroupLine(x, total_columns, rgroup, rgroup_iterator, cspan, rnames,
+  align, style, cgroup_spacer_cells, col.columns, css.row,
+  padding.tspanner)
 }
 \arguments{
 \item{x}{The matrix/data.frame with the data. For the \code{print} and \code{knit_print}

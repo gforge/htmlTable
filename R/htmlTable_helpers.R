@@ -332,8 +332,34 @@ prPrepareCgroup <- function(x, cgroup, n.cgroup, align.cgroup, css.cgroup){
   cgroup_spacer_cells <- rep(0, times=(ncol(x)-1))
 
   # The cgroup is by for compatibility reasons handled as a matrix
-  if (!is.matrix(cgroup)){
+  if (is.list(cgroup)) {
+    if (!is.list(n.cgroup)) stop("If cgroup is a list then so must n.cgroup")
+    if (length(n.cgroup) != length(cgroup)) stop("Different length of cgroup and n.cgroup")
+    if (!all(sapply(cgroup, is.vector))) stop("The cgroup list consist of vectors")
 
+    lengths <- sapply(cgroup, length)
+    if (any(is.na(lengths))) stop("The cgroup has invalid lengths!")
+    for (i in 1:length(cgroup)) {
+      if (length(cgroup[[i]]) != length(n.cgroup[[i]]))
+        stop("The cgroup and n.cgroup elemennt's lengths don't match for the ", i, "th element")
+    }
+
+    ncols <- max(lengths, na.rm=TRUE)
+    if (any(sapply(lengths, function(l) ncol(x) %% l != 0))) {
+      stop("Invalid size of lists: ", vector2string(lengths),
+           " each element should be diviseable with the maximum cgroup", ncol(x))
+    }
+    cgroup_mtrx <- matrix(nrow = length(cgroup), ncol = ncols)
+    n.cgroup_mtrx <- matrix(nrow = length(cgroup), ncol = ncols)
+    for (i in 1:length(cgroup)) {
+      for (ii in 1:length(cgroup[[i]])) {
+        cgroup_mtrx[i, ii] <- cgroup[[i]][ii]
+        n.cgroup_mtrx[i, ii] <- n.cgroup[[i]][ii]
+      }
+    }
+    cgroup <- cgroup_mtrx
+    n.cgroup <- n.cgroup_mtrx
+  } else if (!is.matrix(cgroup)){
     cgroup <- matrix(cgroup, nrow=1)
     if (missing(n.cgroup))
       n.cgroup <- matrix(NA, nrow=1)

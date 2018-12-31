@@ -4,9 +4,9 @@
 \alias{prGetCgroupHeader}
 \title{Retrieve a header row}
 \usage{
-prGetCgroupHeader(x, cgroup_vec, n.cgroup_vec, cgroup_vec.just, css.cgroup_vec,
-  row_no, top_row_style, rnames, rowlabel, pos.rowlabel, cgroup_spacer_cells,
-  css.cell)
+prGetCgroupHeader(x, cgroup_vec, n.cgroup_vec, cgroup_vec.just,
+  css.cgroup_vec, row_no, top_row_style, rnames, rowlabel, pos.rowlabel,
+  cgroup_spacer_cells, css.cell)
 }
 \arguments{
 \item{x}{The matrix/data.frame with the data. For the \code{print} and \code{knit_print}
@@ -67,4 +67,5 @@ Other hidden helper functions for \code{\link{htmlTable}}: \code{\link{prAddCell
   \code{\link{prPrepareAlign}},
   \code{\link{prPrepareCgroup}}, \code{\link{prTblNo}}
 }
+\concept{hidden helper functions for \code{\link{htmlTable}}}
 \keyword{internal}

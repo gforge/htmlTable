@@ -40,4 +40,5 @@ Other hidden helper functions for \code{\link{htmlTable}}: \code{\link{prAddCell
   \code{\link{prGetRowlabelPos}}, \code{\link{prGetStyle}},
   \code{\link{prPrepareCgroup}}, \code{\link{prTblNo}}
 }
+\concept{hidden helper functions for \code{\link{htmlTable}}}
 \keyword{internal}

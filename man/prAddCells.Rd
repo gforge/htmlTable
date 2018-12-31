@@ -4,8 +4,8 @@
 \alias{prAddCells}
 \title{Add a cell}
 \usage{
-prAddCells(rowcells, cellcode, align, style, cgroup_spacer_cells, has_rn_col,
-  col.columns, offset = 1, css.cell)
+prAddCells(rowcells, cellcode, align, style, cgroup_spacer_cells,
+  has_rn_col, col.columns, offset = 1, css.cell)
 }
 \arguments{
 \item{rowcells}{The cells with the values that are to be added}
@@ -49,4 +49,5 @@ Other hidden helper functions for \code{\link{htmlTable}}: \code{\link{prAddSemi
   \code{\link{prPrepareAlign}},
   \code{\link{prPrepareCgroup}}, \code{\link{prTblNo}}
 }
+\concept{hidden helper functions for \code{\link{htmlTable}}}
 \keyword{internal}

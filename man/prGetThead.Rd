@@ -4,9 +4,10 @@
 \alias{prGetThead}
 \title{Renders the table head (thead)}
 \usage{
-prGetThead(x, header, cgroup, n.cgroup, caption, pos.caption, compatibility,
-  total_columns, align.cgroup, css.cgroup, top_row_style, rnames, rowlabel,
-  pos.rowlabel, cgroup_spacer_cells, css.cell, align.header, cell_style)
+prGetThead(x, header, cgroup, n.cgroup, caption, pos.caption,
+  compatibility, total_columns, align.cgroup, css.cgroup, top_row_style,
+  rnames, rowlabel, pos.rowlabel, cgroup_spacer_cells, css.cell,
+  align.header, cell_style)
 }
 \arguments{
 \item{x}{The matrix/data.frame with the data. For the \code{print} and \code{knit_print}
@@ -15,12 +16,12 @@ it takes a string of the class \code{htmlTable} as \code{x} argument.}
 \item{header}{A vector of character strings specifying column
 header, defaulting to \code{\link[base]{colnames}(x)}}
 
-\item{cgroup}{A vector or a matrix of character strings defining major column header. The default
+\item{cgroup}{A vector, matrix or list of character strings defining major column header. The default
 is to have none. These elements are also known as \emph{column spanners}. If you want a column \emph{not}
 to have a spanner then put that column as "". If you pass cgroup and \code{n.crgroup} as
 matrices you can have column spanners for several rows. See cgroup section below for details.}
 
-\item{n.cgroup}{An integer vector or matrix containing the number of columns for which each element in
+\item{n.cgroup}{An integer vector, matrix or list containing the number of columns for which each element in
 cgroup is a heading. For example, specify \code{cgroup=c("Major_1","Major_2")},
 \code{n.cgroup=c(3,3)} if \code{"Major_1"} is to span columns 1-3 and
 \code{"Major_2"} is to span columns 4-6.
