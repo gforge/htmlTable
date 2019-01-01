@@ -304,6 +304,9 @@ txtRound.data.frame <- function(x, ...){
 #' @rdname txtRound
 #' @export
 txtRound.table <- function(x, ...){
+  if (is.na(ncol(x))) {
+    dim(x) <- c(1, nrow(x))
+  }
   return(txtRound.matrix(x, ...))
 }
 
@@ -323,61 +326,7 @@ txtRound.matrix <- function(x, digits = 0, excl.cols, excl.rows, ...){
       rows <- rows[-excl.rows]
   }
 
-  cols <- 1L:ncol(x)
-  if (!missing(excl.cols)){
-    if (is.character(excl.cols)){
-      excl.cols <- grep(excl.cols, colnames(x))
-    }
-
-    if (length(excl.cols) > 0)
-      cols <- cols[-excl.cols]
-  }
-
-  if (length(cols) == 0)
-    stop("No columns to round")
-
-  if (length(rows) == 0)
-    stop("No rows to round")
-
-  if(length(digits) != 1 & length(digits) != length(cols))
-    stop("You have ",
-         length(digits),
-         " digits specifications but ",
-         length(cols),
-         " columns to apply them to: ",
-         paste(cols, collapse = ", "))
-
-  ret_x <- x
-  for (row in rows){
-    ret_x[row, cols] <-
-      mapply(txtRound,
-             x = x[row, cols],
-             digits = digits,
-             ...,
-             USE.NAMES = FALSE)
-  }
-
-  return(ret_x)
-}
-
-
-#' @rdname txtRound
-#' @export
-txtRound.matrix <- function(x, digits = 0, excl.cols, excl.rows, ...){
-  if(length(dim(x)) > 2)
-    stop("The function only accepts vectors/matrices/data.frames as primary argument")
-
-  rows <- 1L:nrow(x)
-  if (!missing(excl.rows)){
-    if (is.character(excl.rows)){
-      excl.rows <- grep(excl.rows, rownames(x))
-    }
-
-    if (length(excl.rows) > 0)
-      rows <- rows[-excl.rows]
-  }
-
-  cols <- 1L:ncol(x)
+  cols <- 1L:(ifelse(is.na(ncol(x)), 1, ncol(x)))
   if (!missing(excl.cols)){
     if (is.character(excl.cols)){
       excl.cols <- grep(excl.cols, colnames(x))
