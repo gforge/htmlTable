@@ -223,6 +223,16 @@ txtRound.default = function(x,
          ": ",
          paste(x, collapse=", "))
 
+  if (length(x) > 1) {
+    return(mapply(txtRound.default,
+                  x = x,
+                  digits = digits,
+                  digits.nonzero = digits.nonzero,
+                  txt.NA = txt.NA,
+                  dec = dec,
+                  ...))
+  }
+
   if (!is.na(digits.nonzero)) {
     if (!is.numeric(digits.nonzero)
         || floor(digits.nonzero) != digits.nonzero
@@ -232,16 +242,6 @@ txtRound.default = function(x,
     if (digits.nonzero < digits) {
       stop("The digits.nonzero must be smaller than digits")
     }
-  }
-
-  if (length(x) > 1) {
-    return(mapply(txtRound.default,
-                  x = x,
-                  digits = digits,
-                  digits.nonzero = digits.nonzero,
-                  txt.NA = txt.NA,
-                  dec = dec,
-                  ...))
   }
 
   dec_str <- sprintf("^[^0-9\\%s-]*([\\-]{0,1}(([0-9]*|[0-9]+[ 0-9]+)[\\%s]|)[0-9]+(e[+]{0,1}[0-9]+|))(|[^0-9]+.*)$",

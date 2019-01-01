@@ -182,7 +182,12 @@ test_that("Keep minimila digits", {
                         digits = 2,
                         digits.nonzero = 3),
                c("0.10", "0.01","0.002","0.001","0.00"))
-T})
+
+  expect_equal(txtRound(c(10.1, 0.1, 0.0012, 0.0012),
+                        digits = c(0, 2, 2, 2),
+                        digits.nonzero = c(1,2,2,3)),
+               c("10", "0.10", "0.00", "0.001"))
+})
 
 
 test_that("Peter's issues raised in #34", {
