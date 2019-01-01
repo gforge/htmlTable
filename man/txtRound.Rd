@@ -10,8 +10,8 @@
 \usage{
 txtRound(x, ...)
 
-\method{txtRound}{default}(x, digits = 0, txt.NA = "", dec = ".",
-  scientific, ...)
+\method{txtRound}{default}(x, digits = 0, digits.nonzero = NA,
+  txt.NA = "", dec = ".", scientific, ...)
 
 \method{txtRound}{data.frame}(x, ...)
 
@@ -28,6 +28,10 @@ txtRound(x, ...)
 
 \item{digits}{The number of digits to round each element to.
 If you provide a vector each element will apply to the corresponding columns.}
+
+\item{digits.nonzero}{The number of digits to keep if the result is close to
+zero. Sometimes we have an entire table with large numbers only to have a
+few but interesting observation that are really interesting}
 
 \item{txt.NA}{The string to exchange NA with}
 

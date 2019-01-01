@@ -173,8 +173,19 @@ test_that("Character vectors work", {
 
 })
 
+test_that("Keep minimila digits", {
+  expect_equal(txtRound(c(0.1, 0.01, 0.001), digits = 2), c("0.10", "0.01","0.00"))
+  expect_equal(txtRound(c(0.1, 0.01,
+                          0.0018,
+                          0.0012,
+                          0.00012),
+                        digits = 2,
+                        digits.nonzero = 3),
+               c("0.10", "0.01","0.002","0.001","0.00"))
+T})
 
-test_that("Peter's issues raised in #34",{
+
+test_that("Peter's issues raised in #34", {
   expect_silent(txtRound(c(1, 2, 3, 4)))
 
   expect_silent(txtRound(c(1, 2, 3, NA)))
