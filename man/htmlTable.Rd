@@ -88,8 +88,10 @@ the number of columns in the matrix/data.frame then it automatically adds those.
 \item{tspanner}{The table spanner is somewhat of a table header that
 you can use when you want to join different tables with the same columns.}
 
-\item{n.tspanner}{An integer vector with the number of rows in the original matrix that
-the table spanner should span.}
+\item{n.tspanner}{An integer vector with the number of rows or rgroups in the original
+matrix that the table spanner should span. If you have provided one fewer n.tspanner elements
+the last will be imputed from the number of rgroups (if you have provided `rgroup` and
+`sum(n.tspanner) < length(rgroup)`) or the number of rows in the table.}
 
 \item{total}{The last row is sometimes a row total with a border on top and
 bold fonts. Set this to \code{TRUE} if you are interested in such a row. If you
@@ -167,8 +169,8 @@ Word ignores most settings and destroys all layout attempts
 (at least that is how my 2010 version behaves). You can additinally use the
 \code{options(htmlTableCompat = "html")} if you want a change to apply
 to the entire document.
-MS Excel sometimes misinterprets certain cell data when opening HTML-tables (eg. 1/2 becomes 1. February). 
-To avoid this please specify the correct Microsoft Office format for each cell in the table using the css.cell-argument. 
+MS Excel sometimes misinterprets certain cell data when opening HTML-tables (eg. 1/2 becomes 1. February).
+To avoid this please specify the correct Microsoft Office format for each cell in the table using the css.cell-argument.
 To make MS Excel interpret everything as text use "mso-number-format:\"\\@\"".}
 
 \item{cspan.rgroup}{The number of columns that an \code{rgroup} should span. It spans

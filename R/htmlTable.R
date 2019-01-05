@@ -207,8 +207,10 @@
 #'  the number of columns in the matrix/data.frame then it automatically adds those.
 #' @param tspanner The table spanner is somewhat of a table header that
 #'  you can use when you want to join different tables with the same columns.
-#' @param n.tspanner An integer vector with the number of rows in the original matrix that
-#'  the table spanner should span.
+#' @param n.tspanner An integer vector with the number of rows or rgroups in the original
+#'  matrix that the table spanner should span. If you have provided one fewer n.tspanner elements
+#'  the last will be imputed from the number of rgroups (if you have provided `rgroup` and
+#'  `sum(n.tspanner) < length(rgroup)`) or the number of rows in the table.
 #' @param total The last row is sometimes a row total with a border on top and
 #'  bold fonts. Set this to \code{TRUE} if you are interested in such a row. If you
 #'  want a total row at the end of each table spanner you can set this to \code{"tspanner"}.
@@ -266,9 +268,9 @@
 #'  (at least that is how my 2010 version behaves). You can additinally use the
 #'  \code{options(htmlTableCompat = "html")} if you want a change to apply
 #'  to the entire document.
-#'  MS Excel sometimes misinterprets certain cell data when opening HTML-tables (eg. 1/2 becomes 1. February). 
-#'  To avoid this please specify the correct Microsoft Office format for each cell in the table using the css.cell-argument. 
-#'  To make MS Excel interpret everything as text use "mso-number-format:\"\\@\"". 
+#'  MS Excel sometimes misinterprets certain cell data when opening HTML-tables (eg. 1/2 becomes 1. February).
+#'  To avoid this please specify the correct Microsoft Office format for each cell in the table using the css.cell-argument.
+#'  To make MS Excel interpret everything as text use "mso-number-format:\"\\@\"".
 #' @param escape.html logical: should HTML characters be escaped? Defaults to FALSE.
 #' @return \code{string} Returns a string of class htmlTable
 #'
@@ -568,18 +570,37 @@ htmlTable.default <- function(x,
            " was less than 1")
     }
     if (length(n.tspanner) == length(tspanner) - 1) {
-      n.tspanner = append(n.tspanner, nrow(x) - sum(n.tspanner))
+      if (missing(rgroup) || sum(n.tspanner) > length(rgroup)) {
+        n.tspanner = append(n.tspanner, nrow(x) - sum(n.tspanner))
+      } else {
+        n.tspanner = append(n.tspanner, length(rgroup) - sum(n.tspanner))
+      }
     }
     if (any(n.tspanner < 1)) {
       stop("You have more tspannners than n.tspanner while the number of rows doesn't leave room for more tspanners")
     }
 
-    if(sum(n.tspanner) !=  nrow(x))
-      stop(sprintf("Your rows don't match in the n.tspanner, i.e. %d != %d",
-                   sum(n.tspanner), nrow(x)))
+    if(sum(n.tspanner) !=  nrow(x)) {
+      if (missing(rgroup))
+        stop(sprintf("Your rows don't match in the n.tspanner, i.e. %d != %d",
+                     sum(n.tspanner), nrow(x)))
+
+      if (sum(n.tspanner) != length(rgroup))
+        stop(sprintf("Your rows don't match either the total number of rows '%d'
+                     or the number of rgroups '%d' the sum of n.tspanner %d",
+                     nrow(x),
+                     length(rgroup),
+                     sum(n.tspanner)))
+
+      org_nt <- n.tspanner
+      for (i in 1:length(n.tspanner)) {
+        offset <- sum(org_nt[0:(i-1)]) + 1
+        n.tspanner[i] = sum(n.rgroup[offset:(offset + org_nt[i] - 1)])
+      }
+    }
 
     # Make sure there are no collisions with rgrou
-    if (!missing(n.rgroup)){
+    if (!missing(n.rgroup)) {
       for (i in 1:length(n.tspanner)){
         rows <- sum(n.tspanner[1:i])
         if (!rows %in% cumsum(n.rgroup))

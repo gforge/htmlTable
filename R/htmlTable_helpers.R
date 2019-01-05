@@ -337,7 +337,7 @@ prPrepareCgroup <- function(x, cgroup, n.cgroup, align.cgroup, css.cgroup){
     if (length(n.cgroup) != length(cgroup)) stop("Different length of cgroup and n.cgroup")
     if (!all(sapply(cgroup, is.vector))) stop("The cgroup list consist of vectors")
 
-    lengths <- sapply(cgroup, length)
+    lengths <- sapply(n.cgroup, sum)
     if (any(is.na(lengths))) stop("The cgroup has invalid lengths!")
     for (i in 1:length(cgroup)) {
       if (length(cgroup[[i]]) != length(n.cgroup[[i]]))
@@ -347,7 +347,7 @@ prPrepareCgroup <- function(x, cgroup, n.cgroup, align.cgroup, css.cgroup){
     ncols <- max(lengths, na.rm=TRUE)
     if (any(sapply(lengths, function(l) ncol(x) %% l != 0))) {
       stop("Invalid size of lists: ", vector2string(lengths),
-           " each element should be diviseable with the maximum cgroup", ncol(x))
+           " each element should be be able to evenly divide ", ncol(x))
     }
     cgroup_mtrx <- matrix(nrow = length(cgroup), ncol = ncols)
     n.cgroup_mtrx <- matrix(nrow = length(cgroup), ncol = ncols)

@@ -228,6 +228,8 @@ htmlTable(mx,
           n.tspanner = c(2,4))
 ```
 
+Similarly you can use the number rgroups included in each tspanner instead of actual rows. This is convenient as the tspannners must align with underlying rgroups.
+
 Total row
 ---------
 
@@ -340,7 +342,7 @@ htmlTable(mx,
           rgroup = rgroup,
           n.rgroup = c(2,4),
           tspanner = paste("Spanner", LETTERS[1:2]),
-          n.tspanner = c(6),
+          n.tspanner = c(1),
           cgroup = list(c("", "Column spanners"),
                         c("", "Cgroup 1", "Cgroup 2&dagger;")),
           n.cgroup = list(c(1,5),

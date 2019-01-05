@@ -18,8 +18,6 @@ txtRound(x, ...)
 \method{txtRound}{table}(x, ...)
 
 \method{txtRound}{matrix}(x, digits = 0, excl.cols, excl.rows, ...)
-
-\method{txtRound}{matrix}(x, digits = 0, excl.cols, excl.rows, ...)
 }
 \arguments{
 \item{x}{The value/vector/data.frame/matrix to be rounded}

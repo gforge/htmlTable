@@ -44,8 +44,8 @@ Word ignores most settings and destroys all layout attempts
 (at least that is how my 2010 version behaves). You can additinally use the
 \code{options(htmlTableCompat = "html")} if you want a change to apply
 to the entire document.
-MS Excel sometimes misinterprets certain cell data when opening HTML-tables (eg. 1/2 becomes 1. February). 
-To avoid this please specify the correct Microsoft Office format for each cell in the table using the css.cell-argument. 
+MS Excel sometimes misinterprets certain cell data when opening HTML-tables (eg. 1/2 becomes 1. February).
+To avoid this please specify the correct Microsoft Office format for each cell in the table using the css.cell-argument.
 To make MS Excel interpret everything as text use "mso-number-format:\"\\@\"".}
 
 \item{total_columns}{The total number of columns including the rowlabel and the
