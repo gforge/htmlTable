@@ -114,29 +114,27 @@ htmlTable(mx_3_times,
 
 rbind(
   `Group A` = c(20, 380),
-  `Group B` = c(11, 9),
+  `Group B` = c(110, 1230),
   `Group C` = c(2, 56),
   `Group D` = c(17, 33),
   `Group A` = c(40, 360),
-  `Group B` = c(10, 10),
+  `Group B` = c(230, 1100),
   `Group C` = c(8, 50),
   `Group D` = c(10, 40)
 ) %>%
   apply(1, function(x) {
-    sapply(x, function(a) c(
-      a,
-      sprintf("(%s)", txtRound(a/sum(x) * 100, 1)))) %>%
-      c(sum(x), .)
+    sapply(x, function(count) c(
+      txtInt(count),
+      sprintf("(%s)", txtRound(count/sum(x) * 100, 1)))) %>%
+      c(txtInt(sum(x)), .)
   }) %>%
   t %>%
   htmlTable(header = c("Total", rep(c("No", "(%)"), times = 2)),
             n.cgroup=list(c(1,2,2)),
-            cgroup=list(c("", "First", "Second")),
+            cgroup=list(c("", "Cases", "Controls")),
             rgroup = rep(c("Aspirin", "Intermittent compression"), times = 2),
             n.rgroup = rep(2, times = 4),
             tspanner = c("First experiment", "Second experiment"),
             n.tspanner = c(2),
-            align = "lr",
-            caption = "Extremely fake data - only used for showing the capacity of the htmlTable package")
-
-??txtRound
+            align = "r",
+            caption = "Extremely fake data")
