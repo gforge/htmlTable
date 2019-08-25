@@ -215,7 +215,7 @@
 #'  bold fonts. Set this to \code{TRUE} if you are interested in such a row. If you
 #'  want a total row at the end of each table spanner you can set this to \code{"tspanner"}.
 #'
-#' @param css.rgroup CSS style for the rgorup, if different styles are wanted for each of the
+#' @param css.rgroup CSS style for the rgroup, if different styles are wanted for each of the
 #'  rgroups you can just specify a vector with the number of elements
 #' @param css.rgroup.sep The line between different rgroups. The line is set to the TR element
 #'  of the lower rgroup, i.e. you have to set the border-top/padding-top etc to a line with
