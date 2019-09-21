@@ -1,5 +1,6 @@
 library('testthat')
 library('XML')
+library('tibble')
 context('htmlTable')
 
 # A simple example
@@ -395,7 +396,6 @@ test_that("HTML code is properly escaped", {
                         stringsAsFactors = FALSE)
   matrix_test <- as.matrix(df_test,
                            ncol = 2)
-  tibble_test <- tibble::as.tibble(df_test)
 
   expect_identical(htmlTable(df_test,
                              rnames = FALSE,
@@ -411,6 +411,7 @@ test_that("HTML code is properly escaped", {
                              class = c("htmlTable","character"),
                              ... = list()))
 
+  tibble_test <- as.tibble(df_test)
   expect_identical(htmlTable(tibble_test,
                              rnames = FALSE,
                              escape.html = TRUE),
