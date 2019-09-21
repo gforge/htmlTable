@@ -10,7 +10,7 @@
 #'  the table_counter_str and table_counter_roman. The number is
 #'  decided by the table_counter variable
 #' @keywords internal
-#' @family hidden helper functions for \code{\link{htmlTable}}
+#' @family hidden helper functions for htmlTable
 #' @importFrom utils as.roman
 prTblNo <- function (caption) {
   tc <- getOption("table_counter", FALSE)
@@ -42,7 +42,7 @@ prTblNo <- function (caption) {
 #'
 #' @inheritParams htmlTable
 #' @return \code{x} without the html entities
-#' @family hidden helper functions for \code{\link{htmlTable}}
+#' @family hidden helper functions for htmlTable
 prEscapeHtml <- function(x) {
   attributes_x <- attributes(x)
   x <- lapply(x, htmlEscape)
@@ -65,7 +65,7 @@ prEscapeHtml <- function(x) {
 #'  correct CSS ; and : structure.
 #' @keywords internal
 #' @import magrittr
-#' @family hidden helper functions for \code{\link{htmlTable}}
+#' @family hidden helper functions for htmlTable
 prGetStyle <- function(...){
   mergeNames <- function(sv){
     sv <- sv[!is.na(sv)]
@@ -173,7 +173,7 @@ prGetStyle <- function(...){
 #' @param my_str The string that is to be processed
 #' @return \code{string}
 #' @keywords internal
-#' @family hidden helper functions for \code{\link{htmlTable}}
+#' @family hidden helper functions for htmlTable
 #' @importFrom utils tail
 prAddSemicolon2StrEnd <- function(my_str){
   if (!is.null(names(my_str))){
@@ -232,7 +232,7 @@ prAddSemicolon2StrEnd <- function(my_str){
 #' @return \code{string}
 #' @keywords internal
 #' @inheritParams htmlTable
-#' @family hidden helper functions for \code{\link{htmlTable}}
+#' @family hidden helper functions for htmlTable
 prGetCgroupHeader <- function(x,
                               cgroup_vec,
                               n.cgroup_vec,
@@ -327,7 +327,7 @@ prGetCgroupHeader <- function(x,
 #' @inheritParams htmlTable
 #' @return \code{list(cgroup, n.cgroup, align.cgroup, cgroup_spacer_cells)}
 #' @keywords internal
-#' @family hidden helper functions for \code{\link{htmlTable}}
+#' @family hidden helper functions for htmlTable
 prPrepareCgroup <- function(x, cgroup, n.cgroup, align.cgroup, css.cgroup){
   cgroup_spacer_cells <- rep(0, times=(ncol(x)-1))
 
@@ -518,7 +518,7 @@ prPrepareCgroup <- function(x, cgroup, n.cgroup, align.cgroup, css.cgroup){
 #' @return \code{integer} Returns the position within the header rows
 #'  to print the \code{rowlabel} argument
 #' @keywords internal
-#' @family hidden helper functions for \code{\link{htmlTable}}
+#' @family hidden helper functions for htmlTable
 prGetRowlabelPos <- function (cgroup, pos.rowlabel, header) {
   no_cgroup_rows <-
     ifelse(!missing(cgroup),
@@ -567,7 +567,7 @@ prGetRowlabelPos <- function (cgroup, pos.rowlabel, header) {
 #' @param css.cell The css.cell but only for this row compared to the htmlTable matrix
 #' @return \code{string} Returns the string with the new cell elements
 #' @keywords internal
-#' @family hidden helper functions for \code{\link{htmlTable}}
+#' @family hidden helper functions for htmlTable
 prAddCells <- function(rowcells, cellcode, align, style, cgroup_spacer_cells, has_rn_col, col.columns,
                          offset = 1, css.cell){
   cell_str <- ""
@@ -664,7 +664,7 @@ prGetAlign <- function(align, index) {
 #'  as the header uses the same function and there may be differences in
 #'  how the alignments should be implemented.
 #' @keywords internal
-#' @family hidden helper functions for \code{\link{htmlTable}}
+#' @family hidden helper functions for htmlTable
 #' @inheritParams htmlTable
 prPrepareAlign <- function (align, x, rnames, default_rn = "l") {
   if (length(align) > 1)

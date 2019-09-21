@@ -19,11 +19,11 @@ this also replaces $ signs in order to remove the MathJax
 issue.
 }
 \seealso{
-Other hidden helper functions for \code{\link{htmlTable}}: \code{\link{prAddCells}},
+Other hidden helper functions for htmlTable: \code{\link{prAddCells}},
   \code{\link{prAddSemicolon2StrEnd}},
   \code{\link{prGetCgroupHeader}},
   \code{\link{prGetRowlabelPos}}, \code{\link{prGetStyle}},
   \code{\link{prPrepareAlign}},
   \code{\link{prPrepareCgroup}}, \code{\link{prTblNo}}
 }
-\concept{hidden helper functions for \code{\link{htmlTable}}}
+\concept{hidden helper functions for htmlTable}

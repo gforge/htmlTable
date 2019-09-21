@@ -21,7 +21,7 @@ and \code{table_counter_roman} to produce the final string. You
 can set each option by simply calling \code{options()}.
 }
 \seealso{
-Other hidden helper functions for \code{\link{htmlTable}}: \code{\link{prAddCells}},
+Other hidden helper functions for htmlTable: \code{\link{prAddCells}},
   \code{\link{prAddSemicolon2StrEnd}},
   \code{\link{prEscapeHtml}},
   \code{\link{prGetCgroupHeader}},
@@ -29,5 +29,5 @@ Other hidden helper functions for \code{\link{htmlTable}}: \code{\link{prAddCell
   \code{\link{prPrepareAlign}},
   \code{\link{prPrepareCgroup}}
 }
-\concept{hidden helper functions for \code{\link{htmlTable}}}
+\concept{hidden helper functions for htmlTable}
 \keyword{internal}

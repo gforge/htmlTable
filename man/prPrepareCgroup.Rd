@@ -35,12 +35,12 @@ Due to the complicated structure of multilevel cgroups there
 some preparation for the cgroup options is required.
 }
 \seealso{
-Other hidden helper functions for \code{\link{htmlTable}}: \code{\link{prAddCells}},
+Other hidden helper functions for htmlTable: \code{\link{prAddCells}},
   \code{\link{prAddSemicolon2StrEnd}},
   \code{\link{prEscapeHtml}},
   \code{\link{prGetCgroupHeader}},
   \code{\link{prGetRowlabelPos}}, \code{\link{prGetStyle}},
   \code{\link{prPrepareAlign}}, \code{\link{prTblNo}}
 }
-\concept{hidden helper functions for \code{\link{htmlTable}}}
+\concept{hidden helper functions for htmlTable}
 \keyword{internal}

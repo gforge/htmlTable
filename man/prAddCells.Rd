@@ -42,12 +42,12 @@ Adds a row of cells <td>val</td><td>...</td> to a table string for
 \code{\link{htmlTable}}
 }
 \seealso{
-Other hidden helper functions for \code{\link{htmlTable}}: \code{\link{prAddSemicolon2StrEnd}},
+Other hidden helper functions for htmlTable: \code{\link{prAddSemicolon2StrEnd}},
   \code{\link{prEscapeHtml}},
   \code{\link{prGetCgroupHeader}},
   \code{\link{prGetRowlabelPos}}, \code{\link{prGetStyle}},
   \code{\link{prPrepareAlign}},
   \code{\link{prPrepareCgroup}}, \code{\link{prTblNo}}
 }
-\concept{hidden helper functions for \code{\link{htmlTable}}}
+\concept{hidden helper functions for htmlTable}
 \keyword{internal}

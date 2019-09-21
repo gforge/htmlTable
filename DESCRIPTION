@@ -1,6 +1,6 @@
 Package: htmlTable
-Version: 1.13.1
-Date: 2019-01-05
+Version: 1.13.2
+Date: 2019-09-21
 Title: Advanced Tables for Markdown/HTML
 Authors@R: c(
   person("Max", "Gordon", email = "max@gforge.se",
