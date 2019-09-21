@@ -9,6 +9,8 @@ context('dates within htmlTable')
 test_that("should be converted into strings", {
 
   # Below example is created using lemna's example:
+  # library(lubridate)
+  # library(chron)
   # df_dates <- data.frame(ID = 1:3,
   #                        contact_Date = c(today(),
   #                                         today() - 1,
