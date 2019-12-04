@@ -1,5 +1,9 @@
 NEWS for the htmlTable package
 
+Changes for 1.13.3
+------------------
+* Prepared for R 4.0
+
 Changes for 1.13.1
 ------------------
 * Bug fix for cgroup as list argument

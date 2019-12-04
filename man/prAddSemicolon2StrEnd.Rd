@@ -18,12 +18,15 @@ this function just adds a semicolong if none is given
 and remove multiple semicolon if such exist
 }
 \seealso{
-Other hidden helper functions for htmlTable: \code{\link{prAddCells}},
-  \code{\link{prEscapeHtml}},
-  \code{\link{prGetCgroupHeader}},
-  \code{\link{prGetRowlabelPos}}, \code{\link{prGetStyle}},
-  \code{\link{prPrepareAlign}},
-  \code{\link{prPrepareCgroup}}, \code{\link{prTblNo}}
+Other hidden helper functions for htmlTable: 
+\code{\link{prAddCells}()},
+\code{\link{prEscapeHtml}()},
+\code{\link{prGetCgroupHeader}()},
+\code{\link{prGetRowlabelPos}()},
+\code{\link{prGetStyle}()},
+\code{\link{prPrepareAlign}()},
+\code{\link{prPrepareCgroup}()},
+\code{\link{prTblNo}()}
 }
 \concept{hidden helper functions for htmlTable}
 \keyword{internal}

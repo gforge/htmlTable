@@ -4,8 +4,17 @@
 \alias{prAddCells}
 \title{Add a cell}
 \usage{
-prAddCells(rowcells, cellcode, align, style, cgroup_spacer_cells,
-  has_rn_col, col.columns, offset = 1, css.cell)
+prAddCells(
+  rowcells,
+  cellcode,
+  align,
+  style,
+  cgroup_spacer_cells,
+  has_rn_col,
+  col.columns,
+  offset = 1,
+  css.cell
+)
 }
 \arguments{
 \item{rowcells}{The cells with the values that are to be added}
@@ -42,12 +51,15 @@ Adds a row of cells <td>val</td><td>...</td> to a table string for
 \code{\link{htmlTable}}
 }
 \seealso{
-Other hidden helper functions for htmlTable: \code{\link{prAddSemicolon2StrEnd}},
-  \code{\link{prEscapeHtml}},
-  \code{\link{prGetCgroupHeader}},
-  \code{\link{prGetRowlabelPos}}, \code{\link{prGetStyle}},
-  \code{\link{prPrepareAlign}},
-  \code{\link{prPrepareCgroup}}, \code{\link{prTblNo}}
+Other hidden helper functions for htmlTable: 
+\code{\link{prAddSemicolon2StrEnd}()},
+\code{\link{prEscapeHtml}()},
+\code{\link{prGetCgroupHeader}()},
+\code{\link{prGetRowlabelPos}()},
+\code{\link{prGetStyle}()},
+\code{\link{prPrepareAlign}()},
+\code{\link{prPrepareCgroup}()},
+\code{\link{prTblNo}()}
 }
 \concept{hidden helper functions for htmlTable}
 \keyword{internal}

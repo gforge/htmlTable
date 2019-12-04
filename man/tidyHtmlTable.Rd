@@ -4,10 +4,19 @@
 \alias{tidyHtmlTable}
 \title{Generate an htmlTable using a ggplot2-like interface}
 \usage{
-tidyHtmlTable(x, value = "value", header = "header",
-  rnames = "rnames", rgroup = NULL, hidden_rgroup = NULL,
-  cgroup1 = NULL, cgroup2 = NULL, tspanner = NULL,
-  hidden_tspanner = NULL, ...)
+tidyHtmlTable(
+  x,
+  value = "value",
+  header = "header",
+  rnames = "rnames",
+  rgroup = NULL,
+  hidden_rgroup = NULL,
+  cgroup1 = NULL,
+  cgroup2 = NULL,
+  tspanner = NULL,
+  hidden_tspanner = NULL,
+  ...
+)
 }
 \arguments{
 \item{x}{Tidy data used to build the \code{htmlTable}}

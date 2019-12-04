@@ -9,21 +9,45 @@
 \usage{
 htmlTable(x, ...)
 
-\method{htmlTable}{default}(x, header, rnames, rowlabel, caption, tfoot,
-  label, rgroup, n.rgroup, cgroup, n.cgroup, tspanner, n.tspanner, total,
+\method{htmlTable}{default}(
+  x,
+  header,
+  rnames,
+  rowlabel,
+  caption,
+  tfoot,
+  label,
+  rgroup,
+  n.rgroup,
+  cgroup,
+  n.cgroup,
+  tspanner,
+  n.tspanner,
+  total,
   align = paste(rep("c", ncol(x)), collapse = ""),
-  align.header = paste(rep("c", ncol(x)), collapse = ""), align.cgroup,
-  css.rgroup = "font-weight: 900;", css.rgroup.sep = "",
+  align.header = paste(rep("c", ncol(x)), collapse = ""),
+  align.cgroup,
+  css.rgroup = "font-weight: 900;",
+  css.rgroup.sep = "",
   css.tspanner = "font-weight: 900; text-align: left;",
   css.tspanner.sep = "border-top: 1px solid #BEBEBE;",
   css.total = "border-top: 1px solid #BEBEBE; font-weight: 900;",
-  css.cell = "", css.cgroup = "", css.class = "gmisc_table",
+  css.cell = "",
+  css.cgroup = "",
+  css.class = "gmisc_table",
   css.table = "margin-top: 1em; margin-bottom: 1em;",
-  pos.rowlabel = "bottom", pos.caption = "top", col.rgroup = "none",
-  col.columns = "none", padding.rgroup = "&nbsp;&nbsp;",
-  padding.tspanner = "", ctable = TRUE,
+  pos.rowlabel = "bottom",
+  pos.caption = "top",
+  col.rgroup = "none",
+  col.columns = "none",
+  padding.rgroup = "&nbsp;&nbsp;",
+  padding.tspanner = "",
+  ctable = TRUE,
   compatibility = getOption("htmlTableCompat", "LibreOffice"),
-  cspan.rgroup = "all", escape.html = FALSE, ...)
+  cspan.rgroup = "all",
+  escape.html = FALSE,
+  ...
+)
 
 \method{knit_print}{htmlTable}(x, ...)
 
@@ -451,7 +475,8 @@ concatHtmlTables(all_tables)
 \code{\link{txtMergeLines}},
          \code{\link[Hmisc]{latex}}
 
-Other table functions: \code{\link{tblNoLast}},
-  \code{\link{tblNoNext}}
+Other table functions: 
+\code{\link{tblNoLast}()},
+\code{\link{tblNoNext}()}
 }
 \concept{table functions}

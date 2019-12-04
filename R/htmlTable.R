@@ -697,7 +697,7 @@ htmlTable.default <- function(x,
   }else{
     stop("You have provided an invalid 'total' argument:",
          " '", paste(total, collapse="', '"), "' ",
-         " of the class ", class(total), ".",
+         " of the class ", paste(class(total), collapse = " & "), ".",
          " The function currently only accepts logical or numerical",
          " values.")
   }
@@ -1071,7 +1071,8 @@ htmlTable.matrix <- function(x, total, ...) {
     warning(paste(deparse(substitute(x)), "is an empty object"))
   }
 
-  if (all(class(x) == c("table", "matrix")) &&
+  if (all(class(x) %in% c("table", "matrix", "array")) &&
+      !is.null(rownames(x)) &&
       grepl("^sum$", tail(rownames(x), 1), ignore.case = TRUE) &&
       missing(total)) {
     total = TRUE

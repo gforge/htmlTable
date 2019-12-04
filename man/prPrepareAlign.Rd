@@ -33,12 +33,15 @@ this process by extending/shortening the alignment to match the
 correct number of columns.
 }
 \seealso{
-Other hidden helper functions for htmlTable: \code{\link{prAddCells}},
-  \code{\link{prAddSemicolon2StrEnd}},
-  \code{\link{prEscapeHtml}},
-  \code{\link{prGetCgroupHeader}},
-  \code{\link{prGetRowlabelPos}}, \code{\link{prGetStyle}},
-  \code{\link{prPrepareCgroup}}, \code{\link{prTblNo}}
+Other hidden helper functions for htmlTable: 
+\code{\link{prAddCells}()},
+\code{\link{prAddSemicolon2StrEnd}()},
+\code{\link{prEscapeHtml}()},
+\code{\link{prGetCgroupHeader}()},
+\code{\link{prGetRowlabelPos}()},
+\code{\link{prGetStyle}()},
+\code{\link{prPrepareCgroup}()},
+\code{\link{prTblNo}()}
 }
 \concept{hidden helper functions for htmlTable}
 \keyword{internal}

@@ -20,7 +20,8 @@ tblNoLast()
 options(org_opts)
 }
 \seealso{
-Other table functions: \code{\link{htmlTable}},
-  \code{\link{tblNoNext}}
+Other table functions: 
+\code{\link{htmlTable}},
+\code{\link{tblNoNext}()}
 }
 \concept{table functions}

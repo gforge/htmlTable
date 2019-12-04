@@ -7,11 +7,22 @@
 \alias{print.interactiveTable}
 \title{An interactive table that allows you to limit the size of boxes}
 \usage{
-interactiveTable(x, ..., txt.maxlen = 20, button = FALSE,
-  minimized.columns, js.scripts = c())
+interactiveTable(
+  x,
+  ...,
+  txt.maxlen = 20,
+  button = FALSE,
+  minimized.columns,
+  js.scripts = c()
+)
 
-\method{interactiveTable}{htmlTable}(tbl, txt.maxlen = 20,
-  button = FALSE, minimized.columns, js.scripts = c())
+\method{interactiveTable}{htmlTable}(
+  tbl,
+  txt.maxlen = 20,
+  button = FALSE,
+  minimized.columns,
+  js.scripts = c()
+)
 
 \method{knit_print}{interactiveTable}(x, ...)
 

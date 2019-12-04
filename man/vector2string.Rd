@@ -4,8 +4,11 @@
 \alias{vector2string}
 \title{Collapse vector to string}
 \usage{
-vector2string(x, quotation_mark = "'", collapse = sprintf("\%s, \%s",
-  quotation_mark, quotation_mark))
+vector2string(
+  x,
+  quotation_mark = "'",
+  collapse = sprintf("\%s, \%s", quotation_mark, quotation_mark)
+)
 }
 \arguments{
 \item{x}{The vector to collapse}

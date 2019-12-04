@@ -4,8 +4,14 @@
 \alias{htmlTableWidget}
 \title{htmlTable with pagination widget}
 \usage{
-htmlTableWidget(x, number_of_entries = c(10, 25, 100), width = NULL,
-  height = NULL, elementId = NULL, ...)
+htmlTableWidget(
+  x,
+  number_of_entries = c(10, 25, 100),
+  width = NULL,
+  height = NULL,
+  elementId = NULL,
+  ...
+)
 }
 \arguments{
 \item{x}{A data frame to be rendered}

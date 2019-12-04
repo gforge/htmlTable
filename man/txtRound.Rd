@@ -10,8 +10,15 @@
 \usage{
 txtRound(x, ...)
 
-\method{txtRound}{default}(x, digits = 0, digits.nonzero = NA,
-  txt.NA = "", dec = ".", scientific, ...)
+\method{txtRound}{default}(
+  x,
+  digits = 0,
+  digits.nonzero = NA,
+  txt.NA = "",
+  dec = ".",
+  scientific,
+  ...
+)
 
 \method{txtRound}{data.frame}(x, ...)
 
@@ -61,7 +68,8 @@ mx <- matrix(c(1, 1.11, 1.25,
 txtRound(mx, 1)
 }
 \seealso{
-Other text formatters: \code{\link{txtMergeLines}},
-  \code{\link{txtPval}}
+Other text formatters: 
+\code{\link{txtMergeLines}()},
+\code{\link{txtPval}()}
 }
 \concept{text formatters}

@@ -4,10 +4,26 @@
 \alias{prGetThead}
 \title{Renders the table head (thead)}
 \usage{
-prGetThead(x, header, cgroup, n.cgroup, caption, pos.caption,
-  compatibility, total_columns, align.cgroup, css.cgroup, top_row_style,
-  rnames, rowlabel, pos.rowlabel, cgroup_spacer_cells, css.cell,
-  align.header, cell_style)
+prGetThead(
+  x,
+  header,
+  cgroup,
+  n.cgroup,
+  caption,
+  pos.caption,
+  compatibility,
+  total_columns,
+  align.cgroup,
+  css.cgroup,
+  top_row_style,
+  rnames,
+  rowlabel,
+  pos.rowlabel,
+  cgroup_spacer_cells,
+  css.cell,
+  align.header,
+  cell_style
+)
 }
 \arguments{
 \item{x}{The matrix/data.frame with the data. For the \code{print} and \code{knit_print}

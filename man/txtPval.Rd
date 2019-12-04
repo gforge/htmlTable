@@ -43,7 +43,8 @@ to report anything below that value.
 txtPval(c(0.10234,0.010234, 0.0010234, 0.000010234))
 }
 \seealso{
-Other text formatters: \code{\link{txtMergeLines}},
-  \code{\link{txtRound}}
+Other text formatters: 
+\code{\link{txtMergeLines}()},
+\code{\link{txtRound}()}
 }
 \concept{text formatters}
