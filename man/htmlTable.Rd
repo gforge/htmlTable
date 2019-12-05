@@ -133,7 +133,7 @@ defaulting to centered, i.e. \code{\link[base]{paste}(rep('c',ncol(x)),collapse=
 
 \item{align.cgroup}{The justification of the \code{cgroups}}
 
-\item{css.rgroup}{CSS style for the rgorup, if different styles are wanted for each of the
+\item{css.rgroup}{CSS style for the rgroup, if different styles are wanted for each of the
 rgroups you can just specify a vector with the number of elements}
 
 \item{css.rgroup.sep}{The line between different rgroups. The line is set to the TR element
