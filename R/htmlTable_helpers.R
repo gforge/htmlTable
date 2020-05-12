@@ -610,7 +610,7 @@ prAddCells <- function(rowcells, cellcode, align, style, cgroup_spacer_cells, ha
         sprintf("%s\n\t\t<%s style='%s' colspan='%d'>&nbsp;</%s>",
                 .,
                 cellcode,
-                prGetStyle(spanner_style),
+                prGetStyle(cell_style, spanner_style),
                 cgroup_spacer_cells[nr],
                 cellcode)
     }
@@ -880,8 +880,9 @@ prPrepareCss <- function(x, css, rnames, header, name = deparse(substitute(css))
       css.rnames = rep(css[1], nrow(x) + prSkipRownames(rnames))
       css <-
         css[-1]
-    }else if(length(css) != ncol(x) &&
-               length(css) != 1){
+    } else if (length(css) == 1) {
+      css.rnames <- rep(css, times = nrow(x) + !missing(header))
+    } else if(length(css) != ncol(x)) {
       stop("The length of your ", name ," vector '", length(css) ,"'",
            " does not correspond to the column length '", ncol(x) ,"'",
            " (there are ", ifelse(prSkipRownames(rnames),
@@ -955,7 +956,6 @@ prAttr4RgroupAdd <- function (rgroup, rgroup_iterator, no_cols) {
            " (1) the length of the rgroup",
            " (2) or have names corresponding to the mapping integers")
     }
-
   }
 
   if (!is.list(add_elmnt) &&

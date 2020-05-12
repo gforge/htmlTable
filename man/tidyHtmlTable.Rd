@@ -43,7 +43,7 @@ groups}
 \item{hidden_tspanner}{tspanner values that will be hidden.}
 
 \item{...}{Additional arguments that will be passed to the inner
-\code{htmlTable} function}
+\code{\link{htmlTable}} function}
 }
 \value{
 Returns html code that will build a pretty table

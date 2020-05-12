@@ -2,6 +2,7 @@ NEWS for the htmlTable package
 
 Changes for 1.14.0
 ------------------
+* Changed so that css.cell is properly applied to rownames, cell fillers and the actual cells of interest (may impact the final layout!)
 * Added mso-number-format to help (Issue #63) - thanks Rasmus Hertzum
 * txtRound can now add txtInt when formatting the integer section for easier readability
 
