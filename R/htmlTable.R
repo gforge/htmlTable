@@ -324,23 +324,27 @@ htmlTable.default <- function(x,
                               align.cgroup,
 
                               # CSS stuff
-                              css.rgroup = "font-weight: 900;",
-                              css.rgroup.sep = "",
+                              css.rgroup = getOption("htmlTable.css.rgroup",
+                                                     default="font-weight: 900;"),
+                              css.rgroup.sep = getOption("htmlTable.css.rgroup.sep", default =""),
 
-                              css.tspanner = "font-weight: 900; text-align: left;",
-                              css.tspanner.sep = "border-top: 1px solid #BEBEBE;",
+                              css.tspanner = getOption("htmlTable.css.tspanner",
+                                                       default = "font-weight: 900; text-align: left;"),
+                              css.tspanner.sep = getOption("htmlTable.css.tspanner.sep",
+                                                           default = "border-top: 1px solid #BEBEBE;"),
 
-                              css.total = "border-top: 1px solid #BEBEBE; font-weight: 900;",
+                              css.total = getOption("htmlTable.css.total",
+                                                    default = "border-top: 1px solid #BEBEBE; font-weight: 900;"),
 
-                              css.cell = "",
-                              css.cgroup = "",
+                              css.cell = getOption("htmlTable.css.cell", default = ""),
+                              css.cgroup = getOption("htmlTable.css.cgroup", default = ""),
 
-                              css.class = "gmisc_table",
-                              css.table = "margin-top: 1em; margin-bottom: 1em;",
+                              css.class = getOption("htmlTable.css.class", default = "gmisc_table"),
+                              css.table = getOption("htmlTable.css.table", default = "margin-top: 1em; margin-bottom: 1em;"),
 
                               # Positions
                               pos.rowlabel = "bottom",
-                              pos.caption='top',
+                              pos.caption = c('top', 'bottom', 'below'), # below == bottom
 
                               # Colors
                               col.rgroup = 'none',
@@ -371,6 +375,7 @@ htmlTable.default <- function(x,
          " length(dim(x)) = ", length(dim(x)) , " != 2")
   }
 
+  pos.caption <- match.arg(pos.caption)
 
   if (missing(rgroup) &&
       !missing(n.rgroup)){
@@ -946,13 +951,13 @@ htmlTable.default <- function(x,
     }
 
     cell_str <- prAddCells(rowcells = x[row_nr,],
-                             cellcode = "td",
-                             align = align,
-                             style = cell_style,
-                             cgroup_spacer_cells = cgroup_spacer_cells,
-                             has_rn_col = !prSkipRownames(rnames)*1,
-                             col.columns = col.columns,
-                             css.cell = css.cell[row_nr, ])
+                           cellcode = "td",
+                           align = align,
+                           style = cell_style,
+                           cgroup_spacer_cells = cgroup_spacer_cells,
+                           has_rn_col = !prSkipRownames(rnames)*1,
+                           col.columns = col.columns,
+                           css.cell = css.cell[row_nr, ])
     table_str %<>%
       paste0(cell_str, "\n\t</tr>")
   }

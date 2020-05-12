@@ -5,6 +5,8 @@ Changes for 1.14.0
 * Changed so that css.cell is properly applied to rownames, cell fillers and the actual cells of interest (may impact the final layout!)
 * Added mso-number-format to help (Issue #63) - thanks Rasmus Hertzum
 * txtRound can now add txtInt when formatting the integer section for easier readability
+* Added htmlTable css options - they should all start with `htmlTable.`
+* pos.caption now uses match.arg as expected
 
 Changes for 1.13.3
 ------------------
