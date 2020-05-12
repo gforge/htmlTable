@@ -80,7 +80,7 @@
 #' @param tspanner The column in \code{x} specifying tspanner groups
 #' @param hidden_tspanner tspanner values that will be hidden.
 #' @param ... Additional arguments that will be passed to the inner
-#' \code{htmlTable} function
+#' \code{\link{htmlTable}} function
 #' @return Returns html code that will build a pretty table
 #' @export
 #' @seealso \code{\link{htmlTable}}
