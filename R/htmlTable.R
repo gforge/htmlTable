@@ -113,6 +113,10 @@
 #' Note that the \code{text-align} CSS field in the \code{css.cell} argument will be overriden
 #' by the \code{align} argument.
 #'
+#' Excel has a specific css-style, \code{mso-number-format} that can be used for improving the
+#' copy-paste functionality. E.g. the style could be written as: \code{css_matrix <-
+#' matrix( data = "mso-number-format:\"\\@\"", nrow = nrow(df), ncol = ncol(df))}
+#'
 #'@section Empty dataframes:
 #' An empty dataframe will result in a warning and output an empty table, provided that
 #' rgroup and n.rgroup are not specified. All other row layout options will be ignored.
