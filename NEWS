@@ -3,6 +3,7 @@ NEWS for the htmlTable package
 Changes for 1.14.0
 ------------------
 * Added mso-number-format to help (Issue #63) - thanks Rasmus Hertzum
+* txtRound can now add txtInt when formatting the integer section for easier readability
 
 Changes for 1.13.3
 ------------------

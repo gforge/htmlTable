@@ -15,8 +15,9 @@ txtRound(x, ...)
   digits = 0,
   digits.nonzero = NA,
   txt.NA = "",
-  dec = ".",
+  dec = getOption("htmlTable.decimal_marker", default = "."),
   scientific,
+  txtInt_args = getOption("htmlTable.round_int", default = NULL),
   ...
 )
 
@@ -42,9 +43,13 @@ few but interesting observation that are really interesting}
 
 \item{dec}{The decimal marker. If the text is in non-english decimal
 and string formatted you need to change this to the apropriate decimal
-indicator.}
+indicator. The option for this is \code{htmlTable.decimal_marker}.}
 
 \item{scientific}{If the value should be in scientific format.}
+
+\item{txtInt_args}{A list of arguments to pass to txtInt if that is to be
+used for large values that may require a thousands separator. The option
+for this is \code{htmlTable.round_int}.}
 
 \item{excl.cols}{Columns to exclude from the rounding procedure.
 This can be either a number or regular expression. Skipped if x is a vector.}

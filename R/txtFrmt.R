@@ -188,8 +188,11 @@ txtPval <- function(pvalues,
 #' @param txt.NA The string to exchange NA with
 #' @param dec The decimal marker. If the text is in non-english decimal
 #'  and string formatted you need to change this to the apropriate decimal
-#'  indicator.
+#'  indicator. The option for this is \code{htmlTable.decimal_marker}.
 #' @param scientific If the value should be in scientific format.
+#' @param txtInt_args A list of arguments to pass to txtInt if that is to be
+#'  used for large values that may require a thousands separator. The option
+#'  for this is \code{htmlTable.round_int}.
 #' @param ... Passed to next method
 #' @return \code{matrix/data.frame}
 #'
@@ -201,6 +204,7 @@ txtPval <- function(pvalues,
 #' txtRound(mx, 1)
 #' @export
 #' @rdname txtRound
+#' @importFrom stringr str_split str_replace
 #' @family text formatters
 txtRound <- function(x, ...){
   UseMethod("txtRound")
@@ -212,8 +216,10 @@ txtRound.default = function(x,
                             digits = 0,
                             digits.nonzero = NA,
                             txt.NA = "",
-                            dec = ".",
+                            dec = getOption("htmlTable.decimal_marker", default = "."),
                             scientific,
+                            txtInt_args = getOption("htmlTable.round_int",
+                                                    default = NULL),
                             ...){
   if(length(digits) != 1 & length(digits) != length(x))
     stop("You have ",
@@ -284,7 +290,31 @@ txtRound.default = function(x,
     return(format(x, scientific = TRUE))
   }
 
-  sprintf(paste0("%.", digits, "f"), x)
+  ret <- sprintf(paste0("%.", digits, "f"), x)
+  if (is.null(txtInt_args)) {
+    return(ret)
+  }
+
+  stopifnot(is.list(txtInt_args))
+
+  separator <- str_replace(ret, "^[0-9]*([.,])[0-9]*$", "\\1")
+  if (separator == ret) {
+    return(ret)
+  }
+
+  ret_sections <- str_split(ret, paste0("[", separator, "]"))[[1]]
+  if (length(ret_sections) == 1) {
+    return(ret)
+  }
+
+  if (length(ret_sections) != 2) {
+    return(ret)
+  }
+
+  int_section <- as.numeric(ret_sections[1])
+  txtInt_args$x <- int_section
+  int_section <- do.call(txtInt, txtInt_args)
+  return(paste0(int_section, separator, ret_sections[2]))
 }
 
 #' @export
