@@ -179,72 +179,6 @@
 #'  known as the element's id attribute, i.e. table id, in HTML linguo, and should
 #'  be unique id for an HTML element in contrast to the \code{css.class} element attribute.
 #'
-#' @param align A character strings specifying column alignments, defaulting to
-#'  \code{\link[base]{paste}(rep('c',ncol(x)),collapse='')} to center. Valid alignments are
-#'  l = left, c = center and r = right. You can also specify \code{align='c|c'} and
-#'  other LaTeX tabular formatting. If you want to set the alignment of the
-#'  rownames this string needst to be \code{ncol(x) + 1}, otherwise it automatically
-#'  pads the string with a left alignment for the rownames.
-#' @param align.header A character strings specifying alignment for column header,
-#'  defaulting to centered, i.e. \code{\link[base]{paste}(rep('c',ncol(x)),collapse='')}.
-#' @param align.cgroup The justification of the \code{cgroups}
-#'
-#' @param rgroup A vector of character strings containing headings for row groups.
-#'  \code{n.rgroup} must be present when \code{rgroup} is given. See
-#'   detailed description in section below.
-#' @param n.rgroup An integer vector giving the number of rows in each grouping. If \code{rgroup}
-#'  is not specified, \code{n.rgroup} is just used to divide off blocks of rows by horizontal
-#'  lines. If \code{rgroup} is given but \code{n.rgroup} is omitted, \code{n.rgroup} will
-#'  default so that each row group contains the same number of rows. If you want additional
-#'  rgroup column elements to the cells you can sett the "add" attribute to \code{rgroup} through
-#'  \code{attr(rgroup, "add")}, see below explaining section.
-#' @param cgroup A vector, matrix or list of character strings defining major column header. The default
-#'  is to have none. These elements are also known as \emph{column spanners}. If you want a column \emph{not}
-#'  to have a spanner then put that column as "". If you pass cgroup and \code{n.crgroup} as
-#'  matrices you can have column spanners for several rows. See cgroup section below for details.
-#' @param n.cgroup An integer vector, matrix or list containing the number of columns for which each element in
-#'  cgroup is a heading. For example, specify \code{cgroup=c("Major_1","Major_2")},
-#'  \code{n.cgroup=c(3,3)} if \code{"Major_1"} is to span columns 1-3 and
-#'  \code{"Major_2"} is to span columns 4-6.
-#'  \code{rowlabel} does not count in the column numbers. You can omit \code{n.cgroup}
-#'  if all groups have the same number of columns. If the n.cgroup is one less than
-#'  the number of columns in the matrix/data.frame then it automatically adds those.
-#' @param tspanner The table spanner is somewhat of a table header that
-#'  you can use when you want to join different tables with the same columns.
-#' @param n.tspanner An integer vector with the number of rows or rgroups in the original
-#'  matrix that the table spanner should span. If you have provided one fewer n.tspanner elements
-#'  the last will be imputed from the number of rgroups (if you have provided `rgroup` and
-#'  `sum(n.tspanner) < length(rgroup)`) or the number of rows in the table.
-#' @param total The last row is sometimes a row total with a border on top and
-#'  bold fonts. Set this to \code{TRUE} if you are interested in such a row. If you
-#'  want a total row at the end of each table spanner you can set this to \code{"tspanner"}.
-#'
-#' @param css.rgroup CSS style for the rgroup, if different styles are wanted for each of the
-#'  rgroups you can just specify a vector with the number of elements
-#' @param css.rgroup.sep The line between different rgroups. The line is set to the TR element
-#'  of the lower rgroup, i.e. you have to set the border-top/padding-top etc to a line with
-#'  the expected function. This is only used for rgroups that are printed. You can specify
-#'  different separators if you give a vector of rgroup - 1 length (this is since the first
-#'  rgroup doesn't have a separator).
-#' @param css.tspanner The CSS style for the table spanner
-#' @param css.tspanner.sep The line between different spanners
-#' @param css.total The css of the total row
-#' @param css.cell The css.cell element allows you to add any possible CSS style to your
-#'  table cells. See section below for details.
-#' @param css.class The html CSS class for the table. This allows directing html
-#'  formatting through \href{http://www.w3schools.com/Css/}{CSS}
-#'  directly at all instances of that class. \emph{Note:} unfortunately the
-#'  CSS is frequently ignored by word processors. This option
-#'  is mostly inteded for web-presentations.
-#' @param css.table You can specify the the style of the table-element using this parameter
-#' @param css.cgroup The same as \code{css.class} but for cgroup formatting.
-#'
-#' @param pos.rowlabel Where the rowlabel should be positioned. This value can be \code{"top"},
-#'  \code{"bottom"}, \code{"header"}, or a integer between \code{1} and \code{nrow(cgroup) + 1}. The options
-#'  \code{"bottom"} and \code{"header"} are the same, where the row label is presented at the same level as
-#'  the header.
-#' @param pos.caption Set to \code{"bottom"} to position a caption below the table
-#'  instead of the default of \code{"top"}.
 #' @param cspan.rgroup The number of columns that an \code{rgroup} should span. It spans
 #'  by default all columns but you may want to limit this if you have column colors
 #'  that you want to retain.
@@ -318,41 +252,6 @@ htmlTable.default <- function(x,
 
                               total,
 
-                              # Alignment
-                              align = paste(rep('c',ncol(x)),collapse=''),
-                              align.header= paste(rep('c',ncol(x)),collapse=''),
-                              align.cgroup,
-
-                              # CSS stuff
-                              css.rgroup = getOption("htmlTable.css.rgroup",
-                                                     default="font-weight: 900;"),
-                              css.rgroup.sep = getOption("htmlTable.css.rgroup.sep", default =""),
-
-                              css.tspanner = getOption("htmlTable.css.tspanner",
-                                                       default = "font-weight: 900; text-align: left;"),
-                              css.tspanner.sep = getOption("htmlTable.css.tspanner.sep",
-                                                           default = "border-top: 1px solid #BEBEBE;"),
-
-                              css.total = getOption("htmlTable.css.total",
-                                                    default = "border-top: 1px solid #BEBEBE; font-weight: 900;"),
-
-                              css.cell = getOption("htmlTable.css.cell", default = ""),
-                              css.cgroup = getOption("htmlTable.css.cgroup", default = ""),
-
-                              css.class = getOption("htmlTable.css.class", default = "gmisc_table"),
-                              css.table = getOption("htmlTable.css.table", default = "margin-top: 1em; margin-bottom: 1em;"),
-
-                              # Positions
-                              pos.rowlabel = "bottom",
-                              pos.caption = c('top', 'bottom', 'below'), # below == bottom
-
-                              # Colors
-                              col.rgroup = 'none',
-                              col.columns =  'none',
-
-                              # More alternatives
-                              padding.rgroup = "&nbsp;&nbsp;",
-                              padding.tspanner = "",
                               ctable = TRUE,
                               compatibility = getOption("htmlTableCompat", "LibreOffice"),
                               cspan.rgroup = "all",
@@ -363,22 +262,22 @@ htmlTable.default <- function(x,
     x <- prEscapeHtml(x)
   }
 
-  if (is.null(dim(x))){
-    if (!is.numeric(x) && !is.character(x)){
-      x <- as.character(x)
-    }
-    x <- matrix(x, ncol = ifelse(missing(header),
-                                 length(x),
-                                 length(header)))
-  }else if (length(dim(x)) != 2) {
-    stop("Your table variable seems to have the wrong dimension,",
-         " length(dim(x)) = ", length(dim(x)) , " != 2")
+  x <- prPrepInputMatrixDimensions(x, header = header)
+  dots <- list(...)
+  style_dots <- names(dots) %in% Filter(function(x) !(x %in% c("", "x")),
+                                        formals(addHtmlTableStyle) %>% names)
+  if (sum(style_dots) > 0) {
+    style_dots_list <- dots[style_dots]
+    dots <- dots[!style_dots]
+    style_dots_list$x <- x
+    x <- do.call(addHtmlTableStyle, style_dots_list)
   }
 
-  pos.caption <- match.arg(pos.caption)
+  style_list <- prGetAttrWithDefault(x,
+                                     which = style_attribute_name,
+                                     default = getHtmlTableTheme())
 
-  if (missing(rgroup) &&
-      !missing(n.rgroup)){
+  if (missing(rgroup) && !missing(n.rgroup)) {
     # Add "" rgroups corresponding to the n.rgroups
     rgroup = rep("", length.out=length(n.rgroup))
   }
@@ -406,18 +305,17 @@ htmlTable.default <- function(x,
          ", set the rnames argument",
          ", or set the rownames of the x argument.")
 
-  if (missing(header) &&
-        !is.null(colnames(x))){
-    header<-colnames(x)
-  }else if(!missing(header)){
+  if (missing(header) && !is.null(colnames(x))) {
+    header <- colnames(x)
+  } else if(!missing(header)) {
     if (length(header) != ncol(x))
       stop("You have a header with ", length(header), " cells",
            " while your output matrix has only ", ncol(x), " columns")
   }
 
   # Fix alignment to match with the matrix
-  align <- prPrepareAlign(align, x, rnames)
-  align.header <- prPrepareAlign(align.header, x, rnames, default_rn = "c")
+  style_list$align <- prPrepareAlign(style_list$align, x, rnames)
+  style_list$align.header <- prPrepareAlign(style_list$align.header, x, rnames, default_rn = "c")
 
   if (tolower(compatibility) %in% c("libreoffice", "libre office",
                                     "open office", "openoffice",
@@ -457,34 +355,34 @@ htmlTable.default <- function(x,
     }
 
 
-    # Sanity checks css.rgroup and prepares the style
-    if (length(css.rgroup) > 1 &&
-          length(css.rgroup) != length(rgroup))
+    # Sanity checks style_list$css.rgroup and prepares the style
+    if (length(style_list$css.rgroup) > 1 &&
+          length(style_list$css.rgroup) != length(rgroup))
       stop(sprintf("You must provide the same number of styles as the rgroups, %d != %d",
-                   length(css.rgroup), length(rgroup)))
-    else if(length(css.rgroup) == 1){
-      css.rgroup <- prGetStyle(css.rgroup)
+                   length(style_list$css.rgroup), length(rgroup)))
+    else if(length(style_list$css.rgroup) == 1){
+      style_list$css.rgroup <- prGetStyle(style_list$css.rgroup)
 
       if (length(rgroup) > 0)
-        css.rgroup <- rep(css.rgroup, length.out=length(rgroup))
+        style_list$css.rgroup <- rep(style_list$css.rgroup, length.out=length(rgroup))
     } else {
-      for (i in 1:length(css.rgroup))
-        css.rgroup[i] <- prGetStyle(css.rgroup[i])
+      for (i in 1:length(style_list$css.rgroup))
+        style_list$css.rgroup[i] <- prGetStyle(style_list$css.rgroup[i])
     }
 
-    # Sanity checks css.rgroup.sep and prepares the style
-    if (length(css.rgroup.sep) > 1 &&
-          length(css.rgroup.sep) != length(rgroup)-1)
+    # Sanity checks style_list$css.rgroup.sep and prepares the style
+    if (length(style_list$css.rgroup.sep) > 1 &&
+          length(style_list$css.rgroup.sep) != length(rgroup)-1)
       stop(sprintf("You must provide the same number of separators as the rgroups - 1, %d != %d",
-                   length(css.rgroup.sep), length(rgroup)-1))
-    else if(length(css.rgroup.sep) == 1){
-      css.rgroup.sep <- prAddSemicolon2StrEnd(css.rgroup.sep)
+                   length(style_list$css.rgroup.sep), length(rgroup)-1))
+    else if(length(style_list$css.rgroup.sep) == 1){
+      style_list$css.rgroup.sep <- prAddSemicolon2StrEnd(style_list$css.rgroup.sep)
 
       if (length(rgroup) > 0)
-        css.rgroup.sep <- rep(css.rgroup.sep, length.out=length(rgroup))
+        style_list$css.rgroup.sep <- rep(style_list$css.rgroup.sep, length.out=length(rgroup))
     } else {
-      for (i in 1:length(css.rgroup.sep))
-        css.rgroup.sep[i] <- prAddSemicolon2StrEnd(css.rgroup.sep[i])
+      for (i in 1:length(style_list$css.rgroup.sep))
+        style_list$css.rgroup.sep[i] <- prAddSemicolon2StrEnd(style_list$css.rgroup.sep[i])
     }
 
     cspan.rgroup <- rep(cspan.rgroup, length.out = length(rgroup))
@@ -492,40 +390,40 @@ htmlTable.default <- function(x,
 
   ## this will convert color names to hexadecimal (easier for user)
   ## but also leaves hex format unchanged
-  col.rgroup <- prPrepareColors(col.rgroup, n = nrow(x), ng = n.rgroup, gtxt = rgroup)
-  col.columns <- prPrepareColors(col.columns, ncol(x))
+  style_list$col.rgroup <- prPrepareColors(style_list$col.rgroup, n = nrow(x), ng = n.rgroup, gtxt = rgroup)
+  style_list$col.columns <- prPrepareColors(style_list$col.columns, ncol(x))
 
   if (!missing(tspanner)){
 
-    # Sanity checks css.tspanner and prepares the style
-    if (length(css.tspanner) > 1 &&
-          length(css.tspanner) != length(tspanner))
+    # Sanity checks style_list$css.tspanner and prepares the style
+    if (length(style_list$css.tspanner) > 1 &&
+          length(style_list$css.tspanner) != length(tspanner))
       stop(sprintf("You must provide the same number of styles as the tspanners, %d != %d",
-                   length(css.tspanner), length(tspanner)))
-    else if(length(css.tspanner) == 1){
-      css.tspanner <- prAddSemicolon2StrEnd(css.tspanner)
+                   length(style_list$css.tspanner), length(tspanner)))
+    else if(length(style_list$css.tspanner) == 1){
+      style_list$css.tspanner <- prAddSemicolon2StrEnd(style_list$css.tspanner)
 
       if (length(tspanner) > 0)
-        css.tspanner <- rep(css.tspanner, length.out=length(tspanner))
+        style_list$css.tspanner <- rep(style_list$css.tspanner, length.out=length(tspanner))
     } else {
-      for (i in 1:length(css.tspanner))
-        css.tspanner[i] <- prAddSemicolon2StrEnd(css.tspanner[i])
+      for (i in 1:length(style_list$css.tspanner))
+        style_list$css.tspanner[i] <- prAddSemicolon2StrEnd(style_list$css.tspanner[i])
     }
 
 
-    # Sanity checks css.tspanner.sep and prepares the style
-    if (length(css.tspanner.sep) > 1 &&
-          length(css.tspanner.sep) != length(tspanner)-1)
+    # Sanity checks style_list$css.tspanner.sep and prepares the style
+    if (length(style_list$css.tspanner.sep) > 1 &&
+          length(style_list$css.tspanner.sep) != length(tspanner)-1)
       stop(sprintf("You must provide the same number of separators as the tspanners - 1, %d != %d",
-                   length(css.tspanner.sep), length(tspanner)-1))
-    else if(length(css.tspanner.sep) == 1){
-      css.tspanner.sep <- prGetStyle(css.tspanner.sep)
+                   length(style_list$css.tspanner.sep), length(tspanner)-1))
+    else if(length(style_list$css.tspanner.sep) == 1){
+      style_list$css.tspanner.sep <- prGetStyle(style_list$css.tspanner.sep)
 
       if (length(tspanner) > 0)
-        css.tspanner.sep <- rep(css.tspanner.sep, length.out=length(tspanner)-1)
+        style_list$css.tspanner.sep <- rep(style_list$css.tspanner.sep, length.out=length(tspanner)-1)
     } else {
-      for (i in 1:length(css.tspanner.sep))
-        css.tspanner.sep[i] <- prGetStyle(css.tspanner.sep[i])
+      for (i in 1:length(style_list$css.tspanner.sep))
+        style_list$css.tspanner.sep[i] <- prGetStyle(style_list$css.tspanner.sep[i])
     }
   }
 
@@ -632,18 +530,16 @@ htmlTable.default <- function(x,
     ret <- prPrepareCgroup(x = x,
                            cgroup = cgroup,
                            n.cgroup = n.cgroup,
-                           align.cgroup = align.cgroup,
-                           css.cgroup = css.cgroup)
+                           style_list = style_list)
 
-    # TODO: use attach/environment recoding
     cgroup <- ret$cgroup
     n.cgroup <- ret$n.cgroup
-    align.cgroup <- ret$align.cgroup
     cgroup_spacer_cells <- ret$cgroup_spacer_cells
-    css.cgroup <- ret$css.cgroup
+    style_list$align.cgroup <- ret$align.cgroup
+    style_list$css.cgroup <- ret$css.cgroup
   }
 
-  pos.rowlabel <- prGetRowlabelPos(cgroup, pos.rowlabel, header)
+  style_list$pos.rowlabel <- prGetRowlabelPos(cgroup, style_list$pos.rowlabel, header)
 
   tc <- getOption("table_counter", FALSE)
   if (tc){
@@ -711,21 +607,21 @@ htmlTable.default <- function(x,
          " values.")
   }
 
-  css.total <- rep(css.total, length.out = length(total))
+  style_list$css.total <- rep(style_list$css.total, length.out = length(total))
 
   assert(
-    check_matrix(css.cell),
-    check_character(css.cell)
+    check_matrix(style_list$css.cell),
+    check_character(style_list$css.cell)
   )
-  css.cell <- prPrepareCss(x, css = css.cell,
-                           rnames = rnames, header = header)
+  prepped_cell_css <- prPrepareCss(x, css = style_list$css.cell,
+                                   rnames = rnames, header = header)
 
   ###############################
   # Start building table string #
   ###############################
   table_str <- sprintf("<table class='%s' style='border-collapse: collapse; %s' %s>",
-                       paste(css.class, collapse=", "),
-                       paste(css.table, collapse = "; "),
+                       paste(style_list$css.class, collapse=", "),
+                       paste(style_list$css.table, collapse = "; "),
                        table_id)
 
   # Theoretically this should be added to the table but the
@@ -776,15 +672,12 @@ htmlTable.default <- function(x,
                         pos.caption = pos.caption,
                         compatibility = compatibility,
                         total_columns = total_columns,
-                        align.cgroup = align.cgroup,
-                        css.cgroup = css.cgroup,
+                        style_list = style_list,
                         top_row_style = top_row_style,
                         rnames = rnames,
                         rowlabel = rowlabel,
-                        pos.rowlabel = pos.rowlabel,
                         cgroup_spacer_cells = cgroup_spacer_cells,
-                        css.cell = css.cell,
-                        align.header = align.header,
+                        prepped_cell_css = prepped_cell_css,
                         cell_style = cell_style)
     first_row <- FALSE
     table_str %<>%
@@ -796,15 +689,15 @@ htmlTable.default <- function(x,
     paste0("\n\t<tbody>")
 
   if (missing(rgroup))
-    row_clrs <- col.rgroup
+    row_clrs <- style_list$col.rgroup
   else
-    row_clrs <- unlist(attr(col.rgroup, "group"))
+    row_clrs <- unlist(attr(style_list$col.rgroup, "group"))
 
   rgroup_iterator <- 0
   tspanner_iterator <- 0
   if(nrow(x) > 0){
   for (row_nr in 1:nrow(x)){
-    rname_style = attr(css.cell, "rnames")[row_nr]
+    rname_style = attr(prepped_cell_css, "rnames")[row_nr]
 
     # First check if there is a table spanner that should be applied
     if (!missing(tspanner) &&
@@ -813,7 +706,7 @@ htmlTable.default <- function(x,
       tspanner_iterator = tspanner_iterator + 1
 
       rs <- c(rname_style,
-              css.tspanner[tspanner_iterator])
+              style_list$css.tspanner[tspanner_iterator])
 
       # Use a separator from the one above if this
       # at least the second spanner. Graphically this
@@ -821,7 +714,7 @@ htmlTable.default <- function(x,
       # actually above but this merges into one line
       if (tspanner_iterator > 1){
         rs %<>%
-          c(css.tspanner.sep[tspanner_iterator-1])
+          c(style_list$css.tspanner.sep[tspanner_iterator-1])
       }
 
 
@@ -851,8 +744,8 @@ htmlTable.default <- function(x,
       rgroup_iterator = rgroup_iterator + 1
 
       rs <- c(rname_style,
-              css.rgroup[rgroup_iterator],
-              `background-color` = col.rgroup[rgroup_iterator])
+              style_list$css.rgroup[rgroup_iterator],
+              `background-color` = style_list$col.rgroup[rgroup_iterator])
 
       # Use a separator from the one above if this
       # at least the second group. Graphically this
@@ -860,7 +753,7 @@ htmlTable.default <- function(x,
       # actually above but this merges into one line
       if (rgroup_iterator > 1){
         rs <- c(rs,
-                css.rgroup.sep[rgroup_iterator-1])
+                style_list$css.rgroup.sep[rgroup_iterator-1])
       }
 
       # Only add if there is anything in the group
@@ -879,19 +772,17 @@ htmlTable.default <- function(x,
                                       cspan = cspan.rgroup[rgroup_iterator],
                                       rnames = rnames,
                                       style = rs,
-                                      align = align,
                                       cgroup_spacer_cells = cgroup_spacer_cells,
-                                      col.columns = col.columns,
-                                      css.row = css.cell[row_nr,],
-                                      padding.tspanner = padding.tspanner)
+                                      style_list = style_list,
+                                      prepped_row_css = prepped_cell_css[row_nr,])
 
         table_str %<>%
           paste(rgroup_str)
 
         first_row <- FALSE
-      }else if(rgroup_iterator > 1 && css.rgroup.sep[rgroup_iterator-1] != ""){
+      }else if(rgroup_iterator > 1 && style_list$css.rgroup.sep[rgroup_iterator-1] != ""){
         # Add the separator if the rgroup wasn't added so that it's included in the regular cells
-        rgroup_sep_style = css.rgroup.sep[rgroup_iterator-1]
+        rgroup_sep_style = style_list$css.rgroup.sep[rgroup_iterator-1]
       }
     }
 
@@ -914,7 +805,7 @@ htmlTable.default <- function(x,
 
     if (row_nr %in% total){
       cell_style %<>%
-        c(css.total[which(row_nr == total)])
+        c(style_list$css.total[which(row_nr == total)])
     }
 
     if (prGetStyle(rs) == ""){
@@ -928,7 +819,7 @@ htmlTable.default <- function(x,
     }
 
     if (!prSkipRownames(rnames)){
-      pdng <- padding.tspanner
+      pdng <- style_list$padding.tspanner
       # Minor change from original function. If the group doesn't have
       # a group name then there shouldn't be any indentation
       if (!missing(rgroup) &&
@@ -936,7 +827,7 @@ htmlTable.default <- function(x,
             is.na(rgroup[rgroup_iterator]) == FALSE &&
             rgroup[rgroup_iterator] != ""){
         pdng %<>%
-          paste0(padding.rgroup)
+          paste0(style_list$padding.rgroup)
       }
 
       # The padding doesn't work well with the Word import - well nothing really works well with word...
@@ -945,19 +836,18 @@ htmlTable.default <- function(x,
         sprintf("%s\n\t\t<td style='%s'>%s%s</td>",
                 .,
                 prGetStyle(c(rname_style, cell_style),
-                             align=prGetAlign(align, 1)),
+                             align=prGetAlign(style_list$align, 1)),
                 pdng,
                 rnames[row_nr])
     }
 
     cell_str <- prAddCells(rowcells = x[row_nr,],
                            cellcode = "td",
-                           align = align,
+                           style_list = style_list,
                            style = cell_style,
                            cgroup_spacer_cells = cgroup_spacer_cells,
                            has_rn_col = !prSkipRownames(rnames)*1,
-                           col.columns = col.columns,
-                           css.cell = css.cell[row_nr, ])
+                           prepped_cell_css = prepped_cell_css[row_nr, ])
     table_str %<>%
       paste0(cell_str, "\n\t</tr>")
   }
@@ -968,7 +858,7 @@ htmlTable.default <- function(x,
 
   if (!missing(caption) &
         compatibility == "LibreOffice" &
-        pos.caption %in% c("bottom", "below")){
+        style_list$pos.caption %in% c("bottom", "below")){
 
     table_str %<>%
       sprintf("%s\n\t<tr><td colspan='%d' style='text-align: left;'>%s</td></tr>",
@@ -1002,7 +892,7 @@ htmlTable.default <- function(x,
   table_str %<>% gsub("\t", "", .)
 
   class(table_str) <- c("htmlTable", class(table_str))
-  attr(table_str, "...") <- list(...)
+  attr(table_str, "...") <- dots
 
   # Add html class if this is a table inside a notebook for inline output
   if (!getOption('htmlTable.skip_notebook', FALSE) && prIsNotebook()) {
@@ -1254,4 +1144,3 @@ tblNoNext <- function(roman = getOption("table_counter_roman",
 
   return(next_no)
 }
-

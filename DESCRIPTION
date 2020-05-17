@@ -1,6 +1,6 @@
 Package: htmlTable
-Version: 1.14.0
-Date: 2020-05-12
+Version: 2.0.0
+Date: 2020-05-17
 Title: Advanced Tables for Markdown/HTML
 Authors@R: c(
   person("Max", "Gordon", email = "max@gforge.se",
@@ -39,6 +39,7 @@ Suggests:
     chron,
     lubridate,
     tibble,
+    purrr,
     tidyr (>= 0.7.2),
     dplyr (>= 0.7.4)
 Encoding: UTF-8

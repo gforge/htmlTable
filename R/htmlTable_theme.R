@@ -5,42 +5,28 @@
 #'
 #' @section Theme options
 #'
-#' The options available are:
+#' The styles availabe are:
 #'
-#' * `css.rgroup`: CSS style for the rgroup, if different styles are wanted for each of the
-#'  rgroups you can just specify a vector with the number of elements.
-#' * `css.rgroup.sep`: The line between different rgroups. The line is set to the TR element
-#'  of the lower rgroup, i.e. you have to set the border-top/padding-top etc to a line with
-#'  the expected function. This is only used for rgroups that are printed. You can specify
-#'  different separators if you give a vector of rgroup - 1 length (this is since the first
-#'  rgroup doesn't have a separator).
-#' * `css.tspanner`: The CSS style for the table spanner.
-#' * `css.tspanner.sep`: The line between different spanners.
-#' * `css.total`: The css of the total row if such is activated.
-#' * `css.cell`: The css.cell element allows you to add any possible CSS style to your
-#'  table cells. See section below for details.
-#' * `css.cgroup`: The same as \code{css.class} but for cgroup formatting.
-#' * `css.class`: The html CSS class for the table. This allows directing html
-#'  formatting through \href{http://www.w3schools.com/Css/}{CSS}
-#'  directly at all instances of that class. \emph{Note:} unfortunately the
-#'  CSS is frequently ignored by word processors. This option
-#'  is mostly inteded for web-presentations.
-#' * `css.table`: You can specify the the style of the table-element using this parameter
-#' * `pos.rowlabel`: Where the rowlabel should be positioned. This value can be \code{"top"},
-#'  \code{"bottom"}, \code{"header"}, or a integer between \code{1} and \code{nrow(cgroup) + 1}. The options
-#'  \code{"bottom"} and \code{"header"} are the same, where the row label is presented at the same level as
-#'  the header.
-#' * `pos.caption`: Set to \code{"bottom"} to position a caption below the table
-#'  instead of the default of \code{"top"}.
+#' * `standard`: The traditional standard style used in \code{\link{htmlTable}} since the early days
+#' * `Google docs`: A style that is optimized for copy-pasting into documents on Google drive. This
+#'  is geared towards minimal padding and margins so that the table is as dense as possible.
+#' * `blank`: Just as the name suggests the style is completly empty in terms of CSS. Positions
+#'  for rowlabel and caption are set to `bottom` as these cannot be blank.
 #'
-#' @param theme A `list` containing all the valid or a `string`
-#' @param ... You can specify options
+#' You can also provide your own style. Each style should be a names vector, e.g. `c(width = "100px", color = "red")`
+#' or just a real css string, `width: 100px; color: red;`.
 #'
-#' @return
+#' @param theme A `list` containing all the valid or a `string`. See details below.
+#' @inheritParams addHtmlTableStyle
+#'
+#' @return An invisible `list` with the new theme
 #' @export
 #' @md
 #'
 #' @examples
+#' \dontrun{
+#' setHtmlTableTheme("standard", css.cell = "padding: 0; margin: 0;")
+#' }
 setHtmlTableTheme <- function(theme,
                               align,
                               align.header,
@@ -89,35 +75,24 @@ setHtmlTableTheme <- function(theme,
     newTheme <- getHtmlTableTheme()
   }
 
-  args <- as.list(match.call())
-  args[[1]] <- NULL
-  args$theme <- NULL
-  if (length(args) > 0) {
-    for (n in names(args)) {
-      newTheme[[n]] <- args[n]
-    }
-  }
 
+  newTheme <- prValidateAndMergeStyles(org_style_list = newTheme,
+                                       styles_from_arguments = prGetArgumentList(match.call(), c("", "theme")),
+                                       overwrite = TRUE)
+
+  prAssertStyles(newTheme)
   options(htmlTable.theme = newTheme)
+  return(invisible(newTheme))
 }
 
-prAssertStyleNames <- function(x, message) {
-  if (any(x == "")) {
-    stop(message, " Empty names not allowed.")
+
+prGetArgumentList <- function(args, skip_elements) {
+  if (!is.list(args)) {
+    args <- as.list(args)
   }
 
-  invalid_names <- prGetInvalidStyleNames(x)
-  if (length(invalid_names) > 0) {
-    stop(message, ' See name(s): ', paste(invalid_names, collapse = ", "))
-  }
+  args[Filter(function(x) !(x %in% skip_elements | x == ""), names(args))]
 }
-
-prGetInvalidStyleNames <- function(x) {
-  valid_names <- names(prGetThemeListObject(theme_name = "standard"))
-  checked_names <- args %in% valid_names
-  return(args[!checked_names])
-}
-
 
 #' Retrieve the \code{\link{htmlTable}} theme list
 #'
@@ -134,11 +109,24 @@ getHtmlTableTheme <- function() {
             default = prGetThemeListObject(theme_name = "standard"))
 }
 
-prGetThemeListObject <- function(theme_name = c("standard", "Google docs")) {
+prGetThemeListObject <- function(theme_name = c("standard", "Google docs", "blank")) {
   theme_name <- match.arg(theme_name)
+
+  common_non_css_elements <- list(
+    align = 'c',
+    align.header = 'c',
+
+    # colors
+    col.rgroup = 'none',
+    col.columns =  'none',
+
+    # More alternatives
+    padding.rgroup = "&nbsp;&nbsp;",
+    padding.tspanner = "")
+
   if (theme_name == "standard") {
     # This list is the reference with all the available theme elements
-    return(list(
+    standard_theme <- list(
       css.rgroup = getOption("htmlTable.css.rgroup", default="font-weight: 900;"),
       css.rgroup.sep = getOption("htmlTable.css.rgroup.sep", default =""),
 
@@ -155,15 +143,16 @@ prGetThemeListObject <- function(theme_name = c("standard", "Google docs")) {
 
       css.class = getOption("htmlTable.css.class", default = "gmisc_table"),
       css.table = getOption("htmlTable.css.table", default = "margin-top: 1em; margin-bottom: 1em;"),
-
       # Positions
       pos.rowlabel = "bottom",
-      pos.caption = 'top'
-    ))
+      pos.caption = 'top')
+
+    return(prExtendlist(base = common_non_css_elements,
+                        extensions = standard_theme))
   }
 
   if (theme_name == "Google docs") {
-    return(list(
+    doc_theme <- list(
       css.rgroup = getOption("htmlTable.css.rgroup", default="font-weight: 900;"),
       css.rgroup.sep = getOption("htmlTable.css.rgroup.sep", default =""),
 
@@ -183,7 +172,39 @@ prGetThemeListObject <- function(theme_name = c("standard", "Google docs")) {
 
       # Positions
       pos.rowlabel = "bottom",
-      pos.caption = 'top'
-    ))
+      pos.caption = "bottom")
+
+    return(prExtendlist(base = common_non_css_elements,
+                        extensions = standard_theme))
   }
+
+  if (theme_name == "blank") {
+    blank_theme <- list(css.rgroup = "",
+                        css.rgroup.sep = "",
+
+                        css.tspanner = "",
+                        css.tspanner.sep = "",
+
+                        css.total = "",
+
+                        css.cell = "",
+                        css.cgroup = "",
+
+                        css.class = "",
+                        css.table = "",
+
+                        # Positions
+                        pos.rowlabel = "bottom",
+                        pos.caption = "bottom")
+    return(prExtendlist(base = common_non_css_elements,
+                        extensions = blank_theme))
+  }
+}
+
+prExtendlist <- function(base, extensions) {
+  for (n in names(extensions)) {
+    base[[n]] <- extensions[[n]]
+  }
+
+  return(base)
 }
