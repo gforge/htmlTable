@@ -5,7 +5,7 @@
 \alias{htmlTable.default}
 \alias{knit_print.htmlTable}
 \alias{print.htmlTable}
-\title{Outputting HTML tables}
+\title{Output an HTML table}
 \usage{
 htmlTable(x, ...)
 
@@ -24,28 +24,6 @@ htmlTable(x, ...)
   tspanner,
   n.tspanner,
   total,
-  align = paste(rep("c", ncol(x)), collapse = ""),
-  align.header = paste(rep("c", ncol(x)), collapse = ""),
-  align.cgroup,
-  css.rgroup = getOption("htmlTable.css.rgroup", default = "font-weight: 900;"),
-  css.rgroup.sep = getOption("htmlTable.css.rgroup.sep", default = ""),
-  css.tspanner = getOption("htmlTable.css.tspanner", default =
-    "font-weight: 900; text-align: left;"),
-  css.tspanner.sep = getOption("htmlTable.css.tspanner.sep", default =
-    "border-top: 1px solid #BEBEBE;"),
-  css.total = getOption("htmlTable.css.total", default =
-    "border-top: 1px solid #BEBEBE; font-weight: 900;"),
-  css.cell = getOption("htmlTable.css.cell", default = ""),
-  css.cgroup = getOption("htmlTable.css.cgroup", default = ""),
-  css.class = getOption("htmlTable.css.class", default = "gmisc_table"),
-  css.table = getOption("htmlTable.css.table", default =
-    "margin-top: 1em; margin-bottom: 1em;"),
-  pos.rowlabel = "bottom",
-  pos.caption = c("top", "bottom", "below"),
-  col.rgroup = "none",
-  col.columns = "none",
-  padding.rgroup = "&nbsp;&nbsp;",
-  padding.tspanner = "",
   ctable = TRUE,
   compatibility = getOption("htmlTableCompat", "LibreOffice"),
   cspan.rgroup = "all",
@@ -62,7 +40,9 @@ htmlTable(x, ...)
 it takes a string of the class \code{htmlTable} as \code{x} argument.}
 
 \item{...}{Passed on to \code{print.htmlTable} function and any argument except the
-\code{useViewer} will be passed on to the \code{\link[base]{cat}} functions arguments.}
+\code{useViewer} will be passed on to the \code{\link[base]{cat}} functions arguments.
+\emph{Note:} as of version 2.0.0 styling options are still allowed but it is recommended
+to instead preprocess your object with \code{\link{addHtmlTableStyle}}.}
 
 \item{header}{A vector of character strings specifying column
 header, defaulting to \code{\link[base]{colnames}(x)}}
@@ -125,66 +105,6 @@ the last will be imputed from the number of rgroups (if you have provided `rgrou
 bold fonts. Set this to \code{TRUE} if you are interested in such a row. If you
 want a total row at the end of each table spanner you can set this to \code{"tspanner"}.}
 
-\item{align}{A character strings specifying column alignments, defaulting to
-\code{\link[base]{paste}(rep('c',ncol(x)),collapse='')} to center. Valid alignments are
-l = left, c = center and r = right. You can also specify \code{align='c|c'} and
-other LaTeX tabular formatting. If you want to set the alignment of the
-rownames this string needst to be \code{ncol(x) + 1}, otherwise it automatically
-pads the string with a left alignment for the rownames.}
-
-\item{align.header}{A character strings specifying alignment for column header,
-defaulting to centered, i.e. \code{\link[base]{paste}(rep('c',ncol(x)),collapse='')}.}
-
-\item{align.cgroup}{The justification of the \code{cgroups}}
-
-\item{css.rgroup}{CSS style for the rgroup, if different styles are wanted for each of the
-rgroups you can just specify a vector with the number of elements}
-
-\item{css.rgroup.sep}{The line between different rgroups. The line is set to the TR element
-of the lower rgroup, i.e. you have to set the border-top/padding-top etc to a line with
-the expected function. This is only used for rgroups that are printed. You can specify
-different separators if you give a vector of rgroup - 1 length (this is since the first
-rgroup doesn't have a separator).}
-
-\item{css.tspanner}{The CSS style for the table spanner}
-
-\item{css.tspanner.sep}{The line between different spanners}
-
-\item{css.total}{The css of the total row}
-
-\item{css.cell}{The css.cell element allows you to add any possible CSS style to your
-table cells. See section below for details.}
-
-\item{css.cgroup}{The same as \code{css.class} but for cgroup formatting.}
-
-\item{css.class}{The html CSS class for the table. This allows directing html
-formatting through \href{http://www.w3schools.com/Css/}{CSS}
-directly at all instances of that class. \emph{Note:} unfortunately the
-CSS is frequently ignored by word processors. This option
-is mostly inteded for web-presentations.}
-
-\item{css.table}{You can specify the the style of the table-element using this parameter}
-
-\item{pos.rowlabel}{Where the rowlabel should be positioned. This value can be \code{"top"},
-\code{"bottom"}, \code{"header"}, or a integer between \code{1} and \code{nrow(cgroup) + 1}. The options
-\code{"bottom"} and \code{"header"} are the same, where the row label is presented at the same level as
-the header.}
-
-\item{pos.caption}{Set to \code{"bottom"} to position a caption below the table
-instead of the default of \code{"top"}.}
-
-\item{col.rgroup}{Alternating colors (zebra striping/banded rows) for each \code{rgroup}; one or two colors
-is recommended and will be recycled.}
-
-\item{col.columns}{Alternating colors for each column.}
-
-\item{padding.rgroup}{Generally two non-breakings spaces, i.e. \code{&nbsp;&nbsp;}, but some
-journals only have a bold face for the rgroup and leaves the subelements unindented.}
-
-\item{padding.tspanner}{The table spanner is usually without padding but you may specify padding
-similar to \code{padding.rgroup} and it will be added to all elements, including the rgroup elements.
-This allows for a 3-level hierarchy if needed.}
-
 \item{ctable}{If the table should have a double top border or a single a' la LaTeX ctable style}
 
 \item{compatibility}{Is default set to \code{LibreOffice} as some
@@ -223,11 +143,12 @@ particular viewer (this is how RStudio decides on a viewer).
 }
 \description{
 This is a function for outputting a more advanced
-table than what \pkg{xtable}, \pkg{ztable}, or \pkg{knitr}'s
-\code{\link[knitr]{kable}()} allows.
-It's aim is to provide the \pkg{Hmisc} \code{\link[Hmisc]{latex}()}
-colgroup and rowgroup functions in HTML. The html-output is designed for
-maximum compatibility with LibreOffice/OpenOffice.
+tables using HTML. The core philosophy is to bring column and row groups
+into the table and allow for a dense representation of
+complex tables. The html-output is designed for
+maximum compatibility with copy-paste functionality into
+word-processors. For adding styles, see \code{\link{addHtmlTableStyle}}
+and themese \code{\link{setHtmlTableTheme}}.
 }
 \section{Multiple rows of column spanners \code{cgroup}}{
 
@@ -329,43 +250,19 @@ for compatibility reasons. If you set \code{options(table_counter_roman = TRUE)}
 then the table counter will use Roman numumerals instead of Arabic.
 }
 
-\section{The \code{css.cell} argument}{
-
-
-The \code{css.cell} parameter allows you to add any possible CSS style
-to your table cells.  \code{css.cell} can be either a vector or a matrix.
-
-If  \code{css.cell} is a \emph{vector}, it's assumed that the styles should be repeated
-throughout the rows (that is, each element in css.cell specifies the style
-for a whole column of 'x').
-
-In the case of  \code{css.cell} being a \emph{matrix} of the same size of the \code{x} argument,
-each element of \code{x} gets the style from the corresponding element in css.cell.  Additionally,
-the number of rows of \code{css.cell} can be \code{nrow(x) + 1} so the first row of of \code{css.cell}
-specifies the style for the header of \code{x}; also the number of columns of \code{css.cell}
-can be \code{ncol(x) + 1} to include the specification of style for row names of \code{x}.
-
-Note that the \code{text-align} CSS field in the \code{css.cell} argument will be overriden
-by the \code{align} argument.
-
-Excel has a specific css-style, \code{mso-number-format} that can be used for improving the
-copy-paste functionality. E.g. the style could be written as: \code{css_matrix <-
-matrix( data = "mso-number-format:\"\\@\"", nrow = nrow(df), ncol = ncol(df))}
-}
-
 \section{Empty dataframes}{
 
 An empty dataframe will result in a warning and output an empty table, provided that
 rgroup and n.rgroup are not specified. All other row layout options will be ignored.
 }
 
-\section{Browsers and possible issues}{
+\section{Other}{
 
 
 \emph{Copy-pasting:} As you copy-paste results into Word you need to keep
 the original formatting. Either right click and choose that paste option or click
 on the icon appearing after a paste. Currently the following compatibitilies
-have been tested with MS Word 2013:
+have been tested with MS Word 2016:
 
 \itemize{
  \item{\bold{Internet Explorer} (v. 11.20.10586.0) Works perfectly when copy-pasting into Word}
@@ -378,7 +275,6 @@ have been tested with MS Word 2013:
  \item{\bold{Firefox} (v. 43.0.3) Works poorly - looses font-styling, lines and general feel}
  \item{\bold{Edge} (v. 25.10586.0.0) Works poorly - looses lines and general feel}
 }
-
 
 \emph{Direct word processor opening:} Opening directly in LibreOffice or Word is no longer
 recommended. You get much prettier results using the cut-and-paste option.
@@ -395,6 +291,10 @@ not advized. Most importantly you should try to use
 \code{&lt;} instead of \code{<} and
 \code{&gt;} instead of \code{>}. You can find a complete list
 of html characters \href{http://ascii.cl/htmlcodes.htm}{here}.
+
+Lastly, I want to mention that function was inspired by the \pkg{Hmisc}
+\code{\link[Hmisc]{latex}()} that can be an excellent alterantive if you wish
+to switch to PDF-output.
 }
 
 \examples{
@@ -481,6 +381,8 @@ concatHtmlTables(all_tables)
 }
 \seealso{
 \code{\link{txtMergeLines}},
+         \code{\link{addHtmlTableStyle}},
+         \code{\link{setHtmlTableTheme}},
          \code{\link[Hmisc]{latex}}
 
 Other table functions: 

@@ -1,11 +1,12 @@
-#' Outputting HTML tables
+#' Output an HTML table
 #'
 #' This is a function for outputting a more advanced
-#' table than what \pkg{xtable}, \pkg{ztable}, or \pkg{knitr}'s
-#' \code{\link[knitr]{kable}()} allows.
-#' It's aim is to provide the \pkg{Hmisc} \code{\link[Hmisc]{latex}()}
-#' colgroup and rowgroup functions in HTML. The html-output is designed for
-#' maximum compatibility with LibreOffice/OpenOffice.
+#' tables using HTML. The core philosophy is to bring column and row groups
+#' into the table and allow for a dense representation of
+#' complex tables. The html-output is designed for
+#' maximum compatibility with copy-paste functionality into
+#' word-processors. For adding styles, see \code{\link{addHtmlTableStyle}}
+#' and themese \code{\link{setHtmlTableTheme}}.
 #'
 #' @section Multiple rows of column spanners \code{cgroup}:
 #'
@@ -95,38 +96,16 @@
 #' for compatibility reasons. If you set \code{options(table_counter_roman = TRUE)}
 #' then the table counter will use Roman numumerals instead of Arabic.
 #'
-#'@section The \code{css.cell} argument:
-#'
-#' The \code{css.cell} parameter allows you to add any possible CSS style
-#' to your table cells.  \code{css.cell} can be either a vector or a matrix.
-#'
-#' If  \code{css.cell} is a \emph{vector}, it's assumed that the styles should be repeated
-#' throughout the rows (that is, each element in css.cell specifies the style
-#' for a whole column of 'x').
-#'
-#' In the case of  \code{css.cell} being a \emph{matrix} of the same size of the \code{x} argument,
-#' each element of \code{x} gets the style from the corresponding element in css.cell.  Additionally,
-#' the number of rows of \code{css.cell} can be \code{nrow(x) + 1} so the first row of of \code{css.cell}
-#' specifies the style for the header of \code{x}; also the number of columns of \code{css.cell}
-#' can be \code{ncol(x) + 1} to include the specification of style for row names of \code{x}.
-#'
-#' Note that the \code{text-align} CSS field in the \code{css.cell} argument will be overriden
-#' by the \code{align} argument.
-#'
-#' Excel has a specific css-style, \code{mso-number-format} that can be used for improving the
-#' copy-paste functionality. E.g. the style could be written as: \code{css_matrix <-
-#' matrix( data = "mso-number-format:\"\\@\"", nrow = nrow(df), ncol = ncol(df))}
-#'
 #'@section Empty dataframes:
 #' An empty dataframe will result in a warning and output an empty table, provided that
 #' rgroup and n.rgroup are not specified. All other row layout options will be ignored.
 #'
-#' @section Browsers and possible issues:
+#' @section Other:
 #'
 #' \emph{Copy-pasting:} As you copy-paste results into Word you need to keep
 #' the original formatting. Either right click and choose that paste option or click
 #' on the icon appearing after a paste. Currently the following compatibitilies
-#' have been tested with MS Word 2013:
+#' have been tested with MS Word 2016:
 #'
 #' \itemize{
 #'  \item{\bold{Internet Explorer} (v. 11.20.10586.0) Works perfectly when copy-pasting into Word}
@@ -139,7 +118,6 @@
 #'  \item{\bold{Firefox} (v. 43.0.3) Works poorly - looses font-styling, lines and general feel}
 #'  \item{\bold{Edge} (v. 25.10586.0.0) Works poorly - looses lines and general feel}
 #' }
-#'
 #'
 #' \emph{Direct word processor opening:} Opening directly in LibreOffice or Word is no longer
 #' recommended. You get much prettier results using the cut-and-paste option.
@@ -156,6 +134,10 @@
 #' \code{&lt;} instead of \code{<} and
 #' \code{&gt;} instead of \code{>}. You can find a complete list
 #' of html characters \href{http://ascii.cl/htmlcodes.htm}{here}.
+#'
+#' Lastly, I want to mention that function was inspired by the \pkg{Hmisc}
+#' \code{\link[Hmisc]{latex}()} that can be an excellent alterantive if you wish
+#' to switch to PDF-output.
 #'
 #' @param x The matrix/data.frame with the data. For the \code{print} and \code{knit_print}
 #'  it takes a string of the class \code{htmlTable} as \code{x} argument.
@@ -178,23 +160,42 @@
 #'  table, for instance \code{<a href="#anchor_name">see table 2</a>}. This is
 #'  known as the element's id attribute, i.e. table id, in HTML linguo, and should
 #'  be unique id for an HTML element in contrast to the \code{css.class} element attribute.
-#'
+#' @param rgroup A vector of character strings containing headings for row groups.
+#'  \code{n.rgroup} must be present when \code{rgroup} is given. See
+#'   detailed description in section below.
+#' @param n.rgroup An integer vector giving the number of rows in each grouping. If \code{rgroup}
+#'  is not specified, \code{n.rgroup} is just used to divide off blocks of rows by horizontal
+#'  lines. If \code{rgroup} is given but \code{n.rgroup} is omitted, \code{n.rgroup} will
+#'  default so that each row group contains the same number of rows. If you want additional
+#'  rgroup column elements to the cells you can sett the "add" attribute to \code{rgroup} through
+#'  \code{attr(rgroup, "add")}, see below explaining section.
+#' @param cgroup A vector, matrix or list of character strings defining major column header. The default
+#'  is to have none. These elements are also known as \emph{column spanners}. If you want a column \emph{not}
+#'  to have a spanner then put that column as "". If you pass cgroup and \code{n.crgroup} as
+#'  matrices you can have column spanners for several rows. See cgroup section below for details.
+#' @param n.cgroup An integer vector, matrix or list containing the number of columns for which each element in
+#'  cgroup is a heading. For example, specify \code{cgroup=c("Major_1","Major_2")},
+#'  \code{n.cgroup=c(3,3)} if \code{"Major_1"} is to span columns 1-3 and
+#'  \code{"Major_2"} is to span columns 4-6.
+#'  \code{rowlabel} does not count in the column numbers. You can omit \code{n.cgroup}
+#'  if all groups have the same number of columns. If the n.cgroup is one less than
+#'  the number of columns in the matrix/data.frame then it automatically adds those.
+#' @param tspanner The table spanner is somewhat of a table header that
+#'  you can use when you want to join different tables with the same columns.
+#' @param n.tspanner An integer vector with the number of rows or rgroups in the original
+#'  matrix that the table spanner should span. If you have provided one fewer n.tspanner elements
+#'  the last will be imputed from the number of rgroups (if you have provided `rgroup` and
+#'  `sum(n.tspanner) < length(rgroup)`) or the number of rows in the table.
 #' @param cspan.rgroup The number of columns that an \code{rgroup} should span. It spans
 #'  by default all columns but you may want to limit this if you have column colors
 #'  that you want to retain.
-#'
+#' @param total The last row is sometimes a row total with a border on top and
+#'  bold fonts. Set this to \code{TRUE} if you are interested in such a row. If you
+#'  want a total row at the end of each table spanner you can set this to \code{"tspanner"}.
 #' @param ... Passed on to \code{print.htmlTable} function and any argument except the
 #'  \code{useViewer} will be passed on to the \code{\link[base]{cat}} functions arguments.
-#'
-#' @param col.rgroup Alternating colors (zebra striping/banded rows) for each \code{rgroup}; one or two colors
-#'  is recommended and will be recycled.
-#' @param col.columns Alternating colors for each column.
-#'
-#' @param padding.rgroup Generally two non-breakings spaces, i.e. \code{&nbsp;&nbsp;}, but some
-#'  journals only have a bold face for the rgroup and leaves the subelements unindented.
-#' @param padding.tspanner The table spanner is usually without padding but you may specify padding
-#'  similar to \code{padding.rgroup} and it will be added to all elements, including the rgroup elements.
-#'  This allows for a 3-level hierarchy if needed.
+#'  \emph{Note:} as of version 2.0.0 styling options are still allowed but it is recommended
+#'  to instead preprocess your object with \code{\link{addHtmlTableStyle}}.
 #' @param ctable If the table should have a double top border or a single a' la LaTeX ctable style
 #' @param compatibility Is default set to \code{LibreOffice} as some
 #'  settings need to be in old html format as Libre Office can't
@@ -215,6 +216,8 @@
 #' @example inst/examples/htmlTable_example.R
 #'
 #' @seealso \code{\link{txtMergeLines}},
+#'          \code{\link{addHtmlTableStyle}},
+#'          \code{\link{setHtmlTableTheme}},
 #'          \code{\link[Hmisc]{latex}}
 #'
 #' @export
@@ -648,7 +651,7 @@ htmlTable.default <- function(x,
     caption <- paste0("\n\t", prTblNo(caption))
 
     if(compatibility != "LibreOffice"){
-      if (pos.caption %in% c("bottom", "below")){
+      if (style_list$pos.caption %in% c("bottom", "below")){
         table_str %<>%
           paste0("\n\t<caption style='caption-side: bottom'>")
       }else{
@@ -669,7 +672,6 @@ htmlTable.default <- function(x,
                         cgroup = cgroup,
                         n.cgroup = n.cgroup,
                         caption = caption,
-                        pos.caption = pos.caption,
                         compatibility = compatibility,
                         total_columns = total_columns,
                         style_list = style_list,

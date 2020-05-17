@@ -1,11 +1,33 @@
-#' Adds/set css styling and other styling to an object
+#' Add/set css and other style options
 #'
-#' This function is a preprocessing step before applying the \code{\link[htmlTable]} function.
+#' This function is a preprocessing step before applying the \code{\link{htmlTable}} function.
 #' You use this to style your tables with HTML cascading style sheet features.
 #'
 #' The function stores the current theme (see \code{\link{setHtmlTableTheme}}) + custom styles
-#' to the provided object as an \code{\link[base]{attribute}}. It is stored under the element
+#' to the provided object as an \code{\link[base]{attributes}}. It is stored under the element
 #' \code{htmlTable.style} in the form of a list object.
+#'
+#' @section The \code{css.cell} argument:
+#'
+#' The \code{css.cell} parameter allows you to add any possible CSS style
+#' to your table cells.  \code{css.cell} can be either a vector or a matrix.
+#'
+#' If  \code{css.cell} is a \emph{vector}, it's assumed that the styles should be repeated
+#' throughout the rows (that is, each element in css.cell specifies the style
+#' for a whole column of 'x').
+#'
+#' In the case of  \code{css.cell} being a \emph{matrix} of the same size of the \code{x} argument,
+#' each element of \code{x} gets the style from the corresponding element in css.cell.  Additionally,
+#' the number of rows of \code{css.cell} can be \code{nrow(x) + 1} so the first row of of \code{css.cell}
+#' specifies the style for the header of \code{x}; also the number of columns of \code{css.cell}
+#' can be \code{ncol(x) + 1} to include the specification of style for row names of \code{x}.
+#'
+#' Note that the \code{text-align} CSS field in the \code{css.cell} argument will be overriden
+#' by the \code{align} argument.
+#'
+#' Excel has a specific css-style, \code{mso-number-format} that can be used for improving the
+#' copy-paste functionality. E.g. the style could be written as: \code{css_matrix <-
+#' matrix( data = "mso-number-format:\"\\@\"", nrow = nrow(df), ncol = ncol(df))}
 #'
 #' @param x The object that you later want to pass into \code{\link{htmlTable}}.
 #' @param align A character strings specifying column alignments, defaulting to \code{'c'}
@@ -41,16 +63,26 @@
 #'  the header.
 #' @param pos.caption Set to \code{"bottom"} to position a caption below the table
 #'  instead of the default of \code{"top"}.
+#' @param col.rgroup Alternating colors (zebra striping/banded rows) for each \code{rgroup}; one or two colors
+#'  is recommended and will be recycled.
+#' @param col.columns Alternating colors for each column.
+#' @param padding.rgroup Generally two non-breakings spaces, i.e. \code{&nbsp;&nbsp;}, but some
+#'  journals only have a bold face for the rgroup and leaves the subelements unindented.
+#' @param padding.tspanner The table spanner is usually without padding but you may specify padding
+#'  similar to \code{padding.rgroup} and it will be added to all elements, including the rgroup elements.
+#'  This allows for a 3-level hierarchy if needed.
 #'
-#' @return
+#' @return \code{x} with the style added as an attribute that the htmlTable then can use for formatting.
 #' @export
 #'
 #' @examples
+#' library(magrittr)
 #' matrix(1:4, ncol = 2) %>%
 #'   addHtmlTableStyle(align = "c", css.cell = "background-color: orange;") %>%
 #'   htmlTable(caption = "A simple style example")
 #'
 #' @rdname addStyles
+#' @family htmlTableStyle
 addHtmlTableStyle <- function(x,
                               align,
                               align.header,

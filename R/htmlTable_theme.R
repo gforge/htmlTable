@@ -1,9 +1,10 @@
 #' Set or update theme for \code{\link{htmlTable}}
 #'
 #' The theme guides many of the non-data objects visual appearance. The
-#' theme can be over-ridden by settings for each table.
+#' theme can be over-ridden by settings for each table. Too get a more complete
+#' understanding of the options, see \code{\link{addHtmlTableStyle}}.
 #'
-#' @section Theme options
+#' @section Theme options:
 #'
 #' The styles availabe are:
 #'
@@ -96,7 +97,7 @@ prGetArgumentList <- function(args, skip_elements) {
 
 #' Retrieve the \code{\link{htmlTable}} theme list
 #'
-#' A wrapper for a \code{\link[base]{getOption("htmlTable.theme")}} call that
+#' A wrapper for a \code{\link[base]{getOption}("htmlTable.theme")} call that
 #' returns the standard theme unless one is set.
 #'
 #' @return \code{list} with the styles to be applied to the table
