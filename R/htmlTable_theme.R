@@ -176,7 +176,7 @@ prGetThemeListObject <- function(theme_name = c("standard", "Google docs", "blan
       pos.caption = "bottom")
 
     return(prExtendlist(base = common_non_css_elements,
-                        extensions = standard_theme))
+                        extensions = doc_theme))
   }
 
   if (theme_name == "blank") {
