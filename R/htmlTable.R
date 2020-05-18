@@ -227,6 +227,32 @@ htmlTable <- function(x, ...){
   UseMethod("htmlTable")
 }
 
+#' @export
+htmlTable.data.frame <- function(x, ...) {
+  # deal gracefully with an empty dataframe - issue a warning.
+  if(nrow(x) == 0){
+    warning(paste(deparse(substitute(x)), "is an empty object"))
+  }
+  htmlTable.default(prConvertDfFactors(x),...)
+}
+
+#' @export
+htmlTable.matrix <- function(x, total, ...) {
+  # deal gracefully with an empty matrix - issue a warning.
+  if(nrow(x) == 0){
+    warning(paste(deparse(substitute(x)), "is an empty object"))
+  }
+
+  if (all(class(x) %in% c("table", "matrix", "array")) &&
+      !is.null(rownames(x)) &&
+      grepl("^sum$", tail(rownames(x), 1), ignore.case = TRUE) &&
+      missing(total)) {
+    total = TRUE
+  }
+
+  htmlTable.default(x, total = total, ...)
+}
+
 `.` <- "magrittr RCM check issue"
 
 #' @importFrom stringr str_replace str_replace_all str_trim
@@ -302,7 +328,7 @@ htmlTable.default <- function(x,
   }
 
   if (!missing(rowlabel) &&
-        prSkipRownames(rnames))
+      prSkipRownames(rnames))
     stop("You can't have a row label and no rownames.",
          " Either remove the rowlabel argument",
          ", set the rnames argument",
@@ -360,7 +386,7 @@ htmlTable.default <- function(x,
 
     # Sanity checks style_list$css.rgroup and prepares the style
     if (length(style_list$css.rgroup) > 1 &&
-          length(style_list$css.rgroup) != length(rgroup))
+        length(style_list$css.rgroup) != length(rgroup))
       stop(sprintf("You must provide the same number of styles as the rgroups, %d != %d",
                    length(style_list$css.rgroup), length(rgroup)))
     else if(length(style_list$css.rgroup) == 1){
@@ -375,7 +401,7 @@ htmlTable.default <- function(x,
 
     # Sanity checks style_list$css.rgroup.sep and prepares the style
     if (length(style_list$css.rgroup.sep) > 1 &&
-          length(style_list$css.rgroup.sep) != length(rgroup)-1)
+        length(style_list$css.rgroup.sep) != length(rgroup)-1)
       stop(sprintf("You must provide the same number of separators as the rgroups - 1, %d != %d",
                    length(style_list$css.rgroup.sep), length(rgroup)-1))
     else if(length(style_list$css.rgroup.sep) == 1){
@@ -400,7 +426,7 @@ htmlTable.default <- function(x,
 
     # Sanity checks style_list$css.tspanner and prepares the style
     if (length(style_list$css.tspanner) > 1 &&
-          length(style_list$css.tspanner) != length(tspanner))
+        length(style_list$css.tspanner) != length(tspanner))
       stop(sprintf("You must provide the same number of styles as the tspanners, %d != %d",
                    length(style_list$css.tspanner), length(tspanner)))
     else if(length(style_list$css.tspanner) == 1){
@@ -416,7 +442,7 @@ htmlTable.default <- function(x,
 
     # Sanity checks style_list$css.tspanner.sep and prepares the style
     if (length(style_list$css.tspanner.sep) > 1 &&
-          length(style_list$css.tspanner.sep) != length(tspanner)-1)
+        length(style_list$css.tspanner.sep) != length(tspanner)-1)
       stop(sprintf("You must provide the same number of separators as the tspanners - 1, %d != %d",
                    length(style_list$css.tspanner.sep), length(tspanner)-1))
     else if(length(style_list$css.tspanner.sep) == 1){
@@ -575,8 +601,8 @@ htmlTable.default <- function(x,
   }
 
   if (missing(total) ||
-        (is.logical(total) &&
-           all(total == FALSE))){
+      (is.logical(total) &&
+       all(total == FALSE))){
     total = c()
   }else if (is.logical(total)){
     if (length(total) == 1){
@@ -584,7 +610,7 @@ htmlTable.default <- function(x,
     }else if(length(total) == nrow(x)){
       total <- which(total)
     }else if(!missing(n.tspanner) &&
-               length(total) == length(n.tspanner)){
+             length(total) == length(n.tspanner)){
       total <- cumsum(n.tspanner)[total]
     }else{
       stop("You have provided an invalid 'total' argument:",
@@ -698,169 +724,169 @@ htmlTable.default <- function(x,
   rgroup_iterator <- 0
   tspanner_iterator <- 0
   if(nrow(x) > 0){
-  for (row_nr in 1:nrow(x)){
-    rname_style = attr(prepped_cell_css, "rnames")[row_nr]
+    for (row_nr in 1:nrow(x)){
+      rname_style = attr(prepped_cell_css, "rnames")[row_nr]
 
-    # First check if there is a table spanner that should be applied
-    if (!missing(tspanner) &&
+      # First check if there is a table spanner that should be applied
+      if (!missing(tspanner) &&
           (row_nr == 1 ||
-             row_nr > sum(n.tspanner[1:tspanner_iterator]))){
-      tspanner_iterator = tspanner_iterator + 1
+           row_nr > sum(n.tspanner[1:tspanner_iterator]))){
+        tspanner_iterator = tspanner_iterator + 1
 
-      rs <- c(rname_style,
-              style_list$css.tspanner[tspanner_iterator])
+        rs <- c(rname_style,
+                style_list$css.tspanner[tspanner_iterator])
 
-      # Use a separator from the one above if this
-      # at least the second spanner. Graphically this
-      # appears as if underneath the group while it's
-      # actually above but this merges into one line
-      if (tspanner_iterator > 1){
-        rs %<>%
-          c(style_list$css.tspanner.sep[tspanner_iterator-1])
+        # Use a separator from the one above if this
+        # at least the second spanner. Graphically this
+        # appears as if underneath the group while it's
+        # actually above but this merges into one line
+        if (tspanner_iterator > 1){
+          rs %<>%
+            c(style_list$css.tspanner.sep[tspanner_iterator-1])
+        }
+
+
+        if (first_row){
+          rs %<>%
+            c(top_row_style)
+        }
+
+        table_str %<>%
+          sprintf("%s\n\t<tr><td colspan='%d' style='%s'>%s</td></tr>",
+                  .,
+                  total_columns,
+                  prGetStyle(rs),
+                  tspanner[tspanner_iterator])
+        first_row <- FALSE
       }
 
 
+      # Add the row group if any
+      # and it's:
+      # - first row
+      # - the row belongs to the next row group
+      rgroup_sep_style <- FALSE
+      if (!missing(rgroup) &&
+          (row_nr == 1 ||
+           row_nr > sum(n.rgroup[1:rgroup_iterator]))){
+        rgroup_iterator = rgroup_iterator + 1
+
+        rs <- c(rname_style,
+                style_list$css.rgroup[rgroup_iterator],
+                `background-color` = style_list$col.rgroup[rgroup_iterator])
+
+        # Use a separator from the one above if this
+        # at least the second group. Graphically this
+        # appears as if underneath the group while it's
+        # actually above but this merges into one line
+        if (rgroup_iterator > 1){
+          rs <- c(rs,
+                  style_list$css.rgroup.sep[rgroup_iterator-1])
+        }
+
+        # Only add if there is anything in the group
+        if (is.na(rgroup[rgroup_iterator]) == FALSE &&
+            rgroup[rgroup_iterator] != ""){
+
+          if (first_row){
+            rs <- c(rs,
+                    top_row_style)
+          }
+
+          rgroup_str <- prGetRgroupLine(x = x,
+                                        total_columns = total_columns,
+                                        rgroup = rgroup,
+                                        rgroup_iterator = rgroup_iterator,
+                                        cspan = cspan.rgroup[rgroup_iterator],
+                                        rnames = rnames,
+                                        style = rs,
+                                        cgroup_spacer_cells = cgroup_spacer_cells,
+                                        style_list = style_list,
+                                        prepped_row_css = prepped_cell_css[row_nr,])
+
+          table_str %<>%
+            paste(rgroup_str)
+
+          first_row <- FALSE
+        }else if(rgroup_iterator > 1 && style_list$css.rgroup.sep[rgroup_iterator-1] != ""){
+          # Add the separator if the rgroup wasn't added so that it's included in the regular cells
+          rgroup_sep_style = style_list$css.rgroup.sep[rgroup_iterator-1]
+        }
+      }
+
+
+      cell_style <- rs <- paste("background-color:", row_clrs[row_nr])
       if (first_row){
         rs %<>%
           c(top_row_style)
+        cell_style %<>%
+          c(top_row_style)
+      }else if(rgroup_sep_style != FALSE){
+        rs %<>% c(rgroup_sep_style)
       }
-
-      table_str %<>%
-        sprintf("%s\n\t<tr><td colspan='%d' style='%s'>%s</td></tr>",
-                .,
-                total_columns,
-                prGetStyle(rs),
-                tspanner[tspanner_iterator])
       first_row <- FALSE
-    }
 
-
-    # Add the row group if any
-    # and it's:
-    # - first row
-    # - the row belongs to the next row group
-    rgroup_sep_style <- FALSE
-    if (!missing(rgroup) &&
-      (row_nr == 1 ||
-        row_nr > sum(n.rgroup[1:rgroup_iterator]))){
-      rgroup_iterator = rgroup_iterator + 1
-
-      rs <- c(rname_style,
-              style_list$css.rgroup[rgroup_iterator],
-              `background-color` = style_list$col.rgroup[rgroup_iterator])
-
-      # Use a separator from the one above if this
-      # at least the second group. Graphically this
-      # appears as if underneath the group while it's
-      # actually above but this merges into one line
-      if (rgroup_iterator > 1){
-        rs <- c(rs,
-                style_list$css.rgroup.sep[rgroup_iterator-1])
+      if (row_nr == nrow(x)){
+        cell_style %<>%
+          c(bottom_row_style)
       }
 
-      # Only add if there is anything in the group
-      if (is.na(rgroup[rgroup_iterator]) == FALSE &&
-          rgroup[rgroup_iterator] != ""){
+      if (row_nr %in% total){
+        cell_style %<>%
+          c(style_list$css.total[which(row_nr == total)])
+      }
 
-        if (first_row){
-          rs <- c(rs,
-                  top_row_style)
-        }
-
-        rgroup_str <- prGetRgroupLine(x = x,
-                                      total_columns = total_columns,
-                                      rgroup = rgroup,
-                                      rgroup_iterator = rgroup_iterator,
-                                      cspan = cspan.rgroup[rgroup_iterator],
-                                      rnames = rnames,
-                                      style = rs,
-                                      cgroup_spacer_cells = cgroup_spacer_cells,
-                                      style_list = style_list,
-                                      prepped_row_css = prepped_cell_css[row_nr,])
-
+      if (prGetStyle(rs) == ""){
         table_str %<>%
-          paste(rgroup_str)
-
-        first_row <- FALSE
-      }else if(rgroup_iterator > 1 && style_list$css.rgroup.sep[rgroup_iterator-1] != ""){
-        # Add the separator if the rgroup wasn't added so that it's included in the regular cells
-        rgroup_sep_style = style_list$css.rgroup.sep[rgroup_iterator-1]
+          paste0("\n\t<tr>")
+      }else{
+        table_str %<>%
+          sprintf("%s\n\t<tr style='%s'>",
+                  .,
+                  prGetStyle(rs))
       }
-    }
 
-
-    cell_style <- rs <- paste("background-color:", row_clrs[row_nr])
-    if (first_row){
-      rs %<>%
-        c(top_row_style)
-      cell_style %<>%
-        c(top_row_style)
-    }else if(rgroup_sep_style != FALSE){
-      rs %<>% c(rgroup_sep_style)
-    }
-    first_row <- FALSE
-
-    if (row_nr == nrow(x)){
-      cell_style %<>%
-        c(bottom_row_style)
-    }
-
-    if (row_nr %in% total){
-      cell_style %<>%
-        c(style_list$css.total[which(row_nr == total)])
-    }
-
-    if (prGetStyle(rs) == ""){
-      table_str %<>%
-        paste0("\n\t<tr>")
-    }else{
-      table_str %<>%
-        sprintf("%s\n\t<tr style='%s'>",
-                .,
-                prGetStyle(rs))
-    }
-
-    if (!prSkipRownames(rnames)){
-      pdng <- style_list$padding.tspanner
-      # Minor change from original function. If the group doesn't have
-      # a group name then there shouldn't be any indentation
-      if (!missing(rgroup) &&
+      if (!prSkipRownames(rnames)){
+        pdng <- style_list$padding.tspanner
+        # Minor change from original function. If the group doesn't have
+        # a group name then there shouldn't be any indentation
+        if (!missing(rgroup) &&
             rgroup_iterator > 0 &&
             is.na(rgroup[rgroup_iterator]) == FALSE &&
             rgroup[rgroup_iterator] != ""){
-        pdng %<>%
-          paste0(style_list$padding.rgroup)
+          pdng %<>%
+            paste0(style_list$padding.rgroup)
+        }
+
+        # The padding doesn't work well with the Word import - well nothing really works well with word...
+        # table_str <- sprintf("%s\n\t\t<td style='padding-left: .5em;'>%s</td>", table_str, rnames[row_nr])
+        table_str %<>%
+          sprintf("%s\n\t\t<td style='%s'>%s%s</td>",
+                  .,
+                  prGetStyle(c(rname_style, cell_style),
+                             align=prGetAlign(style_list$align, 1)),
+                  pdng,
+                  rnames[row_nr])
       }
 
-      # The padding doesn't work well with the Word import - well nothing really works well with word...
-      # table_str <- sprintf("%s\n\t\t<td style='padding-left: .5em;'>%s</td>", table_str, rnames[row_nr])
+      cell_str <- prAddCells(rowcells = x[row_nr,],
+                             cellcode = "td",
+                             style_list = style_list,
+                             style = cell_style,
+                             cgroup_spacer_cells = cgroup_spacer_cells,
+                             has_rn_col = !prSkipRownames(rnames)*1,
+                             prepped_cell_css = prepped_cell_css[row_nr, ])
       table_str %<>%
-        sprintf("%s\n\t\t<td style='%s'>%s%s</td>",
-                .,
-                prGetStyle(c(rname_style, cell_style),
-                             align=prGetAlign(style_list$align, 1)),
-                pdng,
-                rnames[row_nr])
+        paste0(cell_str, "\n\t</tr>")
     }
-
-    cell_str <- prAddCells(rowcells = x[row_nr,],
-                           cellcode = "td",
-                           style_list = style_list,
-                           style = cell_style,
-                           cgroup_spacer_cells = cgroup_spacer_cells,
-                           has_rn_col = !prSkipRownames(rnames)*1,
-                           prepped_cell_css = prepped_cell_css[row_nr, ])
-    table_str %<>%
-      paste0(cell_str, "\n\t</tr>")
   }
-}
   # Close body
   table_str %<>%
     paste0("\n\t</tbody>")
 
   if (!missing(caption) &
-        compatibility == "LibreOffice" &
-        style_list$pos.caption %in% c("bottom", "below")){
+      compatibility == "LibreOffice" &
+      style_list$pos.caption %in% c("bottom", "below")){
 
     table_str %<>%
       sprintf("%s\n\t<tr><td colspan='%d' style='text-align: left;'>%s</td></tr>",
@@ -904,245 +930,5 @@ htmlTable.default <- function(x,
   return(table_str)
 }
 
-#' Detects if the call is made from within an RStudio Rmd file or a file
-#' with the html_notebook output set.
-#' @importFrom rstudioapi isAvailable getActiveDocumentContext
-#' @keywords internal
-prIsNotebook <- function() {
-  if (!isAvailable()) {
-    return(FALSE)
-  }
-
-  ctxt <- getActiveDocumentContext()
-  if (grepl("\\.Rmd$", ctxt$path)) {
-    return(TRUE)
-  }
-
-  # Look for html_notebook within the header if the file hasn't been saved
-  contents <- ctxt$contents
-  header <- grep("^---$", contents)
-  if (length(header) == 2) {
-    return(any(grepl("html_notebook$",
-                     contents[min(header) : max(header)])))
-  }
-
-  return(FALSE)
-}
-
-#' Convert all factors to characters to print them as they expected
-#'
-#' @inheritParams htmlTable
-#' @return The data frame with factors as characters
-prConvertDfFactors <- function(x){
-  if (!"data.frame" %in% class(x))
-    return(x)
-
-  i <- sapply(x, function(col)
-    (
-      (
-        !is.numeric(col) &&
-          !is.character(col)
-      ) ||
-      (
-        inherits(col, "times") # For handlin Chron input
-      )
-    )
-  )
-
-  if(any(i)){
-    x[i] <- lapply(x[i], as.character)
-  }
-
-  return (x)
-}
-
-#' @export
-htmlTable.data.frame <- function(x, ...) {
-  # deal gracefully with an empty dataframe - issue a warning.
-  if(nrow(x) == 0){
-    warning(paste(deparse(substitute(x)), "is an empty object"))
-  }
-  htmlTable.default(prConvertDfFactors(x),...)
-}
-
-#' @export
-htmlTable.matrix <- function(x, total, ...) {
-  # deal gracefully with an empty matrix - issue a warning.
-  if(nrow(x) == 0){
-    warning(paste(deparse(substitute(x)), "is an empty object"))
-  }
-
-  if (all(class(x) %in% c("table", "matrix", "array")) &&
-      !is.null(rownames(x)) &&
-      grepl("^sum$", tail(rownames(x), 1), ignore.case = TRUE) &&
-      missing(total)) {
-    total = TRUE
-  }
-
-  htmlTable.default(x, total = total, ...)
-}
-
 #' @importFrom methods setClass
 setClass("htmlTable", contains = "character")
-
-
-#' @rdname htmlTable
-#' @importFrom knitr knit_print
-#' @importFrom knitr asis_output
-#' @export
-knit_print.htmlTable<- function(x, ...){
-  asis_output(x)
-}
-
-#' @rdname htmlTable
-#' @param useViewer If you are using RStudio there is a viewer thar can render
-#'  the table within that is envoced if in \code{\link[base]{interactive}} mode.
-#'  Set this to \code{FALSE} if you want to remove that  functionality. You can
-#'  also force the function to call a specific viewer by setting this to a
-#'  viewer function, e.g. \code{useViewer = utils::browseURL} if you want to
-#'  override the default RStudio viewer. Another option that does the same is to
-#'  set the \code{options(viewer=utils::browseURL)} and it will default to that
-#'  particular viewer (this is how RStudio decides on a viewer).
-#'  \emph{Note:} If you want to force all output to go through the
-#'  \code{\link[base]{cat}()} the set \code{\link[base]{options}(htmlTable.cat = TRUE)}.
-#' @export
-#' @importFrom utils browseURL
-print.htmlTable<- function(x, useViewer, ...){
-  args <- attr(x, "...")
-  # Use the latest ... from the print call
-  # and override the original htmlTable call ...
-  # if there is a conflict
-  print_args <- list(...)
-  for (n in names(print_args)){
-    args[[n]] <- print_args[[n]]
-  }
-
-  # Since the print may be called from another print function
-  # it may be handy to allow functions to use attributes for the
-  # useViewer parameter
-  if (missing(useViewer)){
-    if ("useViewer" %in% names(args) &&
-        (is.logical(args$useViewer) ||
-         is.function(args$useViewer))){
-      useViewer <- args$useViewer
-      args$useViewer <- NULL
-    }else{
-      useViewer <- TRUE
-    }
-  }
-
-  if (interactive() &&
-      !getOption("htmlTable.cat", FALSE) &&
-      (is.function(useViewer) ||
-       useViewer != FALSE))
-  {
-    if (is.null(args$file)){
-      args$file <- tempfile(fileext=".html")
-    }
-
-    htmlPage <- paste("<html>",
-                      "<head>",
-                      "<meta http-equiv=\"Content-type\" content=\"text/html; charset=UTF-8\">",
-                      "</head>",
-                      "<body>",
-                      "<div style=\"margin: 0 auto; display: table; margin-top: 1em;\">",
-                      enc2utf8(x),
-                      "</div>",
-                      "</body>",
-                      "</html>", sep="\n")
-    # We only want to use those arguments that are actually in cat
-    # anything else that may have inadvertadly slipped in should
-    # be ignored or it will be added to the output
-    cat_args <- args
-    cat_args <- cat_args[names(cat_args) %in% names(formals(cat))[-1]]
-    do.call(cat, c(htmlPage, cat_args))
-
-    if (is.function(useViewer)){
-      useViewer(args$file)
-    }else{
-      viewer <- getOption("viewer")
-      if (!is.null(viewer) &&
-          is.function(viewer)){
-        # (code to write some content to the file)
-        viewer(args$file)
-      }else{
-        utils::browseURL(args$file)
-      }
-    }
-  }else{
-    cat_args <- args
-    cat_args <- cat_args[names(cat_args) %in% names(formals(cat))[-1]]
-    do.call(cat, c(x, cat_args))
-  }
-
-  invisible(x)
-}
-
-#' Gets the last table number
-#'
-#' The function relies on \code{options("table_counter")}
-#' in order to keep track of the last number.
-#'
-#' @param roman Whether or not to use roman numbers instead
-#'  of arabic. Can also be set through \code{options(table_caption_no_roman = TRUE)}
-#'
-#' @export
-#' @examples
-#' org_opts <- options(table_counter=1)
-#' tblNoLast()
-#' options(org_opts)
-#' @family table functions
-#' @importFrom utils as.roman
-tblNoLast <- function(roman = getOption("table_counter_roman",
-                                        FALSE)){
-  last_no <- getOption("table_counter")
-  if (is.logical(last_no) ||
-        is.null(last_no)){
-    stop("You cannot call the get last figure number",
-         " when there has been no prior figure registerd.",
-         " In other words, you need to call the fiCapNo()",
-         " on a figure before you call this function.",
-         " If you want the next number then call figCapNoNext()",
-         " instead of this function.")
-  }
-
-  if (roman)
-    last_no <- as.character(as.roman(last_no))
-
-  return(last_no)
-}
-
-#' Gets the next table number
-#'
-#' The function relies on \code{options("table_counter")}
-#' in order to keep track of the last number.
-#'
-#' @inheritParams tblNoLast
-#' @export
-#' @examples
-#' org_opts <- options(table_counter=1)
-#' tblNoNext()
-#' options(org_opts)
-#' @family table functions
-#' @importFrom utils as.roman
-tblNoNext <- function(roman = getOption("table_counter_roman",
-                                        FALSE)){
-  last_no <- getOption("table_counter")
-  if (is.logical(last_no)){
-    if (last_no == FALSE)
-      stop("You cannot call the get last figure number",
-           " when you have explicitly set the fig_cap_no",
-           " option to false.")
-    last_no <- 0
-
-  }else if (is.null(last_no)){
-    last_no <- 0
-  }
-
-  next_no <- last_no + 1
-
-  if (roman)
-    next_no <- as.character(as.roman(next_no))
-
-  return(next_no)
-}

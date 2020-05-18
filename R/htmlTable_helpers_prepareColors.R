@@ -37,7 +37,7 @@ prPrepareColors <- function(clr, n, ng, gtxt){
       tmp <- c()
       for (i in 1:length(ng)){
         if (gtxt[i] != "" &&
-              !is.na(gtxt[i])){
+            !is.na(gtxt[i])){
           tmp <- c(tmp,
                    ng[i])
         }else{
