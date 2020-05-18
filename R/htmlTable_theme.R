@@ -92,7 +92,13 @@ prGetArgumentList <- function(args, skip_elements) {
     args <- as.list(args)
   }
 
-  args[Filter(function(x) !(x %in% skip_elements | x == ""), names(args))]
+  args <- args[Filter(function(x) !(x %in% skip_elements | x == ""), names(args))]
+  Map(function(arg) {
+    if (is.language(arg)) {
+      return(eval(arg))
+    }
+    return(arg)
+  }, args)
 }
 
 #' Retrieve the \code{\link{htmlTable}} theme list
