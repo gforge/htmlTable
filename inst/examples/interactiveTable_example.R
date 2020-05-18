@@ -8,12 +8,9 @@ sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
 mollit anim id est laborum"
 short_txt <- gsub("(^[^.]+).*", "\\1", long_txt)
 
-output <-
-  cbind(rep(short_txt, 2),
-        rep(long_txt, 2))
-
-interactiveTable(output,
-                 minimized.columns = ncol(output),
-                 header = c("Short", "Long"),
-                 rnames = c("First", "Second"),
-                 col.rgroup = c("#FFF", "#EEF"))
+cbind(rep(short_txt, 2),
+      rep(long_txt, 2)) %>%
+  addHtmlTableStyle(col.rgroup = c("#FFF", "#EEF")) %>%
+  interactiveTable(minimized.columns = ncol(output),
+                   header = c("Short", "Long"),
+                   rnames = c("First", "Second"))

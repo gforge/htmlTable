@@ -46,7 +46,7 @@ This can be convenient when working with the `base::table` function:
 data("mtcars")
 with(mtcars,
      table(cyl, gear)) %>% 
-  addmargins %>% 
+  addmargins %>%
   htmlTable
 ```
 
@@ -57,22 +57,22 @@ Table caption
 
 The table caption is simply the table description and can be either located above or below:
 
-```{r}
+```{r ctable_example}
 output <- matrix(1:4,
        ncol=2,
        dimnames = list(c("Row 1", "Row 2"),
                        c("Column 1", "Column 2")))
-htmlTable(output,  
+htmlTable(output,
           ctable=c("solid", "double"),
-          caption="A table caption above")
+          caption="A table caption above and ctable borders")
 ```
 
 The caption defaults to above but by setting the `pos.caption` argument to "bottom" it appears below the table. 
 
-```{r}
-htmlTable(output, 
-          pos.caption = "bottom",
-          caption="A table caption below")
+```{r table_with_caption_below}
+output %>%
+  addHtmlTableStyle(pos.caption = "bottom") %>% 
+  htmlTable(caption="A table caption below")
 ```
 
 Cell alignment
@@ -81,22 +81,22 @@ Cell alignment
 Cell alignment is specified through the `align`, `align.header`, `align.cgroup` arguments. For aligning the cell values just use `align`. The argument can accept either a vector or a string, although supplying it with a string is the simplest option as in the example below:
 
 ```{r}
-htmlTable(1:3, 
-          rnames = "Row 1",
-          align = "lcr",
-          header = c("'l' = left", "'c' = center", "'r' = right"),
-          caption = "The alignment is set through the align options. Available alternatives are l, r, c as designated by the below table.")
+1:3 %>% 
+  addHtmlTableStyle(align = "lcr") %>% 
+  htmlTable(rnames = "Row 1",
+            header = c("'l' = left", "'c' = center", "'r' = right"),
+            caption = "The alignment is set through the align options. Available alternatives are l, r, c as designated by the below table.")
 ```
 
 Note that you can specify a string shorter than the number of columns. This can be useful if you have plenty of columns and you simply want all remaining columns to keep the alignment of the last column. To align the row name you can just add another letter to the string while the header is aligned through the `align.header` argument:
 
 ```{r}
-htmlTable(1:3, 
-          rnames = "Row 1",
-          align = "clcr",
-          align.header = "lcr",
-          header = c("'l' = left", "'c' = center", "'r' = right"),
-          caption = "The alignment is set through the align options. Available alternatives are l, r, c as designated by the below table.")
+1:3 %>% 
+  addHtmlTableStyle(align = "clcr",
+                    align.header = "lcr") %>% 
+  htmlTable(rnames = "Row 1",
+            header = c("'l' = left", "'c' = center", "'r' = right"),
+            caption = "The alignment is set through the align options. Available alternatives are l, r, c as designated by the below table.")
 ```
 
 Advanced
@@ -146,7 +146,6 @@ The purpose of the row groups is to group variables that belong to the same grou
 htmlTable(mx, 
           rgroup = paste("Group", LETTERS[1:3]),
           n.rgroup = c(2,4,nrow(mx) - 6))
-
 ```
 
 We can easily mix row groups with regular variables by having an empty row group name `""`:
@@ -160,10 +159,10 @@ htmlTable(mx,
 When mixing row groups with variables without row groups we may want to omit the bold formatting of the row group label:
 
 ```{r}
-htmlTable(mx, 
-          css.rgroup = "",
-          rgroup = c(paste("Group", LETTERS[1:2]), ""),
-          n.rgroup = c(2,4,nrow(mx) - 6))
+mx %>% 
+  addHtmlTableStyle(css.rgroup = "") %>% 
+  htmlTable(rgroup = c(paste("Group", LETTERS[1:2]), ""),
+            n.rgroup = c(2,4,nrow(mx) - 6))
 ```
 
 The `rgroup` is most commonly a single row without any additional cells but sometimes you may want to have a p-value or similar at the end of the row. This can be achieved by setting the 'add' attribute to the `rgroup`:
@@ -242,13 +241,13 @@ htmlTable(mx[1:3,], total=TRUE)
 This can also be combined with table spanners:
 
 ```{r}
-htmlTable(mx, 
-          total = "tspanner",
-          css.total = c("border-top: 1px dashed grey;",
-                        "border-top: 1px dashed grey;",
-                        "border-top: 1px solid grey; font-weight: 900"),
-          tspanner = paste("Spanner", LETTERS[1:3]),
-          n.tspanner = c(2,4,nrow(mx) - 6))
+mx %>% 
+  addHtmlTableStyle(css.total = c("border-top: 1px dashed grey;",
+                                  "border-top: 1px dashed grey;",
+                                  "border-top: 1px solid grey; font-weight: 900")) %>% 
+  htmlTable(total = "tspanner",
+            tspanner = paste("Spanner", LETTERS[1:3]),
+            n.tspanner = c(2,4,nrow(mx) - 6))
 ```
 
 Table numbering
@@ -301,32 +300,35 @@ Zebra coloring (or banded colors)
 Zebra coloring is also know as an alternating color pattern or row shading. It is most commonly applied to rows:
 
 ```{r}
-htmlTable(mx, 
-          col.rgroup = c("none", "#F7F7F7"))
+mx %>% 
+  addHtmlTableStyle(col.rgroup = c("none", "#F7F7F7")) %>% 
+  htmlTable
 ```
 
 The zebra coloring in `htmlTable` is unique in that it follows the rgroups. The zebra striping is centered around the rgroup although rows with no set rgroup, i.e. "" will have alternating colors event though they programatically are within the same group:
 
 ```{r}
-htmlTable(mx, 
-          col.rgroup = c("none", "#F7F7F7"),
-          rgroup = c(paste("Group", LETTERS[1:2]), ""),
-          n.rgroup = c(2,2,nrow(mx) - 4))
+mx %>% 
+  addHtmlTableStyle(col.rgroup = c("none", "#F7F7F7")) %>% 
+  htmlTable(rgroup = c(paste("Group", LETTERS[1:2]), ""),
+            n.rgroup = c(2,2,nrow(mx) - 4))
 ```
 
 We can also color the columns:
 
 ```{r}
-htmlTable(mx, 
-          col.columns = c("none", "#F7F7F7"))
+mx %>% 
+  addHtmlTableStyle(col.columns = c("none", "#F7F7F7")) %>% 
+  htmlTable
 ```
 
 Or do both (note that the colors blend at the intersections):
 
 ```{r}
-htmlTable(mx, 
-          col.rgroup = c("none", "#F9FAF0"),
-          col.columns = c("none", "#F1F0FA"))
+mx %>% 
+  addHtmlTableStyle(col.rgroup = c("none", "#F9FAF0"),
+                    col.columns = c("none", "#F1F0FA")) %>% 
+  htmlTable
 ```
 
 Putting it all together
@@ -337,23 +339,23 @@ Now if we want to do everything in one table it may look like this:
 ```{r}
 rgroup = paste("Group", LETTERS[1:3])
 attr(rgroup, "add") <- list(`3` = "Group p-value < 0.001")
-htmlTable(mx, 
-          align="r",
-          rgroup = rgroup,
-          n.rgroup = c(2,4),
-          tspanner = paste("Spanner", LETTERS[1:2]),
-          n.tspanner = c(1),
-          cgroup = list(c("", "Column spanners"),
-                        c("", "Cgroup 1", "Cgroup 2&dagger;")),
-          n.cgroup = list(c(1,5),
-                          c(2,2,2)),
-          caption="A table with column spanners, row groups, and zebra striping",
-          tfoot="&dagger; A table footer commment",
-          cspan.rgroup = 2,
-          col.columns = c(rep("none", 2),
-                          rep("#F5FBFF", 4)),
-          col.rgroup = c("none", "#F7F7F7"),
-          css.cell = "padding-left: .5em; padding-right: .2em;")
 
+mx %>% 
+  addHtmlTableStyle(align="r",
+                    col.columns = c(rep("none", 2),
+                                    rep("#F5FBFF", 4)),
+                    col.rgroup = c("none", "#F7F7F7"),
+                    css.cell = "padding-left: .5em; padding-right: .2em;") %>% 
+  htmlTable(rgroup = rgroup,
+            n.rgroup = c(2,4),
+            tspanner = paste("Spanner", LETTERS[1:2]),
+            n.tspanner = c(1),
+            cgroup = list(c("", "Column spanners"),
+                          c("", "Cgroup 1", "Cgroup 2&dagger;")),
+            n.cgroup = list(c(1,5),
+                            c(2,2,2)),
+            caption="A table with column spanners, row groups, and zebra striping",
+            tfoot="&dagger; A table footer commment",
+            cspan.rgroup = 2)
 ```
 

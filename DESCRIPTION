@@ -30,12 +30,9 @@ Imports:
 Suggests:
     testthat,
     XML,
-    xtable,
-    ztable,
     Hmisc,
     reshape,
     rmarkdown,
-    pander,
     chron,
     lubridate,
     tibble,
