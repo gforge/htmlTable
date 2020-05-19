@@ -1,7 +1,9 @@
 NEWS for the htmlTable package
 
-Changes for 1.14.0
+Changes for 2.0.0
 ------------------
+* Added theming and styling with addHtmlTableStyle and setHtmlTableTheme to reduce the cognitive burden of finding the right
+  option within the docs. Note: this may impact your current tables and hence the major version (2.0.0).
 * Changed so that css.cell is properly applied to rownames, cell fillers and the actual cells of interest (may impact the final layout!)
 * Added mso-number-format to help (Issue #63) - thanks Rasmus Hertzum
 * txtRound can now add txtInt when formatting the integer section for easier readability
