@@ -31,9 +31,10 @@ library(htmlTable)
 library(tibble)
 
 td <- mtcars %>%
+  tibble %>% 
   rownames_to_column %>%
-  select(rowname, cyl, gear, hp, mpg, qsec) %>%
-  gather(per_metric, value, hp, mpg, qsec)
+  pivot_longer(names_to = "per_metric", 
+               cols = c(hp, mpg, qsec))
 ```
 
 Now we will compute 4 summary statistics for each of the 3 performance metrics.
@@ -46,7 +47,8 @@ tidy_summary <- td %>%
             SD = round(sd(value), 1),
             Min = round(min(value), 1),
             Max = round(max(value), 1)) %>%
-  pivot_longer(names_to = "summary_stat", values_to = "value", cols = c(Mean, SD, Min, Max)) %>% 
+  pivot_longer(names_to = "summary_stat", 
+               cols = c(Mean, SD, Min, Max)) %>% 
   ungroup %>% 
   mutate(gear = paste(gear, "Gears"),
          cyl = paste(cyl, "Cylinders"))
