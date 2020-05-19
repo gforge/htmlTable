@@ -37,6 +37,7 @@ Suggests:
     lubridate,
     tibble,
     purrr,
+    tidyselect,
     tidyr (>= 0.7.2),
     dplyr (>= 0.7.4)
 Encoding: UTF-8

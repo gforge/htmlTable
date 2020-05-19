@@ -88,34 +88,39 @@
 #' \dontrun{
 #' library(tidyverse)
 #' mtcars %>%
-#'     rownames_to_column %>%
-#'     select(rowname, cyl, gear, hp, mpg, qsec) %>%
-#'     gather(per_metric, value, hp, mpg, qsec) %>%
-#'     group_by(cyl, gear, per_metric) %>%
-#'     summarise(Mean = round(mean(value), 1),
-#'               SD = round(sd(value), 1),
-#'               Min = round(min(value), 1),
-#'               Max = round(max(value), 1)) %>%
-#'      gather(summary_stat, value, Mean, SD, Min, Max) %>%
-#'      ungroup %>%
-#'      mutate(gear = paste(gear, "Gears"),
-#'             cyl = paste(cyl, "Cylinders")) %>%
-#'      tidyHtmlTable(header = "gear",
-#'                   cgroup1 = "cyl",
-#'                   cell_value = "value",
-#'                   rnames = "summary_stat",
-#'                   rgroup = "per_metric")
+#'   rownames_to_column() %>%
+#'   select(rowname, cyl, gear, hp, mpg, qsec) %>%
+#'   gather(per_metric, value, hp, mpg, qsec) %>%
+#'   group_by(cyl, gear, per_metric) %>%
+#'   summarise(
+#'     Mean = round(mean(value), 1),
+#'     SD = round(sd(value), 1),
+#'     Min = round(min(value), 1),
+#'     Max = round(max(value), 1)
+#'   ) %>%
+#'   gather(summary_stat, value, Mean, SD, Min, Max) %>%
+#'   ungroup() %>%
+#'   mutate(
+#'     gear = paste(gear, "Gears"),
+#'     cyl = paste(cyl, "Cylinders")
+#'   ) %>%
+#'   tidyHtmlTable(
+#'     header = "gear",
+#'     cgroup1 = "cyl",
+#'     cell_value = "value",
+#'     rnames = "summary_stat",
+#'     rgroup = "per_metric"
+#'   )
 #' }
 tidyHtmlTable <- function(x,
-                          value = "value",
-                          header = "header",
-                          rnames = "rnames",
-                          rgroup = NULL,
-                          hidden_rgroup = NULL,
-                          cgroup1 = NULL,
-                          cgroup2 = NULL,
-                          tspanner = NULL,
-                          hidden_tspanner = NULL,
+                          value,
+                          header,
+                          rnames,
+                          rgroup,
+                          hidden_rgroup,
+                          cgroup,
+                          tspanner,
+                          hidden_tspanner,
                           ...) {
   UseMethod("tidyHtmlTable")
 }
@@ -127,98 +132,112 @@ tidyHtmlTable.default <- function(x, ...) {
 
 #' @export
 tidyHtmlTable.data.frame <- function(x,
-                                     value = "value",
-                                     header = "header",
-                                     rnames = "rnames",
-                                     rgroup = NULL,
-                                     hidden_rgroup = NULL,
-                                     cgroup1 = NULL,
-                                     cgroup2 = NULL,
-                                     tspanner = NULL,
-                                     hidden_tspanner = NULL,
+                                     value,
+                                     header,
+                                     rnames,
+                                     rgroup,
+                                     hidden_rgroup,
+                                     cgroup,
+                                     tspanner,
+                                     hidden_tspanner,
                                      ...) {
 
   # You need the suggested package for this function
   safeLoadPkg("dplyr")
   safeLoadPkg("tidyr")
+  safeLoadPkg("tidyselect")
+  safeLoadPkg("purrr")
 
-  argument_checker(x,
-                   value = value,
-                   header = header,
-                   rnames = rnames,
-                   rgroup = rgroup,
-                   hidden_rgroup = NULL,
-                   cgroup1 = cgroup1,
-                   cgroup2 = cgroup2,
-                   tspanner = tspanner,
-                   hidden_tspanner = NULL)
 
-  check_uniqueness(x,
-                   header = header,
-                   rnames = rnames,
-                   rgroup = rgroup,
-                   cgroup1 = cgroup1,
-                   cgroup2 = cgroup2,
-                   tspanner = tspanner)
+  # Check if x is a grouped tbl_df
+  if (dplyr::is.grouped_df(x)) {
+    x <- dplyr::ungroup(x)
+  }
 
-  x <- remove_na_rows(x,
-                      header = header,
-                      rnames = rnames,
-                      rgroup = rgroup,
-                      cgroup1 = cgroup1,
-                      cgroup2 = cgroup2,
-                      tspanner = tspanner)
+  tidyTableDataList <- list(
+    value = prAssertAndRetrieveValue(x, value),
+    header = prAssertAndRetrieveValue(x, header),
+    rnames = prAssertAndRetrieveValue(x, rnames, name = "name"),
+    rgroup = prAssertAndRetrieveValue(x, rgroup, optional = TRUE),
+    cgroup = prAssertAndRetrieveValue(x, cgroup, optional = TRUE),
+    tspanner = prAssertAndRetrieveValue(x, tspanner, optional = TRUE)
+  ) %>%
+    purrr::keep(~ !is.null(.))
+
+  checkUniqueness(tidyTableDataList)
+
+  tidyTableDataList %<>% removeRowsWithNA()
 
   # Create tables from which to gather row, column, and tspanner names
   # and indices
   row_ref_tbl <- x %>%
-    get_row_tbl(rnames = rnames,
-                rgroup = rgroup,
-                tspanner = tspanner)
+    get_row_tbl(
+      rnames = rnames,
+      rgroup = rgroup,
+      tspanner = tspanner
+    )
 
   # Hide row groups specified in hidden_rgroup
   if (!(is.null(hidden_rgroup))) {
     row_ref_tbl <- row_ref_tbl %>%
-      dplyr::mutate_at(rgroup,
-                function(x){ifelse(x %in% hidden_rgroup, "", x)})
+      dplyr::mutate_at(
+        rgroup,
+        function(x) {
+          ifelse(x %in% hidden_rgroup, "", x)
+        }
+      )
   }
 
   # Hide tspanners specified in hidden_tspanner
   if (!(is.null(hidden_tspanner))) {
     row_ref_tbl <- row_ref_tbl %>%
-      dplyr::mutate_at(tspanner,
-                function(x){ifelse(x %in% hidden_tspanner, "", x)})
+      dplyr::mutate_at(
+        tspanner,
+        function(x) {
+          ifelse(x %in% hidden_tspanner, "", x)
+        }
+      )
   }
 
   col_ref_tbl <- x %>%
-    get_col_tbl(header = header,
-                cgroup1 = cgroup1,
-                cgroup2 = cgroup2)
+    get_col_tbl(
+      header = header,
+      cgroup1 = cgroup1,
+      cgroup2 = cgroup2
+    )
 
   # Format the values for display
   to_select <- c("r_idx", "c_idx", value)
   formatted_df <- x %>%
-    add_col_idx(header = header,
-                cgroup1 = cgroup1,
-                cgroup2 = cgroup2) %>%
-    add_row_idx(rnames = rnames,
-                rgroup = rgroup,
-                tspanner = tspanner) %>%
+    add_col_idx(
+      header = header,
+      cgroup1 = cgroup1,
+      cgroup2 = cgroup2
+    ) %>%
+    add_row_idx(
+      rnames = rnames,
+      rgroup = rgroup,
+      tspanner = tspanner
+    ) %>%
     dplyr::select(to_select) %>%
     dplyr::mutate_at(value, as.character) %>%
     # Spread will fill missing values (both explict and implicit) with the
     # same value, so we need to convert these values to a character if we want
     # them to show up correctly in the final table
-    tidyr::spread(key = "c_idx",
-           value = value,
-           fill = "")
+    tidyr::spread(
+      key = "c_idx",
+      value = value,
+      fill = ""
+    )
   formatted_df$r_idx <- NULL
 
   # Get names and indices for row groups and tspanners
-  htmlTable_args <- list(x = formatted_df,
-                         rnames = row_ref_tbl %>% dplyr::pull(rnames),
-                         header = col_ref_tbl %>% dplyr::pull(header),
-                         ...)
+  htmlTable_args <- list(
+    x = formatted_df,
+    rnames = row_ref_tbl %>% dplyr::pull(rnames),
+    header = col_ref_tbl %>% dplyr::pull(header),
+    ...
+  )
 
   if (!is.null(rgroup)) {
 
@@ -227,8 +246,10 @@ tidyHtmlTable.data.frame <- function(x,
     comp_val <- row_ref_tbl %>% dplyr::pull(rgroup)
 
     if (!is.null(tspanner)) {
-      comp_val <- paste0(comp_val,
-                         row_ref_tbl %>% dplyr::pull(tspanner))
+      comp_val <- paste0(
+        comp_val,
+        row_ref_tbl %>% dplyr::pull(tspanner)
+      )
     }
 
     lens <- rle(comp_val)$lengths
@@ -249,10 +270,10 @@ tidyHtmlTable.data.frame <- function(x,
   }
 
   # Get names and indices for column groups
-  if(!is.null(cgroup1)) {
+  if (!is.null(cgroup1)) {
     cgroup1_out <- rle(col_ref_tbl %>% dplyr::pull(cgroup1))$value
     n.cgroup1 <- rle(col_ref_tbl %>% dplyr::pull(cgroup1))$lengths
-    if(!is.null(cgroup2)) {
+    if (!is.null(cgroup2)) {
       cgroup2_out <- rle(col_ref_tbl %>% dplyr::pull(cgroup2))$value
       n.cgroup2 <- rle(col_ref_tbl %>% dplyr::pull(cgroup2))$lengths
       len_diff <- length(cgroup1_out) - length(cgroup2_out)
