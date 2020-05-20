@@ -170,16 +170,11 @@ tidyHtmlTable.data.frame <- function(x,
 
   # Create tables from which to gather row, column, and tspanner names
   # and indices
-  row_ref_tbl <- x %>%
-    get_row_tbl(
-      rnames = rnames,
-      rgroup = rgroup,
-      tspanner = tspanner
-    )
+  rowRefTbl <- getRowTbl(tidyTableDataList)
 
   # Hide row groups specified in hidden_rgroup
   if (!(is.null(hidden_rgroup))) {
-    row_ref_tbl <- row_ref_tbl %>%
+    rowRefTbl <- rowRefTbl %>%
       dplyr::mutate_at(
         rgroup,
         function(x) {
@@ -190,7 +185,7 @@ tidyHtmlTable.data.frame <- function(x,
 
   # Hide tspanners specified in hidden_tspanner
   if (!(is.null(hidden_tspanner))) {
-    row_ref_tbl <- row_ref_tbl %>%
+    rowRefTbl <- rowRefTbl %>%
       dplyr::mutate_at(
         tspanner,
         function(x) {
@@ -234,7 +229,7 @@ tidyHtmlTable.data.frame <- function(x,
   # Get names and indices for row groups and tspanners
   htmlTable_args <- list(
     x = formatted_df,
-    rnames = row_ref_tbl %>% dplyr::pull(rnames),
+    rnames = rowRefTbl %>% dplyr::pull(rnames),
     header = col_ref_tbl %>% dplyr::pull(header),
     ...
   )
@@ -243,19 +238,19 @@ tidyHtmlTable.data.frame <- function(x,
 
     # This will take care of a problem in which adjacent row groups
     # with the same value will cause rgroup and tspanner collision
-    comp_val <- row_ref_tbl %>% dplyr::pull(rgroup)
+    comp_val <- rowRefTbl %>% dplyr::pull(rgroup)
 
     if (!is.null(tspanner)) {
       comp_val <- paste0(
         comp_val,
-        row_ref_tbl %>% dplyr::pull(tspanner)
+        rowRefTbl %>% dplyr::pull(tspanner)
       )
     }
 
     lens <- rle(comp_val)$lengths
     idx <- cumsum(lens)
 
-    htmlTable_args$rgroup <- row_ref_tbl %>%
+    htmlTable_args$rgroup <- rowRefTbl %>%
       dplyr::slice(idx) %>%
       dplyr::pull(rgroup)
 
@@ -264,9 +259,9 @@ tidyHtmlTable.data.frame <- function(x,
 
   if (!is.null(tspanner)) {
     htmlTable_args$tspanner <-
-      rle(row_ref_tbl %>% dplyr::pull(tspanner))$value
+      rle(rowRefTbl %>% dplyr::pull(tspanner))$value
     htmlTable_args$n.tspanner <-
-      rle(row_ref_tbl %>% dplyr::pull(tspanner))$lengths
+      rle(rowRefTbl %>% dplyr::pull(tspanner))$lengths
   }
 
   # Get names and indices for column groups
