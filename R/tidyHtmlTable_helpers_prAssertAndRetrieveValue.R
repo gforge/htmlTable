@@ -14,14 +14,17 @@ prAssertAndRetrieveValue <- function(x,
         " and the data frame does not have a '", name, "' column"
       )
     }
-    value <- x$value
-  } else {
-    value <- dplyr::select(x, {{ value }})
-    stopifnot(ncol(value) == maxCols)
-    if (maxCols > 1) {
-      return(value)
-    }
-    value <- value[[1]]
+    return(x[[name]])
   }
-  return(value)
+
+  # We are one-caller removed from the original call so we need to
+  # do this nasty hack to get the parameter of the parent function
+  orgName <- eval(substitute(substitute(value)), env=parent.frame())
+  value <- dplyr::select(x, {{ orgName }})
+  stopifnot(ncol(value) == maxCols)
+  if (maxCols > 1) {
+    return(value)
+  }
+
+  return(value[[1]])
 }

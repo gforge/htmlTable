@@ -390,7 +390,7 @@ test_that("HTML code is properly escaped", {
                              class = c("htmlTable","character"),
                              ... = list()))
 
-  tibble_test <- as_tibble(df_test)
+  tibble_test <- tibble::as_tibble(df_test)
   expect_identical(htmlTable(tibble_test,
                              rnames = FALSE,
                              escape.html = TRUE),

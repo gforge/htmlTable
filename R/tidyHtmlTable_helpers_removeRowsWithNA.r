@@ -1,18 +1,18 @@
 # Removes rows containing NA values in any mapped columns from the tidy dataset
 removeRowsWithNA <- function(tidyTableDataList) {
-  tidyTableData <- do.call(cbind, tidyTableDataList)
+  tidyTableData <- tidyTableDataList %>% tibble::as_tibble()
 
-  hasNa <- tidyTableData %>% is.na()
+  hasNA <- tidyTableData %>% is.na()
 
-  naPerRow <- hasNa %>%
+  naPerRow <- hasNA %>%
     rowSums()
 
   keepIdx <- naPerRow == 0
   removed <- sum(naPerRow > 0)
 
   if (removed != 0) {
-    naPerCol <- hasNa %>% colSums()
-    naColumns <- colnames(na.log)[naPerCol > 0]
+    naPerCol <- hasNA %>% colSums()
+    naColumns <- colnames(hasNA)[naPerCol > 0]
     warning(paste0(
       "NA values were detected in the following columns of ",
       "the tidy dataset: ",
@@ -23,7 +23,7 @@ removeRowsWithNA <- function(tidyTableDataList) {
 
   return(sapply(tidyTableDataList,
     function(x) {
-      if (is.is.data.frame(x)) {
+      if (is.data.frame(x)) {
         return(x %>% dplyr::filter(keepIdx))
       }
 

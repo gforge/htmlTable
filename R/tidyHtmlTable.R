@@ -173,7 +173,7 @@ tidyHtmlTable.data.frame <- function(x,
   rowRefTbl <- getRowTbl(tidyTableDataList)
 
   # Hide row groups specified in hidden_rgroup
-  if (!(is.null(hidden_rgroup))) {
+  if (!missing(hidden_rgroup)) {
     rowRefTbl <- rowRefTbl %>%
       dplyr::mutate_at(
         rgroup,
@@ -184,7 +184,7 @@ tidyHtmlTable.data.frame <- function(x,
   }
 
   # Hide tspanners specified in hidden_tspanner
-  if (!(is.null(hidden_tspanner))) {
+  if (!missing(hidden_tspanner)) {
     rowRefTbl <- rowRefTbl %>%
       dplyr::mutate_at(
         tspanner,
@@ -194,53 +194,37 @@ tidyHtmlTable.data.frame <- function(x,
       )
   }
 
-  col_ref_tbl <- x %>%
-    get_col_tbl(
-      header = header,
-      cgroup1 = cgroup1,
-      cgroup2 = cgroup2
-    )
+  colRefTbl <- getColTbl(tidyTableDataList)
 
   # Format the values for display
-  to_select <- c("r_idx", "c_idx", value)
-  formatted_df <- x %>%
-    add_col_idx(
-      header = header,
-      cgroup1 = cgroup1,
-      cgroup2 = cgroup2
-    ) %>%
-    add_row_idx(
-      rnames = rnames,
-      rgroup = rgroup,
-      tspanner = tspanner
-    ) %>%
-    dplyr::select(to_select) %>%
-    dplyr::mutate_at(value, as.character) %>%
+  formatted_df <- suppressMessages(tidyTableDataList %>%
+                                     tibble::as_tibble()  %>%
+                                     inner_join(getColTbl(tidyTableDataList)) %>%
+                                     inner_join(getRowTbl(tidyTableDataList))) %>%
+    dplyr::select(r_idx, c_idx, value) %>%
+    dplyr::mutate_at(vars(value), as.character) %>%
     # Spread will fill missing values (both explict and implicit) with the
     # same value, so we need to convert these values to a character if we want
     # them to show up correctly in the final table
-    tidyr::spread(
-      key = "c_idx",
-      value = value,
-      fill = ""
-    )
-  formatted_df$r_idx <- NULL
+    tidyr::pivot_wider(
+      names_from = "c_idx"
+    ) %>%
+    dplyr::select(-r_idx)
 
   # Get names and indices for row groups and tspanners
   htmlTable_args <- list(
     x = formatted_df,
     rnames = rowRefTbl %>% dplyr::pull(rnames),
-    header = col_ref_tbl %>% dplyr::pull(header),
+    header = colRefTbl %>% dplyr::pull(header),
     ...
   )
 
-  if (!is.null(rgroup)) {
-
+  if (!missing(rgroup)) {
     # This will take care of a problem in which adjacent row groups
     # with the same value will cause rgroup and tspanner collision
     comp_val <- rowRefTbl %>% dplyr::pull(rgroup)
 
-    if (!is.null(tspanner)) {
+    if (!missing(tspanner)) {
       comp_val <- paste0(
         comp_val,
         rowRefTbl %>% dplyr::pull(tspanner)
@@ -257,7 +241,7 @@ tidyHtmlTable.data.frame <- function(x,
     htmlTable_args$n.rgroup <- lens
   }
 
-  if (!is.null(tspanner)) {
+  if (!missing(tspanner)) {
     htmlTable_args$tspanner <-
       rle(rowRefTbl %>% dplyr::pull(tspanner))$value
     htmlTable_args$n.tspanner <-
@@ -265,24 +249,29 @@ tidyHtmlTable.data.frame <- function(x,
   }
 
   # Get names and indices for column groups
-  if (!is.null(cgroup1)) {
-    cgroup1_out <- rle(col_ref_tbl %>% dplyr::pull(cgroup1))$value
-    n.cgroup1 <- rle(col_ref_tbl %>% dplyr::pull(cgroup1))$lengths
-    if (!is.null(cgroup2)) {
-      cgroup2_out <- rle(col_ref_tbl %>% dplyr::pull(cgroup2))$value
-      n.cgroup2 <- rle(col_ref_tbl %>% dplyr::pull(cgroup2))$lengths
-      len_diff <- length(cgroup1_out) - length(cgroup2_out)
-      if (len_diff < 0) {
-        stop("cgroup2 cannot contain more categories than cgroup1")
-      } else if (len_diff > 0) {
-        cgroup2_out <- c(cgroup2, rep(NA, len_diff))
-        n.cgroup2 <- c(n.cgroup2, rep(NA, len_diff))
-      }
-      cgroup1_out <- rbind(cgroup2, cgroup1)
-      n.cgroup1 <- rbind(n.cgroup2, n.cgroup1)
+  if (!missing(cgroup)) {
+    cg <- list(values = list(), lengths = list())
+    for (colNo in 1:(ncol(colRefTbl) - 2)) {
+      counts <- rle(colRefTbl %>% dplyr::pull(colNo))
+      cg$values[[colNo]] <- counts$value
+      cg$lengths[[colNo]] <- counts$lengths
     }
-    htmlTable_args$cgroup <- cgroup1_out
-    htmlTable_args$n.cgroup <- n.cgroup1
+    maxLen <- sapply(cg$values, length) %>% max
+    for (colNo in 1:length(cg$values)) {
+      missingNA <- maxLen - length(cg$values[[colNo]])
+      if (missingNA > 0) {
+        cg$values[[colNo]] <- c(cg$values[[colNo]], rep(NA, times = missingNA))
+        cg$lengths[[colNo]] <- c(cg$lengths[[colNo]], rep(NA, times = missingNA))
+      }
+    }
+
+    if (length(cg$values) == 1) {
+      htmlTable_args$cgroup <- cg$values[[1]]
+      htmlTable_args$n.cgroup <- cg$lengths[[1]]
+    } else {
+      htmlTable_args$cgroup <- do.call(rbind, cg$values)
+      htmlTable_args$n.cgroup <- do.call(rbind, cg$lengths)
+    }
   }
 
   do.call(htmlTable, htmlTable_args)
