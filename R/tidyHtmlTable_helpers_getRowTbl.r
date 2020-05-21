@@ -10,6 +10,7 @@ prExtractElementsAndConvertToTbl <- function(x, elements) {
   x[elements] %>%
     purrr::keep(~!is.null(.)) %>%
     tibble::as_tibble() %>%
+    dplyr::distinct() %>%
     dplyr::arrange_at(vars(any_of(elements))) %>%
     # This is necessary in order to not generate NA values when setting
     # hidden elements to ""
