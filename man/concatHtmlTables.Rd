@@ -20,6 +20,7 @@ htmlTable class object
 Funciton for concatenating htmlTables
 }
 \examples{
+library(magrittr)
 # Basic example
 output <- matrix(1:4,
                  ncol=2,

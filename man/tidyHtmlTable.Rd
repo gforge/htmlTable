@@ -6,15 +6,15 @@
 \usage{
 tidyHtmlTable(
   x,
-  value = "value",
-  header = "header",
-  rnames = "rnames",
-  rgroup = NULL,
-  hidden_rgroup = NULL,
-  cgroup1 = NULL,
-  cgroup2 = NULL,
-  tspanner = NULL,
-  hidden_tspanner = NULL,
+  value,
+  header,
+  rnames,
+  rgroup,
+  hidden_rgroup,
+  cgroup,
+  tspanner,
+  hidden_tspanner,
+  skip_removal_warning = getOption("htmlTable.skip_removal_warning", FALSE),
   ...
 )
 }
@@ -22,25 +22,26 @@ tidyHtmlTable(
 \item{x}{Tidy data used to build the \code{htmlTable}}
 
 \item{value}{The column containing values filling individual cells of the
-output \code{htmlTable}}
+output \code{htmlTable}. Defaults to "value" as used by \code{\link[tidyr]{pivot_longer}}.}
 
 \item{header}{The column in \code{x} specifying column headings}
 
-\item{rnames}{The column in \code{x} specifying row names}
+\item{rnames}{The column in \code{x} specifying row names. Defaults to "name" as used by
+\code{\link[tidyr]{pivot_longer}}.}
 
 \item{rgroup}{The column in \code{x} specifying row groups}
 
-\item{hidden_rgroup}{rgroup values that will be hidden.}
+\item{hidden_rgroup}{\code{strings} with rgroup values that will be hidden  (the values will
+still be there but thhe spanner will be set to "" and thus ignored byt \code{\link{htmlTable}}).}
 
-\item{cgroup1}{The column in \code{x} specifying the inner most column
-groups}
-
-\item{cgroup2}{The column in \code{x} specifying the outer most column
-groups}
+\item{cgroup}{The column or columns in \code{x} specifying the column groups}
 
 \item{tspanner}{The column in \code{x} specifying tspanner groups}
 
-\item{hidden_tspanner}{tspanner values that will be hidden.}
+\item{hidden_tspanner}{\code{strings} with tspanner values that will be hidden (the values will
+still be there but thhe spanner will be set to "" and thus ignored byt \code{\link{htmlTable}}).}
+
+\item{skip_removal_warning}{\code{boolean} supress warning message when removing NA columns.}
 
 \item{...}{Additional arguments that will be passed to the inner
 \code{\link{htmlTable}} function}
@@ -53,6 +54,7 @@ Builds an \code{htmlTable} by mapping columns from the input data, \code{x},
 to elements of an output \code{htmlTable} (e.g. rnames, header, etc.)
 }
 \section{Column-mapping parameters}{
+
 
   The \code{tidyHtmlTable} function is designed to work like ggplot2 in that
   columns from \code{x} are mapped to specific parameters from the
@@ -102,48 +104,38 @@ to elements of an output \code{htmlTable} (e.g. rnames, header, etc.)
 
 \section{Additional dependencies}{
 
- In order to run this function you also must have \code{\link[dplyr]{dplyr}} and
- \code{\link[tidyr]{tidyr}} packages installed. These have been removed due to
- the additional 20 Mb that these dependencies added (issue #47). The particular
- functions required are:
-
- \itemize{
-   \item \code{\link[dplyr]{dplyr}}:
-   \code{mutate_at},
-   \code{select},
-   \code{pull},
-   \code{slice},
-   \code{filter},
-   \code{arrange_at},
-   \code{mutate_if},
-   \code{is.grouped_df},
-   \code{left_join}
-   \item \code{\link[tidyr]{tidyr}}: \code{spread}
- }
+   In order to run this function you also must have \code{\link[dplyr]{dplyr}},
+   \code{\link[tidyr]{tidyr}}, \code{\link[tidyselect]{tidyselect}} and
+   \code{\link[purrr]{purrr}} packages installed. These have been removed due to
+   the additional 20 Mb that these dependencies added (issue #47).
 }
 
 \examples{
-\dontrun{
-library(tidyverse)
 mtcars \%>\%
-    rownames_to_column \%>\%
-    select(rowname, cyl, gear, hp, mpg, qsec) \%>\%
-    gather(per_metric, value, hp, mpg, qsec) \%>\%
-    group_by(cyl, gear, per_metric) \%>\%
-    summarise(Mean = round(mean(value), 1),
-              SD = round(sd(value), 1),
-              Min = round(min(value), 1),
-              Max = round(max(value), 1)) \%>\%
-     gather(summary_stat, value, Mean, SD, Min, Max) \%>\%
-     ungroup \%>\%
-     mutate(gear = paste(gear, "Gears"),
-            cyl = paste(cyl, "Cylinders")) \%>\%
-     tidyHtmlTable(header = "gear",
-                  cgroup1 = "cyl",
-                  cell_value = "value",
-                  rnames = "summary_stat",
-                  rgroup = "per_metric")
-}
+  rownames_to_column() \%>\%
+  select(rowname, cyl, gear, hp, mpg, qsec) \%>\%
+  gather(per_metric, value, hp, mpg, qsec) \%>\%
+  group_by(cyl, gear, per_metric) \%>\%
+  summarise(
+    Mean = round(mean(value), 1),
+    SD = round(sd(value), 1),
+    Min = round(min(value), 1),
+    Max = round(max(value), 1)
+  ) \%>\%
+  gather(summary_stat, value, Mean, SD, Min, Max) \%>\%
+  ungroup() \%>\%
+  mutate(
+    gear = paste(gear, "Gears"),
+    cyl = paste(cyl, "Cylinders")
+  ) \%>\%
+  addHtmlTableStyle(align = "r") \%>\%
+  tidyHtmlTable(
+    header = gear,
+    cgroup = cyl,
+    rnames = summary_stat,
+    rgroup = per_metric,
+    skipRemovalWraning = TRUE
+  )
 }
 \seealso{
 \code{\link{htmlTable}}

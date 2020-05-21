@@ -4,6 +4,7 @@
 #' to elements of an output \code{htmlTable} (e.g. rnames, header, etc.)
 #'
 #' @section Column-mapping parameters:
+#'
 #'   The \code{tidyHtmlTable} function is designed to work like ggplot2 in that
 #'   columns from \code{x} are mapped to specific parameters from the
 #'   \code{htmlTable} function. At minimum, \code{x} must contain the names
@@ -47,71 +48,31 @@
 #'     \item \code{hidden_tspanner}
 #'   }
 #' @section Additional dependencies:
-#'  In order to run this function you also must have \code{\link[dplyr]{dplyr}} and
-#'  \code{\link[tidyr]{tidyr}} packages installed. These have been removed due to
-#'  the additional 20 Mb that these dependencies added (issue #47). The particular
-#'  functions required are:
-#'
-#'  \itemize{
-#'    \item \code{\link[dplyr]{dplyr}}:
-#'    \code{mutate_at},
-#'    \code{select},
-#'    \code{pull},
-#'    \code{slice},
-#'    \code{filter},
-#'    \code{arrange_at},
-#'    \code{mutate_if},
-#'    \code{is.grouped_df},
-#'    \code{left_join}
-#'    \item \code{\link[tidyr]{tidyr}}: \code{spread}
-#'  }
+#'    In order to run this function you also must have \code{\link[dplyr]{dplyr}},
+#'    \code{\link[tidyr]{tidyr}}, \code{\link[tidyselect]{tidyselect}} and
+#'    \code{\link[purrr]{purrr}} packages installed. These have been removed due to
+#'    the additional 20 Mb that these dependencies added (issue #47).
 #'
 #' @param x Tidy data used to build the \code{htmlTable}
 #' @param value The column containing values filling individual cells of the
-#' output \code{htmlTable}
+#' output \code{htmlTable}. Defaults to "value" as used by \code{\link[tidyr]{pivot_longer}}.
 #' @param header The column in \code{x} specifying column headings
-#' @param rnames The column in \code{x} specifying row names
+#' @param rnames The column in \code{x} specifying row names. Defaults to "name" as used by
+#'  \code{\link[tidyr]{pivot_longer}}.
 #' @param rgroup The column in \code{x} specifying row groups
-#' @param hidden_rgroup rgroup values that will be hidden.
-#' @param cgroup1 The column in \code{x} specifying the inner most column
-#'  groups
-#' @param cgroup2 The column in \code{x} specifying the outer most column
-#'  groups
+#' @param hidden_rgroup \code{strings} with rgroup values that will be hidden  (the values will
+#'  still be there but thhe spanner will be set to "" and thus ignored byt \code{\link{htmlTable}}).
+#' @param cgroup The column or columns in \code{x} specifying the column groups
 #' @param tspanner The column in \code{x} specifying tspanner groups
-#' @param hidden_tspanner tspanner values that will be hidden.
+#' @param hidden_tspanner \code{strings} with tspanner values that will be hidden (the values will
+#'  still be there but thhe spanner will be set to "" and thus ignored byt \code{\link{htmlTable}}).
+#' @param skip_removal_warning \code{boolean} supress warning message when removing NA columns.
 #' @param ... Additional arguments that will be passed to the inner
 #' \code{\link{htmlTable}} function
 #' @return Returns html code that will build a pretty table
 #' @export
 #' @seealso \code{\link{htmlTable}}
-#' @examples
-#' \dontrun{
-#' library(tidyverse)
-#' mtcars %>%
-#'   rownames_to_column() %>%
-#'   select(rowname, cyl, gear, hp, mpg, qsec) %>%
-#'   gather(per_metric, value, hp, mpg, qsec) %>%
-#'   group_by(cyl, gear, per_metric) %>%
-#'   summarise(
-#'     Mean = round(mean(value), 1),
-#'     SD = round(sd(value), 1),
-#'     Min = round(min(value), 1),
-#'     Max = round(max(value), 1)
-#'   ) %>%
-#'   gather(summary_stat, value, Mean, SD, Min, Max) %>%
-#'   ungroup() %>%
-#'   mutate(
-#'     gear = paste(gear, "Gears"),
-#'     cyl = paste(cyl, "Cylinders")
-#'   ) %>%
-#'   tidyHtmlTable(
-#'     header = "gear",
-#'     cgroup1 = "cyl",
-#'     cell_value = "value",
-#'     rnames = "summary_stat",
-#'     rgroup = "per_metric"
-#'   )
-#' }
+#' @example inst/examples/tidyHtmlTable_example.R
 tidyHtmlTable <- function(x,
                           value,
                           header,
@@ -121,6 +82,7 @@ tidyHtmlTable <- function(x,
                           cgroup,
                           tspanner,
                           hidden_tspanner,
+                          skip_removal_warning = getOption("htmlTable.skip_removal_warning", FALSE),
                           ...) {
   UseMethod("tidyHtmlTable")
 }
@@ -140,14 +102,16 @@ tidyHtmlTable.data.frame <- function(x,
                                      cgroup,
                                      tspanner,
                                      hidden_tspanner,
+                                     skip_removal_warning = FALSE,
                                      ...) {
-
   # You need the suggested package for this function
   safeLoadPkg("dplyr")
   safeLoadPkg("tidyr")
   safeLoadPkg("tidyselect")
   safeLoadPkg("purrr")
 
+  # Re-attach style to the new object at the end
+  style_list <- prGetAttrWithDefault(x, which = style_attribute_name, default = NULL)
 
   # Check if x is a grouped tbl_df
   if (dplyr::is.grouped_df(x)) {
@@ -166,7 +130,7 @@ tidyHtmlTable.data.frame <- function(x,
 
   checkUniqueness(tidyTableDataList)
 
-  tidyTableDataList %<>% removeRowsWithNA()
+  tidyTableDataList %<>% removeRowsWithNA(skip_removal_warning = skip_removal_warning)
 
   # Create tables from which to gather row, column, and tspanner names
   # and indices
@@ -199,16 +163,11 @@ tidyHtmlTable.data.frame <- function(x,
   # Format the values for display
   formatted_df <- suppressMessages(tidyTableDataList %>%
                                      tibble::as_tibble()  %>%
-                                     inner_join(getColTbl(tidyTableDataList)) %>%
-                                     inner_join(getRowTbl(tidyTableDataList))) %>%
+                                     dplyr::inner_join(getColTbl(tidyTableDataList)) %>%
+                                     dplyr::inner_join(getRowTbl(tidyTableDataList))) %>%
     dplyr::select(r_idx, c_idx, value) %>%
     dplyr::mutate_at(vars(value), as.character) %>%
-    # Spread will fill missing values (both explict and implicit) with the
-    # same value, so we need to convert these values to a character if we want
-    # them to show up correctly in the final table
-    tidyr::pivot_wider(
-      names_from = "c_idx"
-    ) %>%
+    tidyr::pivot_wider(names_from = "c_idx") %>%
     dplyr::select(-r_idx)
 
   # Get names and indices for row groups and tspanners
@@ -251,11 +210,17 @@ tidyHtmlTable.data.frame <- function(x,
   # Get names and indices for column groups
   if (!missing(cgroup)) {
     cg <- list(values = list(), lengths = list())
-    for (colNo in 1:(ncol(colRefTbl) - 2)) {
+    noCgroup <- 1
+    if (is.data.frame(tidyTableDataList$cgroup)) {
+      noCgroup <- ncol(tidyTableDataList$cgroup)
+    }
+
+    for (colNo in 1:noCgroup) {
       counts <- rle(colRefTbl %>% dplyr::pull(colNo))
       cg$values[[colNo]] <- counts$value
       cg$lengths[[colNo]] <- counts$lengths
     }
+
     maxLen <- sapply(cg$values, length) %>% max
     for (colNo in 1:length(cg$values)) {
       missingNA <- maxLen - length(cg$values[[colNo]])
@@ -274,5 +239,8 @@ tidyHtmlTable.data.frame <- function(x,
     }
   }
 
+  if (!is.null(style_list)) {
+    attr(htmlTable_args$x, style_attribute_name) <- style_list
+  }
   do.call(htmlTable, htmlTable_args)
 }
