@@ -9,6 +9,9 @@ Changes for 2.0.0
 * txtRound can now add txtInt when formatting the integer section for easier readability
 * Added htmlTable css options - they should all start with `htmlTable.`
 * pos.caption now uses match.arg as expected
+* Moved to a fully tidyverse compatible system with tidyHtmlTable. This is a breaking change to the API as we switch from
+  columns as strings to `tidyselect` syntax and as `gather`/`spread` have been replaced by `pivot_longer`/`pivot_wider`
+  the default values have been updated in accordance with their defaults, e.g. `rnames = "name"` and `value = "value"`.
 
 Changes for 1.13.3
 ------------------
