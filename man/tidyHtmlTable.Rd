@@ -140,8 +140,7 @@ mtcars \%>\%
     cgroup = cyl,
     rnames = summary_stat,
     rgroup = per_metric,
-    skip_removal_warning = TRUE
-  )
+    skip_removal_warning = TRUE)
 }
 \seealso{
 \code{\link{htmlTable}}
