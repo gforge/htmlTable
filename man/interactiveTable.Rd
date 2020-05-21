@@ -64,6 +64,7 @@ This function wraps the htmlTable and adds JavaScript code for toggling the amou
 of text shown in any particular cell.
 }
 \examples{
+library(magrittr)
 # A simple output
 long_txt <- "Lorem ipsum dolor sit amet, consectetur adipiscing elit,
 sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
@@ -77,7 +78,8 @@ short_txt <- gsub("(^[^.]+).*", "\\\\1", long_txt)
 cbind(rep(short_txt, 2),
       rep(long_txt, 2)) \%>\%
   addHtmlTableStyle(col.rgroup = c("#FFF", "#EEF")) \%>\%
-  interactiveTable(minimized.columns = ncol(output),
+  interactiveTable(.,
+                   minimized.columns = ncol(.),
                    header = c("Short", "Long"),
                    rnames = c("First", "Second"))
 }
