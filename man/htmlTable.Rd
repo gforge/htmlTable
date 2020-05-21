@@ -378,9 +378,14 @@ suppressWarnings({
 })
 
 # An example of how to use the css.cell for header styling
-matrix(1:4, ncol=2) \%>\%
-  addHtmlTableStyle(css.cell = rbind(rep("background: lightgrey; font-size: 2em;", times=ncol(simple_output)),
-                                     matrix("", ncol=ncol(simple_output), nrow=nrow(simple_output)))) \%>\%
+simple_output <- matrix(1:4, ncol=2)
+
+simple_output \%>\%
+  addHtmlTableStyle(css.cell = rbind(rep("background: lightgrey; font-size: 2em;",
+                                         times=ncol(simple_output)),
+                                     matrix("",
+                                            ncol=ncol(simple_output),
+                                            nrow=nrow(simple_output)))) \%>\%
   htmlTable(header = LETTERS[1:2]) ->
   all_tables[["Header formatting"]]
 
