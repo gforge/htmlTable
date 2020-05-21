@@ -299,6 +299,8 @@ to switch to PDF-output.
 }
 
 \examples{
+library(magrittr)
+
 # Basic example
 output <- matrix(1:4,
                  ncol=2,

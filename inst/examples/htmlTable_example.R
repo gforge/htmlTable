@@ -1,3 +1,5 @@
+library(magrittr)
+
 # Basic example
 output <- matrix(1:4,
                  ncol=2,
