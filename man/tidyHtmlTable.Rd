@@ -111,10 +111,15 @@ to elements of an output \code{htmlTable} (e.g. rnames, header, etc.)
 }
 
 \examples{
+library(tibble)
+library(dplyr)
+library(tidyr)
+
 mtcars \%>\%
   rownames_to_column() \%>\%
   select(rowname, cyl, gear, hp, mpg, qsec) \%>\%
-  gather(per_metric, value, hp, mpg, qsec) \%>\%
+  pivot_longer(names_to = "per_metric",
+               cols = c(hp, mpg, qsec)) \%>\%
   group_by(cyl, gear, per_metric) \%>\%
   summarise(
     Mean = round(mean(value), 1),
@@ -122,7 +127,8 @@ mtcars \%>\%
     Min = round(min(value), 1),
     Max = round(max(value), 1)
   ) \%>\%
-  gather(summary_stat, value, Mean, SD, Min, Max) \%>\%
+  pivot_longer(names_to = "summary_stat",
+               cols = c(Mean, SD, Min, Max)) \%>\%
   ungroup() \%>\%
   mutate(
     gear = paste(gear, "Gears"),
@@ -134,7 +140,7 @@ mtcars \%>\%
     cgroup = cyl,
     rnames = summary_stat,
     rgroup = per_metric,
-    skipRemovalWraning = TRUE
+    skip_removal_warning = TRUE
   )
 }
 \seealso{

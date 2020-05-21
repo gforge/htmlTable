@@ -166,7 +166,7 @@ tidyHtmlTable.data.frame <- function(x,
                                      dplyr::inner_join(getColTbl(tidyTableDataList)) %>%
                                      dplyr::inner_join(getRowTbl(tidyTableDataList))) %>%
     dplyr::select(r_idx, c_idx, value) %>%
-    dplyr::mutate_at(vars(value), as.character) %>%
+    dplyr::mutate_at(dplyr::vars(value), as.character) %>%
     tidyr::pivot_wider(names_from = "c_idx") %>%
     dplyr::select(-r_idx)
 
@@ -244,3 +244,6 @@ tidyHtmlTable.data.frame <- function(x,
   }
   do.call(htmlTable, htmlTable_args)
 }
+
+`c_idx` <- "Fix no visible binding"
+`r_idx` <- "Fix no visible binding"
