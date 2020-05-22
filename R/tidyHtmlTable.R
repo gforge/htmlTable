@@ -123,7 +123,7 @@ tidyHtmlTable.data.frame <- function(x,
     header = prAssertAndRetrieveValue(x, header),
     rnames = prAssertAndRetrieveValue(x, rnames, name = "name"),
     rgroup = prAssertAndRetrieveValue(x, rgroup, optional = TRUE),
-    cgroup = prAssertAndRetrieveValue(x, cgroup, optional = TRUE),
+    cgroup = prAssertAndRetrieveValue(x, cgroup, optional = TRUE, maxCols = getOption("htmlTabl.tidyHtmlTable.maxCols", default = 5)),
     tspanner = prAssertAndRetrieveValue(x, tspanner, optional = TRUE)
   ) %>%
     purrr::keep(~ !is.null(.))

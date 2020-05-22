@@ -21,7 +21,7 @@ prAssertAndRetrieveValue <- function(x,
   # do this nasty hack to get the parameter of the parent function
   orgName <- eval(substitute(substitute(value)), envir = parent.frame())
   value <- dplyr::select(x, {{ orgName }})
-  stopifnot(ncol(value) == maxCols)
+  stopifnot(ncol(value) <= maxCols)
   if (maxCols > 1) {
     return(value)
   }

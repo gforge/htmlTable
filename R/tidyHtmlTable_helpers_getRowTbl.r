@@ -9,7 +9,7 @@ getRowTbl <- function(x) {
 prExtractElementsAndConvertToTbl <- function(x, elements) {
   x[elements] %>%
     purrr::keep(~!is.null(.)) %>%
-    tibble::as_tibble() %>%
+    do.call(dplyr::bind_cols, .) %>%
     dplyr::distinct() %>%
     dplyr::arrange_at(dplyr::vars(tidyselect::any_of(elements))) %>%
     # This is necessary in order to not generate NA values when setting
