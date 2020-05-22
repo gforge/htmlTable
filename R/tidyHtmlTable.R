@@ -190,52 +190,49 @@ tidyHtmlTable.data.frame <- function(x,
       )
     }
 
-    lens <- rle(comp_val)$lengths
-    idx <- cumsum(lens)
-
+    rcnts <- prepGroupCounts(comp_val)
     htmlTable_args$rgroup <- rowRefTbl %>%
-      dplyr::slice(idx) %>%
+      dplyr::slice(rcnts$idx) %>%
       dplyr::pull(rgroup)
 
-    htmlTable_args$n.rgroup <- lens
+    htmlTable_args$n.rgroup <- rcnts$n
   }
 
   if (!missing(tspanner)) {
-    htmlTable_args$tspanner <-
-      rle(rowRefTbl %>% dplyr::pull(tspanner))$value
-    htmlTable_args$n.tspanner <-
-      rle(rowRefTbl %>% dplyr::pull(tspanner))$lengths
+    tcnt <- prepGroupCounts(rowRefTbl %>% dplyr::pull(tspanner))
+    htmlTable_args$tspanner <- tcnt$names
+    htmlTable_args$n.tspanner <- tcnt$n
   }
 
   # Get names and indices for column groups
   if (!missing(cgroup)) {
-    cg <- list(values = list(), lengths = list())
+    cg <- list(names = list(), n = list())
     noCgroup <- 1
     if (is.data.frame(tidyTableDataList$cgroup)) {
       noCgroup <- ncol(tidyTableDataList$cgroup)
     }
 
     for (colNo in 1:noCgroup) {
-      counts <- rle(colRefTbl %>% dplyr::pull(colNo))
-      cg$values[[colNo]] <- counts$value
-      cg$lengths[[colNo]] <- counts$lengths
+      counts <- prepGroupCounts(colRefTbl %>% dplyr::pull(colNo))
+      cg$names[[colNo]] <- counts$names
+      cg$n[[colNo]] <- counts$n
     }
 
-    maxLen <- sapply(cg$values, length) %>% max
-    for (colNo in 1:length(cg$values)) {
-      missingNA <- maxLen - length(cg$values[[colNo]])
+    maxLen <- sapply(cg$names, length) %>% max
+    for (colNo in 1:length(cg$names)) {
+      missingNA <- maxLen - length(cg$names[[colNo]])
       if (missingNA > 0) {
-        cg$values[[colNo]] <- c(cg$values[[colNo]], rep(NA, times = missingNA))
-        cg$lengths[[colNo]] <- c(cg$lengths[[colNo]], rep(NA, times = missingNA))
+        cg$names[[colNo]] <- c(cg$names[[colNo]], rep(NA, times = missingNA))
+        cg$n[[colNo]] <- c(cg$n[[colNo]], rep(NA, times = missingNA))
       }
     }
 
-    if (length(cg$values) == 1) {
-      htmlTable_args$cgroup <- cg$values[[1]]
-      htmlTable_args$n.cgroup <- cg$lengths[[1]]
+    if (length(cg$names) == 1) {
+      htmlTable_args$cgroup <- cg$names[[1]]
+      htmlTable_args$n.cgroup <- cg$n[[1]]
     } else {
-      htmlTable_args$cgroup <- do.call(rbind, cg$values)
-      htmlTable_args$n.cgroup <- do.call(rbind, cg$lengths)
+      htmlTable_args$cgroup <- do.call(rbind, cg$names)
+      htmlTable_args$n.cgroup <- do.call(rbind, cg$n)
     }
   }
 
