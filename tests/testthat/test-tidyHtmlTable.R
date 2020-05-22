@@ -54,5 +54,5 @@ test_that("Basic tidyHtmlTable functionality", {
   # Each cgroup generates a empty cell in-between which is how we detect the
   # cgroup as it adds these for layout purpose
   expect_equal(ncol(parsed_table), 3 + 1 + 2)
-  expect_equal(nrow(parsed_table), length(mx$value) + length(mx$rgroup %>% unique) + 2)
+  expect_equal(nrow(parsed_table), length(mx$value) + length(mx$rgroup %>% unique))
 })
