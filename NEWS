@@ -10,6 +10,7 @@ Changes for 2.0.0
 * Added htmlTable css options - they should all start with `htmlTable.`
 * pos.caption now uses match.arg as expected
 * Fixed proper S3 function definition for htmlTable with all the arguments
+* Added htmlTable.css.border style option for allowing to choose border style. Also fixed bug with cgroup empty cells and vertical border.
 
 Changes for 1.13.3
 ------------------
