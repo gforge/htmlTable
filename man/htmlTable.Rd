@@ -8,7 +8,27 @@
 \alias{print.htmlTable}
 \title{Output an HTML table}
 \usage{
-htmlTable(x, ...)
+htmlTable(
+  x,
+  header,
+  rnames,
+  rowlabel,
+  caption,
+  tfoot,
+  label,
+  rgroup,
+  n.rgroup,
+  cgroup,
+  n.cgroup,
+  tspanner,
+  n.tspanner,
+  total,
+  ctable = TRUE,
+  compatibility = getOption("htmlTableCompat", "LibreOffice"),
+  cspan.rgroup = "all",
+  escape.html = FALSE,
+  ...
+)
 
 \method{htmlTable}{default}(
   x,
@@ -39,11 +59,6 @@ htmlTable(x, ...)
 \arguments{
 \item{x}{The matrix/data.frame with the data. For the \code{print} and \code{knit_print}
 it takes a string of the class \code{htmlTable} as \code{x} argument.}
-
-\item{...}{Passed on to \code{print.htmlTable} function and any argument except the
-\code{useViewer} will be passed on to the \code{\link[base]{cat}} functions arguments.
-\emph{Note:} as of version 2.0.0 styling options are still allowed but it is recommended
-to instead preprocess your object with \code{\link{addHtmlTableStyle}}.}
 
 \item{header}{A vector of character strings specifying column
 header, defaulting to \code{\link[base]{colnames}(x)}}
@@ -127,6 +142,11 @@ by default all columns but you may want to limit this if you have column colors
 that you want to retain.}
 
 \item{escape.html}{logical: should HTML characters be escaped? Defaults to FALSE.}
+
+\item{...}{Passed on to \code{print.htmlTable} function and any argument except the
+\code{useViewer} will be passed on to the \code{\link[base]{cat}} functions arguments.
+\emph{Note:} as of version 2.0.0 styling options are still allowed but it is recommended
+to instead preprocess your object with \code{\link{addHtmlTableStyle}}.}
 
 \item{useViewer}{If you are using RStudio there is a viewer thar can render
 the table within that is envoced if in \code{\link[base]{interactive}} mode.

@@ -9,6 +9,7 @@ Changes for 2.0.0
 * txtRound can now add txtInt when formatting the integer section for easier readability
 * Added htmlTable css options - they should all start with `htmlTable.`
 * pos.caption now uses match.arg as expected
+* Fixed proper S3 function definition for htmlTable with all the arguments
 
 Changes for 1.13.3
 ------------------
