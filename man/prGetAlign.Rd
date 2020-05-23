@@ -4,10 +4,18 @@
 \alias{prGetAlign}
 \title{Gets alignment}
 \usage{
-prGetAlign(align, index)
+prGetAlign(align, index, emptyCell = FALSE)
 }
 \arguments{
+\item{align}{A character strings specifying column alignments, defaulting to \code{'c'}
+to center. Valid chars for alignments are l = left, c = center and r = right. You can also specify
+\code{align='c|c'} and other LaTeX tabular formatting. If you want to set the alignment of the
+rownames this string needst to be \code{ncol(x) + 1}, otherwise it automatically
+pads the string with a left alignment for the rownames.}
+
 \item{index}{The index of the align parameter of interest}
+
+\item{emptyCell}{We don't want two borders when encontering an empty cgroup filler cell}
 }
 \description{
 Gets alignment

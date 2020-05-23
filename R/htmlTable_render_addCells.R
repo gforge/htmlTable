@@ -29,7 +29,7 @@ prAddCells <- function(rowcells, cellcode, style_list, style, prepped_cell_css, 
 
     cell_style <- c(prepped_cell_css[nr],
                     style,
-                    prGetAlign(style_list$align, nr + has_rn_col))
+                    prGetAlign(style_list$align, index = nr + has_rn_col))
     if (!is.null(style_list$col.columns)){
       cell_style %<>%
         c(`background-color` = style_list$col.columns[nr])
@@ -47,13 +47,18 @@ prAddCells <- function(rowcells, cellcode, style_list, style, prepped_cell_css, 
     if (nr != length(rowcells) &&
           nr <= length(cgroup_spacer_cells) &&
           cgroup_spacer_cells[nr] > 0){
+      # The same style as previous but without align borders
+      cell_style <- c(prepped_cell_css[nr],
+                      style,
+                      prGetAlign(style_list$align, index = nr + has_rn_col, emptyCell = TRUE))
       spanner_style <- style
+
       if (!is.null(style_list$col.columns)){
         if (style_list$col.columns[nr] == style_list$col.columns[nr + 1]){
-          spanner_style %<>%
-            c(`background-color` = style_list$col.columns[nr])
+          spanner_style %<>% c(`background-color` = style_list$col.columns[nr])
         }
       }
+
       cell_str %<>%
         sprintf("%s\n\t\t<%s style='%s' colspan='%d'>&nbsp;</%s>",
                 .,

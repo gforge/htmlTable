@@ -223,7 +223,31 @@
 #' @export
 #' @rdname htmlTable
 #' @family table functions
-htmlTable <- function(x, ...){
+htmlTable <- function(x,
+                      header,
+                      rnames,
+                      rowlabel,
+                      caption,
+                      tfoot,
+                      label,
+
+                      # Grouping
+                      rgroup,
+                      n.rgroup,
+
+                      cgroup,
+                      n.cgroup,
+
+                      tspanner,
+                      n.tspanner,
+
+                      total,
+
+                      ctable = TRUE,
+                      compatibility = getOption("htmlTableCompat", "LibreOffice"),
+                      cspan.rgroup = "all",
+                      escape.html = FALSE,
+                      ...){
   UseMethod("htmlTable")
 }
 
@@ -233,27 +257,30 @@ htmlTable.data.frame <- function(x, ...) {
   if(nrow(x) == 0){
     warning(paste(deparse(substitute(x)), "is an empty object"))
   }
-  htmlTable.default(prConvertDfFactors(x),...)
+  htmlTable.default(prConvertDfFactors(x), ...)
 }
 
 #' @export
-htmlTable.matrix <- function(x, total, ...) {
+htmlTable.matrix <- function(x, ...) {
   # deal gracefully with an empty matrix - issue a warning.
   if(nrow(x) == 0){
     warning(paste(deparse(substitute(x)), "is an empty object"))
   }
 
+  # Default to a sum-row when provided a table that
+  dots <- list(...)
   if (all(class(x) %in% c("table", "matrix", "array")) &&
       !is.null(rownames(x)) &&
       grepl("^sum$", tail(rownames(x), 1), ignore.case = TRUE) &&
-      missing(total)) {
-    total = TRUE
+      is.null(dots$total)) {
+    dots$total <- TRUE
   }
+  dots$x <- x
 
-  htmlTable.default(x, total = total, ...)
+  do.call(htmlTable.default, dots)
 }
 
-`.` <- "magrittr RCM check issue"
+`.` <- "magrittr CMD check issue"
 
 #' @importFrom stringr str_replace str_replace_all str_trim
 #' @importFrom htmltools htmlEscape
@@ -916,17 +943,22 @@ htmlTable.default <- function(x,
   table_str %<>%
     paste0("\n</table>")
 
-  # Fix indentation issue with pandoc v1.13
-  table_str %<>% gsub("\t", "", .)
+  # Fix indentation issue with pandoc v1.13 - can be overridden if you want to look at a pretty `cat()`
+  if (!getOption("htmlTable.pretty_indentation", default = FALSE)) {
+    table_str %<>% gsub("\t", "", .)
+  }
 
+  # HTML favors UTF-8 and thus the string should be encoded as utf8
+  table_str <- enc2utf8(table_str)
   class(table_str) <- c("htmlTable", class(table_str))
   attr(table_str, "...") <- dots
+  attr(table_str, "html") <- TRUE
 
   # Add html class if this is a table inside a notebook for inline output
   if (!getOption('htmlTable.skip_notebook', FALSE) && prIsNotebook()) {
     class(table_str) <- c("html", class(table_str))
-    attr(table_str, "html") <- TRUE
   }
+
   return(table_str)
 }
 

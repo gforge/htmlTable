@@ -6,10 +6,14 @@ output:
 
 ```{r}
 library(htmlTable)
-mx <- matrix(1, ncol=1)
-colnames(mx) <- c("A")
-rownames(mx) <- letters[1]
-htmlTable(mx)
+library(magrittr)
+mx <- matrix(1:4, ncol=2) %>% 
+  set_colnames(c("A åäö¨", "B")) %>% 
+  set_rownames(letters[1:2])
+mx %>% 
+  addHtmlTableStyle(align = "r|r") %>% 
+  htmlTable(cgroup = c("Some c-group", ""),
+            n.cgroup = 1)
 ```
 
 
