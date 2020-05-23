@@ -8,6 +8,7 @@ The **htmlTable** package is intended for generating tables using [HTML](http://
 
 
 ```r
+library(magrittr)
 library(htmlTable)
 # A simple output
 output <- matrix(1:4,
@@ -63,16 +64,14 @@ For demonstration purposes we will setup a basic matrix:
 
 ```r
 mx <-
-  matrix(ncol=6, nrow=8)
-rownames(mx) <- paste(c("1st", "2nd",
-                        "3rd",
-                        paste0(4:8, "th")),
-                      "row")
-colnames(mx) <- paste(c("1st", "2nd",
-                        "3rd", 
-                        paste0(4:6, "th")),
-                      "hdr")
-
+  matrix(ncol=6, nrow=8) %>% 
+  set_rownames(paste(c("1st", "2nd", "3rd",
+                       paste0(4:8, "th")),
+                     "row")) %>% 
+  set_colnames(paste(c("1st", "2nd", "3rd", 
+                       paste0(4:6, "th")),
+                     "hdr"))
+                     
 for (nr in 1:nrow(mx)){
   for (nc in 1:ncol(mx)){
     mx[nr, nc] <-
@@ -281,14 +280,14 @@ htmlTable(mx,
 	</tbody>
 </table>
 
-When mixing row groups with variables without row groups we may want to omit the bold formatting of the row group label:
-
+When mixing row groups with variables without row groups we may want to omit the bold formatting of the row group label. As of htmlTable version 2.0
+you can separate the css styling using `addHtmlTableStyle`:
 
 ```r
-htmlTable(mx, 
-          css.rgroup = "",
-          rgroup = c(paste("Group", LETTERS[1:2]), ""),
-          n.rgroup = c(2,4,nrow(mx) - 6))
+mx %>% 
+  addHtmlTableStyle(css.rgroup = "") %>% 
+  htmlTable(rgroup = c(paste("Group", LETTERS[1:2]), ""),
+            n.rgroup = c(2,4,nrow(mx) - 6))
 ```
 
 <table class='gmisc_table' style='border-collapse: collapse;'  id='table_4'>
@@ -894,9 +893,9 @@ htmlTable(mx[1:2,1:2],
 
 
 ```r
-htmlTable(mx[1:2,1:2], 
-          pos.caption = "bottom",
-          caption="A table caption below")
+mx[1:2,1:2] %>% 
+  addHtmlTableStyle(pos.caption = "bottom") %>% 
+  htmlTable(caption="A table caption below")
 ```
 
 <table class='gmisc_table' style='border-collapse: collapse;'  id='table_5'>
@@ -1019,21 +1018,19 @@ Now if we want to do everything in one table it may look like this:
 
 
 ```r
-htmlTable(mx, 
-          align="r",
-          rgroup = paste("Group", LETTERS[1:3]),
-          n.rgroup = c(2,4,nrow(mx) - 6),
-          cgroup = rbind(c("", "Column spanners", NA),
-                         c("", "Cgroup 1", "Cgroup 2&dagger;")),
-          n.cgroup = rbind(c(1,2,NA),
-                           c(2,2,2)),
-          caption="A table with column spanners, row groups, and zebra striping",
-          tfoot="&dagger; A table footer commment",
-          cspan.rgroup = 2,
-          col.columns = c(rep("none", 2),
-                          rep("#F5FBFF", 4)),
-          col.rgroup = c("none", "#F7F7F7"),
-          css.cell = "padding-left: .5em; padding-right: .2em;")
+mx %>% 
+  addHtmlTableStyle(col.columns = c(rep("none", 2), rep("#F5FBFF", 4)),
+                    col.rgroup = c("none", "#F7F7F7"),
+                    css.cell = "padding-left: .5em; padding-right: .2em;",
+                    align="r") %>% 
+  htmlTable(rgroup = paste("Group", LETTERS[1:3]),
+            n.rgroup = c(2, 4),
+            cgroup = rbind(c("", "Column spanners", NA),
+                           c("", "Cgroup 1", "Cgroup 2&dagger;")),
+            n.cgroup = rbind(c(1, 2, NA), c(2, 2, 2)),
+            caption="A table with column spanners, row groups, and zebra striping",
+            tfoot="&dagger; A table footer commment",
+            cspan.rgroup = 2)
 ```
 
 <table class='gmisc_table' style='border-collapse: collapse;'  id='table_1'>
