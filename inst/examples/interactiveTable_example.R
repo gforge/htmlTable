@@ -12,7 +12,6 @@ short_txt <- gsub("(^[^.]+).*", "\\1", long_txt)
 cbind(rep(short_txt, 2),
       rep(long_txt, 2)) %>%
   addHtmlTableStyle(col.rgroup = c("#FFF", "#EEF")) %>%
-  interactiveTable(.,
-                   minimized.columns = ncol(.),
+  interactiveTable(minimized.columns = ncol(.),
                    header = c("Short", "Long"),
                    rnames = c("First", "Second"))
