@@ -943,17 +943,22 @@ htmlTable.default <- function(x,
   table_str %<>%
     paste0("\n</table>")
 
-  # Fix indentation issue with pandoc v1.13
-  table_str %<>% gsub("\t", "", .)
+  # Fix indentation issue with pandoc v1.13 - can be overridden if you want to look at a pretty `cat()`
+  if (!getOption("htmlTable.pretty_indentation", default = FALSE)) {
+    table_str %<>% gsub("\t", "", .)
+  }
 
+  # HTML favors UTF-8 and thus the string should be encoded as utf8
+  table_str <- enc2utf8(table_str)
   class(table_str) <- c("htmlTable", class(table_str))
   attr(table_str, "...") <- dots
+  attr(table_str, "html") <- TRUE
 
   # Add html class if this is a table inside a notebook for inline output
   if (!getOption('htmlTable.skip_notebook', FALSE) && prIsNotebook()) {
     class(table_str) <- c("html", class(table_str))
-    attr(table_str, "html") <- TRUE
   }
+
   return(table_str)
 }
 

@@ -380,23 +380,26 @@ test_that("HTML code is properly escaped", {
                              rnames = FALSE,
                              escape.html = TRUE),
                    structure("<table class='gmisc_table' style='border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;' >\n<thead>\n<tr>\n<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>a</th>\n<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>b</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td style='text-align: center;'>&lt;3</td>\n<td style='text-align: center;'>&amp;2</td>\n</tr>\n<tr>\n<td style='border-bottom: 2px solid grey; text-align: center;'>&lt;3</td>\n<td style='border-bottom: 2px solid grey; text-align: center;'>&gt;2</td>\n</tr>\n</tbody>\n</table>",
-                             class = c("htmlTable","character"),
-                             ... = list()))
+                             class = c("htmlTable", "character"),
+                             html = TRUE,
+                             `...` = list()))
 
   expect_identical(htmlTable(matrix_test,
                              rnames = FALSE,
                              escape.html = TRUE),
                    structure("<table class='gmisc_table' style='border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;' >\n<thead>\n<tr>\n<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>a</th>\n<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>b</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td style='text-align: center;'>&lt;3</td>\n<td style='text-align: center;'>&amp;2</td>\n</tr>\n<tr>\n<td style='border-bottom: 2px solid grey; text-align: center;'>&lt;3</td>\n<td style='border-bottom: 2px solid grey; text-align: center;'>&gt;2</td>\n</tr>\n</tbody>\n</table>",
-                             class = c("htmlTable","character"),
-                             ... = list()))
+                             class = c("htmlTable", "character"),
+                             html = TRUE,
+                             `...` = list()))
 
   tibble_test <- as_tibble(df_test)
   expect_identical(htmlTable(tibble_test,
                              rnames = FALSE,
                              escape.html = TRUE),
                    structure("<table class='gmisc_table' style='border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;' >\n<thead>\n<tr>\n<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>a</th>\n<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>b</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td style='text-align: center;'>&lt;3</td>\n<td style='text-align: center;'>&amp;2</td>\n</tr>\n<tr>\n<td style='border-bottom: 2px solid grey; text-align: center;'>&lt;3</td>\n<td style='border-bottom: 2px solid grey; text-align: center;'>&gt;2</td>\n</tr>\n</tbody>\n</table>",
-                             class = c("htmlTable","character"),
-                             ... = list()))
+                             class = c("htmlTable", "character"),
+                             html = TRUE,
+                             `...` = list()))
 
   expect_equal(prEscapeHtml("$")[[1]], "&#36;")
 })

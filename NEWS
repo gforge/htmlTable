@@ -11,6 +11,8 @@ Changes for 2.0.0
 * pos.caption now uses match.arg as expected
 * Fixed proper S3 function definition for htmlTable with all the arguments
 * Added htmlTable.css.border style option for allowing to choose border style. Also fixed bug with cgroup empty cells and vertical border.
+* Added htmlTable.pretty_indentation option for skipping the stripping of all the tabs that was required due to old Pandoc bug.
+* Added `attr(x, "html") <- TRUE` by default and UTF-8 encoding on all outputted strings to mimic the htmltools::HTML function behavior.
 
 Changes for 1.13.3
 ------------------
