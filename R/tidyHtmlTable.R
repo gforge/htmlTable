@@ -1,7 +1,10 @@
-#' Generate an htmlTable using a ggplot2-like interface
+#' Generate an htmlTable using tidy data as input
 #'
 #' Builds an \code{htmlTable} by mapping columns from the input data, \code{x},
-#' to elements of an output \code{htmlTable} (e.g. rnames, header, etc.)
+#' to elements of an output \code{htmlTable} (e.g. rnames, header, etc.). This
+#' provides a ggplot2-like interface you can pivot rows/columns as required. The
+#' typical use case is when you are using \code{dplyr} together with the
+#' \code{tidyverse} data processing functions, see \code{vignette("tidyHtmlTable")}.
 #'
 #' @section Column-mapping parameters:
 #'
@@ -52,7 +55,16 @@
 #'     \item \code{hidden_rgroup}
 #'     \item \code{hidden_tspanner}
 #'   }
+#'
+#' @section Simple tibble output:
+#'
+#'   The tibble discourages the use of rownames. There is therefore a convenience
+#'   option for \code{tidyHtmlTable} where you can use the function just as you
+#'   would with htmlTable where \code{rnames} is populated with "names" column or
+#'   the \code{rnames} argument provided using tidyselect syntax.
+#'
 #' @section Additional dependencies:
+#'
 #'    In order to run this function you also must have \code{\link[dplyr]{dplyr}},
 #'    \code{\link[tidyr]{tidyr}}, \code{\link[tidyselect]{tidyselect}} and
 #'    \code{\link[purrr]{purrr}} packages installed. These have been removed due to
@@ -121,6 +133,25 @@ tidyHtmlTable.data.frame <- function(x,
   # Check if x is a grouped tbl_df
   if (dplyr::is.grouped_df(x)) {
     x <- dplyr::ungroup(x)
+  }
+
+  if (missing(value) && missing(header)) {
+    # Sometimes we just want to print a tibble and these don't allow for
+    # rownames and htmlTable becomes a little annoying why we want to
+    # have a tidyverse compatible option
+    if (missing(rnames)) {
+      orgName <- rlang::as_name("name")
+    } else {
+      orgName <- substitute(rnames)
+    }
+
+    args <- list(...)
+    args$x <- x %>% select(-{{ orgName }})
+    args$rnames <- x[[as.character(orgName)]]
+    if (is.null(args$rowlabel)) {
+      args$rowlabel <- as.character(orgName)
+    }
+    return(do.call(htmlTable, args))
   }
 
   tidyTableDataList <- list(

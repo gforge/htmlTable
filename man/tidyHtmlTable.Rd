@@ -2,7 +2,7 @@
 % Please edit documentation in R/tidyHtmlTable.R
 \name{tidyHtmlTable}
 \alias{tidyHtmlTable}
-\title{Generate an htmlTable using a ggplot2-like interface}
+\title{Generate an htmlTable using tidy data as input}
 \usage{
 tidyHtmlTable(
   x,
@@ -51,7 +51,10 @@ Returns html code that will build a pretty table
 }
 \description{
 Builds an \code{htmlTable} by mapping columns from the input data, \code{x},
-to elements of an output \code{htmlTable} (e.g. rnames, header, etc.)
+to elements of an output \code{htmlTable} (e.g. rnames, header, etc.). This
+provides a ggplot2-like interface you can pivot rows/columns as required. The
+typical use case is when you are using \code{dplyr} together with the
+\code{tidyverse} data processing functions, see \code{vignette("tidyHtmlTable")}.
 }
 \section{Column-mapping parameters}{
 
@@ -72,16 +75,9 @@ to elements of an output \code{htmlTable} (e.g. rnames, header, etc.)
     \item \code{header}
     \item \code{rnames}
     \item \code{rgroup}
-    \item \code{cgroup1}
-    \item \code{cgroup2}
+    \item \code{cgroup}
     \item \code{tspanner}
   }
-
-  Note that unlike in \code{htmlTable} which contains \code{cgroup},
-  and which may specify a variable number of column groups,
-  \code{tidyhtmlTable} contains the parameters \code{cgroup1} and
-  \code{cgroup2}. These parameters correspond to the inward most and outward
-  most column groups respectively.
 
   Also note that the coordinates of each \code{value} within \code{x} must be
   unambiguously mapped to a position within the output \code{htmlTable}.
@@ -89,7 +85,21 @@ to elements of an output \code{htmlTable} (e.g. rnames, header, etc.)
   contained in \code{x} must be unique.
 }
 
+\section{Sorting}{
+
+
+  Sorting of rows is as of version 2.0 skipped as we may have situations with
+  repeating inputs and this can easily be performed pre-function by calling
+  \code{\link[dplyr]{arrange}()} prior to \code{tidyHtmlTable}.
+
+  Columns are sorted by \code{arrange(cgroup, header)} where cgroup will be
+  expanded to the columns of the cgroup argument, e.g. \code{cgroup = c(a, b), header = c}
+  will become \code{arrange(a, b, c)}. If you want to sort in non-alphabetic order
+  you can provide a \code{factor} variable and that information will be retained.
+}
+
 \section{Hidden values}{
+
 
   \code{htmlTable} Allows for some values within \code{rgroup},
   \code{cgroup}, etc. to be specified as \code{""}. The following parameters
@@ -102,7 +112,17 @@ to elements of an output \code{htmlTable} (e.g. rnames, header, etc.)
   }
 }
 
+\section{Simple tibble output}{
+
+
+  The tibble discourages the use of rownames. There is therefore a convenience
+  option for \code{tidyHtmlTable} where you can use the function just as you
+  would with htmlTable where \code{rnames} is populated with "names" column or
+  the \code{rnames} argument provided using tidyselect syntax.
+}
+
 \section{Additional dependencies}{
+
 
    In order to run this function you also must have \code{\link[dplyr]{dplyr}},
    \code{\link[tidyr]{tidyr}}, \code{\link[tidyselect]{tidyselect}} and
