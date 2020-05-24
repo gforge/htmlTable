@@ -114,7 +114,8 @@ tidyHtmlTable.default <- function(x,
                                   cgroup,
                                   tspanner,
                                   hidden_tspanner,
-                                  skip_removal_warning = getOption("htmlTable.skip_removal_warning", FALSE)) {
+                                  skip_removal_warning = getOption("htmlTable.skip_removal_warning", FALSE),
+                                  ...) {
   stop("x must be of class data.frame")
 }
 
