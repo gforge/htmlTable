@@ -21,23 +21,28 @@
 #'     \item \code{header}
 #'     \item \code{rnames}
 #'     \item \code{rgroup}
-#'     \item \code{cgroup1}
-#'     \item \code{cgroup2}
+#'     \item \code{cgroup}
 #'     \item \code{tspanner}
 #'   }
-#'
-#'   Note that unlike in \code{htmlTable} which contains \code{cgroup},
-#'   and which may specify a variable number of column groups,
-#'   \code{tidyhtmlTable} contains the parameters \code{cgroup1} and
-#'   \code{cgroup2}. These parameters correspond to the inward most and outward
-#'   most column groups respectively.
 #'
 #'   Also note that the coordinates of each \code{value} within \code{x} must be
 #'   unambiguously mapped to a position within the output \code{htmlTable}.
 #'   Therefore, the each row-wise combination the variables specified above
 #'   contained in \code{x} must be unique.
 #'
+#' @section Sorting:
+#'
+#'   Sorting of rows is as of version 2.0 skipped as we may have situations with
+#'   repeating inputs and this can easily be performed pre-function by calling
+#'   \code{\link[dplyr]{arrange}()} prior to \code{tidyHtmlTable}.
+#'
+#'   Columns are sorted by \code{arrange(cgroup, header)} where cgroup will be
+#'   expanded to the columns of the cgroup argument, e.g. \code{cgroup = c(a, b), header = c}
+#'   will become \code{arrange(a, b, c)}. If you want to sort in non-alphabetic order
+#'   you can provide a \code{factor} variable and that information will be retained.
+#'
 #' @section Hidden values:
+#'
 #'   \code{htmlTable} Allows for some values within \code{rgroup},
 #'   \code{cgroup}, etc. to be specified as \code{""}. The following parameters
 #'   allow for specific values to be treated as if they were a string of length
@@ -161,10 +166,10 @@ tidyHtmlTable.data.frame <- function(x,
   colRefTbl <- getColTbl(tidyTableDataList)
 
   # Format the values for display
-  formatted_df <- suppressMessages(tidyTableDataList %>%
-                                     tibble::as_tibble()  %>%
-                                     dplyr::inner_join(getColTbl(tidyTableDataList)) %>%
-                                     dplyr::inner_join(getRowTbl(tidyTableDataList))) %>%
+  formatted_df <- tidyTableDataList %>%
+    prBindDataListIntoColumns  %>%
+    innerJoinByCommonCols(colRefTbl) %>%
+    innerJoinByCommonCols(rowRefTbl) %>%
     dplyr::select(r_idx, c_idx, value) %>%
     dplyr::mutate_at(dplyr::vars(value), as.character) %>%
     tidyr::pivot_wider(names_from = "c_idx") %>%
