@@ -105,7 +105,16 @@ tidyHtmlTable <- function(x,
 }
 
 #' @export
-tidyHtmlTable.default <- function(x, ...) {
+tidyHtmlTable.default <- function(x,
+                                  value,
+                                  header,
+                                  rnames,
+                                  rgroup,
+                                  hidden_rgroup,
+                                  cgroup,
+                                  tspanner,
+                                  hidden_tspanner,
+                                  skip_removal_warning = getOption("htmlTable.skip_removal_warning", FALSE)) {
   stop("x must be of class data.frame")
 }
 
