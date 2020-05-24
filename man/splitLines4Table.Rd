@@ -13,6 +13,9 @@ splitLines4Table(...)
 See \code{\link{txtMergeLines}}
 }
 \examples{
+\dontrun{
+# Deprecated function
 splitLines4Table("hello", "world")
+}
 }
 \keyword{internal}
