@@ -1,4 +1,4 @@
-library('testthat')
+library(testthat)
 context('txtInt')
 
 test_that("Add zero", {

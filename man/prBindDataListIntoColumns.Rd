@@ -6,6 +6,12 @@
 \usage{
 prBindDataListIntoColumns(dataList)
 }
+\arguments{
+\item{dataList}{\code{list} with the columns/data.frames}
+}
+\value{
+\code{data.frame} object
+}
 \description{
 Almost the same as \code{\link[tibble]{tibble}} but it solves the issue
 with some of the arguments being columns and some just being vectors.

@@ -1,9 +1,10 @@
-library('testthat')
-library('dplyr')
-library('XML')
-library('tibble')
-library('purrr')
-library('glue')
+library(testthat)
+library(dplyr)
+library(tibble)
+library(purrr)
+library(glue)
+library(XML)
+library(xml2)
 
 # Add rownames
 test_that("Basic tidyHtmlTable functionality", {
@@ -17,6 +18,7 @@ test_that("Basic tidyHtmlTable functionality", {
   table_str <- mx %>%
     tidyHtmlTable(header = header,
                   label = "test_table")
+
   parsed_table <- readHTMLTable(as.character(table_str))[["test_table"]]
   expect_equal(ncol(parsed_table), 4)
   expect_equal(nrow(parsed_table), length(mx$value))
@@ -58,29 +60,6 @@ test_that("Basic tidyHtmlTable functionality", {
 })
 
 test_that("Correct table sort", {
-  header_output_from_pre_v2 <- "<thead>
-<tr>
-<th style='border-top: 2px solid grey;'></th>
-<th colspan='3' style='font-weight: 900; border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>4 Cylinders</th><th style='border-top: 2px solid grey;; border-bottom: hidden;'>&nbsp;</th>
-<th colspan='3' style='font-weight: 900; border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>6 Cylinders</th><th style='border-top: 2px solid grey;; border-bottom: hidden;'>&nbsp;</th>
-<th colspan='2' style='font-weight: 900; border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>8 Cylinders</th>
-</tr>
-<tr>
-<th style='border-bottom: 1px solid grey;'> </th>
-<th style='border-bottom: 1px solid grey; text-align: center;'>3 Gears</th>
-<th style='border-bottom: 1px solid grey; text-align: center;'>4 Gears</th>
-<th style='border-bottom: 1px solid grey; text-align: center;'>5 Gears</th>
-<th style='border-bottom: 1px solid grey; text-align: center;' colspan='1'>&nbsp;</th>
-<th style='border-bottom: 1px solid grey; text-align: center;'>3 Gears</th>
-<th style='border-bottom: 1px solid grey; text-align: center;'>4 Gears</th>
-<th style='border-bottom: 1px solid grey; text-align: center;'>5 Gears</th>
-<th style='border-bottom: 1px solid grey; text-align: center;' colspan='1'>&nbsp;</th>
-<th style='border-bottom: 1px solid grey; text-align: center;'>3 Gears</th>
-<th style='border-bottom: 1px solid grey; text-align: center;'>5 Gears</th>
-</tr>
-</thead>"
-
-
   mtcatr_proc_data <- structure(
     list(cyl = c("4 Cylinders", "4 Cylinders", "4 Cylinders",
                  "4 Cylinders", "4 Cylinders", "4 Cylinders", "4 Cylinders", "4 Cylinders",
@@ -163,5 +142,53 @@ test_that("Correct table sort", {
                   rgroup = per_metric,
                   skip_removal_warning = TRUE)
 
-  expect_match(out_str, header_output_from_pre_v2, fixed = TRUE)
+  read_html(out_str) %>%
+    xml_find_first("//thead") %>%
+    xml_find_all(".//tr/th") %>%
+    xml_contents() %>%
+    as_list() %>%
+    unlist() %>%
+    str_trim %>%
+    keep(~. != "") %>%
+    expect_equivalent(c(paste(c(4, 6, 8), "Cylinders"),
+                        paste(3:5, "Gears"),
+                        paste(3:5, "Gears"),
+                        paste(c(3, 5), "Gears")))
+
+  read_html(out_str) %>%
+    xml_find_all("//table") %>%
+    xml_find_first("//tbody") %>%
+    xml_find_all(".//tr/*[1]") %>%
+    xml_contents() %>%
+    as_list() %>%
+    unlist() %>%
+    keep(~!stringr::str_detect(., "^\\s")) %>%
+    expect_equivalent(mtcatr_proc_data  %>%
+                        distinct(per_metric) %>%
+                        arrange(per_metric) %>%
+                        extract2(1))
+
+
+  out_str <- mtcatr_proc_data  %>%
+    arrange(desc(per_metric), summary_stat) %>%
+    tidyHtmlTable(header = gear,
+                  cgroup = cyl,
+                  rnames = summary_stat,
+                  rgroup = per_metric,
+                  skip_removal_warning = TRUE)
+
+
+  read_html(out_str) %>%
+    xml_find_all("//table") %>%
+    xml_find_first("//tbody") %>%
+    xml_find_all(".//tr/*[1]") %>%
+    xml_contents() %>%
+    as_list() %>%
+    unlist() %>%
+    keep(~!stringr::str_detect(., "^\\s")) %>%
+    expect_equivalent(mtcatr_proc_data  %>%
+                        distinct(per_metric) %>%
+                        arrange(per_metric) %>%
+                        extract2(1) %>%
+                        rev)
 })

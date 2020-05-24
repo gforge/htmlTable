@@ -1,5 +1,5 @@
-library('testthat')
-library('XML')
+library(testthat)
+library(XML)
 context('interactiveTable')
 
 # A simple example

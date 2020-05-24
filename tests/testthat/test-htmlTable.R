@@ -1,6 +1,6 @@
-library('testthat')
-library('XML')
-library('tibble')
+library(testthat)
+library(XML)
+library(tibble)
 context('htmlTable')
 
 # A simple example

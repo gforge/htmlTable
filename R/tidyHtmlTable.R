@@ -126,6 +126,7 @@ tidyHtmlTable.data.frame <- function(x,
   safeLoadPkg("tidyr")
   safeLoadPkg("tidyselect")
   safeLoadPkg("purrr")
+  safeLoadPkg("rlang")
 
   # Re-attach style to the new object at the end
   style_list <- prGetAttrWithDefault(x, which = style_attribute_name, default = NULL)
@@ -146,7 +147,7 @@ tidyHtmlTable.data.frame <- function(x,
     }
 
     args <- list(...)
-    args$x <- x %>% select(-{{ orgName }})
+    args$x <- x %>% dplyr::select(-{{ orgName }})
     args$rnames <- x[[as.character(orgName)]]
     if (is.null(args$rowlabel)) {
       args$rowlabel <- as.character(orgName)
