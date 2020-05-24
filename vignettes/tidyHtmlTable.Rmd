@@ -67,6 +67,8 @@ input data.
 
 ```{r}
 tidy_summary  %>% 
+  arrange(per_metric, summary_stat) %>% 
+  addHtmlTableStyle(align = "r") %>% 
   tidyHtmlTable(header = gear,
                 cgroup = cyl,
                 rnames = summary_stat,
@@ -77,6 +79,8 @@ tidy_summary  %>%
 
 ```{r}
 tidy_summary  %>% 
+  arrange(cyl, gear) %>% 
+  addHtmlTableStyle(align = "r") %>% 
   tidyHtmlTable(header = summary_stat,
                 cgroup = per_metric,
                 rnames = gear,

@@ -5,6 +5,7 @@ library(purrr)
 library(glue)
 library(XML)
 library(xml2)
+library(stringr)
 
 # Add rownames
 test_that("Basic tidyHtmlTable functionality", {
@@ -191,4 +192,24 @@ test_that("Correct table sort", {
                         arrange(per_metric) %>%
                         extract2(1) %>%
                         rev)
+
+  out_str <- mtcatr_proc_data  %>%
+    arrange(cyl, gear) %>%
+    tidyHtmlTable(header = summary_stat,
+                  cgroup = per_metric,
+                  rnames = gear,
+                  rgroup = cyl,
+                  skip_removal_warning = TRUE)
+
+  read_html(out_str) %>%
+    xml_find_first("//thead") %>%
+    xml_find_all(".//tr/th") %>%
+    xml_contents() %>%
+    as_list() %>%
+    unlist() %>%
+    str_trim %>%
+    keep(~. != "") %>%
+    expect_equivalent(c("hp", "mpg", "qsec",
+                        rep(c("Max", "Mean", "Min", "SD"),
+                            times = 3)))
 })
