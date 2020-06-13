@@ -28,39 +28,39 @@
 #' \dontrun{
 #' setHtmlTableTheme("standard", css.cell = "padding: 0; margin: 0;")
 #' }
-setHtmlTableTheme <- function(theme,
-                              align,
-                              align.header,
-                              align.cgroup,
+setHtmlTableTheme <- function(theme = NULL,
+                              align = NULL,
+                              align.header = NULL,
+                              align.cgroup = NULL,
 
                               # CSS stuff
-                              css.rgroup,
-                              css.rgroup.sep,
+                              css.rgroup = NULL,
+                              css.rgroup.sep = NULL,
 
-                              css.tspanner,
-                              css.tspanner.sep,
+                              css.tspanner = NULL,
+                              css.tspanner.sep = NULL,
 
-                              css.total,
-                              css.cell,
-                              css.cgroup,
-                              css.header,
-                              css.header.border_bottom,
+                              css.total = NULL,
+                              css.cell = NULL,
+                              css.cgroup = NULL,
+                              css.header = NULL,
+                              css.header.border_bottom = NULL,
 
-                              css.class,
-                              css.table,
+                              css.class = NULL,
+                              css.table = NULL,
 
                               # Positions
-                              pos.rowlabel,
-                              pos.caption,
+                              pos.rowlabel = NULL,
+                              pos.caption = NULL,
 
                               # Colors
-                              col.rgroup,
-                              col.columns,
+                              col.rgroup = NULL,
+                              col.columns = NULL,
 
                               # More alternatives
-                              padding.rgroup,
-                              padding.tspanner) {
-  if (!missing(theme)) {
+                              padding.rgroup = NULL,
+                              padding.tspanner = NULL) {
+  if (!is.null(theme)) {
     if (is.character(theme)) {
       newTheme <- prGetThemeListObject(theme_name = theme)
     } else if (is.list(theme)) {

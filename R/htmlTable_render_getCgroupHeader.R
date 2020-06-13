@@ -28,7 +28,7 @@ prGetCgroupHeader <- function(x,
                               cgroup_vec.just,
                               row_no, top_row_style,
                               rnames,
-                              rowlabel,
+                              rowlabel = NULL,
                               cgroup_spacer_cells,
                               style_list,
                               prepped_cell_css,
@@ -40,7 +40,7 @@ prGetCgroupHeader <- function(x,
     ts <- ""
   }
 
-  if (!missing(rowlabel)) {
+  if (!is.null(rowlabel)) {
     if (row_no == style_list$pos.rowlabel) {
       header_str %<>% sprintf(
         "%s\n\t\t<th style='%s'>%s</th>",

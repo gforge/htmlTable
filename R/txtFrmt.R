@@ -217,17 +217,17 @@ txtRound.default = function(x,
                             digits.nonzero = NA,
                             txt.NA = "",
                             dec = getOption("htmlTable.decimal_marker", default = "."),
-                            scientific,
+                            scientific = NULL,
                             txtInt_args = getOption("htmlTable.round_int",
                                                     default = NULL),
                             ...){
-  if(length(digits) != 1 & length(digits) != length(x))
+  if (length(digits) != 1 & length(digits) != length(x))
     stop("You have ",
          length(digits),
          " digits specifications but a vector of length ",
          length(x),
          ": ",
-         paste(x, collapse=", "))
+         paste(x, collapse = ", "))
 
   if (length(x) > 1) {
     return(mapply(txtRound.default,
@@ -258,11 +258,10 @@ txtRound.default = function(x,
       !grepl(dec_str, x))
     return(x)
 
-  if (is.character(x) &&
-      grepl(dec_str, x)){
+  if (is.character(x) && grepl(dec_str, x)) {
     if (dec != ".")
       x <- gsub(dec, ".", x)
-    if (grepl("[0-9.]+e[+]{0,1}[0-9]+", x) && missing(scientific)) {
+    if (grepl("[0-9.]+e[+]{0,1}[0-9]+", x) && is.null(scientific)) {
       scientific <- TRUE
     }
 
@@ -285,7 +284,7 @@ txtRound.default = function(x,
   if (round(x, digits) == 0)
     x <- 0
 
-  if (!missing(scientific) && scientific) {
+  if (!is.null(scientific) && scientific) {
     x <- round(x, digits)
     return(format(x, scientific = TRUE))
   }
@@ -321,14 +320,14 @@ txtRound.default = function(x,
 #' @rdname txtRound
 txtRound.data.frame <- function(x, ...){
   i <- sapply(x, is.factor)
-  if (any(i)){
+  if (any(i)) {
     x[i] <- lapply(x[i], as.character)
   }
 
   x <- as.matrix(x)
   x <- txtRound.matrix(x, ...)
 
-  return (as.data.frame(x, stringsAsFactors = FALSE))
+  return(as.data.frame(x, stringsAsFactors = FALSE))
 }
 
 #' @rdname txtRound
@@ -342,13 +341,13 @@ txtRound.table <- function(x, ...){
 
 #' @rdname txtRound
 #' @export
-txtRound.matrix <- function(x, digits = 0, excl.cols, excl.rows, ...){
-  if(length(dim(x)) > 2)
+txtRound.matrix <- function(x, digits = 0, excl.cols = NULL, excl.rows = NULL, ...){
+  if (length(dim(x)) > 2)
     stop("The function only accepts vectors/matrices/data.frames as primary argument")
 
   rows <- 1L:nrow(x)
-  if (!missing(excl.rows)){
-    if (is.character(excl.rows)){
+  if (!is.null(excl.rows)) {
+    if (is.character(excl.rows)) {
       excl.rows <- grep(excl.rows, rownames(x))
     }
 
@@ -357,8 +356,8 @@ txtRound.matrix <- function(x, digits = 0, excl.cols, excl.rows, ...){
   }
 
   cols <- 1L:(ifelse(is.na(ncol(x)), 1, ncol(x)))
-  if (!missing(excl.cols)){
-    if (is.character(excl.cols)){
+  if (!is.null(excl.cols)) {
+    if (is.character(excl.cols)) {
       excl.cols <- grep(excl.cols, colnames(x))
     }
 
@@ -372,7 +371,7 @@ txtRound.matrix <- function(x, digits = 0, excl.cols, excl.rows, ...){
   if (length(rows) == 0)
     stop("No rows to round")
 
-  if(length(digits) != 1 & length(digits) != length(cols))
+  if (length(digits) != 1 & length(digits) != length(cols))
     stop("You have ",
          length(digits),
          " digits specifications but ",
@@ -381,7 +380,7 @@ txtRound.matrix <- function(x, digits = 0, excl.cols, excl.rows, ...){
          paste(cols, collapse = ", "))
 
   ret_x <- x
-  for (row in rows){
+  for (row in rows) {
     ret_x[row, cols] <-
       mapply(txtRound,
              x = x[row, cols],

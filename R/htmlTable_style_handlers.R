@@ -85,37 +85,37 @@
 #' @rdname addStyles
 #' @family htmlTableStyle
 addHtmlTableStyle <- function(x,
-                              align,
-                              align.header,
-                              align.cgroup,
+                              align = NULL,
+                              align.header = NULL,
+                              align.cgroup = NULL,
 
                               # CSS stuff
-                              css.rgroup,
-                              css.rgroup.sep,
+                              css.rgroup = NULL,
+                              css.rgroup.sep = NULL,
 
-                              css.tspanner,
-                              css.tspanner.sep,
+                              css.tspanner = NULL,
+                              css.tspanner.sep = NULL,
 
-                              css.total,
-                              css.cell,
-                              css.cgroup,
-                              css.header,
-                              css.header.border_bottom,
+                              css.total = NULL,
+                              css.cell = NULL,
+                              css.cgroup = NULL,
+                              css.header = NULL,
+                              css.header.border_bottom = NULL,
 
-                              css.class,
-                              css.table,
+                              css.class = NULL,
+                              css.table = NULL,
 
                               # Positions
-                              pos.rowlabel,
-                              pos.caption,
+                              pos.rowlabel = NULL,
+                              pos.caption = NULL,
 
                               # Colors
-                              col.rgroup,
-                              col.columns,
+                              col.rgroup = NULL,
+                              col.columns = NULL,
 
                               # More alternatives
-                              padding.rgroup,
-                              padding.tspanner) {
+                              padding.rgroup = NULL,
+                              padding.tspanner = NULL) {
   style_list <- prGetAttrWithDefault(x,
     which = style_attribute_name,
     default = getHtmlTableTheme()
@@ -123,7 +123,7 @@ addHtmlTableStyle <- function(x,
 
   style_list <- prValidateAndMergeStyles(
     org_style_list = style_list,
-    styles_from_arguments = prGetArgumentList(match.call(), c("x")),
+    styles_from_arguments = prGetArgumentList(match.call(), skip_elements = c("x")),
     overwrite = TRUE
   )
 
@@ -133,37 +133,37 @@ addHtmlTableStyle <- function(x,
 
 #' @rdname addStyles
 appendHtmlTableStyle <- function(x,
-                                 align,
-                                 align.header,
-                                 align.cgroup,
+                                 align = NULL,
+                                 align.header = NULL,
+                                 align.cgroup = NULL,
 
                                  # CSS stuff
-                                 css.rgroup,
-                                 css.rgroup.sep,
+                                 css.rgroup = NULL,
+                                 css.rgroup.sep = NULL,
 
-                                 css.tspanner,
-                                 css.tspanner.sep,
+                                 css.tspanner = NULL,
+                                 css.tspanner.sep = NULL,
 
-                                 css.total,
-                                 css.cell,
-                                 css.cgroup,
-                                 css.header,
-                                 css.header.border_bottom,
+                                 css.total = NULL,
+                                 css.cell = NULL,
+                                 css.cgroup = NULL,
+                                 css.header = NULL,
+                                 css.header.border_bottom = NULL,
 
-                                 css.class,
-                                 css.table,
+                                 css.class = NULL,
+                                 css.table = NULL,
 
                                  # Positions
-                                 pos.rowlabel,
-                                 pos.caption,
+                                 pos.rowlabel = NULL,
+                                 pos.caption = NULL,
 
                                  # Colors
-                                 col.rgroup,
-                                 col.columns,
+                                 col.rgroup = NULL,
+                                 col.columns = NULL,
 
                                  # More alternatives
-                                 padding.rgroup,
-                                 padding.tspanner) {
+                                 padding.rgroup = NULL,
+                                 padding.tspanner = NULL) {
   style_list <- prGetAttrWithDefault(x,
     which = style_attribute_name,
     default = getHtmlTableTheme()
@@ -171,7 +171,7 @@ appendHtmlTableStyle <- function(x,
 
   style_list <- prValidateAndMergeStyles(
     org_style_list = style_list,
-    styles_from_arguments = prGetArgumentList(match.call(), c("x")),
+    styles_from_arguments = prGetArgumentList(match.call(), skip_elements = c("x")),
     overwrite = FALSE
   )
 
@@ -184,6 +184,8 @@ style_attribute_name <- "htmlTable.style"
 prValidateAndMergeStyles <- function(org_style_list, styles_from_arguments, overwrite) {
   assert_list(org_style_list)
   assert_list(styles_from_arguments)
+
+  styles_from_arguments <- Filter(Negate(is.null), styles_from_arguments)
 
   if (length(styles_from_arguments) == 0) {
     return(org_style_list)

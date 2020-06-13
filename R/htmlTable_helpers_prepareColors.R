@@ -8,7 +8,7 @@
 #' @import magrittr
 #' @keywords internal
 #' @importFrom grDevices col2rgb
-prPrepareColors <- function(clr, n, ng, gtxt) {
+prPrepareColors <- function(clr, n = NULL, ng = NULL, gtxt) {
   clr <- sapply(clr, function(a_clr) {
     if (a_clr == "none") {
       return(a_clr)
@@ -32,7 +32,7 @@ prPrepareColors <- function(clr, n, ng, gtxt) {
     }
   }, USE.NAMES = FALSE)
 
-  if (!missing(ng)) {
+  if (!is.null(ng)) {
     # Split groups into separate if the gtxt is ""
     if (any(gtxt == "")) {
       tmp <- c()
@@ -56,7 +56,7 @@ prPrepareColors <- function(clr, n, ng, gtxt) {
     clr <- rep(clr, length.out = length(ng))
     attr(clr, "groups") <-
       Map(rep, clr, length.out = ng)
-  } else if (!missing(n)) {
+  } else if (!is.null(n)) {
     clr <- rep(clr, length.out = n)
   }
 

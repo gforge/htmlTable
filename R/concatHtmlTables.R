@@ -7,10 +7,10 @@
 #' @return htmlTable class object
 #' @example inst/examples/htmlTable_example.R
 #' @export
-concatHtmlTables <- function(tables, headers) {
+concatHtmlTables <- function(tables, headers = NULL) {
   assert_list(tables)
 
-  if (missing(headers)){
+  if (is.null(headers)){
     if (!is.null(names(tables))) {
       headers = sprintf("<h1>%s</h1>", names(tables))
     } else {

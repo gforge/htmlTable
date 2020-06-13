@@ -12,15 +12,15 @@
 #' @inheritParams htmlTable
 #' @keywords internal
 prGetRgroupLine <- function(x,
-                            total_columns,
-                            rgroup,
-                            rgroup_iterator,
-                            cspan,
-                            rnames,
-                            style,
-                            cgroup_spacer_cells,
-                            style_list,
-                            prepped_row_css) {
+                            total_columns = NULL,
+                            rgroup = NULL,
+                            rgroup_iterator = NULL,
+                            cspan = NULL,
+                            rnames = NULL,
+                            style = NULL,
+                            cgroup_spacer_cells = NULL,
+                            style_list = NULL,
+                            prepped_row_css = NULL) {
   ret_str <- ""
   rgroup_elmnt <- rgroup[rgroup_iterator]
   add_elmnt <- prAttr4RgroupAdd(
@@ -62,7 +62,7 @@ prGetRgroupLine <- function(x,
         }
 
         first_pos <- min(add_pos) - 1 + 1 * !prSkipRownames(rnames)
-        if (missing(cspan)) {
+        if (is.null(cspan)) {
           cspan <- first_pos
         } else {
           cspan <- min(
@@ -93,7 +93,7 @@ prGetRgroupLine <- function(x,
         }
 
         first_pos <- add_pos - 1 + 1 * !prSkipRownames(rnames)
-        if (missing(cspan)) {
+        if (is.null(cspan)) {
           cspan <- first_pos
         } else {
           cspan <- min(

@@ -20,7 +20,7 @@ interactiveTable(
   tbl,
   txt.maxlen = 20,
   button = getOption("htmlTable.interactiveTable.button", default = FALSE),
-  minimized.columns,
+  minimized.columns = NULL,
   js.scripts = c()
 )
 

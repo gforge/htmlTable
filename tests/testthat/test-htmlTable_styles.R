@@ -40,8 +40,7 @@ test_that("Check that row styles are present",{
 
 
 test_that("Check prPrepareCss",{
-  mx <-
-    matrix(1:5, ncol=5, nrow=1)
+  mx <- matrix(1:5, ncol = 5, nrow = 1)
   rownames(mx) <- "1st"
   colnames(mx) <- paste(c("1st", "2nd", "3rd", paste0(4:ncol(mx), "th")), "hdr")
 
@@ -52,7 +51,7 @@ test_that("Check prPrepareCss",{
 
 
   css.cell =  matrix("padding-left: .5em;", nrow = nrow(mx) + 1, ncol = ncol(mx))
-  out <- prPrepareCss(mx, css = css.cell, header=names(mx), rnames = rownames(mx))
+  out <- prPrepareCss(mx, css = css.cell, header = colnames(mx), rnames = rownames(mx))
   expect_equal(dim(out), dim(mx))
 })
 

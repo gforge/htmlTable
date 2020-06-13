@@ -16,7 +16,7 @@ txtRound(x, ...)
   digits.nonzero = NA,
   txt.NA = "",
   dec = getOption("htmlTable.decimal_marker", default = "."),
-  scientific,
+  scientific = NULL,
   txtInt_args = getOption("htmlTable.round_int", default = NULL),
   ...
 )
@@ -25,7 +25,7 @@ txtRound(x, ...)
 
 \method{txtRound}{table}(x, ...)
 
-\method{txtRound}{matrix}(x, digits = 0, excl.cols, excl.rows, ...)
+\method{txtRound}{matrix}(x, digits = 0, excl.cols = NULL, excl.rows = NULL, ...)
 }
 \arguments{
 \item{x}{The value/vector/data.frame/matrix to be rounded}

@@ -8,7 +8,7 @@ prPrepareCss(
   x,
   css,
   rnames,
-  header,
+  header = NULL,
   name = deparse(substitute(css)),
   style_list = NULL
 )

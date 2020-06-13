@@ -6,15 +6,15 @@
 \usage{
 prGetRgroupLine(
   x,
-  total_columns,
-  rgroup,
-  rgroup_iterator,
-  cspan,
-  rnames,
-  style,
-  cgroup_spacer_cells,
-  style_list,
-  prepped_row_css
+  total_columns = NULL,
+  rgroup = NULL,
+  rgroup_iterator = NULL,
+  cspan = NULL,
+  rnames = NULL,
+  style = NULL,
+  cgroup_spacer_cells = NULL,
+  style_list = NULL,
+  prepped_row_css = NULL
 )
 }
 \arguments{

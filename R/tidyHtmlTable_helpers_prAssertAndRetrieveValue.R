@@ -20,7 +20,7 @@ prAssertAndRetrieveValue <- function(x,
   # We are one-caller removed from the original call so we need to
   # do this nasty hack to get the parameter of the parent function
   orgName <- eval(substitute(substitute(value)), envir = parent.frame())
-  value <- dplyr::select(x, {{ orgName }})
+  value <- dplyr::select(x, {{orgName}})
   stopifnot(ncol(value) <= maxCols)
   if (maxCols > 1) {
     return(value)

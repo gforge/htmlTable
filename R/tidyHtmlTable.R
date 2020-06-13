@@ -157,7 +157,7 @@ tidyHtmlTable.data.frame <- function(x,
     }
 
     args <- list(...)
-    args$x <- x %>% dplyr::select(-{{ orgName }})
+    args$x <- x %>% dplyr::select(-{{orgName}})
     args$rnames <- x[[as.character(orgName)]]
     if (is.null(args$rowlabel)) {
       args$rowlabel <- as.character(orgName)

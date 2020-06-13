@@ -4,7 +4,7 @@
 \alias{prTblNo}
 \title{Gets the table counter string}
 \usage{
-prTblNo(caption)
+prTblNo(caption = NULL)
 }
 \arguments{
 \item{caption}{The caption if any}

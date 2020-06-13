@@ -4,7 +4,7 @@
 \alias{concatHtmlTables}
 \title{Funciton for concatenating htmlTables}
 \usage{
-concatHtmlTables(tables, headers)
+concatHtmlTables(tables, headers = NULL)
 }
 \arguments{
 \item{tables}{A list of html tables to be concatenated}
