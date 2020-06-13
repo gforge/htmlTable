@@ -1,7 +1,8 @@
 linters: with_defaults(
     line_length_linter(120),
     paren_brace_linter = NULL, # 229
-    object_name_linter("camelCase"),
+    object_name_linter = NULL, # It is mostly camel case but there are historical mistakes that we have to liv with
+    object_length_linter = NULL, # Short names are nice but internal long names are easier to work with
     infix_spaces_linter = NULL, # 126
     commas_linter = NULL, # 52
     spaces_left_parentheses_linter = NULL, # 52

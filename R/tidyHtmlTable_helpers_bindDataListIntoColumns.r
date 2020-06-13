@@ -8,7 +8,7 @@
 prBindDataListIntoColumns <- function(dataList) {
   stopifnot(is.list(dataList))
   dataList %>%
-    purrr::keep(~!is.null(.)) %>%
+    purrr::keep(~ !is.null(.)) %>%
     do.call(dplyr::bind_cols, .) %>%
     tibble::as_tibble()
 }

@@ -4,6 +4,6 @@
 #' @param elements \code{char} vector with the elements to select
 prExtractElementsAndConvertToTbl <- function(x, elements) {
   x[elements] %>%
-    prBindDataListIntoColumns %>%
+    prBindDataListIntoColumns() %>%
     dplyr::distinct()
 }
