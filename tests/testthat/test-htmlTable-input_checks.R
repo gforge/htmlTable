@@ -1,4 +1,4 @@
-library('testthat')
+library(testthat)
 library('magrittr', warn.conflicts = FALSE)
 library('XML', warn.conflicts = FALSE)
 
@@ -9,4 +9,3 @@ test_that("Check css.cell input", {
                  htmlTable,
                "background: red")
 })
-

@@ -8,4 +8,5 @@
 ^.github
 ^doc$
 ^Meta$
+.lintr
 .vscode

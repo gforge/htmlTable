@@ -67,20 +67,22 @@ input data.
 
 ```{r}
 tidy_summary  %>% 
-  tidyHtmlTable(header = "gear",
-                cgroup1 = "cyl",
-                cell_value = "value", 
-                rnames = "summary_stat",
-                rgroup = "per_metric")
+  arrange(per_metric, summary_stat) %>% 
+  addHtmlTableStyle(align = "r") %>% 
+  tidyHtmlTable(header = gear,
+                cgroup = cyl,
+                rnames = summary_stat,
+                rgroup = per_metric)
 ```
 
 ### Example 2
 
 ```{r}
 tidy_summary  %>% 
-  tidyHtmlTable(header = "summary_stat",
-                cgroup1 = "per_metric",
-                cell_value = "value", 
-                rnames = "gear",
-                rgroup = "cyl")
+  arrange(cyl, gear) %>% 
+  addHtmlTableStyle(align = "r") %>% 
+  tidyHtmlTable(header = summary_stat,
+                cgroup = per_metric,
+                rnames = gear,
+                rgroup = cyl)
 ```

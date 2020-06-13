@@ -30,6 +30,7 @@ Imports:
 Suggests:
     testthat,
     XML,
+    xml2,
     Hmisc,
     reshape,
     rmarkdown,
@@ -37,6 +38,9 @@ Suggests:
     lubridate,
     tibble,
     purrr,
+    tidyselect,
+    glue,
+    rlang,
     tidyr (>= 0.7.2),
     dplyr (>= 0.7.4)
 Encoding: UTF-8

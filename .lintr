@@ -1,0 +1,68 @@
+linters: with_defaults(
+    line_length_linter(120),
+    paren_brace_linter = NULL, # 229
+    object_name_linter = NULL, # It is mostly camel case but there are historical mistakes that we have to liv with
+    object_length_linter = NULL, # Short names are nice but internal long names are easier to work with
+    infix_spaces_linter = NULL, # 126
+    commas_linter = NULL, # 52
+    spaces_left_parentheses_linter = NULL, # 52
+    assignment_linter = NULL, # 29
+    seq_linter = NULL, # 28
+    single_quotes_linter = NULL, # 25
+    cyclocomp_linter = NULL, # 12
+    function_left_parentheses_linter = NULL, # 12
+    object_usage_linter = NULL, # 7
+    open_curly_linter = NULL, # 5
+    trailing_whitespace_linter = NULL, # 2
+    closed_curly_linter = NULL, # 1
+    commented_code_linter = NULL, # 1
+    dummy_linter = NULL
+  )
+exclusions: list(
+    "data/SCB.rda",
+    "man/addStyles.Rd",
+    "man/concatHtmlTables.Rd",
+    "man/getHtmlTableTheme.Rd",
+    "man/htmlTable.Rd",
+    "man/htmlTableWidget-shiny.Rd",
+    "man/htmlTableWidget.Rd",
+    "man/interactiveTable.Rd",
+    "man/outputInt.Rd",
+    "man/prAddCells.Rd",
+    "man/prAddSemicolon2StrEnd.Rd",
+    "man/prAttr4RgroupAdd.Rd",
+    "man/prConvertDfFactors.Rd",
+    "man/prEscapeHtml.Rd",
+    "man/prGetAlign.Rd",
+    "man/prGetCgroupHeader.Rd",
+    "man/prGetRgroupLine.Rd",
+    "man/prGetRowlabelPos.Rd",
+    "man/prGetScriptString.Rd",
+    "man/prGetStyle.Rd",
+    "man/prGetThead.Rd",
+    "man/prIsNotebook.Rd",
+    "man/prMergeClr.Rd",
+    "man/prPrepareAlign.Rd",
+    "man/prPrepareCgroup.Rd",
+    "man/prPrepareColors.Rd",
+    "man/prPrepareCss.Rd",
+    "man/prPrepInputMatrixDimensions.Rd",
+    "man/prSkipRownames.Rd",
+    "man/prTblNo.Rd",
+    "man/pvalueFormatter.Rd",
+    "man/SCB.Rd",
+    "man/setHtmlTableTheme.Rd",
+    "man/splitLines4Table.Rd",
+    "man/tblNoLast.Rd",
+    "man/tblNoNext.Rd",
+    "man/tidyHtmlTable.Rd",
+    "man/txtInt.Rd",
+    "man/txtMergeLines.Rd",
+    "man/txtPval.Rd",
+    "man/txtRound.Rd",
+    "man/vector2string.Rd",
+    "vignettes/complex_tables.Rmd",
+    "vignettes/custom.css",
+    "vignettes/general.Rmd",
+    "vignettes/tidyHtmlTable.Rmd"
+  )
