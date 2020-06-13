@@ -12,7 +12,7 @@ prGetCgroupHeader(
   row_no,
   top_row_style,
   rnames,
-  rowlabel,
+  rowlabel = NULL,
   cgroup_spacer_cells,
   style_list,
   prepped_cell_css,

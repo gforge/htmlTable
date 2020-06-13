@@ -33,6 +33,8 @@ applications and interactive Rmd documents.
 # In the UI:
 htmlTableWidgetOutput("mywidget")
 # In the server:
-renderHtmlTableWidget({htmlTableWidget(iris)})
+renderHtmlTableWidget({
+  htmlTableWidget(iris)
+})
 }
 }

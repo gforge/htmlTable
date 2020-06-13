@@ -7,46 +7,46 @@
 \usage{
 addHtmlTableStyle(
   x,
-  align,
-  align.header,
-  align.cgroup,
-  css.rgroup,
-  css.rgroup.sep,
-  css.tspanner,
-  css.tspanner.sep,
-  css.total,
-  css.cell,
-  css.cgroup,
-  css.class,
-  css.table,
-  pos.rowlabel,
-  pos.caption,
-  col.rgroup,
-  col.columns,
-  padding.rgroup,
-  padding.tspanner
+  align = NULL,
+  align.header = NULL,
+  align.cgroup = NULL,
+  css.rgroup = NULL,
+  css.rgroup.sep = NULL,
+  css.tspanner = NULL,
+  css.tspanner.sep = NULL,
+  css.total = NULL,
+  css.cell = NULL,
+  css.cgroup = NULL,
+  css.class = NULL,
+  css.table = NULL,
+  pos.rowlabel = NULL,
+  pos.caption = NULL,
+  col.rgroup = NULL,
+  col.columns = NULL,
+  padding.rgroup = NULL,
+  padding.tspanner = NULL
 )
 
 appendHtmlTableStyle(
   x,
-  align,
-  align.header,
-  align.cgroup,
-  css.rgroup,
-  css.rgroup.sep,
-  css.tspanner,
-  css.tspanner.sep,
-  css.total,
-  css.cell,
-  css.cgroup,
-  css.class,
-  css.table,
-  pos.rowlabel,
-  pos.caption,
-  col.rgroup,
-  col.columns,
-  padding.rgroup,
-  padding.tspanner
+  align = NULL,
+  align.header = NULL,
+  align.cgroup = NULL,
+  css.rgroup = NULL,
+  css.rgroup.sep = NULL,
+  css.tspanner = NULL,
+  css.tspanner.sep = NULL,
+  css.total = NULL,
+  css.cell = NULL,
+  css.cgroup = NULL,
+  css.class = NULL,
+  css.table = NULL,
+  pos.rowlabel = NULL,
+  pos.caption = NULL,
+  col.rgroup = NULL,
+  col.columns = NULL,
+  padding.rgroup = NULL,
+  padding.tspanner = NULL
 )
 }
 \arguments{
@@ -152,6 +152,5 @@ library(magrittr)
 matrix(1:4, ncol = 2) \%>\%
   addHtmlTableStyle(align = "c", css.cell = "background-color: orange;") \%>\%
   htmlTable(caption = "A simple style example")
-
 }
 \concept{htmlTableStyle}

@@ -4,7 +4,7 @@
 \alias{prPrepareCgroup}
 \title{Prepares the cgroup argument}
 \usage{
-prPrepareCgroup(x, cgroup, n.cgroup, style_list)
+prPrepareCgroup(x, cgroup = NULL, n.cgroup = NULL, style_list)
 }
 \arguments{
 \item{x}{The matrix/data.frame with the data. For the \code{print} and \code{knit_print}

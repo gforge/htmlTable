@@ -4,7 +4,7 @@
 \alias{prGetRowlabelPos}
 \title{Gets the rowlabel position}
 \usage{
-prGetRowlabelPos(cgroup, pos.rowlabel, header)
+prGetRowlabelPos(cgroup = NULL, pos.rowlabel, header = NULL)
 }
 \arguments{
 \item{cgroup}{A vector, matrix or list of character strings defining major column header. The default

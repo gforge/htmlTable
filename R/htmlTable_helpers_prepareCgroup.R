@@ -8,8 +8,8 @@
 #' @return \code{list(cgroup, n.cgroup, align.cgroup, cgroup_spacer_cells)}
 #' @keywords internal
 #' @family hidden helper functions for htmlTable
-prPrepareCgroup <- function(x, cgroup, n.cgroup, style_list){
-  cgroup_spacer_cells <- rep(0, times=(ncol(x)-1))
+prPrepareCgroup <- function(x, cgroup = NULL, n.cgroup = NULL, style_list){
+  cgroup_spacer_cells <- rep(0, times = (ncol(x) - 1))
 
   # The cgroup is by for compatibility reasons handled as a matrix
   if (is.list(cgroup)) {
@@ -24,7 +24,7 @@ prPrepareCgroup <- function(x, cgroup, n.cgroup, style_list){
         stop("The cgroup and n.cgroup elemennt's lengths don't match for the ", i, "th element")
     }
 
-    ncols <- max(lengths, na.rm=TRUE)
+    ncols <- max(lengths, na.rm = TRUE)
     if (any(sapply(lengths, function(l) ncol(x) %% l != 0))) {
       stop("Invalid size of lists: ", vector2string(lengths),
            " each element should be be able to evenly divide ", ncol(x))
@@ -39,21 +39,21 @@ prPrepareCgroup <- function(x, cgroup, n.cgroup, style_list){
     }
     cgroup <- cgroup_mtrx
     n.cgroup <- n.cgroup_mtrx
-  } else if (!is.matrix(cgroup)){
-    cgroup <- matrix(cgroup, nrow=1)
-    if (missing(n.cgroup))
-      n.cgroup <- matrix(NA, nrow=1)
-    else{
-      if (any(n.cgroup < 1)){
+  } else if (!is.matrix(cgroup)) {
+    cgroup <- matrix(cgroup, nrow = 1)
+    if (is.null(n.cgroup)) {
+      n.cgroup <- matrix(NA, nrow = 1)
+    } else {
+      if (any(n.cgroup < 1)) {
         warning("You have provided cgroups with less than 1 element,",
                 " these will therefore be removed: ",
                 paste(sprintf("'%s' = %d", cgroup, n.cgroup)[n.cgroup < 1],
-                      collapse=", "))
-        cgroup <- cgroup[,n.cgroup >= 1, drop=FALSE]
+                      collapse = ", "))
+        cgroup <- cgroup[,n.cgroup >= 1, drop = FALSE]
         n.cgroup <- n.cgroup[n.cgroup >= 1]
       }
 
-      if (ncol(cgroup) != length(n.cgroup)){
+      if (ncol(cgroup) != length(n.cgroup)) {
         n.cgroup <- n.cgroup[n.cgroup > 0]
         if (ncol(cgroup) < length(n.cgroup))
           stop("You have provided too many n.cgroup,",
@@ -68,16 +68,16 @@ prPrepareCgroup <- function(x, cgroup, n.cgroup, style_list){
 
 
       }
-      n.cgroup <- matrix(n.cgroup, nrow=1)
+      n.cgroup <- matrix(n.cgroup, nrow = 1)
     }
-  }else if(missing(n.cgroup)){
+  } else if (is.null(n.cgroup)) {
     stop("If you specify the cgroup argument as a matrix you have to",
          " at the same time specify the n.cgroup argument.")
   }
 
   # Go bottom up as the n.cgroup can be based on the previous
   # n.cgroup row.
-  for (i in nrow(cgroup):1){
+  for (i in nrow(cgroup):1) {
     # The row is empty and filled with NA's then we check
     # that it is possible to evenly split the cgroups among
     # the columns of the table

@@ -4,7 +4,7 @@
 \alias{prPrepInputMatrixDimensions}
 \title{Makes sure the input is correct}
 \usage{
-prPrepInputMatrixDimensions(x, header)
+prPrepInputMatrixDimensions(x, header = NULL)
 }
 \arguments{
 \item{x}{The matrix/data.frame with the data. For the \code{print} and \code{knit_print}

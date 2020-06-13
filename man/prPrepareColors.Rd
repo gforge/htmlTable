@@ -4,7 +4,7 @@
 \alias{prPrepareColors}
 \title{Prepares the alternating colors}
 \usage{
-prPrepareColors(clr, n, ng, gtxt)
+prPrepareColors(clr, n = NULL, ng = NULL, gtxt)
 }
 \arguments{
 \item{clr}{The colors}

@@ -37,12 +37,12 @@ getButtonDiv <- function(sign = "-") {
 interactiveTable.default <- function(x, ...,
                                      txt.maxlen = 20,
                                      button = getOption("htmlTable.interactiveTable.button", default = FALSE),
-                                     minimized.columns,
+                                     minimized.columns = NULL,
                                      js.scripts = c()) {
   if ("data.frame" %in% class(x)) {
     x <- prConvertDfFactors(x)
   }
-  if (!missing(minimized.columns)) {
+  if (!is.null(minimized.columns)) {
     if (is.character(minimized.columns)) {
       if (minimized.columns != "last") {
         stop(
@@ -106,9 +106,9 @@ interactiveTable.default <- function(x, ...,
 interactiveTable.htmlTable <- function(tbl,
                                        txt.maxlen = 20,
                                        button = getOption("htmlTable.interactiveTable.button", default = FALSE),
-                                       minimized.columns,
+                                       minimized.columns = NULL,
                                        js.scripts = c()) {
-  if (!missing(minimized.columns) && all(minimized.columns != FALSE)) {
+  if (!is.null(minimized.columns) && all(minimized.columns != FALSE)) {
     stop(
       "Can't minimize columns after creating the htmlTable.",
       " Try calling the function directly with the input data that you used for htmlTable"

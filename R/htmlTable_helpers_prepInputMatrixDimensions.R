@@ -6,7 +6,7 @@
 #' @inheritParams htmlTable
 #' @keywords internal
 #' @family hidden helper functions for htmlTable
-prPrepInputMatrixDimensions <- function(x, header) {
+prPrepInputMatrixDimensions <- function(x, header = NULL) {
   if (!is.null(dim(x))) {
     if (length(dim(x)) != 2) {
       stop(
@@ -24,7 +24,7 @@ prPrepInputMatrixDimensions <- function(x, header) {
   }
 
   ncol <- length(x)
-  if (!missing(header)) {
+  if (!is.null(header)) {
     ncol <- length(header)
   }
 

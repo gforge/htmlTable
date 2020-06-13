@@ -7,15 +7,15 @@
 #' @return \code{string} Returns the html string for the \code{<thead>...</thead>} element
 #' @keywords internal
 prGetThead <- function(x,
-                       header,
-                       cgroup, n.cgroup,
-                       caption,
+                       header = NULL,
+                       cgroup = NULL, n.cgroup = NULL,
+                       caption = NULL,
                        compatibility,
                        total_columns,
                        css.cgroup,
                        top_row_style,
                        rnames,
-                       rowlabel,
+                       rowlabel = NULL,
                        cgroup_spacer_cells,
                        prepped_cell_css,
                        style_list,
@@ -24,7 +24,7 @@ prGetThead <- function(x,
   # Start the head
   head_str <- "\n\t<thead>"
 
-  if (!missing(caption) &
+  if (!is.null(caption) &
     compatibility == "LibreOffice" &
     !style_list$pos.caption %in% c("bottom", "below")) {
     head_str %<>%
@@ -37,7 +37,7 @@ prGetThead <- function(x,
   }
 
   # Add the cgroup table header
-  if (!missing(cgroup)) {
+  if (!is.null(cgroup)) {
     for (i in 1:nrow(cgroup)) {
       cgrp_str <- prGetCgroupHeader(
         x = x,
@@ -61,19 +61,19 @@ prGetThead <- function(x,
 
 
   # Add the header
-  if (!missing(header)) {
+  if (!is.null(header)) {
     # The bottom border was ment to be here but it doesn't
     # work that well in the export
     head_str %<>%
       paste0("\n\t<tr>")
 
     no_cgroup_rows <-
-      ifelse(!missing(cgroup),
+      ifelse(!is.null(cgroup),
         nrow(cgroup),
         0
       )
     ts <- ifelse(no_cgroup_rows > 0, "", top_row_style)
-    if (!missing(rowlabel) && style_list$pos.rowlabel == no_cgroup_rows + 1) {
+    if (!is.null(rowlabel) && style_list$pos.rowlabel == no_cgroup_rows + 1) {
       head_str %<>% sprintf(
         "%s\n\t\t<th style='%s'>%s</th>",
         .,

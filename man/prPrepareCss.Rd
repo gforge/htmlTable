@@ -4,7 +4,7 @@
 \alias{prPrepareCss}
 \title{Prepares the cell style}
 \usage{
-prPrepareCss(x, css, rnames, header, name = deparse(substitute(css)))
+prPrepareCss(x, css, rnames, header = NULL, name = deparse(substitute(css)))
 }
 \arguments{
 \item{x}{The matrix/data.frame with the data. For the \code{print} and \code{knit_print}

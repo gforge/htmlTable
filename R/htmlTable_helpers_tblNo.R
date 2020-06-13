@@ -12,10 +12,10 @@
 #' @keywords internal
 #' @family hidden helper functions for htmlTable
 #' @importFrom utils as.roman
-prTblNo <- function(caption) {
+prTblNo <- function(caption = NULL) {
   tc <- getOption("table_counter", FALSE)
   if (tc == FALSE) {
-    if (missing(caption)) {
+    if (is.null(caption)) {
       return("")
     } else {
       return(caption)
@@ -30,7 +30,7 @@ prTblNo <- function(caption) {
       as.character(tc)
     )
   )
-  if (!missing(caption)) {
+  if (!is.null(caption)) {
     out <- paste(out, caption)
   }
 

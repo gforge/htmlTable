@@ -224,24 +224,24 @@
 #' @rdname htmlTable
 #' @family table functions
 htmlTable <- function(x,
-                      header,
-                      rnames,
-                      rowlabel,
-                      caption,
-                      tfoot,
-                      label,
+                      header = NULL,
+                      rnames = NULL,
+                      rowlabel = NULL,
+                      caption = NULL,
+                      tfoot = NULL,
+                      label = NULL,
 
                       # Grouping
-                      rgroup,
-                      n.rgroup,
+                      rgroup = NULL,
+                      n.rgroup = NULL,
 
-                      cgroup,
-                      n.cgroup,
+                      cgroup = NULL,
+                      n.cgroup = NULL,
 
-                      tspanner,
-                      n.tspanner,
+                      tspanner = NULL,
+                      n.tspanner = NULL,
 
-                      total,
+                      total = NULL,
 
                       ctable = TRUE,
                       compatibility = getOption("htmlTableCompat", "LibreOffice"),
@@ -289,24 +289,24 @@ htmlTable.matrix <- function(x, ...) {
 #' @rdname htmlTable
 #' @export
 htmlTable.default <- function(x,
-                              header,
-                              rnames,
-                              rowlabel,
-                              caption,
-                              tfoot,
-                              label,
+                              header = NULL,
+                              rnames = NULL,
+                              rowlabel = NULL,
+                              caption = NULL,
+                              tfoot = NULL,
+                              label = NULL,
 
                               # Grouping
-                              rgroup,
-                              n.rgroup,
+                              rgroup = NULL,
+                              n.rgroup = NULL,
 
-                              cgroup,
-                              n.cgroup,
+                              cgroup = NULL,
+                              n.cgroup = NULL,
 
-                              tspanner,
-                              n.tspanner,
+                              tspanner = NULL,
+                              n.tspanner = NULL,
 
-                              total,
+                              total = NULL,
 
                               ctable = TRUE,
                               compatibility = getOption("htmlTableCompat", "LibreOffice"),
@@ -333,19 +333,19 @@ htmlTable.default <- function(x,
                                      which = style_attribute_name,
                                      default = getHtmlTableTheme())
 
-  if (missing(rgroup) && !missing(n.rgroup)) {
+  if (is.null(rgroup) && !is.null(n.rgroup)) {
     # Add "" rgroups corresponding to the n.rgroups
     rgroup = rep("", length.out=length(n.rgroup))
   }
 
   # Unfortunately in knitr there seems to be some issue when the
   # rnames is specified immediately as: rnames=rownames(x)
-  if (missing(rnames)){
+  if (is.null(rnames)){
     if (any(is.null(rownames(x)) == FALSE))
       rnames <- rownames(x)
 
     if (any(is.null(rownames(x))) &&
-        !missing(rgroup)){
+        !is.null(rgroup)){
       warning("You have not specified rnames but you seem to have rgroups.",
               " If you have the first column as rowname but you want the rgroups",
               " to result in subhedings with indentation below then, ",
@@ -354,16 +354,16 @@ htmlTable.default <- function(x,
     }
   }
 
-  if (!missing(rowlabel) &&
+  if (!is.null(rowlabel) &&
       prSkipRownames(rnames))
     stop("You can't have a row label and no rownames.",
          " Either remove the rowlabel argument",
          ", set the rnames argument",
          ", or set the rownames of the x argument.")
 
-  if (missing(header) && !is.null(colnames(x))) {
+  if (is.null(header) && !is.null(colnames(x))) {
     header <- colnames(x)
-  } else if(!missing(header)) {
+  } else if(!is.null(header)) {
     if (length(header) != ncol(x))
       stop("You have a header with ", length(header), " cells",
            " while your output matrix has only ", ncol(x), " columns")
@@ -379,8 +379,8 @@ htmlTable.default <- function(x,
     compatibility <- "LibreOffice"
   }
 
-  if (!missing(rgroup)){
-    if (missing(n.rgroup))
+  if (!is.null(rgroup)){
+    if (is.null(n.rgroup))
       stop("You need to specify the argument n.rgroup if you want to use rgroups")
 
     if (any(n.rgroup < 1)){
@@ -449,7 +449,7 @@ htmlTable.default <- function(x,
   style_list$col.rgroup <- prPrepareColors(style_list$col.rgroup, n = nrow(x), ng = n.rgroup, gtxt = rgroup)
   style_list$col.columns <- prPrepareColors(style_list$col.columns, ncol(x))
 
-  if (!missing(tspanner)){
+  if (!is.null(tspanner)){
 
     # Sanity checks style_list$css.tspanner and prepares the style
     if (length(style_list$css.tspanner) > 1 &&
@@ -490,13 +490,13 @@ htmlTable.default <- function(x,
     if (!is.null(dimname4row) && dimname4row != "") {
       # Use rgroup or tspanner as this is visually more separated than rowlabel
       # if these are available
-      if (missing(rgroup)) {
+      if (is.null(rgroup)) {
         rgroup <- dimname4row
         n.rgroup <- nrow(x)
-      } else if (missing(tspanner)) {
+      } else if (is.null(tspanner)) {
         tspanner <- dimname4row
         n.tspanner <- nrow(x)
-      } else if (missing(rowlabel)) {
+      } else if (is.null(rowlabel)) {
         rowlabel <- dimname4row
       }
     }
@@ -506,13 +506,13 @@ htmlTable.default <- function(x,
     if (!is.null(dimname4col) && dimname4col != "") {
       # Use rgroup or tspanner as this is visually more separated than rowlabel
       # if these are available
-      if (missing(cgroup)) {
+      if (is.null(cgroup)) {
         cgroup <- dimname4col
         n.cgroup <- ncol(x)
 
         # If this is a addmargins object we shouldn't have the cspanner including the
         # sum marker
-        if (!missing(total) && total &&
+        if (!is.null(total) && total &&
             grepl("^sum$", tail(colnames(x), 1), ignore.case = TRUE)) {
           cgroup %<>% c("")
           n.cgroup <- c(n.cgroup[1] -1, 1)
@@ -522,8 +522,8 @@ htmlTable.default <- function(x,
   }
 
   # Sanity check for tspanner
-  if (!missing(tspanner)){
-    if (missing(n.tspanner))
+  if (!is.null(tspanner)){
+    if (is.null(n.tspanner))
       stop("You need to specify the argument n.tspanner if you want to use table spanners")
 
     if (any(n.tspanner < 1)) {
@@ -533,7 +533,7 @@ htmlTable.default <- function(x,
            " was less than 1")
     }
     if (length(n.tspanner) == length(tspanner) - 1) {
-      if (missing(rgroup) || sum(n.tspanner) > length(rgroup)) {
+      if (is.null(rgroup) || sum(n.tspanner) > length(rgroup)) {
         n.tspanner = append(n.tspanner, nrow(x) - sum(n.tspanner))
       } else {
         n.tspanner = append(n.tspanner, length(rgroup) - sum(n.tspanner))
@@ -544,7 +544,7 @@ htmlTable.default <- function(x,
     }
 
     if(sum(n.tspanner) !=  nrow(x)) {
-      if (missing(rgroup))
+      if (is.null(rgroup))
         stop(sprintf("Your rows don't match in the n.tspanner, i.e. %d != %d",
                      sum(n.tspanner), nrow(x)))
 
@@ -563,7 +563,7 @@ htmlTable.default <- function(x,
     }
 
     # Make sure there are no collisions with rgrou
-    if (!missing(n.rgroup)) {
+    if (!is.null(n.rgroup)) {
       for (i in 1:length(n.tspanner)){
         rows <- sum(n.tspanner[1:i])
         if (!rows %in% cumsum(n.rgroup))
@@ -582,7 +582,7 @@ htmlTable.default <- function(x,
   cgroup_spacer_cells <- rep(0, times=(ncol(x)-1))
 
   # Sanity check for cgroup
-  if (!missing(cgroup)){
+  if (!is.null(cgroup)){
     ret <- prPrepareCgroup(x = x,
                            cgroup = cgroup,
                            n.cgroup = n.cgroup,
@@ -609,7 +609,7 @@ htmlTable.default <- function(x,
 
   # The id works just as well as any anchor
   table_id <- getOption("table_counter", "")
-  if (!missing(label)){
+  if (!is.null(label)){
     table_id <- sprintf(" id='%s'", label)
   }else if(is.numeric(table_id)){
     table_id <- paste0(" id='table_", table_id, "'")
@@ -619,7 +619,7 @@ htmlTable.default <- function(x,
 
   # A column counter that is used for <td colspan="">
   total_columns <- ncol(x)+!prSkipRownames(rnames)
-  if(!missing(cgroup)){
+  if(!is.null(cgroup)){
     if (!is.matrix(cgroup)){
       total_columns <- total_columns + length(cgroup) - 1
     }else{
@@ -627,7 +627,7 @@ htmlTable.default <- function(x,
     }
   }
 
-  if (missing(total) ||
+  if (is.null(total) ||
       (is.logical(total) &&
        all(total == FALSE))){
     total = c()
@@ -636,7 +636,7 @@ htmlTable.default <- function(x,
       total <- nrow(x)
     }else if(length(total) == nrow(x)){
       total <- which(total)
-    }else if(!missing(n.tspanner) &&
+    }else if(!is.null(n.tspanner) &&
              length(total) == length(n.tspanner)){
       total <- cumsum(n.tspanner)[total]
     }else{
@@ -645,7 +645,7 @@ htmlTable.default <- function(x,
            " Logical values accepted are either single TRUE elements",
            ", of the same length as the output matrix (", nrow(x), ")",
            ", or of the same length as the tspanner (",
-           ifelse(missing(n.tspanner), "not provided", length(n.tspanner)), ").")
+           ifelse(is.null(n.tspanner), "not provided", length(n.tspanner)), ").")
     }
   }else if (is.numeric(total)){
     if (any(!total %in% 1:nrow(x)))
@@ -701,7 +701,7 @@ htmlTable.default <- function(x,
 
 
   # Add caption according to standard HTML
-  if (!missing(caption)){
+  if (!is.null(caption)){
     # Combine a table counter if provided
     caption <- paste0("\n\t", prTblNo(caption))
 
@@ -719,9 +719,9 @@ htmlTable.default <- function(x,
     }
   }
 
-  if (!missing(header) ||
-      !missing(cgroup) ||
-      !missing(caption)){
+  if (!is.null(header) ||
+      !is.null(cgroup) ||
+      !is.null(caption)){
     thead <- prGetThead(x = x,
                         header = header,
                         cgroup = cgroup,
@@ -745,7 +745,7 @@ htmlTable.default <- function(x,
   table_str %<>%
     paste0("\n\t<tbody>")
 
-  if (missing(rgroup))
+  if (is.null(rgroup))
     row_clrs <- style_list$col.rgroup
   else
     row_clrs <- unlist(attr(style_list$col.rgroup, "group"))
@@ -757,7 +757,7 @@ htmlTable.default <- function(x,
       rname_style = attr(prepped_cell_css, "rnames")[row_nr]
 
       # First check if there is a table spanner that should be applied
-      if (!missing(tspanner) &&
+      if (!is.null(tspanner) &&
           (row_nr == 1 ||
            row_nr > sum(n.tspanner[1:tspanner_iterator]))){
         tspanner_iterator = tspanner_iterator + 1
@@ -795,7 +795,7 @@ htmlTable.default <- function(x,
       # - first row
       # - the row belongs to the next row group
       rgroup_sep_style <- FALSE
-      if (!missing(rgroup) &&
+      if (!is.null(rgroup) &&
           (row_nr == 1 ||
            row_nr > sum(n.rgroup[1:rgroup_iterator]))){
         rgroup_iterator = rgroup_iterator + 1
@@ -879,7 +879,7 @@ htmlTable.default <- function(x,
         pdng <- style_list$padding.tspanner
         # Minor change from original function. If the group doesn't have
         # a group name then there shouldn't be any indentation
-        if (!missing(rgroup) &&
+        if (!is.null(rgroup) &&
             rgroup_iterator > 0 &&
             is.na(rgroup[rgroup_iterator]) == FALSE &&
             rgroup[rgroup_iterator] != ""){
@@ -913,7 +913,7 @@ htmlTable.default <- function(x,
   table_str %<>%
     paste0("\n\t</tbody>")
 
-  if (!missing(caption) &
+  if (!is.null(caption) &
       compatibility == "LibreOffice" &
       style_list$pos.caption %in% c("bottom", "below")){
 
@@ -925,20 +925,17 @@ htmlTable.default <- function(x,
   }
 
   # Add footer
-  if (!missing(tfoot)){
-    # Initiate the tfoot
+  if (!is.null(tfoot)){
     table_str %<>%
       sprintf("%s\n\t<tfoot><tr><td colspan='%d'>",
               .,
               total_columns)
 
-    # Add the actual tfoot to a new row
+    # Add the body
     table_str %<>%
       paste0("\n\t", txtMergeLines(tfoot))
 
-    # Close the tfoot
-    table_str %<>%
-      paste0("</td></tr></tfoot>")
+    table_str %<>% paste0("</td></tr></tfoot>")
   }
 
   # Close table

@@ -6,9 +6,9 @@
 #' @inheritParams htmlTable
 #' @return \code{matrix}
 #' @keywords internal
-prPrepareCss <- function(x, css, rnames, header, name = deparse(substitute(css))) {
+prPrepareCss <- function(x, css, rnames, header = NULL, name = deparse(substitute(css))) {
   css.header <- rep("", times = ncol(x))
-  css.rnames <- rep("", times = nrow(x) + !missing(header))
+  css.rnames <- rep("", times = nrow(x) + !is.null(header))
 
   if (is.matrix(css)) {
     if (any(grepl("^[^:]*[a-zA-Z]+[:]*:", css))) {
@@ -17,7 +17,7 @@ prPrepareCss <- function(x, css, rnames, header, name = deparse(substitute(css))
     }
     if (ncol(css) == ncol(x) + 1 &&
       !prSkipRownames(rnames)) {
-      if (!missing(header)) {
+      if (!is.null(header)) {
         if (nrow(css) == nrow(x) + 1) {
           css.rnames <- css[, 1]
         } else if (nrow(css) == nrow(x)) {
@@ -56,7 +56,7 @@ prPrepareCss <- function(x, css, rnames, header, name = deparse(substitute(css))
     }
 
     if (nrow(css) == nrow(x) + 1 &&
-      !missing(header)) {
+      !is.null(header)) {
       css.header <- css[1, ]
       css <- css[-1, , drop = FALSE]
     } else if (nrow(css) != nrow(x)) {
@@ -64,7 +64,7 @@ prPrepareCss <- function(x, css, rnames, header, name = deparse(substitute(css))
         "There is an invalid number of rows for the ", name, " matrix.",
         " Your x argument has '", nrow(x), "' rows",
         " while your ", name, " has '", nrow(css), "' rows",
-        " and there is ", ifelse(missing(header),
+        " and there is ", ifelse(is.null(header),
           "no", "a"
         ),
         " header"
@@ -76,7 +76,7 @@ prPrepareCss <- function(x, css, rnames, header, name = deparse(substitute(css))
       css <-
         css[-1]
     } else if (length(css) == 1) {
-      css.rnames <- rep(css, times = nrow(x) + !missing(header))
+      css.rnames <- rep(css, times = nrow(x) + !is.null(header))
     } else if (length(css) != ncol(x)) {
       stop(
         "The length of your ", name, " vector '", length(css), "'",
