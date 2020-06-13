@@ -14,5 +14,5 @@ prEscapeHtml <- function(x) {
   x <- lapply(x, htmlEscape)
   x <- lapply(x, function(x) str_replace_all(x, "\\$", "&#36;"))
   attributes(x) <- attributes_x
-  return (x)
+  return(x)
 }

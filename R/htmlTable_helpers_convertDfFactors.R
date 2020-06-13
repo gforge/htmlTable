@@ -2,11 +2,12 @@
 #'
 #' @inheritParams htmlTable
 #' @return The data frame with factors as characters
-prConvertDfFactors <- function(x){
-  if (!"data.frame" %in% class(x))
+prConvertDfFactors <- function(x) {
+  if (!"data.frame" %in% class(x)) {
     return(x)
+  }
 
-  i <- sapply(x, function(col)
+  i <- sapply(x, function(col) {
     (
       (
         !is.numeric(col) &&
@@ -16,11 +17,11 @@ prConvertDfFactors <- function(x){
           inherits(col, "times") # For handlin Chron input
         )
     )
-  )
+  })
 
-  if(any(i)){
+  if (any(i)) {
     x[i] <- lapply(x[i], as.character)
   }
 
-  return (x)
+  return(x)
 }

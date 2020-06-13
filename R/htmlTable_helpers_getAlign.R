@@ -11,9 +11,10 @@ prGetAlign <- function(align, index, emptyCell = FALSE) {
   res_align <- align
   align <- ""
   # Loop to remove every element prior to the one of interest
-  for (i in 1:index){
-    if (nchar(res_align) == 0)
+  for (i in 1:index) {
+    if (nchar(res_align) == 0) {
       stop("Requested column outside of span, ", index, " > ", i)
+    }
 
     rmatch <- regexpr(segm_rgx, res_align)
     lrc_data <- substr(res_align, 1, rmatch + attr(rmatch, "match.length") - 1)
@@ -22,22 +23,31 @@ prGetAlign <- function(align, index, emptyCell = FALSE) {
 
   styles <- c()
   if (!emptyCell) {
-    if (grepl("^[|]", lrc_data))
-      styles["border-left"] = getOption("htmlTable.css.border-left",
-                                        default = getOption("htmlTable.css.border",
-                                                            default = "1px solid black"))
-    if (grepl("[|]$", lrc_data))
-      styles["border-right"] = getOption("htmlTable.css.border-right",
-                                         default = getOption("htmlTable.css.border",
-                                                             default = "1px solid black"))
+    if (grepl("^[|]", lrc_data)) {
+      styles["border-left"] <- getOption("htmlTable.css.border-left",
+        default = getOption("htmlTable.css.border",
+          default = "1px solid black"
+        )
+      )
+    }
+    if (grepl("[|]$", lrc_data)) {
+      styles["border-right"] <- getOption("htmlTable.css.border-right",
+        default = getOption("htmlTable.css.border",
+          default = "1px solid black"
+        )
+      )
+    }
   }
 
-  if (grepl("l", lrc_data))
-    styles["text-align"] = "left"
-  if (grepl("c", lrc_data))
-    styles["text-align"] = "center"
-  if (grepl("r", lrc_data))
-    styles["text-align"] = "right"
+  if (grepl("l", lrc_data)) {
+    styles["text-align"] <- "left"
+  }
+  if (grepl("c", lrc_data)) {
+    styles["text-align"] <- "center"
+  }
+  if (grepl("r", lrc_data)) {
+    styles["text-align"] <- "right"
+  }
 
   return(styles)
 }

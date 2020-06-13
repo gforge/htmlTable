@@ -5,13 +5,15 @@ prAssertStyleNames <- function(x, message) {
 
   invalid_names <- prGetInvalidStyleNames(x)
   if (length(invalid_names) > 0) {
-    stop(message, ' See name(s): ', paste(invalid_names, collapse = ", "))
+    stop(message, " See name(s): ", paste(invalid_names, collapse = ", "))
   }
 }
 
 prGetInvalidStyleNames <- function(x) {
-  valid_names <- Filter(function(x) !(x %in% c("theme", "")),
-                        names(formals(setHtmlTableTheme)))
+  valid_names <- Filter(
+    function(x) !(x %in% c("theme", "")),
+    names(formals(setHtmlTableTheme))
+  )
 
   checked_names <- args %in% valid_names
   return(args[!checked_names])
@@ -31,15 +33,19 @@ prAssertStyles <- function(style_list) {
 
 prAssertStyle <- function(elmnt, name) {
   assert_character(elmnt,
-                   min.chars = 0,
-                   min.len = 1,
-                   .var.name = name)
+    min.chars = 0,
+    min.len = 1,
+    .var.name = name
+  )
 
-  elmnts2check <- Filter(function(x) nchar(x) > 0,
-                         elmnt)
+  elmnts2check <- Filter(
+    function(x) nchar(x) > 0,
+    elmnt
+  )
 
   if (name != "css.class" && is.null(names(elmnts2check)) && length(elmnts2check) > 0) {
     assert_true(all(sapply(elmnts2check, function(e) grepl(":", e))),
-                .var.name = name)
+      .var.name = name
+    )
   }
 }

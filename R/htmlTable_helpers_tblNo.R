@@ -12,22 +12,27 @@
 #' @keywords internal
 #' @family hidden helper functions for htmlTable
 #' @importFrom utils as.roman
-prTblNo <- function (caption) {
+prTblNo <- function(caption) {
   tc <- getOption("table_counter", FALSE)
-  if (tc == FALSE){
-    if (missing(caption))
+  if (tc == FALSE) {
+    if (missing(caption)) {
       return("")
-    else
+    } else {
       return(caption)
+    }
   }
 
   table_template <- getOption("table_counter_str", "Table %s: ")
-  out <- sprintf(table_template,
-                 ifelse(getOption("table_counter_roman", FALSE),
-                        as.character(as.roman(tc)),
-                        as.character(tc)))
-  if (!missing(caption))
+  out <- sprintf(
+    table_template,
+    ifelse(getOption("table_counter_roman", FALSE),
+      as.character(as.roman(tc)),
+      as.character(tc)
+    )
+  )
+  if (!missing(caption)) {
     out <- paste(out, caption)
+  }
 
   return(out)
 }

@@ -63,23 +63,25 @@ setHtmlTableTheme <- function(theme,
       newTheme <- prGetThemeListObject(theme_name = theme)
     } else if (is.list(theme)) {
       if (any(names(theme) == "")) {
-        stop('Theme contains unnamed elements')
+        stop("Theme contains unnamed elements")
       }
 
-      prAssertStyleNames(names(theme), 'You have invalid theme names.')
+      prAssertStyleNames(names(theme), "You have invalid theme names.")
 
       newTheme <- theme
     } else {
-      stop('The theme must either be a list or a valid predefined theme name')
+      stop("The theme must either be a list or a valid predefined theme name")
     }
   } else {
     newTheme <- getHtmlTableTheme()
   }
 
 
-  newTheme <- prValidateAndMergeStyles(org_style_list = newTheme,
-                                       styles_from_arguments = prGetArgumentList(match.call(), c("", "theme")),
-                                       overwrite = TRUE)
+  newTheme <- prValidateAndMergeStyles(
+    org_style_list = newTheme,
+    styles_from_arguments = prGetArgumentList(match.call(), c("", "theme")),
+    overwrite = TRUE
+  )
 
   prAssertStyles(newTheme)
   options(htmlTable.theme = newTheme)
@@ -113,37 +115,42 @@ prGetArgumentList <- function(args, skip_elements) {
 #' getHtmlTableTheme()
 getHtmlTableTheme <- function() {
   getOption("htmlTable.theme",
-            default = prGetThemeListObject(theme_name = "standard"))
+    default = prGetThemeListObject(theme_name = "standard")
+  )
 }
 
 prGetThemeListObject <- function(theme_name = c("standard", "Google docs", "blank")) {
   theme_name <- match.arg(theme_name)
 
   common_non_css_elements <- list(
-    align = 'c',
-    align.header = 'c',
+    align = "c",
+    align.header = "c",
 
     # colors
-    col.rgroup = 'none',
-    col.columns =  'none',
+    col.rgroup = "none",
+    col.columns = "none",
 
     # More alternatives
     padding.rgroup = "&nbsp;&nbsp;",
-    padding.tspanner = "")
+    padding.tspanner = ""
+  )
 
   if (theme_name == "standard") {
     # This list is the reference with all the available theme elements
     standard_theme <- list(
-      css.rgroup = getOption("htmlTable.css.rgroup", default="font-weight: 900;"),
-      css.rgroup.sep = getOption("htmlTable.css.rgroup.sep", default =""),
+      css.rgroup = getOption("htmlTable.css.rgroup", default = "font-weight: 900;"),
+      css.rgroup.sep = getOption("htmlTable.css.rgroup.sep", default = ""),
 
       css.tspanner = getOption("htmlTable.css.tspanner",
-                               default = "font-weight: 900; text-align: left;"),
+        default = "font-weight: 900; text-align: left;"
+      ),
       css.tspanner.sep = getOption("htmlTable.css.tspanner.sep",
-                                   default = "border-top: 1px solid #BEBEBE;"),
+        default = "border-top: 1px solid #BEBEBE;"
+      ),
 
       css.total = getOption("htmlTable.css.total",
-                            default = "border-top: 1px solid #BEBEBE; font-weight: 900;"),
+        default = "border-top: 1px solid #BEBEBE; font-weight: 900;"
+      ),
 
       css.cell = getOption("htmlTable.css.cell", default = ""),
       css.cgroup = getOption("htmlTable.css.cgroup", default = ""),
@@ -152,24 +159,30 @@ prGetThemeListObject <- function(theme_name = c("standard", "Google docs", "blan
       css.table = getOption("htmlTable.css.table", default = "margin-top: 1em; margin-bottom: 1em;"),
       # Positions
       pos.rowlabel = "bottom",
-      pos.caption = 'top')
+      pos.caption = "top"
+    )
 
-    return(prExtendlist(base = common_non_css_elements,
-                        extensions = standard_theme))
+    return(prExtendlist(
+      base = common_non_css_elements,
+      extensions = standard_theme
+    ))
   }
 
   if (theme_name == "Google docs") {
     doc_theme <- list(
-      css.rgroup = getOption("htmlTable.css.rgroup", default="font-weight: 900;"),
-      css.rgroup.sep = getOption("htmlTable.css.rgroup.sep", default =""),
+      css.rgroup = getOption("htmlTable.css.rgroup", default = "font-weight: 900;"),
+      css.rgroup.sep = getOption("htmlTable.css.rgroup.sep", default = ""),
 
       css.tspanner = getOption("htmlTable.css.tspanner",
-                               default = "font-weight: 900; text-align: left;"),
+        default = "font-weight: 900; text-align: left;"
+      ),
       css.tspanner.sep = getOption("htmlTable.css.tspanner.sep",
-                                   default = "border-top: 1px solid #BEBEBE;"),
+        default = "border-top: 1px solid #BEBEBE;"
+      ),
 
       css.total = getOption("htmlTable.css.total",
-                            default = "border-top: 1px solid #BEBEBE; font-weight: 900;"),
+        default = "border-top: 1px solid #BEBEBE; font-weight: 900;"
+      ),
 
       css.cell = getOption("htmlTable.css.cell", default = "margin: 0; padding: 0;"),
       css.cgroup = getOption("htmlTable.css.cgroup", default = ""),
@@ -179,32 +192,39 @@ prGetThemeListObject <- function(theme_name = c("standard", "Google docs", "blan
 
       # Positions
       pos.rowlabel = "bottom",
-      pos.caption = "bottom")
+      pos.caption = "bottom"
+    )
 
-    return(prExtendlist(base = common_non_css_elements,
-                        extensions = doc_theme))
+    return(prExtendlist(
+      base = common_non_css_elements,
+      extensions = doc_theme
+    ))
   }
 
   if (theme_name == "blank") {
-    blank_theme <- list(css.rgroup = "",
-                        css.rgroup.sep = "",
+    blank_theme <- list(
+      css.rgroup = "",
+      css.rgroup.sep = "",
 
-                        css.tspanner = "",
-                        css.tspanner.sep = "",
+      css.tspanner = "",
+      css.tspanner.sep = "",
 
-                        css.total = "",
+      css.total = "",
 
-                        css.cell = "",
-                        css.cgroup = "",
+      css.cell = "",
+      css.cgroup = "",
 
-                        css.class = "",
-                        css.table = "",
+      css.class = "",
+      css.table = "",
 
-                        # Positions
-                        pos.rowlabel = "bottom",
-                        pos.caption = "bottom")
-    return(prExtendlist(base = common_non_css_elements,
-                        extensions = blank_theme))
+      # Positions
+      pos.rowlabel = "bottom",
+      pos.caption = "bottom"
+    )
+    return(prExtendlist(
+      base = common_non_css_elements,
+      extensions = blank_theme
+    ))
   }
 }
 

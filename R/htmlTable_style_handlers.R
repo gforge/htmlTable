@@ -80,7 +80,6 @@
 #' matrix(1:4, ncol = 2) %>%
 #'   addHtmlTableStyle(align = "c", css.cell = "background-color: orange;") %>%
 #'   htmlTable(caption = "A simple style example")
-#'
 #' @rdname addStyles
 #' @family htmlTableStyle
 addHtmlTableStyle <- function(x,
@@ -114,12 +113,15 @@ addHtmlTableStyle <- function(x,
                               padding.rgroup,
                               padding.tspanner) {
   style_list <- prGetAttrWithDefault(x,
-                                     which = style_attribute_name,
-                                     default = getHtmlTableTheme())
+    which = style_attribute_name,
+    default = getHtmlTableTheme()
+  )
 
-  style_list <- prValidateAndMergeStyles(org_style_list = style_list,
-                                         styles_from_arguments = prGetArgumentList(match.call(), c("x")),
-                                         overwrite = TRUE)
+  style_list <- prValidateAndMergeStyles(
+    org_style_list = style_list,
+    styles_from_arguments = prGetArgumentList(match.call(), c("x")),
+    overwrite = TRUE
+  )
 
   attr(x, style_attribute_name) <- style_list
   return(x)
@@ -157,12 +159,15 @@ appendHtmlTableStyle <- function(x,
                                  padding.rgroup,
                                  padding.tspanner) {
   style_list <- prGetAttrWithDefault(x,
-                                     which = style_attribute_name,
-                                     default = getHtmlTableTheme())
+    which = style_attribute_name,
+    default = getHtmlTableTheme()
+  )
 
-  style_list <- prValidateAndMergeStyles(org_style_list = style_list,
-                                         styles_from_arguments = prGetArgumentList(match.call(), c("x")),
-                                         overwrite = FALSE)
+  style_list <- prValidateAndMergeStyles(
+    org_style_list = style_list,
+    styles_from_arguments = prGetArgumentList(match.call(), c("x")),
+    overwrite = FALSE
+  )
 
   attr(x, style_attribute_name) <- style_list
   return(x)
@@ -174,7 +179,9 @@ prValidateAndMergeStyles <- function(org_style_list, styles_from_arguments, over
   assert_list(org_style_list)
   assert_list(styles_from_arguments)
 
-  if (length(styles_from_arguments) == 0) return(org_style_list)
+  if (length(styles_from_arguments) == 0) {
+    return(org_style_list)
+  }
 
   style_list <- org_style_list
   for (n in names(styles_from_arguments)) {
@@ -187,7 +194,7 @@ prValidateAndMergeStyles <- function(org_style_list, styles_from_arguments, over
       if (styles_from_arguments[[n]] %in% valid_caption_positions) {
         style_list[[n]] <- styles_from_arguments[[n]]
       } else {
-        stop('The argument ', n, ' must be one of: ', paste(valid_caption_positions, collapse = ", "))
+        stop("The argument ", n, " must be one of: ", paste(valid_caption_positions, collapse = ", "))
       }
     } else {
       style_list[[n]] <- styles_from_arguments[[n]]

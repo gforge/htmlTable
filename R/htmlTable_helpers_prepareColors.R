@@ -8,41 +8,46 @@
 #' @import magrittr
 #' @keywords internal
 #' @importFrom grDevices col2rgb
-prPrepareColors <- function(clr, n, ng, gtxt){
-  clr <- sapply(clr, function(a_clr){
-    if(a_clr == "none")
+prPrepareColors <- function(clr, n, ng, gtxt) {
+  clr <- sapply(clr, function(a_clr) {
+    if (a_clr == "none") {
       return(a_clr)
-    if (grepl("^#[0-9ABCDEFabcdef]{3,3}$", a_clr)){
+    }
+    if (grepl("^#[0-9ABCDEFabcdef]{3,3}$", a_clr)) {
       a_clr %<>%
         substring(first = 2) %>%
         strsplit(split = "") %>%
-        unlist %>%
-        sapply(FUN = rep, times=2) %>%
-        paste(collapse="") %>%
-        tolower %>%
+        unlist() %>%
+        sapply(FUN = rep, times = 2) %>%
+        paste(collapse = "") %>%
+        tolower() %>%
         paste0("#", .)
-    }else{
+    } else {
       a_clr %<>%
         col2rgb %>%
-        as.hexmode %>%
-        as.character %>%
-        paste(collapse="") %>%
+        as.hexmode() %>%
+        as.character() %>%
+        paste(collapse = "") %>%
         paste0("#", .)
     }
-  }, USE.NAMES=FALSE)
+  }, USE.NAMES = FALSE)
 
-  if(!missing(ng)){
+  if (!missing(ng)) {
     # Split groups into separate if the gtxt is ""
-    if (any(gtxt == "")){
+    if (any(gtxt == "")) {
       tmp <- c()
-      for (i in 1:length(ng)){
+      for (i in 1:length(ng)) {
         if (gtxt[i] != "" &&
-            !is.na(gtxt[i])){
-          tmp <- c(tmp,
-                   ng[i])
-        }else{
-          tmp <- c(tmp,
-                   rep(1, ng[i]))
+          !is.na(gtxt[i])) {
+          tmp <- c(
+            tmp,
+            ng[i]
+          )
+        } else {
+          tmp <- c(
+            tmp,
+            rep(1, ng[i])
+          )
         }
       }
       ng <- tmp
@@ -51,7 +56,7 @@ prPrepareColors <- function(clr, n, ng, gtxt){
     clr <- rep(clr, length.out = length(ng))
     attr(clr, "groups") <-
       Map(rep, clr, length.out = ng)
-  }else if(!missing(n)){
+  } else if (!missing(n)) {
     clr <- rep(clr, length.out = n)
   }
 

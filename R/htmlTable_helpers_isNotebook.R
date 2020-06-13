@@ -16,8 +16,10 @@ prIsNotebook <- function() {
   contents <- ctxt$contents
   header <- grep("^---$", contents)
   if (length(header) == 2) {
-    return(any(grepl("html_notebook$",
-                     contents[min(header) : max(header)])))
+    return(any(grepl(
+      "html_notebook$",
+      contents[min(header):max(header)]
+    )))
   }
 
   return(FALSE)

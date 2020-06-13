@@ -12,16 +12,18 @@
 #' @keywords internal
 #' @importFrom grDevices colorRampPalette
 #' @importFrom utils head
-prMergeClr<- function(clrs){
-  if (length(clrs) == 1)
+prMergeClr <- function(clrs) {
+  if (length(clrs) == 1) {
     return(clrs)
-  if (length(clrs) == 2)
+  }
+  if (length(clrs) == 2) {
     return(colorRampPalette(clrs)(3)[2])
+  }
 
-  split_lngth <- floor(length(clrs)/2)
+  split_lngth <- floor(length(clrs) / 2)
   left <- head(clrs, split_lngth)
   right <- tail(clrs, split_lngth)
-  if (length(clrs) %% 2 == 1){
+  if (length(clrs) %% 2 == 1) {
     left %<>%
       c(clrs[split_lngth + 1])
     right %<>%
@@ -30,6 +32,5 @@ prMergeClr<- function(clrs){
 
   left <- prMergeClr(left)
   right <- prMergeClr(right)
-  return(prMergeClr(c(left,
-                        right)))
+  return(prMergeClr(c(left, right)))
 }

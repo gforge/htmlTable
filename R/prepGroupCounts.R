@@ -11,9 +11,12 @@
 prepGroupCounts <- function(x) {
   # Drop all classes but the base class as rle
   counts <- rle(as.vector(x))
-  ret <- list(n = counts$lengths,
-              idx = cumsum(counts$lengths),
-              names = counts$values)
+  ret <- list(
+    n = counts$lengths,
+    idx = cumsum(counts$lengths),
+    names = counts$values
+  )
   structure(ret,
-            class = c("htmlTable_group_count", class(ret)))
+    class = c("htmlTable_group_count", class(ret))
+  )
 }

@@ -174,7 +174,8 @@ prPrepareCgroup <- function(x, cgroup, n.cgroup, style_list){
 
     # An old leftover behaviour from the latex() function
     if (NCOL(style_list$align.cgroup) > 1)
-      style_list$align.cgroup <- apply(style_list$align.cgroup, 1, function(x) paste(ifelse(is.na(x), "", x), collapse=""))
+      style_list$align.cgroup <- apply(style_list$align.cgroup, 1,
+                                       function(x) paste(ifelse(is.na(x), "", x), collapse=""))
 
     style_list$align.cgroup <- mapply(prPrepareAlign,
                            align = style_list$align.cgroup,

@@ -2,13 +2,15 @@
 #'
 #' @inheritParams htmlTable
 #' @keywords internal
-prSkipRownames <- function(rnames){
-  if(missing(rnames))
+prSkipRownames <- function(rnames) {
+  if (missing(rnames)) {
     return(TRUE)
+  }
 
   if (length(rnames) == 1 &&
-        rnames == FALSE)
+    rnames == FALSE) {
     return(TRUE)
+  }
 
   return(FALSE)
 }

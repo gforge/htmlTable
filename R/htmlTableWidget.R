@@ -14,7 +14,6 @@
 htmlTableWidget <- function(x, number_of_entries = c(10, 25, 100),
                             width = NULL, height = NULL, elementId = NULL,
                             ...) {
-
   rendered_table <- htmlTable(x, ...)
 
   # forward options and variables using the input list:
@@ -25,11 +24,11 @@ htmlTableWidget <- function(x, number_of_entries = c(10, 25, 100),
 
   # create widget
   htmlwidgets::createWidget(
-    name = 'htmlTableWidget',
+    name = "htmlTableWidget",
     x = input,
     width = width,
     height = height,
-    package = 'htmlTable',
+    package = "htmlTable",
     elementId = elementId
   )
 }
@@ -55,16 +54,20 @@ htmlTableWidget <- function(x, number_of_entries = c(10, 25, 100),
 #' # In the UI:
 #' htmlTableWidgetOutput("mywidget")
 #' # In the server:
-#' renderHtmlTableWidget({htmlTableWidget(iris)})
+#' renderHtmlTableWidget({
+#'   htmlTableWidget(iris)
+#' })
 #' }
 #' @export
-htmlTableWidgetOutput <- function(outputId, width = '100%', height = '400px'){
-  htmlwidgets::shinyWidgetOutput(outputId, 'htmlTableWidget', width, height, package = 'htmlTable')
+htmlTableWidgetOutput <- function(outputId, width = "100%", height = "400px") {
+  htmlwidgets::shinyWidgetOutput(outputId, "htmlTableWidget", width, height, package = "htmlTable")
 }
 
 #' @rdname htmlTableWidget-shiny
 #' @export
 renderHtmlTableWidget <- function(expr, env = parent.frame(), quoted = FALSE) {
-  if (!quoted) { expr <- substitute(expr) } # force quoted
+  if (!quoted) {
+    expr <- substitute(expr)
+  } # force quoted
   htmlwidgets::shinyRenderWidget(expr, htmlTableWidgetOutput, env, quoted = TRUE)
 }

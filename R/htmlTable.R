@@ -691,7 +691,9 @@ htmlTable.default <- function(x,
     ctable <- rep_len(ctable, 2L)
     ctable[ctable %in% 'single'] <- 'solid'
     top_row_style = ifelse(ctable[1] ==  'solid', "border-top: 2px solid grey;", "border-top: 4px double grey;")
-    bottom_row_style = ifelse(ctable[2] ==  'solid', "border-bottom: 2px solid grey;", "border-bottom: 4px double grey;")
+    bottom_row_style = ifelse(ctable[2] ==  'solid',
+                              "border-bottom: 2px solid grey;",
+                              "border-bottom: 4px double grey;")
   } else {
     top_row_style = "border-top: 4px double grey;"
     bottom_row_style = "border-bottom: 1px solid grey;"

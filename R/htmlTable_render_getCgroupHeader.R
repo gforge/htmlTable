@@ -32,75 +32,100 @@ prGetCgroupHeader <- function(x,
                               cgroup_spacer_cells,
                               style_list,
                               prepped_cell_css,
-                              css_4_cgroup_vec){
-
+                              css_4_cgroup_vec) {
   header_str <- "\n\t<tr>"
-  if (row_no == 1)
+  if (row_no == 1) {
     ts <- top_row_style
-  else
+  } else {
     ts <- ""
-
-  if (!missing(rowlabel)){
-    if (row_no == style_list$pos.rowlabel)
-      header_str %<>% sprintf("%s\n\t\t<th style='%s'>%s</th>",
-                              .,
-                              prGetStyle(c(`font-weight`=900),
-                                           ts,
-                                           attr(prepped_cell_css, "rnames")[1]),
-                              rowlabel)
-    else
-      header_str %<>%
-      sprintf("%s\n\t\t<th style='%s'></th>",
-              .,
-              prGetStyle(ts))
-  }else if (!prSkipRownames(rnames)){
-    header_str %<>% sprintf("%s\n\t\t<th style='%s'></th>",
-                            .,
-                            prGetStyle(ts))
   }
 
-  for (i in 1:length(cgroup_vec)){
-    if (!is.na(n.cgroup_vec[i])){
+  if (!missing(rowlabel)) {
+    if (row_no == style_list$pos.rowlabel) {
+      header_str %<>% sprintf(
+        "%s\n\t\t<th style='%s'>%s</th>",
+        .,
+        prGetStyle(
+          c(`font-weight` = 900),
+          ts,
+          attr(prepped_cell_css, "rnames")[1]
+        ),
+        rowlabel
+      )
+    } else {
+      header_str %<>%
+        sprintf(
+          "%s\n\t\t<th style='%s'></th>",
+          .,
+          prGetStyle(ts)
+        )
+    }
+  } else if (!prSkipRownames(rnames)) {
+    header_str %<>% sprintf(
+      "%s\n\t\t<th style='%s'></th>",
+      .,
+      prGetStyle(ts)
+    )
+  }
+
+  for (i in 1:length(cgroup_vec)) {
+    if (!is.na(n.cgroup_vec[i])) {
       start_column <- ifelse(i == 1,
-                             1,
-                             sum(n.cgroup_vec[1:(i-1)], na.rm=TRUE) + 1)
+        1,
+        sum(n.cgroup_vec[1:(i - 1)], na.rm = TRUE) + 1
+      )
 
       # 10 3-1
       # 0 0 1
       colspan <- n.cgroup_vec[i] +
         ifelse(start_column > length(cgroup_spacer_cells) ||
-                 n.cgroup_vec[i] == 1,
-               0,
-               ifelse(start_column == 1,
-                      sum(cgroup_spacer_cells[1:(n.cgroup_vec[i]-1)]),
-                      ifelse(sum(n.cgroup_vec[1:i], na.rm=TRUE) == ncol(x),
-                             sum(cgroup_spacer_cells[start_column:length(cgroup_spacer_cells)]),
-                             sum(cgroup_spacer_cells[start_column:((start_column-1) + (n.cgroup_vec[i]-1))]))))
+          n.cgroup_vec[i] == 1,
+        0,
+        ifelse(start_column == 1,
+          sum(cgroup_spacer_cells[1:(n.cgroup_vec[i] - 1)]),
+          ifelse(sum(n.cgroup_vec[1:i], na.rm = TRUE) == ncol(x),
+            sum(cgroup_spacer_cells[start_column:length(cgroup_spacer_cells)]),
+            sum(cgroup_spacer_cells[start_column:((start_column - 1) + (n.cgroup_vec[i] - 1))])
+          )
+        )
+        )
 
-      if (nchar(cgroup_vec[i]) == 0)# Removed as this may now be on purpose || is.na(cgroup_vec[i]))
-        header_str %<>% sprintf("%s\n\t\t<th colspan='%d' style='%s'></th>",
-                                .,
-                                colspan,
-                                prGetStyle(c(`font-weight`=900),
-                                           ts,
-                                           align=prGetAlign(cgroup_vec.just, i),
-                                           css_4_cgroup_vec[i]))
-      else
-        header_str %<>% sprintf("%s\n\t\t<th colspan='%d' style='%s'>%s</th>",
-                                .,
-                                colspan,
-                                prGetStyle(c(`font-weight`=900,
-                                             `border-bottom`="1px solid grey"),
-                                           ts,
-                                           align=prGetAlign(cgroup_vec.just, i),
-                                           css_4_cgroup_vec[i]),
-                                cgroup_vec[i])
+      if (nchar(cgroup_vec[i]) == 0) { # Removed as this may now be on purpose || is.na(cgroup_vec[i]))
+        header_str %<>% sprintf(
+          "%s\n\t\t<th colspan='%d' style='%s'></th>",
+          .,
+          colspan,
+          prGetStyle(c(`font-weight` = 900),
+            ts,
+            align = prGetAlign(cgroup_vec.just, i),
+            css_4_cgroup_vec[i]
+          )
+        )
+      } else {
+        header_str %<>% sprintf(
+          "%s\n\t\t<th colspan='%d' style='%s'>%s</th>",
+          .,
+          colspan,
+          prGetStyle(c(
+            `font-weight` = 900,
+            `border-bottom` = "1px solid grey"
+          ),
+          ts,
+          align = prGetAlign(cgroup_vec.just, i),
+          css_4_cgroup_vec[i]
+          ),
+          cgroup_vec[i]
+        )
+      }
 
       # If not last then add a filler cell between the row categories
       # this is also the reason that we need the cgroup_spacer_cells
-      if (i != sum(!is.na(cgroup_vec)))
-        header_str %<>% sprintf("%s<th style='%s; border-bottom: hidden;'>&nbsp;</th>",
-                                ., ts)
+      if (i != sum(!is.na(cgroup_vec))) {
+        header_str %<>% sprintf(
+          "%s<th style='%s; border-bottom: hidden;'>&nbsp;</th>",
+          ., ts
+        )
+      }
     }
   }
   header_str %<>%
