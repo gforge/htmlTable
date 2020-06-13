@@ -669,8 +669,10 @@ htmlTable.default <- function(x,
     check_matrix(style_list$css.cell),
     check_character(style_list$css.cell)
   )
-  prepped_cell_css <- prPrepareCss(x, css = style_list$css.cell,
-                                   rnames = rnames, header = header)
+  prepped_cell_css <- prPrepareCss(x,
+                                   css = style_list$css.cell,
+                                   rnames = rnames, header = header,
+                                   style_list = style_list)
 
   ###############################
   # Start building table string #

@@ -17,6 +17,8 @@ addHtmlTableStyle(
   css.total,
   css.cell,
   css.cgroup,
+  css.header,
+  css.header.border_bottom,
   css.class,
   css.table,
   pos.rowlabel,
@@ -39,6 +41,8 @@ appendHtmlTableStyle(
   css.total,
   css.cell,
   css.cgroup,
+  css.header,
+  css.header.border_bottom,
   css.class,
   css.table,
   pos.rowlabel,
@@ -82,6 +86,10 @@ rgroup doesn't have a separator).}
 table cells. See section below for details.}
 
 \item{css.cgroup}{The same as \code{css.class} but for cgroup formatting.}
+
+\item{css.header}{The header style, not including the cgroup style}
+
+\item{css.header.border_bottom}{The header bottom-border style, e.g. \code{border-bottom: 1px solid grey}}
 
 \item{css.class}{The html CSS class for the table. This allows directing html
 formatting through \href{http://www.w3schools.com/Css/}{CSS}
@@ -152,6 +160,5 @@ library(magrittr)
 matrix(1:4, ncol = 2) \%>\%
   addHtmlTableStyle(align = "c", css.cell = "background-color: orange;") \%>\%
   htmlTable(caption = "A simple style example")
-
 }
 \concept{htmlTableStyle}

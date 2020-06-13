@@ -77,13 +77,12 @@ prGetThead <- function(x,
       head_str %<>% sprintf(
         "%s\n\t\t<th style='%s'>%s</th>",
         .,
-        prGetStyle(c(
-          `font-weight` = 900,
-          `border-bottom` = "1px solid grey"
-        ),
-        ts,
-        attr(prepped_cell_css, "rnames")[1],
-        align = prGetAlign(style_list$align.header, 1)
+        prGetStyle(
+          style_list$css.header.border_bottom,
+          style_list$css.header[1],
+          ts,
+          attr(prepped_cell_css, "rnames")[1],
+          align = prGetAlign(style_list$align.header, 1)
         ),
         rowlabel
       )
@@ -92,13 +91,13 @@ prGetThead <- function(x,
         "%s\n\t\t<th style='%s'> </th>",
         .,
         prGetStyle(
-          c(`border-bottom` = "1px solid grey"),
+          style_list$css.header.border_bottom,
           ts
         )
       )
     }
 
-    cell_style <- "border-bottom: 1px solid grey;"
+    cell_style <- c(style_list$css.header.border_bottom)
     if (first_row) {
       cell_style %<>% c(top_row_style)
     }

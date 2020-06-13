@@ -7,7 +7,7 @@ library(XML)
 library(xml2)
 library(stringr)
 
-# Add rownames
+# Add row names
 test_that("Basic tidyHtmlTable functionality", {
   mx <- tribble(~value, ~header, ~name, ~rgroup, ~cgroup1, ~cgroup2,
                      1,       2,     3,       1,        1,        3,

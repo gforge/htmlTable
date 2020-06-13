@@ -1,7 +1,7 @@
 
 #' Gets the CSS style element
 #'
-#' A funciton for checking, merging, and more
+#' A function for checking, merging, and more
 #' with a variety of different style formats.
 #'
 #' @param styles The styles can be provided as \code{vector},

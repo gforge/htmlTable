@@ -50,6 +50,8 @@
 #' @param css.total The css of the total row if such is activated.
 #' @param css.cell The css.cell element allows you to add any possible CSS style to your
 #'  table cells. See section below for details.
+#' @param css.header The header style, not including the cgroup style
+#' @param css.header.border_bottom The header bottom-border style, e.g. \code{border-bottom: 1px solid grey}
 #' @param css.cgroup The same as \code{css.class} but for cgroup formatting.
 #' @param css.class The html CSS class for the table. This allows directing html
 #'  formatting through \href{http://www.w3schools.com/Css/}{CSS}
@@ -97,6 +99,8 @@ addHtmlTableStyle <- function(x,
                               css.total,
                               css.cell,
                               css.cgroup,
+                              css.header,
+                              css.header.border_bottom,
 
                               css.class,
                               css.table,
@@ -143,6 +147,8 @@ appendHtmlTableStyle <- function(x,
                                  css.total,
                                  css.cell,
                                  css.cgroup,
+                                 css.header,
+                                 css.header.border_bottom,
 
                                  css.class,
                                  css.table,

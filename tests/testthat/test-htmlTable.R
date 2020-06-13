@@ -260,51 +260,7 @@ test_that("Check color function", {
   )
 })
 
-test_that("Test cell styles", {
-  mx <- matrix(1:3, nrow = 2, ncol = 3, byrow = TRUE)
-  mx_head <- LETTERS[1:ncol(mx)]
-  mx_rnames <- LETTERS[1:nrow(mx)]
-  expect_equal(
-    dim(prPrepareCss(mx, "")),
-    dim(mx)
-  )
-  expect_equal(
-    dim(prPrepareCss(mx, "", header = mx_head, rnames = mx_rnames)),
-    dim(mx)
-  )
 
-  expect_equal(
-    dim(prPrepareCss(mx, "", header = mx_head, rnames = mx_rnames)),
-    dim(mx)
-  )
-
-  expect_equal(
-    dim(prPrepareCss(mx, rep("", times = ncol(mx)))),
-    dim(mx)
-  )
-
-  expect_error(prPrepareCss(mx, rep("", times = nrow(mx))))
-
-
-  mx_cell.style <- matrix(c("a", "b", "c", "d"), nrow = 2, ncol = 4, byrow = TRUE)
-  expect_equal(
-    prPrepareCss(mx, mx_cell.style, rnames = mx_rnames)[2, 1],
-    "b"
-  )
-
-  expect_error(prPrepareCss(mx, mx_cell.style))
-
-  mx_cell.style <- matrix(c("a", "b", "c", "d"), nrow = 3, ncol = 4, byrow = TRUE)
-  expect_equal(
-    prPrepareCss(mx, mx_cell.style,
-      header = mx_head,
-      rnames = mx_rnames
-    )[2, 1],
-    "b"
-  )
-
-  expect_error(prPrepareCss(mx, mx_cell.style, rnames = mx_rnames))
-})
 
 test_that("Test prAddSemicolon2StrEnd", {
   test_str <- "background: white"
@@ -458,62 +414,4 @@ test_that("An empty dataframe returns an empty table with a warning", {
     caption = "This is a caption",
     tfoot = "This is a footnote"
   ))
-})
-
-test_that("HTML code is properly escaped", {
-  expect_match(
-    object = htmlTable(data.frame(a = "<3"),
-      rnames = FALSE,
-      escape.html = TRUE
-    ),
-    regexp = "&lt;3"
-  )
-
-  df_test <- data.frame(
-    a = c("<3", "<3"),
-    b = c("&2", ">2"),
-    stringsAsFactors = FALSE
-  )
-  matrix_test <- as.matrix(df_test,
-    ncol = 2
-  )
-
-  expect_identical(
-    htmlTable(df_test,
-      rnames = FALSE,
-      escape.html = TRUE
-    ),
-    structure("<table class='gmisc_table' style='border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;' >\n<thead>\n<tr>\n<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>a</th>\n<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>b</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td style='text-align: center;'>&lt;3</td>\n<td style='text-align: center;'>&amp;2</td>\n</tr>\n<tr>\n<td style='border-bottom: 2px solid grey; text-align: center;'>&lt;3</td>\n<td style='border-bottom: 2px solid grey; text-align: center;'>&gt;2</td>\n</tr>\n</tbody>\n</table>",
-      class = c("htmlTable", "character"),
-      html = TRUE,
-      `...` = list()
-    )
-  )
-
-  expect_identical(
-    htmlTable(matrix_test,
-      rnames = FALSE,
-      escape.html = TRUE
-    ),
-    structure("<table class='gmisc_table' style='border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;' >\n<thead>\n<tr>\n<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>a</th>\n<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>b</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td style='text-align: center;'>&lt;3</td>\n<td style='text-align: center;'>&amp;2</td>\n</tr>\n<tr>\n<td style='border-bottom: 2px solid grey; text-align: center;'>&lt;3</td>\n<td style='border-bottom: 2px solid grey; text-align: center;'>&gt;2</td>\n</tr>\n</tbody>\n</table>",
-      class = c("htmlTable", "character"),
-      html = TRUE,
-      `...` = list()
-    )
-  )
-
-  tibble_test <- tibble::as_tibble(df_test)
-  expect_identical(
-    htmlTable(tibble_test,
-      rnames = FALSE,
-      escape.html = TRUE
-    ),
-    structure("<table class='gmisc_table' style='border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;' >\n<thead>\n<tr>\n<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>a</th>\n<th style='border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;'>b</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td style='text-align: center;'>&lt;3</td>\n<td style='text-align: center;'>&amp;2</td>\n</tr>\n<tr>\n<td style='border-bottom: 2px solid grey; text-align: center;'>&lt;3</td>\n<td style='border-bottom: 2px solid grey; text-align: center;'>&gt;2</td>\n</tr>\n</tbody>\n</table>",
-      class = c("htmlTable", "character"),
-      html = TRUE,
-      `...` = list()
-    )
-  )
-
-  expect_equal(prEscapeHtml("$")[[1]], "&#36;")
 })
