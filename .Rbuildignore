@@ -6,3 +6,6 @@
 ^\.travis\.yml$
 ^revdep$
 ^.github
+^doc$
+^Meta$
+.vscode

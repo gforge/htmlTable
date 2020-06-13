@@ -78,27 +78,6 @@ test_that("rnames = FALSE it should skip those",
   expect_false(grepl("Row A", table_str))
 })
 
-
-test_that("Test style formatter", {
-  styles <- c(background = "black", border ="1px solid grey")
-  expect_equivalent(length(prGetStyle(styles)), 1)
-  expect_match(prGetStyle(styles), "background: black;")
-  expect_match(prGetStyle(styles), "border: [^;]+grey;")
-  expect_match(prGetStyle(styles), "border: [^;]+grey;")
-  expect_match(prGetStyle(styles, a=2), "border: [^;]+grey;")
-
-  expect_error(prGetStyle(styles, "invalid style"))
-  expect_error(prGetStyle(styles, "invalid style:"))
-  expect_error(prGetStyle(styles, ":invalid style"))
-
-  expect_match(prGetStyle(styles, "valid: style"), "valid: style;")
-  expect_match(prGetStyle(styles, c(valid= "style")), "valid: style;")
-  expect_match(prGetStyle(styles, c(valid= "style", valid1= "style")), "valid: style; valid1: style;")
-  expect_match(prGetStyle(styles, c(valid= "style1", valid= "style2")), "valid: style2;")
-  expect_match(prGetStyle(styles, c(valid= "style1", valid= "style2"), "valid: style3"), "valid: style3;")
-
-})
-
 test_that("Test align functions", {
   expect_equivalent(nchar(prPrepareAlign("lr", x = matrix(1, ncol=10))),
                     10)

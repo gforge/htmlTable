@@ -14,7 +14,11 @@
 #' @export
 #' @example inst/examples/interactiveTable_example.R
 #' @rdname interactiveTable
-interactiveTable <- function(x, ..., txt.maxlen = 20, button = FALSE, minimized.columns, js.scripts = c()){
+interactiveTable <- function(x, ...,
+                             txt.maxlen = 20,
+                             button = getOption("htmlTable.interactiveTable.button", default = FALSE),
+                             minimized.columns,
+                             js.scripts = c()){
   UseMethod("interactiveTable")
 }
 
@@ -31,7 +35,7 @@ getButtonDiv <- function(sign = "-"){
 #' @export
 interactiveTable.default <- function(x, ...,
                                      txt.maxlen = 20,
-                                     button = FALSE,
+                                     button = getOption("htmlTable.interactiveTable.button", default = FALSE),
                                      minimized.columns,
                                      js.scripts = c()){
   if ("data.frame" %in% class(x))
@@ -87,7 +91,7 @@ interactiveTable.default <- function(x, ...,
 #' @rdname interactiveTable
 interactiveTable.htmlTable <- function(tbl,
                                        txt.maxlen = 20,
-                                       button = FALSE,
+                                       button = getOption("htmlTable.interactiveTable.button", default = FALSE),
                                        minimized.columns,
                                        js.scripts = c()){
   if (!missing(minimized.columns) && all(minimized.columns != FALSE))

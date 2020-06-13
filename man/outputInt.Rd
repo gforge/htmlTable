@@ -13,7 +13,10 @@ outputInt(...)
 Deprecated use \code{\link{txtInt}} instead.
 }
 \examples{
+\dontrun{
+# Deprecated function
 outputInt(123456)
+}
 
 }
 \keyword{internal}
