@@ -1,5 +1,5 @@
 ---
-title: "The htmlTable package"
+title: "How-to use htmlTable"
 author: "Max Gordon"
 date: "`r Sys.Date()`"
 output: 
@@ -333,9 +333,6 @@ mx %>%
 
 Putting it all together
 -----------------------
-```{r}
-getSourceEditorContext()
-```
 
 Now if we want to do everything in one table it may look like this:
 

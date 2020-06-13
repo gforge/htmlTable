@@ -7,7 +7,7 @@ output:
     toc: true
     css: custom.css
 vignette: >
-  %\VignetteIndexEntry{Tables with htmlTable and some alternatives}
+  %\VignetteIndexEntry{Building a complex table}
   %\VignetteEngine{knitr::rmarkdown}
   %\usepackage[utf8]{inputenc}
 ---
