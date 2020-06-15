@@ -7,22 +7,46 @@ library(XML)
 library(xml2)
 library(stringr)
 
-# Add rownames
+# Add row names
 test_that("Basic tidyHtmlTable functionality", {
   mx <- tribble(~value, ~header, ~name, ~rgroup, ~cgroup1, ~cgroup2,
                      1,       2,     3,       1,        1,        3,
                      2,       3,     4,       1,        2,        3,
                      3,       4,     5,       2,        2,        4) %>%
     mutate_at(vars(starts_with("cgroup")), ~glue("{name} cg", name = .)) %>%
-    mutate(rgroup = glue("{name} rg", name = rgroup),
-           header = glue("{name} h", name = header))
+    mutate(rgroup = glue("{name}_rg", name = rgroup),
+           header = glue("{name}_h", name = header))
   table_str <- mx %>%
     tidyHtmlTable(header = header,
+                  rowlabel ='row',
                   label = "test_table")
 
   parsed_table <- readHTMLTable(as.character(table_str))[["test_table"]]
   expect_equal(ncol(parsed_table), 4)
   expect_equal(nrow(parsed_table), length(mx$value))
+  expect_equal(parsed_table %>%
+                 filter(row == 3) %>%
+                 pluck("2_h"),
+               mx %>%
+                 filter(name == 3) %>%
+                 pluck("value") %>%
+                 as.character())
+
+  expect_equal(parsed_table %>%
+                 filter(row == 4) %>%
+                 pluck("3_h"),
+               mx %>%
+                 filter(name == 4) %>%
+                 pluck("value") %>%
+                 as.character())
+
+  expect_equal(parsed_table %>%
+                 filter(row == 5) %>%
+                 pluck("4_h"),
+               mx %>%
+                 filter(name == 5) %>%
+                 pluck("value") %>%
+                 as.character())
 
   table_str <- mx %>%
     tidyHtmlTable(header = header,
@@ -141,7 +165,8 @@ test_that("Correct table sort", {
                   cgroup = cyl,
                   rnames = summary_stat,
                   rgroup = per_metric,
-                  skip_removal_warning = TRUE)
+                  skip_removal_warning = TRUE,
+                  label = "test_table")
 
   read_html(out_str) %>%
     xml_find_first("//thead") %>%
@@ -199,7 +224,9 @@ test_that("Correct table sort", {
                   cgroup = per_metric,
                   rnames = gear,
                   rgroup = cyl,
-                  skip_removal_warning = TRUE)
+                  skip_removal_warning = TRUE,
+                  label = "test_table",
+                  rowlabel = "row")
 
   read_html(out_str) %>%
     xml_find_first("//thead") %>%
@@ -210,6 +237,57 @@ test_that("Correct table sort", {
     str_trim %>%
     keep(~. != "") %>%
     expect_equivalent(c("hp", "mpg", "qsec",
+                        "row",
                         rep(c("Max", "Mean", "Min", "SD"),
                             times = 3)))
+
+  parsed_table <- readHTMLTable(as.character(out_str))[["test_table"]]
+  group_idx_of_interest <- which(parsed_table$row == "8 Cylinders")
+  subtable <- parsed_table[(group_idx_of_interest + 1):nrow(parsed_table),]
+  subdata <- mtcatr_proc_data %>%
+    filter(cyl == "8 Cylinders")
+
+  check_subdata <- function(pm, st, gr_regexp, no) {
+    subdata %>%
+      filter(per_metric == pm & summary_stat == st & str_detect(gear, gr_regexp)) %>%
+      pluck("value") %>%
+      as.character() %>%
+      if_else(is.na(.), "", .) %>%
+      expect_equal(subtable[str_detect(subtable$row, gr_regexp),
+                            which(colnames(subtable) == st)[no]])
+  }
+
+  check_subdata(pm = "hp", st = "Max", gr_regexp = "3", no = 1)
+  check_subdata(pm = "mpg", st = "Max", gr_regexp = "3", no = 2)
+  check_subdata(pm = "qsec", st = "Max", gr_regexp = "3", no = 3)
+  check_subdata(pm = "qsec", st = "Min", gr_regexp = "3", no = 3)
+  check_subdata(pm = "qsec", st = "Mean", gr_regexp = "3", no = 3)
+  check_subdata(pm = "qsec", st = "Mean", gr_regexp = "5", no = 3)
+  check_subdata(pm = "qsec", st = "SD", gr_regexp = "5", no = 3)
+  check_subdata(pm = "hp", st = "SD", gr_regexp = "5", no = 1)
+
+
+  out_str <- mtcatr_proc_data  %>%
+    arrange(desc(cyl), gear) %>%
+    mutate(per_metric = factor(per_metric, levels = c("qsec", "hp", "mpg"))) %>%
+    tidyHtmlTable(header = summary_stat,
+                  cgroup = per_metric,
+                  rnames = gear,
+                  rgroup = cyl,
+                  skip_removal_warning = TRUE,
+                  label = "test_table",
+                  rowlabel = "row")
+
+  parsed_table <- readHTMLTable(as.character(out_str))[["test_table"]]
+  group_idx_of_interest <- which(parsed_table$row == "6 Cylinders")
+  end_group_idx_of_interest <- which(parsed_table$row == "4 Cylinders")
+  subtable <- parsed_table[(group_idx_of_interest + 1):(end_group_idx_of_interest - 1),]
+  subdata <- mtcatr_proc_data %>%
+    filter(cyl == "6 Cylinders")
+
+  check_subdata(pm = "qsec", st = "SD", gr_regexp = "4", no = 1)
+  check_subdata(pm = "hp", st = "SD", gr_regexp = "4", no = 2)
+  check_subdata(pm = "mpg", st = "SD", gr_regexp = "4", no = 3)
+  check_subdata(pm = "mpg", st = "SD", gr_regexp = "5", no = 3)
+  check_subdata(pm = "mpg", st = "Max", gr_regexp = "5", no = 3)
 })
