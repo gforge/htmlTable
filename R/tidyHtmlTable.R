@@ -214,8 +214,14 @@ tidyHtmlTable.data.frame <- function(x,
     innerJoinByCommonCols(rowRefTbl) %>%
     dplyr::select(r_idx, c_idx, value) %>%
     dplyr::mutate_at(dplyr::vars(value), as.character) %>%
+    # It is important to sort the rows as below or the data won't be properly
+    # displayed, i.e. there will be primarily be a mismatch between columns
+    dplyr::arrange(r_idx) %>%
     tidyr::pivot_wider(names_from = "c_idx") %>%
     dplyr::select(-r_idx)
+
+  # Now order the columns so that cgroup and headers match
+  formatted_df <- formatted_df[,order(colnames(formatted_df) %>% as.numeric())]
 
   # Get names and indices for row groups and tspanners
   htmlTable_args <- list(
