@@ -46,7 +46,8 @@ tidy_summary <- td %>%
   summarise(Mean = round(mean(value), 1),
             SD = round(sd(value), 1),
             Min = round(min(value), 1),
-            Max = round(max(value), 1)) %>%
+            Max = round(max(value), 1),
+            .groups = 'drop') %>%
   pivot_longer(names_to = "summary_stat", 
                cols = c(Mean, SD, Min, Max)) %>% 
   ungroup %>% 
@@ -65,7 +66,7 @@ input data.
 
 ### Example 1
 
-```{r}
+```{r, warning=FALSE}
 tidy_summary  %>% 
   arrange(per_metric, summary_stat) %>% 
   addHtmlTableStyle(align = "r") %>% 
@@ -77,7 +78,7 @@ tidy_summary  %>%
 
 ### Example 2
 
-```{r}
+```{r, warning=FALSE}
 tidy_summary  %>% 
   arrange(cyl, gear) %>% 
   addHtmlTableStyle(align = "r") %>% 

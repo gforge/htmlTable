@@ -2,12 +2,14 @@
 title: "Pandoc test"
 output:
   html_document
+editor_options: 
+  chunk_output_type: inline
 ---
 
 ```{r}
 library(htmlTable)
 library(magrittr)
-mx <- matrix(1:4, ncol=2) %>% 
+mx <- matrix(1:4, ncol = 2) %>% 
   set_colnames(c("A åäö¨", "B")) %>% 
   set_rownames(letters[1:2])
 mx %>% 
@@ -19,15 +21,14 @@ mx %>%
 
 ```{r}
 mx[1] <- "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum"
-colnames(mx) <- c("A")
-rownames(mx) <- letters[1]
+colnames(mx)[1] <- c("A")
+rownames(mx)[1] <- letters[1]
 interactiveTable(mx)
 ```
 
 
 ```{r}
-mx <- matrix(rep(mx, 6), ncol = 2)
+mx <- matrix(rep(mx[1], 6), ncol = 2)
 interactiveTable(mx)
-
 ```
 
