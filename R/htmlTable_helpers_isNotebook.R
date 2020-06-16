@@ -9,7 +9,7 @@ prIsNotebook <- function() {
 
   ctxt <- getActiveDocumentContext()
   if (grepl("\\.Rmd$", ctxt$path)) {
-    return(TRUE)
+    return(prCheck4output2console(ctxt))
   }
 
   # Look for html_notebook within the header if the file hasn't been saved
@@ -23,4 +23,16 @@ prIsNotebook <- function() {
   }
 
   return(FALSE)
+}
+
+prCheck4output2console <- function(ctxt) {
+  contents <- ctxt$contents
+  header_boundary <- grep("^---$", contents)
+  if (length(header_boundary) <= 1) {
+    # Play it safe if the header is invalid
+    return(TRUE)
+  }
+
+  header <- contents[header_boundary[1]:header_boundary[2]]
+  return(!any(grepl("chunk_output_type: console", header)))
 }
