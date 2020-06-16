@@ -84,6 +84,9 @@
 #' @param hidden_tspanner \code{strings} with tspanner values that will be hidden (the values will
 #'  still be there but thhe spanner will be set to "" and thus ignored byt \code{\link{htmlTable}}).
 #' @param skip_removal_warning \code{boolean} supress warning message when removing NA columns.
+#' @param table_fn The table function that should receive the input, defaults to \code{\link{htmlTable}}
+#'  but you can provide any function that uses the same input formatting. This package was inspired
+#'  by the \code{\link[Hmisc]{latex}} function.
 #' @param ... Additional arguments that will be passed to the inner
 #' \code{\link{htmlTable}} function
 #' @return Returns html code that will build a pretty table
@@ -100,6 +103,7 @@ tidyHtmlTable <- function(x,
                           tspanner,
                           hidden_tspanner,
                           skip_removal_warning = getOption("htmlTable.skip_removal_warning", FALSE),
+                          table_fn = htmlTable,
                           ...) {
   UseMethod("tidyHtmlTable")
 }
@@ -115,6 +119,7 @@ tidyHtmlTable.default <- function(x,
                                   tspanner,
                                   hidden_tspanner,
                                   skip_removal_warning = getOption("htmlTable.skip_removal_warning", FALSE),
+                                  table_fn = htmlTable,
                                   ...) {
   stop("x must be of class data.frame")
 }
@@ -130,6 +135,7 @@ tidyHtmlTable.data.frame <- function(x,
                                      tspanner,
                                      hidden_tspanner,
                                      skip_removal_warning = FALSE,
+                                     table_fn = htmlTable,
                                      ...) {
   # You need the suggested package for this function
   safeLoadPkg("dplyr")
@@ -225,7 +231,7 @@ tidyHtmlTable.data.frame <- function(x,
 
   # Get names and indices for row groups and tspanners
   htmlTable_args <- list(
-    x = formatted_df,
+    formatted_df, # Skip names for direct compatibility with Hmisc::latex
     rnames = rowRefTbl %>% dplyr::pull(rnames),
     header = colRefTbl %>% dplyr::pull(header),
     ...
@@ -290,9 +296,9 @@ tidyHtmlTable.data.frame <- function(x,
   }
 
   if (!is.null(style_list)) {
-    attr(htmlTable_args$x, style_attribute_name) <- style_list
+    attr(htmlTable_args[[1]], style_attribute_name) <- style_list
   }
-  do.call(htmlTable, htmlTable_args)
+  do.call(table_fn, htmlTable_args)
 }
 
 `c_idx` <- "Fix no visible binding"

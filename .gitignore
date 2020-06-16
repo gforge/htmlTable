@@ -16,3 +16,4 @@ tests/visual_tests/*.css
 inst/doc
 doc
 Meta
+*.tex
