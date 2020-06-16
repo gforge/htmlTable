@@ -26,7 +26,8 @@ test_that("Basic tidyHtmlTable functionality", {
   expect_equal(nrow(parsed_table), length(mx$value))
   expect_equal(parsed_table %>%
                  filter(row == 3) %>%
-                 pluck("2_h"),
+                 pluck("2_h") %>%
+                 as.character(),
                mx %>%
                  filter(name == 3) %>%
                  pluck("value") %>%
@@ -34,7 +35,8 @@ test_that("Basic tidyHtmlTable functionality", {
 
   expect_equal(parsed_table %>%
                  filter(row == 4) %>%
-                 pluck("3_h"),
+                 pluck("3_h") %>%
+                 as.character(),
                mx %>%
                  filter(name == 4) %>%
                  pluck("value") %>%
@@ -42,7 +44,8 @@ test_that("Basic tidyHtmlTable functionality", {
 
   expect_equal(parsed_table %>%
                  filter(row == 5) %>%
-                 pluck("4_h"),
+                 pluck("4_h") %>%
+                 as.character(),
                mx %>%
                  filter(name == 5) %>%
                  pluck("value") %>%
@@ -254,7 +257,8 @@ test_that("Correct table sort", {
       as.character() %>%
       if_else(is.na(.), "", .) %>%
       expect_equal(subtable[str_detect(subtable$row, gr_regexp),
-                            which(colnames(subtable) == st)[no]])
+                            which(colnames(subtable) == st)[no]] %>%
+                     as.character())
   }
 
   check_subdata(pm = "hp", st = "Max", gr_regexp = "3", no = 1)
