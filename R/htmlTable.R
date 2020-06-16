@@ -18,7 +18,7 @@
 #'  \code{list}.
 #'
 #' If the different levels have different number of elements and you have
-#' provided a **matrix** you need to set the ones that lack elements to NA. For instance
+#' provided a \emph{matrix} you need to set the ones that lack elements to NA. For instance
 #' \code{cgroup = rbind(c("first", "second", NA), c("a", "b", "c"))}.
 #' And the corresponding \code{n.cgroup} would be \code{n.cgroup = rbind(c(1, 2, NA), c(2, 1, 2))}.
 #' for a table consisting of 5 columns. The "first" spans the first two columns,
@@ -219,9 +219,10 @@
 #'
 #' @example inst/examples/htmlTable_example.R
 #'
-#' @seealso \code{\link{txtMergeLines}},
-#'          \code{\link{addHtmlTableStyle}},
+#' @seealso \code{\link{addHtmlTableStyle}},
 #'          \code{\link{setHtmlTableTheme}},
+#'          \code{\link{tidyHtmlTable}}.
+#'          \code{\link{txtMergeLines}},
 #'          \code{\link[Hmisc]{latex}}
 #'
 #' @export
