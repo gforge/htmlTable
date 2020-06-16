@@ -33,7 +33,7 @@ library(magrittr)
 
 output <- 
   matrix(paste("Content", LETTERS[1:16]), 
-         ncol=4, byrow = TRUE)
+         ncol = 4, byrow = TRUE)
 
 output %>% 
   htmlTable(header =  paste(c("1st", "2nd", "3rd", "4th"), "header"),
@@ -42,8 +42,8 @@ output %>%
             n.rgroup = c(2, 2),
             cgroup = c("Cgroup 1", "Cgroup 2&dagger;"),
             n.cgroup = c(2, 2), 
-            caption="Basic table with both column spanners (groups) and row groups",
-            tfoot="&dagger; A table footer commment")
+            caption = "Basic table with both column spanners (groups) and row groups",
+            tfoot = "&dagger; A table footer commment")
 ```
 We can modify all our tables by using the `setHtmlTableTemplate()` and we also don't have to set the exact span of each group as it can be assumed from the data.
 
@@ -58,8 +58,8 @@ output %>%
             n.rgroup = c(1, 2),
             cgroup = c("Cgroup 1", "Cgroup 2&dagger;"),
             n.cgroup = 3, 
-            caption="A slightly differnt table with a bottom caption",
-            tfoot="&dagger; A table footer commment")
+            caption = "A slightly differnt table with a bottom caption",
+            tfoot = "&dagger; A table footer commment")
 ```
 
 
@@ -76,7 +76,7 @@ In order to make a more interesting example we will try to look at how the avera
 
 The dataset has been downloaded from Statistics Sweden and is attached to the htmlTable-package. We will start by reshaping our tidy dataset into a more table adapted format.
 
-```{r, results='markup'}
+```{r, results='markup', message=FALSE, warning=FALSE}
 data(SCB)
 
 # The SCB has three other coulmns and one value column
@@ -116,7 +116,7 @@ To convey all these layers of information will create a table with multiple leve
 
 ```{r}
 mx <- NULL
-for (n in names(SCB)){
+for (n in names(SCB)) {
   tmp <- paste0("Sweden_", strsplit(n, "_")[[1]][2])
   mx <- cbind(mx,
               cbind(SCB[[n]], 
@@ -238,7 +238,7 @@ out_mx <- txtRound(mx, 1)
 
 min_delta <- min(mx[,cols_2_clr])
 span_delta <- max(mx[,cols_2_clr]) - min(mx[,cols_2_clr]) 
-for (col in cols_2_clr){
+for (col in cols_2_clr) {
   out_mx[, col] <- mapply(function(val, strength)
     paste0("<span style='font-weight: 900; color: ", 
            colorRampPalette(c("#009900", "#000000", "#990033"))(101)[strength],
@@ -250,7 +250,7 @@ for (col in cols_2_clr){
 }
 
 out_mx %>% 
-  addHtmlTableStyle(align="rrrr|r",
+  addHtmlTableStyle(align = "rrrr|r",
                     pos.rowlabel = "bottom", 
                     col.rgroup = c("none", "#FFFFCC"),
                     col.columns = c(rep("#EFEFF0", 4),
@@ -260,7 +260,7 @@ out_mx %>%
                      for having a negative migration pattern compared to
                      Stockholm, while Uppsala has a proportionally large 
                      population of students.",
-            rowlabel="Year",
+            rowlabel = "Year",
             cgroup = cgroup,
             n.cgroup = n.cgroup,
             rgroup = c("1st&nbsp;period", 

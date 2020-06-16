@@ -39,16 +39,16 @@ cgroup is a heading. For example, specify \code{cgroup=c("Major_1","Major_2")},
 \code{n.cgroup=c(3,3)} if \code{"Major_1"} is to span columns 1-3 and
 \code{"Major_2"} is to span columns 4-6.
 \code{rowlabel} does not count in the column numbers. You can omit \code{n.cgroup}
-if all groups have the same number of columns. If the n.cgroup is one less than
+if all groups have the same number of columns. If the \code{n.cgroup} is one less than
 the number of columns in the matrix/data.frame then it automatically adds those.}
 
 \item{caption}{Adds a table caption.}
 
 \item{compatibility}{Is default set to \code{LibreOffice} as some
-settings need to be in old html format as Libre Office can't
+settings need to be in old HTML format as Libre Office can't
 handle some commands such as the css caption-alignment. Note: this
 option is not yet fully implemented for all details, in the future
-I aim to generate a html-correct table and one that is aimed
+I aim to generate a HTML-correct table and one that is aimed
 at Libre Office compatibility. Word-compatibility is difficult as
 Word ignores most settings and destroys all layout attempts
 (at least that is how my 2010 version behaves). You can additinally use the
@@ -64,14 +64,14 @@ specer cells}
 \item{top_row_style}{The top row has a special style depending on
 the \code{ctable} option in the \code{htmlTable} call.}
 
-\item{rnames}{Default rownames are generated from \code{\link[base]{rownames}(x)}. If you
-provide \code{FALSE} then it will skip the rownames. \emph{Note:} For \code{data.frames}
+\item{rnames}{Default row names are generated from \code{\link[base]{rownames}(x)}. If you
+provide \code{FALSE} then it will skip the row names. \emph{Note:} For \code{data.frames}
 if you do \code{\link[base]{rownames}(my_dataframe) <- NULL} it still has
-rownames. Thus you need to use \code{FALSE} if you want to
-surpress rownames for \code{data.frames}.}
+row names. Thus you need to use \code{FALSE} if you want to
+supress row names for \code{data.frames}.}
 
-\item{rowlabel}{If the table has rownames or \code{rnames},
-rowlabel is a character string containing the
+\item{rowlabel}{If the table has row names or \code{rnames},
+\code{rowlabel} is a character string containing the
 column heading for the \code{rnames}.}
 
 \item{cgroup_spacer_cells}{The spacer cells due to the multiple cgroup levels.

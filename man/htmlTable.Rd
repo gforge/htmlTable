@@ -63,19 +63,19 @@ it takes a string of the class \code{htmlTable} as \code{x} argument.}
 \item{header}{A vector of character strings specifying column
 header, defaulting to \code{\link[base]{colnames}(x)}}
 
-\item{rnames}{Default rownames are generated from \code{\link[base]{rownames}(x)}. If you
-provide \code{FALSE} then it will skip the rownames. \emph{Note:} For \code{data.frames}
+\item{rnames}{Default row names are generated from \code{\link[base]{rownames}(x)}. If you
+provide \code{FALSE} then it will skip the row names. \emph{Note:} For \code{data.frames}
 if you do \code{\link[base]{rownames}(my_dataframe) <- NULL} it still has
-rownames. Thus you need to use \code{FALSE} if you want to
-surpress rownames for \code{data.frames}.}
+row names. Thus you need to use \code{FALSE} if you want to
+supress row names for \code{data.frames}.}
 
-\item{rowlabel}{If the table has rownames or \code{rnames},
-rowlabel is a character string containing the
+\item{rowlabel}{If the table has row names or \code{rnames},
+\code{rowlabel} is a character string containing the
 column heading for the \code{rnames}.}
 
 \item{caption}{Adds a table caption.}
 
-\item{tfoot}{Adds a table footer (uses the \code{<tfoot>} html element). The
+\item{tfoot}{Adds a table footer (uses the \code{<tfoot>} HTML element). The
 output is run through \code{\link{txtMergeLines}} simplifying the generation
 of multiple lines.}
 
@@ -106,16 +106,16 @@ cgroup is a heading. For example, specify \code{cgroup=c("Major_1","Major_2")},
 \code{n.cgroup=c(3,3)} if \code{"Major_1"} is to span columns 1-3 and
 \code{"Major_2"} is to span columns 4-6.
 \code{rowlabel} does not count in the column numbers. You can omit \code{n.cgroup}
-if all groups have the same number of columns. If the n.cgroup is one less than
+if all groups have the same number of columns. If the \code{n.cgroup} is one less than
 the number of columns in the matrix/data.frame then it automatically adds those.}
 
 \item{tspanner}{The table spanner is somewhat of a table header that
 you can use when you want to join different tables with the same columns.}
 
-\item{n.tspanner}{An integer vector with the number of rows or rgroups in the original
+\item{n.tspanner}{An integer vector with the number of rows or \code{rgroup}s in the original
 matrix that the table spanner should span. If you have provided one fewer n.tspanner elements
-the last will be imputed from the number of rgroups (if you have provided `rgroup` and
-`sum(n.tspanner) < length(rgroup)`) or the number of rows in the table.}
+the last will be imputed from the number of \code{rgroup}s (if you have provided \code{rgroup} and
+\code{sum(n.tspanner) < length(rgroup)}) or the number of rows in the table.}
 
 \item{total}{The last row is sometimes a row total with a border on top and
 bold fonts. Set this to \code{TRUE} if you are interested in such a row. If you
@@ -124,10 +124,10 @@ want a total row at the end of each table spanner you can set this to \code{"tsp
 \item{ctable}{If the table should have a double top border or a single a' la LaTeX ctable style}
 
 \item{compatibility}{Is default set to \code{LibreOffice} as some
-settings need to be in old html format as Libre Office can't
+settings need to be in old HTML format as Libre Office can't
 handle some commands such as the css caption-alignment. Note: this
 option is not yet fully implemented for all details, in the future
-I aim to generate a html-correct table and one that is aimed
+I aim to generate a HTML-correct table and one that is aimed
 at Libre Office compatibility. Word-compatibility is difficult as
 Word ignores most settings and destroys all layout attempts
 (at least that is how my 2010 version behaves). You can additinally use the
@@ -160,16 +160,19 @@ particular viewer (this is how RStudio decides on a viewer).
 \code{\link[base]{cat}()} the set \code{\link[base]{options}(htmlTable.cat = TRUE)}.}
 }
 \value{
-\code{string} Returns a string of class htmlTable
+\code{string} Returns a string of class \code{htmlTable}
 }
 \description{
 This is a function for outputting a more advanced
 tables using HTML. The core philosophy is to bring column and row groups
 into the table and allow for a dense representation of
-complex tables. The html-output is designed for
+complex tables. The HTML-output is designed for
 maximum compatibility with copy-paste functionality into
 word-processors. For adding styles, see \code{\link{addHtmlTableStyle}}
-and themese \code{\link{setHtmlTableTheme}}.
+and themes \code{\link{setHtmlTableTheme}}. \emph{Note:} If you are using
+\pkg{tidyverse} and \pkg{dplyr} you may want to check out
+\code{\link{tidyHtmlTable}} that automates many of the arguments
+that \code{htmlTable} requires.
 }
 \section{Multiple rows of column spanners \code{cgroup}}{
 
@@ -181,25 +184,25 @@ set the \code{cgroup} and \code{n.cgroup} arguments to a \code{matrix} or
 If the different levels have different number of elements and you have
 provided a **matrix** you need to set the ones that lack elements to NA. For instance
 \code{cgroup = rbind(c("first", "second", NA), c("a", "b", "c"))}.
-And the corresponding n,cgroup would be \code{n.cgroup = rbind(c(1, 2, NA), c(2, 1, 2))}.
+And the corresponding \code{n.cgroup} would be \code{n.cgroup = rbind(c(1, 2, NA), c(2, 1, 2))}.
 for a table consisting of 5 columns. The "first" spans the first two columns,
 the "second" spans the last three columns, "a" spans the first two, "b"
 the middle column, and "c" the last two columns.
 
 It is recommended to use `list` as you will not have to bother with the `NA`.
 
-If you want leav a cgroup empty then simply provide `""` as the cgroup.
+If you want leave a \code{cgroup} empty then simply provide `""` as the \code{cgroup}.
 }
 
 \section{The \code{rgroup} argument}{
 
 
- The rgroup allows you to smoothly group rows. Each row within a group
+ The \code{rgroup} allows you to smoothly group rows. Each row within a group
  receives an indention of two blank spaces and are grouped with their
- corresponing rgroup element. The \code{sum(n.rgroup)} should always
+ corresponding \code{rgroup} element. The \code{sum(n.rgroup)} should always
  be equal or less than the matrix rows. If less then it will pad the
- remaining rows with either an empty rgroup, i.e. an "" or if the
- rgroup is one longer than the n.rgroup the last n.rgroup element will
+ remaining rows with either an empty \code{rgroup}, i.e. an "" or if the
+ \code{rgroup} is one longer than the \code{n.rgroup} the last \code{n.rgroup} element will
  be calculated through \code{nrow(x) - sum(n.rgroup)} in order to make
  the table generating smoother.
 }
@@ -207,17 +210,17 @@ If you want leav a cgroup empty then simply provide `""` as the cgroup.
 \section{The add attribute to \code{rgroup}}{
 
 
-You can now have an additional element at the rgroup level by specifying the
+You can now have an additional element at the \code{rgroup} level by specifying the
 \code{attr(rgroup, 'add')}. The value can either be a \code{vector}, a \code{list},
 or a \code{matrix}. See \code{vignette("general", package = "htmlTable")} for examples.
 \itemize{
- \item{A \code{vector} of either equal number of rgroups to the number
-  of rgroups that aren't empty, i.e. \code{rgroup[rgroup != ""]}. Or a named vector where
-  the name must correspond to either an rgroup or to an rgroup number.}
+ \item{A \code{vector} of either equal number of \code{rgroup}s to the number
+  of \code{rgroup}s that aren't empty, i.e. \code{rgroup[rgroup != ""]}. Or a named vector where
+  the name must correspond to either an \code{rgroup} or to an \code{rgroup} number.}
  \item{A \code{list} that has exactly the same requirements as the vector.
   In addition to the previous we can also have a list with column numbers within
   as names within the list.}
- \item{A \code{matrix} with the dimensiont \code{nrow(x) x ncol(x)} or
+ \item{A \code{matrix} with the dimension \code{nrow(x) x ncol(x)} or
   \code{nrow(x) x 1} where the latter is equivalent to a named vector.
   If you have \code{rownames} these will resolve similarly to the names to the
   \code{list}/\code{vector} arguments. The same thing applies to \code{colnames}.
@@ -228,16 +231,16 @@ or a \code{matrix}. See \code{vignette("general", package = "htmlTable")} for ex
 \section{Important \pkg{knitr}-note}{
 
 
-This funciton will only work with \pkg{knitr} outputting \emph{html}, i.e.
-markdown mode. As the function returns raw html-code
-the compatibility with non-html formatting is limited,
+This function will only work with \pkg{knitr} outputting \emph{HTML}, i.e.
+markdown mode. As the function returns raw HTML-code
+the compatibility with non-HTML formatting is limited,
 even with \href{http://johnmacfarlane.net/pandoc/}{pandoc}.
 
 Thanks to the the \code{\link[knitr]{knit_print}} and the
 \code{\link[knitr]{asis_output}}
 the \code{results='asis'} is \emph{no longer needed} except within for-loops.
 If you have a knitr-chunk with a for loop and use \code{print()} to produce
-raw html you must set the chunk option \code{results='asis'}. \code{Note}:
+raw HTML you must set the chunk option \code{results='asis'}. \emph{Note}:
 the print-function relies on the \code{\link[base]{interactive}()} function
 for determining if the output should be sent to a browser or to the terminal.
 In vignettes and other directly knitted documents you may need to either set
@@ -250,9 +253,9 @@ In vignettes and other directly knitted documents you may need to either set
 RStudio has an interactive notebook that allows output directly into the document.
 In order for the output to be properly formatted it needs to have the \code{class}
 of \code{html}. The \code{htmlTable} tries to identify if the environment is a
-notebook document (uses the rstudio api and identifies if its a file with and `Rmd`
-file ending or if ther is an element with `html_notebook`). If you don't want this
-behaviour you can remove it using the `options(htmlTable.skip_notebook = TRUE)`
+notebook document (uses the \pkg{rstudioapi} and identifies if its a file with and \code{Rmd}
+file ending or if there is an element with \code{html_notebook}). If you don't want this
+behavior you can remove it using the \code{options(htmlTable.skip_notebook = TRUE)}.
 }
 
 \section{Table counter}{
@@ -268,13 +271,13 @@ you can manipulate the counter table text that is added prior to the
 actual caption. Note, you should use the \code{\link{sprintf}} \code{\%s}
 instead of \code{\%d} as the software converts all numbers to characters
 for compatibility reasons. If you set \code{options(table_counter_roman = TRUE)}
-then the table counter will use Roman numumerals instead of Arabic.
+then the table counter will use Roman numerals instead of Arabic.
 }
 
-\section{Empty dataframes}{
+\section{Empty data frames}{
 
-An empty dataframe will result in a warning and output an empty table, provided that
-rgroup and n.rgroup are not specified. All other row layout options will be ignored.
+An empty data frame will result in a warning and output an empty table, provided that
+\code{rgroup} and \code{n.rgroup} are not specified. All other row layout options will be ignored.
 }
 
 \section{Other}{
@@ -282,40 +285,41 @@ rgroup and n.rgroup are not specified. All other row layout options will be igno
 
 \emph{Copy-pasting:} As you copy-paste results into Word you need to keep
 the original formatting. Either right click and choose that paste option or click
-on the icon appearing after a paste. Currently the following compatibitilies
+on the icon appearing after a paste. Currently the following compatibilities
 have been tested with MS Word 2016:
 
 \itemize{
  \item{\bold{Internet Explorer} (v. 11.20.10586.0) Works perfectly when copy-pasting into Word}
  \item{\bold{RStudio} (v. 0.99.448) Works perfectly when copy-pasting into Word.
-       \emph{Note:} can have issues with multiline cgroups -
+       \emph{Note:} can have issues with multi-line \code{cgroup}s -
        see \href{http://code.google.com/p/chromium/issues/detail?id=305130}{bug}}
  \item{\bold{Chrome} (v. 47.0.2526.106) Works perfectly when copy-pasting into Word.
-       \emph{Note:} can have issues with multiline cgroups -
+       \emph{Note:} can have issues with multi-line \code{cgroup}s -
        see \href{http://code.google.com/p/chromium/issues/detail?id=305130}{bug}}
  \item{\bold{Firefox} (v. 43.0.3) Works poorly - looses font-styling, lines and general feel}
  \item{\bold{Edge} (v. 25.10586.0.0) Works poorly - looses lines and general feel}
 }
 
-\emph{Direct word processor opening:} Opening directly in LibreOffice or Word is no longer
+\emph{Direct word processor opening:} Opening directly in Libre Office or Word is no longer
 recommended. You get much prettier results using the cut-and-paste option.
 
-Note that when using complex cgroup alignments with multiple levels
+Note that when using complex \code{cgroup} alignments with multiple levels
 not every browser is able to handle this. For instance the RStudio
 webkit browser seems to have issues with this and a
 \href{http://code.google.com/p/chromium/issues/detail?id=305130}{bug has been filed}.
 
-As the table uses html for rendering you need to be aware of that headers,
-rownames, and cell values should try respect this for optimal display. Browsers
+As the table uses HTML for rendering you need to be aware of that headers,
+row names, and cell values should try respect this for optimal display. Browsers
 try to compensate and frequently the tables still turn out fine but it is
-not advized. Most importantly you should try to use
+not advised. Most importantly you should try to use
 \code{&lt;} instead of \code{<} and
 \code{&gt;} instead of \code{>}. You can find a complete list
-of html characters \href{http://ascii.cl/htmlcodes.htm}{here}.
+of HTML characters \href{http://ascii.cl/htmlcodes.htm}{here}.
 
 Lastly, I want to mention that function was inspired by the \pkg{Hmisc}
-\code{\link[Hmisc]{latex}()} that can be an excellent alterantive if you wish
-to switch to PDF-output.
+\code{\link[Hmisc]{latex}()} that can be an excellent alternative if you wish
+to switch to PDF-output. For the sibling function \code{\link{tidyHtmlTable}}
+you can directly switch between the functions.
 }
 
 \examples{

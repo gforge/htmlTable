@@ -15,6 +15,7 @@ tidyHtmlTable(
   tspanner,
   hidden_tspanner,
   skip_removal_warning = getOption("htmlTable.skip_removal_warning", FALSE),
+  table_fn = htmlTable,
   ...
 )
 }
@@ -42,6 +43,10 @@ still be there but thhe spanner will be set to "" and thus ignored byt \code{\li
 still be there but thhe spanner will be set to "" and thus ignored byt \code{\link{htmlTable}}).}
 
 \item{skip_removal_warning}{\code{boolean} supress warning message when removing NA columns.}
+
+\item{table_fn}{The table function that should receive the input, defaults to \code{\link{htmlTable}}
+but you can provide any function that uses the same input formatting. This package was inspired
+by the \code{\link[Hmisc]{latex}} function.}
 
 \item{...}{Additional arguments that will be passed to the inner
 \code{\link{htmlTable}} function}

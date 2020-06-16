@@ -10,11 +10,11 @@ prPrepareAlign(align, x, rnames, default_rn = "l")
 \item{x}{The matrix/data.frame with the data. For the \code{print} and \code{knit_print}
 it takes a string of the class \code{htmlTable} as \code{x} argument.}
 
-\item{rnames}{Default rownames are generated from \code{\link[base]{rownames}(x)}. If you
-provide \code{FALSE} then it will skip the rownames. \emph{Note:} For \code{data.frames}
+\item{rnames}{Default row names are generated from \code{\link[base]{rownames}(x)}. If you
+provide \code{FALSE} then it will skip the row names. \emph{Note:} For \code{data.frames}
 if you do \code{\link[base]{rownames}(my_dataframe) <- NULL} it still has
-rownames. Thus you need to use \code{FALSE} if you want to
-surpress rownames for \code{data.frames}.}
+row names. Thus you need to use \code{FALSE} if you want to
+supress row names for \code{data.frames}.}
 
 \item{default_rn}{The default rowname alignment. This is an option
 as the header uses the same function and there may be differences in

@@ -32,11 +32,11 @@ spacer cells}
 
 \item{cspan}{The column span of the current rgroup}
 
-\item{rnames}{Default rownames are generated from \code{\link[base]{rownames}(x)}. If you
-provide \code{FALSE} then it will skip the rownames. \emph{Note:} For \code{data.frames}
+\item{rnames}{Default row names are generated from \code{\link[base]{rownames}(x)}. If you
+provide \code{FALSE} then it will skip the row names. \emph{Note:} For \code{data.frames}
 if you do \code{\link[base]{rownames}(my_dataframe) <- NULL} it still has
-rownames. Thus you need to use \code{FALSE} if you want to
-surpress rownames for \code{data.frames}.}
+row names. Thus you need to use \code{FALSE} if you want to
+supress row names for \code{data.frames}.}
 
 \item{style}{The css style corresponding to the rgroup css style that includes
 the color specific for the rgroup, i.e. \code{col.rgroup}.}
