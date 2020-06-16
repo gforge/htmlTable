@@ -368,17 +368,18 @@ test_that("Works with Hmisc::latex", {
     class = c("tbl_df", "tbl", "data.frame"),
     row.names = c(NA, -96L))
 
-  ltable <- mtcatr_proc_data  %>%
-    arrange(desc(cyl), gear) %>%
-    mutate(per_metric = factor(per_metric, levels = c("qsec", "hp", "mpg"))) %>%
-    tidyHtmlTable(header = summary_stat,
-                  cgroup = per_metric,
-                  rnames = gear,
-                  rgroup = cyl,
-                  skip_removal_warning = TRUE,
-                  label = "test_table",
-                  rowlabel = "row",
-                  table_fn = Hmisc::latex)
-  expect_class(ltable, "latex")
+  expect_output(mtcatr_proc_data  %>%
+                  arrange(desc(cyl), gear) %>%
+                  mutate(per_metric = factor(per_metric, levels = c("qsec", "hp", "mpg"))) %>%
+                  tidyHtmlTable(header = summary_stat,
+                                cgroup = per_metric,
+                                rnames = gear,
+                                rgroup = cyl,
+                                skip_removal_warning = TRUE,
+                                label = "test_table",
+                                rowlabel = "row",
+                                table_fn = Hmisc::latex,
+                                file = ""),
+                regexp = "8 Cylinders")
 })
 
