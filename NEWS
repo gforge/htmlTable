@@ -20,6 +20,8 @@ Changes for 2.0.0
 * Added htmlTable.pretty_indentation option for skipping the stripping of all the tabs that was required due to old Pandoc bug.
 * Added `attr(x, "html") <- TRUE` by default and UTF-8 encoding on all outputted strings to mimic the htmltools::HTML function behavior.
 * For simple tibble output the tidyHtmlTable can now be used to choose a column for the rnames argument
+* The print statement now respects the chunk_output_type in Rmd files in Rstudio
+* tidyHtmlTable now accepts table function that allows switching to other table functions
 
 Changes for 1.13.3
 ------------------
