@@ -22,6 +22,7 @@ Changes for 2.0.0
 * For simple tibble output the tidyHtmlTable can now be used to choose a column for the rnames argument
 * The print statement now respects the chunk_output_type in Rmd files in Rstudio
 * tidyHtmlTable now accepts table function that allows switching to other table functions
+* Added css.header style as using css.cell wasn't entirely intuitive (fixes issue #73)
 
 Changes for 1.13.3
 ------------------

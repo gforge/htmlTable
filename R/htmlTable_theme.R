@@ -43,6 +43,8 @@ setHtmlTableTheme <- function(theme = NULL,
                               css.total = NULL,
                               css.cell = NULL,
                               css.cgroup = NULL,
+                              css.header = NULL,
+                              css.header.border_bottom = NULL,
 
                               css.class = NULL,
                               css.table = NULL,
@@ -154,6 +156,8 @@ prGetThemeListObject <- function(theme_name = c("standard", "Google docs", "blan
 
       css.cell = getOption("htmlTable.css.cell", default = ""),
       css.cgroup = getOption("htmlTable.css.cgroup", default = ""),
+      css.header = getOption("htmlTable.css.header", default = "font-weight: 900"),
+      css.header.border_bottom = getOption("htmlTable.css.header.border_bottom", default = "border-bottom: 1px solid grey"),
 
       css.class = getOption("htmlTable.css.class", default = "gmisc_table"),
       css.table = getOption("htmlTable.css.table", default = "margin-top: 1em; margin-bottom: 1em;"),
@@ -186,6 +190,8 @@ prGetThemeListObject <- function(theme_name = c("standard", "Google docs", "blan
 
       css.cell = getOption("htmlTable.css.cell", default = "margin: 0; padding: 0;"),
       css.cgroup = getOption("htmlTable.css.cgroup", default = ""),
+      css.header = getOption("htmlTable.css.header", default = "font-weight: 900"),
+      css.header.border_bottom = getOption("htmlTable.css.header.border_bottom", default = "border-bottom: 1px solid grey"),
 
       css.class = getOption("htmlTable.css.class", default = "gmisc_table"),
       css.table = getOption("htmlTable.css.table", default = "margin-top: 1em; margin-bottom: 1em;"),
@@ -213,6 +219,9 @@ prGetThemeListObject <- function(theme_name = c("standard", "Google docs", "blan
 
       css.cell = "",
       css.cgroup = "",
+      css.header = "",
+      # Not blank as it is part of core table
+      css.header.border_bottom = "border-bottom: 1px solid grey",
 
       css.class = "",
       css.table = "",

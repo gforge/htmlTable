@@ -19,7 +19,7 @@ the function will convert the \code{align} into proper \code{align: center}.}
  correct CSS ; and : structure.
 }
 \description{
-A funciton for checking, merging, and more
+A function for checking, merging, and more
 with a variety of different style formats.
 }
 \seealso{

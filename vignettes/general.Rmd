@@ -1,5 +1,5 @@
 ---
-title: "The htmlTable package"
+title: "How-to use htmlTable"
 author: "Max Gordon"
 date: "`r Sys.Date()`"
 output: 
@@ -346,7 +346,8 @@ mx %>%
                     col.columns = c(rep("none", 2),
                                     rep("#F5FBFF", 4)),
                     col.rgroup = c("none", "#F7F7F7"),
-                    css.cell = "padding-left: .5em; padding-right: .2em;") %>% 
+                    css.cell = "padding-left: .5em; padding-right: .2em;",
+                    css.header = "font-weight: normal") %>% 
   htmlTable(rgroup = rgroup,
             n.rgroup = c(2,4),
             tspanner = paste("Spanner", LETTERS[1:2]),

@@ -6,9 +6,20 @@
 #' @inheritParams htmlTable
 #' @return \code{matrix}
 #' @keywords internal
-prPrepareCss <- function(x, css, rnames, header = NULL, name = deparse(substitute(css))) {
-  css.header <- rep("", times = ncol(x))
-  css.rnames <- rep("", times = nrow(x) + !is.null(header))
+prPrepareCss <- function(x, css, rnames, header = NULL, name = deparse(substitute(css)), style_list = NULL) {
+  if (is.null(style_list)) {
+    css.header <- rep("", times = ncol(x))
+    css.rnames <- rep("", times = nrow(x) + !is.null(header))
+  } else {
+    css.header <- rep(ifelse(is.null(style_list$css.header),
+                             "",
+                             style_list$css.header),
+                      times = ncol(x))
+    css.rnames <- rep(ifelse(is.null(style_list$css.rnames),
+                             "",
+                             style_list$css.rnames),
+                      times = nrow(x) + !missing(header))
+  }
 
   if (is.matrix(css)) {
     if (any(grepl("^[^:]*[a-zA-Z]+[:]*:", css))) {
@@ -41,8 +52,7 @@ prPrepareCss <- function(x, css, rnames, header = NULL, name = deparse(substitut
         )
       }
 
-      css <-
-        css[, -1, drop = FALSE]
+      css <- css[, -1, drop = FALSE]
     } else if (ncol(css) != ncol(x)) {
       stop(
         "There is an invalid number of columns for the ", name, " matrix.",
@@ -55,18 +65,17 @@ prPrepareCss <- function(x, css, rnames, header = NULL, name = deparse(substitut
       )
     }
 
-    if (nrow(css) == nrow(x) + 1 &&
-      !is.null(header)) {
-      css.header <- css[1, ]
+    if (nrow(css) == nrow(x) + 1 && !is.null(header)) {
+      for (i in 1:length(css.header)) {
+        css.header[i] <- prGetStyle(css.header[i], css[1, i])
+      }
       css <- css[-1, , drop = FALSE]
     } else if (nrow(css) != nrow(x)) {
       stop(
         "There is an invalid number of rows for the ", name, " matrix.",
         " Your x argument has '", nrow(x), "' rows",
         " while your ", name, " has '", nrow(css), "' rows",
-        " and there is ", ifelse(is.null(header),
-          "no", "a"
-        ),
+        " and there is ", ifelse(is.null(header), "no", "a"),
         " header"
       )
     }
