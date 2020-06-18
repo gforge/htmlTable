@@ -32,17 +32,17 @@ output \code{htmlTable}. Defaults to "value" as used by \code{\link[tidyr]{pivot
 
 \item{rgroup}{The column in \code{x} specifying row groups}
 
-\item{hidden_rgroup}{\code{strings} with rgroup values that will be hidden  (the values will
-still be there but thhe spanner will be set to "" and thus ignored byt \code{\link{htmlTable}}).}
+\item{hidden_rgroup}{\code{strings} with \code{rgroup} values that will be hidden  (the values will
+still be there but the spanner will be set to "" and thus ignored by \code{\link{htmlTable}}).}
 
 \item{cgroup}{The column or columns in \code{x} specifying the column groups}
 
-\item{tspanner}{The column in \code{x} specifying tspanner groups}
+\item{tspanner}{The column in \code{x} specifying \code{tspanner} groups}
 
-\item{hidden_tspanner}{\code{strings} with tspanner values that will be hidden (the values will
-still be there but thhe spanner will be set to "" and thus ignored byt \code{\link{htmlTable}}).}
+\item{hidden_tspanner}{\code{strings} with \code{tspanner} values that will be hidden (the values will
+still be there but the spanner will be set to "" and thus ignored by \code{\link{htmlTable}}).}
 
-\item{skip_removal_warning}{\code{boolean} supress warning message when removing NA columns.}
+\item{skip_removal_warning}{\code{boolean} suppress warning message when removing NA columns.}
 
 \item{table_fn}{The table function that should receive the input, defaults to \code{\link{htmlTable}}
 but you can provide any function that uses the same input formatting. This package was inspired
@@ -56,8 +56,8 @@ Returns html code that will build a pretty table
 }
 \description{
 Builds an \code{htmlTable} by mapping columns from the input data, \code{x},
-to elements of an output \code{htmlTable} (e.g. rnames, header, etc.). This
-provides a ggplot2-like interface you can pivot rows/columns as required. The
+to elements of an output \code{htmlTable} (e.g. \code{rnames}, \code{header}, etc.). This
+provides a \pkg{ggplot2}-like interface you can pivot rows/columns as required. The
 typical use case is when you are using \code{dplyr} together with the
 \code{tidyverse} data processing functions, see \code{vignette("tidyHtmlTable")}.
 }
@@ -97,8 +97,8 @@ typical use case is when you are using \code{dplyr} together with the
   repeating inputs and this can easily be performed pre-function by calling
   \code{\link[dplyr]{arrange}()} prior to \code{tidyHtmlTable}.
 
-  Columns are sorted by \code{arrange(cgroup, header)} where cgroup will be
-  expanded to the columns of the cgroup argument, e.g. \code{cgroup = c(a, b), header = c}
+  Columns are sorted by \code{arrange(cgroup, header)} where \code{cgroup} will be
+  expanded to the columns of the \code{cgroup} argument, e.g. \code{cgroup = c(a, b), header = c}
   will become \code{arrange(a, b, c)}. If you want to sort in non-alphabetic order
   you can provide a \code{factor} variable and that information will be retained.
 }
@@ -120,10 +120,11 @@ typical use case is when you are using \code{dplyr} together with the
 \section{Simple tibble output}{
 
 
-  The tibble discourages the use of rownames. There is therefore a convenience
+  The tibble discourages the use of row names. There is therefore a convenience
   option for \code{tidyHtmlTable} where you can use the function just as you
-  would with htmlTable where \code{rnames} is populated with "names" column or
-  the \code{rnames} argument provided using tidyselect syntax.
+  would with \code{\link{htmlTable}} where \code{rnames} is populated with
+  the \code{rnames} argument provided using \code{tidyselect} syntax (defaults to
+  the "names" column if present int the input data).
 }
 
 \section{Additional dependencies}{

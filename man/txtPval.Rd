@@ -10,33 +10,31 @@ txtPval(pvalues, lim.2dec = 10^-2, lim.sig = 10^-4, html = TRUE, ...)
 \item{pvalues}{The p-values}
 
 \item{lim.2dec}{The limit for showing two decimals. E.g.
-the p-value may be 0.056 and we may want to keep the two decimals in order
-to emphasize the proximity to the all-mighty 0.05 p-value and set this to
-\eqn{10^-2}. This allows that a value of 0.0056 is rounded to 0.006 and this
-makes intuitive sense as the 0.0056 level as this is well below
-the 0.05 value and thus not as interesting to know the exact proximity to
-0.05. \emph{Disclaimer:} The 0.05-limit is really silly and debated, unfortunately
+the p-value may be \code{0.056} and we may want to keep the two decimals in order
+to emphasize the proximity to the all-mighty \code{0.05} p-value and set this to
+\eqn{10^-2}. This allows that a value of \code{0.0056} is rounded to \code{0.006} and this
+makes intuitive sense as the \code{0.0056} level as this is well below
+the \code{0.05} value and thus not as interesting to know the exact proximity to
+\code{0.05}. \emph{Disclaimer:} The \code{0.05}-limit is really silly and debated, unfortunately
 it remains a standard and this package tries to adapt to the current standards in order
 to limit publication associated issues.}
 
-\item{lim.sig}{The significance limit for the less than sign, i.e. the '<'}
+\item{lim.sig}{The significance limit for the less than sign, i.e. the '\code{<}'}
 
-\item{html}{If the less than sign should be < or &lt;
-as needed for html output.}
+\item{html}{If the less than sign should be \code{<} or \code{&lt;} as needed for HTML output.}
 
-\item{...}{Currently only used for generating warnings of deprecated call
-parameters.}
+\item{...}{Currently only used for generating warnings of deprecated call parameters.}
 }
 \value{
 vector
 }
 \description{
 Gets formatted p-values. For instance
-you often want 0.1234 to be 0.12 while also
+you often want \code{0.1234} to be \code{0.12} while also
 having two values up until a limit,
-i.e. 0.01234 should be 0.012 while
-0.001234 should be 0.001. Furthermore you
-want to have < 0.001 as it becomes ridiculous
+i.e. \code{0.01234} should be \code{0.012} while
+\code{0.001234} should be \code{0.001}. Furthermore you
+want to have \code{< 0.001} as it becomes ridiculous
 to report anything below that value.
 }
 \examples{
@@ -44,6 +42,7 @@ txtPval(c(0.10234,0.010234, 0.0010234, 0.000010234))
 }
 \seealso{
 Other text formatters: 
+\code{\link{txtInt}()},
 \code{\link{txtMergeLines}()},
 \code{\link{txtRound}()}
 }
