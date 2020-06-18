@@ -53,13 +53,14 @@ mtcars %>%
   mutate(gear = glue("{gear} gears")) %>% 
   addHtmlTableStyle(align = "r") %>% 
   tidyHtmlTable(header = per_metric, rnames = rnames, rgroup = gear,
-                caption = "A simple tidyHtmlTable example from <code>mtcars</code>")
+                caption = "A simple <code>tidyHtmlTable</code> example using <code>mtcars</code>")
 ```
 
 <table class='gmisc_table' style='border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;' >
 	<thead>
 	<tr><td colspan='4' style='text-align: left;'>
-	A simple tidyHtmlTable example from <code>mtcars</code></td></tr>
+	  A simple <code>tidyHtmlTable</code> example using <code>mtcars</code>
+	</td></tr>
 	<tr>
 		<th style='border-bottom: 1px solid grey; border-top: 2px solid grey;'> </th>
 		<th style='font-weight: 900; border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: right;'>hp</th>
