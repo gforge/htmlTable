@@ -31,8 +31,7 @@ library(htmlTable)
 library(tibble)
 
 td <- mtcars %>%
-  tibble %>% 
-  rownames_to_column %>%
+  as_tibble(rownames = "rnames") %>% 
   pivot_longer(names_to = "per_metric", 
                cols = c(hp, mpg, qsec))
 ```
@@ -50,7 +49,7 @@ tidy_summary <- td %>%
             .groups = 'drop') %>%
   pivot_longer(names_to = "summary_stat", 
                cols = c(Mean, SD, Min, Max)) %>% 
-  ungroup %>% 
+  ungroup() %>% 
   mutate(gear = paste(gear, "Gears"),
          cyl = paste(cyl, "Cylinders"))
 ```

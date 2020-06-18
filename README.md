@@ -39,7 +39,57 @@ htmlTable(output)
 	</tbody>
 </table>
 
-As of version 1.0.2 you **no longer need** to specify `results='asis'` for each `knitr` chunk.
+If you are using `dplyr` and `tidyverse` a convenient wrapper is the `tidyHtmlTable` function (check out `vignette("tidyHtmlTable")`). A simple example of the `tidyHtmlTable` would look something like this:
+
+```r
+library(tidyverse)
+library(glue)
+mtcars %>%
+  as_tibble(rownames = "rnames") %>% 
+  filter(cyl == 6 & qsec < 18) %>% 
+  pivot_longer(names_to = "per_metric", 
+               cols = c(hp, mpg, qsec)) %>% 
+  arrange(gear, rnames) %>% 
+  mutate(gear = glue("{gear} gears")) %>% 
+  addHtmlTableStyle(align = "r") %>% 
+  tidyHtmlTable(header = per_metric, rnames = rnames, rgroup = gear,
+                caption = "A simple tidyHtmlTable example from <code>mtcars</code>")
+```
+
+<table class='gmisc_table' style='border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;' >
+	<thead>
+	<tr><td colspan='4' style='text-align: left;'>
+	A simpole tidyHtmlTable example from <code>mtcars</code></td></tr>
+	<tr>
+		<th style='border-bottom: 1px solid grey; border-top: 2px solid grey;'> </th>
+		<th style='font-weight: 900; border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: right;'>hp</th>
+		<th style='font-weight: 900; border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: right;'>mpg</th>
+		<th style='font-weight: 900; border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: right;'>qsec</th>
+	</tr>
+	</thead>
+	<tbody> 
+	<tr><td colspan='4' style='font-weight: 900;'>4 gears</td></tr>
+	<tr>
+		<td style='text-align: left;'>&nbsp;&nbsp;Mazda RX4</td>
+		<td style='text-align: right;'>110</td>
+		<td style='text-align: right;'>21</td>
+		<td style='text-align: right;'>16.46</td>
+	</tr>
+	<tr>
+		<td style='text-align: left;'>&nbsp;&nbsp;Mazda RX4 Wag</td>
+		<td style='text-align: right;'>110</td>
+		<td style='text-align: right;'>21</td>
+		<td style='text-align: right;'>17.02</td>
+	</tr> 
+	<tr><td colspan='4' style='font-weight: 900;'>5 gears</td></tr>
+	<tr>
+		<td style='border-bottom: 2px solid grey; text-align: left;'>&nbsp;&nbsp;Ferrari Dino</td>
+		<td style='border-bottom: 2px solid grey; text-align: right;'>175</td>
+		<td style='border-bottom: 2px solid grey; text-align: right;'>19.7</td>
+		<td style='border-bottom: 2px solid grey; text-align: right;'>15.5</td>
+	</tr>
+	</tbody>
+</table>
 
 Advanced
 ========
