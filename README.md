@@ -59,7 +59,7 @@ mtcars %>%
 <table class='gmisc_table' style='border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;' >
 	<thead>
 	<tr><td colspan='4' style='text-align: left;'>
-	A simpole tidyHtmlTable example from <code>mtcars</code></td></tr>
+	A simple tidyHtmlTable example from <code>mtcars</code></td></tr>
 	<tr>
 		<th style='border-bottom: 1px solid grey; border-top: 2px solid grey;'> </th>
 		<th style='font-weight: 900; border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: right;'>hp</th>
