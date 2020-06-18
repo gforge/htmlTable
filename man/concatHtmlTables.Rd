@@ -2,22 +2,22 @@
 % Please edit documentation in R/concatHtmlTables.R
 \name{concatHtmlTables}
 \alias{concatHtmlTables}
-\title{Funciton for concatenating htmlTables}
+\title{Function for concatenating \code{\link{htmlTable}}s}
 \usage{
 concatHtmlTables(tables, headers = NULL)
 }
 \arguments{
-\item{tables}{A list of html tables to be concatenated}
+\item{tables}{A list of \code{\link{htmlTable}}s to be concatenated}
 
 \item{headers}{Either a string or a vector of strings that function as
 a header for each table. If none is provided it will use the names of
 the table list or a numeric number.}
 }
 \value{
-htmlTable class object
+\code{\link{htmlTable}} class object
 }
 \description{
-Funciton for concatenating htmlTables
+Function for concatenating \code{\link{htmlTable}}s
 }
 \examples{
 library(magrittr)
