@@ -1,4 +1,4 @@
-library('testthat')
+library(testthat)
 context('txtInt')
 
 test_that("Add zero", {
@@ -152,6 +152,14 @@ test_that("The txtRound should accept without warning a vector",{
 
   expect_error(txtRound(w, digits = 0:20))
 })
+
+test_that("The txtRound should apply a txtInt to the integer section when activated", {
+  expect_error(txtRound(123333.123, digits = 1, txtInt_args = 1))
+
+  expect_equal(txtRound(123333.123, digits = 1, txtInt_args = list()),
+               "123,333.1")
+})
+
 
 
 test_that("Numbers that round to 0 should not have -, i.e. no -0.0",{

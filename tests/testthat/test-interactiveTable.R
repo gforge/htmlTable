@@ -1,5 +1,5 @@
-library('testthat')
-library('XML')
+library(testthat)
+library(XML)
 context('interactiveTable')
 
 # A simple example
@@ -76,27 +76,6 @@ test_that("rnames = FALSE it should skip those",
   table_str <- interactiveTable(mx, rnames = FALSE)
   expect_false(grepl("FALSE", table_str))
   expect_false(grepl("Row A", table_str))
-})
-
-
-test_that("Test style formatter", {
-  styles <- c(background = "black", border ="1px solid grey")
-  expect_equivalent(length(prGetStyle(styles)), 1)
-  expect_match(prGetStyle(styles), "background: black;")
-  expect_match(prGetStyle(styles), "border: [^;]+grey;")
-  expect_match(prGetStyle(styles), "border: [^;]+grey;")
-  expect_match(prGetStyle(styles, a=2), "border: [^;]+grey;")
-
-  expect_error(prGetStyle(styles, "invalid style"))
-  expect_error(prGetStyle(styles, "invalid style:"))
-  expect_error(prGetStyle(styles, ":invalid style"))
-
-  expect_match(prGetStyle(styles, "valid: style"), "valid: style;")
-  expect_match(prGetStyle(styles, c(valid= "style")), "valid: style;")
-  expect_match(prGetStyle(styles, c(valid= "style", valid1= "style")), "valid: style; valid1: style;")
-  expect_match(prGetStyle(styles, c(valid= "style1", valid= "style2")), "valid: style2;")
-  expect_match(prGetStyle(styles, c(valid= "style1", valid= "style2"), "valid: style3"), "valid: style3;")
-
 })
 
 test_that("Test align functions", {
@@ -234,39 +213,6 @@ test_that("Check color function",{
   expect_equal(prMergeClr(c("#000000", "#FFFFFF", "#000000")),
                prMergeClr(c("#FFFFFF", "#000000", "#FFFFFF")))
 
-})
-
-test_that("Test cell styles",{
-  mx <- matrix(1:3, nrow=2, ncol=3, byrow = TRUE)
-  mx_head <- LETTERS[1:ncol(mx)]
-  mx_rnames <- LETTERS[1:nrow(mx)]
-  expect_equal(dim(prPrepareCss(mx, "")),
-               dim(mx))
-  expect_equal(dim(prPrepareCss(mx, "", header = mx_head, rnames = mx_rnames)),
-               dim(mx))
-
-  expect_equal(dim(prPrepareCss(mx, "", header = mx_head, rnames = mx_rnames)),
-               dim(mx))
-
-  expect_equal(dim(prPrepareCss(mx, rep("", times=ncol(mx)))),
-               dim(mx))
-
-  expect_error(prPrepareCss(mx, rep("", times=nrow(mx))))
-
-
-  mx_cell.style <- matrix(c("a", "b", "c", "d"), nrow=2, ncol=4, byrow = TRUE)
-  expect_equal(prPrepareCss(mx, mx_cell.style, rnames = mx_rnames)[2,1],
-               "b")
-
-  expect_error(prPrepareCss(mx, mx_cell.style))
-
-  mx_cell.style <- matrix(c("a", "b", "c", "d"), nrow=3, ncol=4, byrow = TRUE)
-  expect_equal(prPrepareCss(mx, mx_cell.style,
-                            header = mx_head,
-                            rnames = mx_rnames)[2,1],
-               "b")
-
-  expect_error(prPrepareCss(mx, mx_cell.style, rnames = mx_rnames))
 })
 
 test_that("Test prAddSemicolon2StrEnd",{

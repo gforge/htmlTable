@@ -11,7 +11,7 @@ interactiveTable(
   x,
   ...,
   txt.maxlen = 20,
-  button = FALSE,
+  button = getOption("htmlTable.interactiveTable.button", default = FALSE),
   minimized.columns,
   js.scripts = c()
 )
@@ -19,8 +19,8 @@ interactiveTable(
 \method{interactiveTable}{htmlTable}(
   tbl,
   txt.maxlen = 20,
-  button = FALSE,
-  minimized.columns,
+  button = getOption("htmlTable.interactiveTable.button", default = FALSE),
+  minimized.columns = NULL,
   js.scripts = c()
 )
 
@@ -64,6 +64,7 @@ This function wraps the htmlTable and adds JavaScript code for toggling the amou
 of text shown in any particular cell.
 }
 \examples{
+library(magrittr)
 # A simple output
 long_txt <- "Lorem ipsum dolor sit amet, consectetur adipiscing elit,
 sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
@@ -74,13 +75,10 @@ sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
 mollit anim id est laborum"
 short_txt <- gsub("(^[^.]+).*", "\\\\1", long_txt)
 
-output <-
-  cbind(rep(short_txt, 2),
-        rep(long_txt, 2))
-
-interactiveTable(output,
-                 minimized.columns = ncol(output),
-                 header = c("Short", "Long"),
-                 rnames = c("First", "Second"),
-                 col.rgroup = c("#FFF", "#EEF"))
+cbind(rep(short_txt, 2),
+      rep(long_txt, 2)) \%>\%
+  addHtmlTableStyle(col.rgroup = c("#FFF", "#EEF")) \%>\%
+  interactiveTable(minimized.columns = ncol(.),
+                   header = c("Short", "Long"),
+                   rnames = c("First", "Second"))
 }

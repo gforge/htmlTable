@@ -10,10 +10,10 @@ txtInt(x, language = "en", html = TRUE, ...)
 \item{x}{The integer variable}
 
 \item{language}{The ISO-639-1 two-letter code for the language of
-interest. Currently only english is distinguished from the ISO
+interest. Currently only English is distinguished from the ISO
 format using a ',' as the separator.}
 
-\item{html}{If the format is used in html context
+\item{html}{If the format is used in HTML context
 then the space should be a non-breaking space, \code{&nbsp;}}
 
 \item{...}{Passed to \code{\link[base]{format}}}
@@ -33,4 +33,10 @@ txtInt(12345)
 txtInt(123456)
 
 }
-\concept{text formatters#'}
+\seealso{
+Other text formatters: 
+\code{\link{txtMergeLines}()},
+\code{\link{txtPval}()},
+\code{\link{txtRound}()}
+}
+\concept{text formatters}

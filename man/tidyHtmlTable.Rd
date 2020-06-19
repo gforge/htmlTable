@@ -2,19 +2,20 @@
 % Please edit documentation in R/tidyHtmlTable.R
 \name{tidyHtmlTable}
 \alias{tidyHtmlTable}
-\title{Generate an htmlTable using a ggplot2-like interface}
+\title{Generate an htmlTable using tidy data as input}
 \usage{
 tidyHtmlTable(
   x,
-  value = "value",
-  header = "header",
-  rnames = "rnames",
-  rgroup = NULL,
-  hidden_rgroup = NULL,
-  cgroup1 = NULL,
-  cgroup2 = NULL,
-  tspanner = NULL,
-  hidden_tspanner = NULL,
+  value,
+  header,
+  rnames,
+  rgroup,
+  hidden_rgroup,
+  cgroup,
+  tspanner,
+  hidden_tspanner,
+  skip_removal_warning = getOption("htmlTable.skip_removal_warning", FALSE),
+  table_fn = htmlTable,
   ...
 )
 }
@@ -22,37 +23,46 @@ tidyHtmlTable(
 \item{x}{Tidy data used to build the \code{htmlTable}}
 
 \item{value}{The column containing values filling individual cells of the
-output \code{htmlTable}}
+output \code{htmlTable}. Defaults to "value" as used by \code{\link[tidyr]{pivot_longer}}.}
 
 \item{header}{The column in \code{x} specifying column headings}
 
-\item{rnames}{The column in \code{x} specifying row names}
+\item{rnames}{The column in \code{x} specifying row names. Defaults to "name" as used by
+\code{\link[tidyr]{pivot_longer}}.}
 
 \item{rgroup}{The column in \code{x} specifying row groups}
 
-\item{hidden_rgroup}{rgroup values that will be hidden.}
+\item{hidden_rgroup}{\code{strings} with \code{rgroup} values that will be hidden  (the values will
+still be there but the spanner will be set to "" and thus ignored by \code{\link{htmlTable}}).}
 
-\item{cgroup1}{The column in \code{x} specifying the inner most column
-groups}
+\item{cgroup}{The column or columns in \code{x} specifying the column groups}
 
-\item{cgroup2}{The column in \code{x} specifying the outer most column
-groups}
+\item{tspanner}{The column in \code{x} specifying \code{tspanner} groups}
 
-\item{tspanner}{The column in \code{x} specifying tspanner groups}
+\item{hidden_tspanner}{\code{strings} with \code{tspanner} values that will be hidden (the values will
+still be there but the spanner will be set to "" and thus ignored by \code{\link{htmlTable}}).}
 
-\item{hidden_tspanner}{tspanner values that will be hidden.}
+\item{skip_removal_warning}{\code{boolean} suppress warning message when removing NA columns.}
+
+\item{table_fn}{The table function that should receive the input, defaults to \code{\link{htmlTable}}
+but you can provide any function that uses the same input formatting. This package was inspired
+by the \code{\link[Hmisc]{latex}} function.}
 
 \item{...}{Additional arguments that will be passed to the inner
-\code{htmlTable} function}
+\code{\link{htmlTable}} function}
 }
 \value{
 Returns html code that will build a pretty table
 }
 \description{
 Builds an \code{htmlTable} by mapping columns from the input data, \code{x},
-to elements of an output \code{htmlTable} (e.g. rnames, header, etc.)
+to elements of an output \code{htmlTable} (e.g. \code{rnames}, \code{header}, etc.). This
+provides a \pkg{ggplot2}-like interface you can pivot rows/columns as required. The
+typical use case is when you are using \code{dplyr} together with the
+\code{tidyverse} data processing functions, see \code{vignette("tidyHtmlTable")}.
 }
 \section{Column-mapping parameters}{
+
 
   The \code{tidyHtmlTable} function is designed to work like ggplot2 in that
   columns from \code{x} are mapped to specific parameters from the
@@ -70,16 +80,9 @@ to elements of an output \code{htmlTable} (e.g. rnames, header, etc.)
     \item \code{header}
     \item \code{rnames}
     \item \code{rgroup}
-    \item \code{cgroup1}
-    \item \code{cgroup2}
+    \item \code{cgroup}
     \item \code{tspanner}
   }
-
-  Note that unlike in \code{htmlTable} which contains \code{cgroup},
-  and which may specify a variable number of column groups,
-  \code{tidyhtmlTable} contains the parameters \code{cgroup1} and
-  \code{cgroup2}. These parameters correspond to the inward most and outward
-  most column groups respectively.
 
   Also note that the coordinates of each \code{value} within \code{x} must be
   unambiguously mapped to a position within the output \code{htmlTable}.
@@ -87,7 +90,21 @@ to elements of an output \code{htmlTable} (e.g. rnames, header, etc.)
   contained in \code{x} must be unique.
 }
 
+\section{Sorting}{
+
+
+  Sorting of rows is as of version 2.0 skipped as we may have situations with
+  repeating inputs and this can easily be performed pre-function by calling
+  \code{\link[dplyr]{arrange}()} prior to \code{tidyHtmlTable}.
+
+  Columns are sorted by \code{arrange(cgroup, header)} where \code{cgroup} will be
+  expanded to the columns of the \code{cgroup} argument, e.g. \code{cgroup = c(a, b), header = c}
+  will become \code{arrange(a, b, c)}. If you want to sort in non-alphabetic order
+  you can provide a \code{factor} variable and that information will be retained.
+}
+
 \section{Hidden values}{
+
 
   \code{htmlTable} Allows for some values within \code{rgroup},
   \code{cgroup}, etc. to be specified as \code{""}. The following parameters
@@ -100,50 +117,56 @@ to elements of an output \code{htmlTable} (e.g. rnames, header, etc.)
   }
 }
 
+\section{Simple tibble output}{
+
+
+  The tibble discourages the use of row names. There is therefore a convenience
+  option for \code{tidyHtmlTable} where you can use the function just as you
+  would with \code{\link{htmlTable}} where \code{rnames} is populated with
+  the \code{rnames} argument provided using \code{tidyselect} syntax (defaults to
+  the "names" column if present int the input data).
+}
+
 \section{Additional dependencies}{
 
- In order to run this function you also must have \code{\link[dplyr]{dplyr}} and
- \code{\link[tidyr]{tidyr}} packages installed. These have been removed due to
- the additional 20 Mb that these dependencies added (issue #47). The particular
- functions required are:
 
- \itemize{
-   \item \code{\link[dplyr]{dplyr}}:
-   \code{mutate_at},
-   \code{select},
-   \code{pull},
-   \code{slice},
-   \code{filter},
-   \code{arrange_at},
-   \code{mutate_if},
-   \code{is.grouped_df},
-   \code{left_join}
-   \item \code{\link[tidyr]{tidyr}}: \code{spread}
- }
+   In order to run this function you also must have \code{\link[dplyr]{dplyr}},
+   \code{\link[tidyr]{tidyr}}, \code{\link[tidyselect]{tidyselect}} and
+   \code{\link[purrr]{purrr}} packages installed. These have been removed due to
+   the additional 20 Mb that these dependencies added (issue #47).
 }
 
 \examples{
-\dontrun{
-library(tidyverse)
+library(tibble)
+library(dplyr)
+library(tidyr)
+
 mtcars \%>\%
-    rownames_to_column \%>\%
-    select(rowname, cyl, gear, hp, mpg, qsec) \%>\%
-    gather(per_metric, value, hp, mpg, qsec) \%>\%
-    group_by(cyl, gear, per_metric) \%>\%
-    summarise(Mean = round(mean(value), 1),
-              SD = round(sd(value), 1),
-              Min = round(min(value), 1),
-              Max = round(max(value), 1)) \%>\%
-     gather(summary_stat, value, Mean, SD, Min, Max) \%>\%
-     ungroup \%>\%
-     mutate(gear = paste(gear, "Gears"),
-            cyl = paste(cyl, "Cylinders")) \%>\%
-     tidyHtmlTable(header = "gear",
-                  cgroup1 = "cyl",
-                  cell_value = "value",
-                  rnames = "summary_stat",
-                  rgroup = "per_metric")
-}
+  rownames_to_column() \%>\%
+  select(rowname, cyl, gear, hp, mpg, qsec) \%>\%
+  pivot_longer(names_to = "per_metric",
+               cols = c(hp, mpg, qsec)) \%>\%
+  group_by(cyl, gear, per_metric) \%>\%
+  summarise(
+    Mean = round(mean(value), 1),
+    SD = round(sd(value), 1),
+    Min = round(min(value), 1),
+    Max = round(max(value), 1)
+  ) \%>\%
+  pivot_longer(names_to = "summary_stat",
+               cols = c(Mean, SD, Min, Max)) \%>\%
+  ungroup() \%>\%
+  mutate(
+    gear = paste(gear, "Gears"),
+    cyl = paste(cyl, "Cylinders")
+  ) \%>\%
+  addHtmlTableStyle(align = "r") \%>\%
+  tidyHtmlTable(
+    header = gear,
+    cgroup = cyl,
+    rnames = summary_stat,
+    rgroup = per_metric,
+    skip_removal_warning = TRUE)
 }
 \seealso{
 \code{\link{htmlTable}}

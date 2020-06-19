@@ -1,16 +1,16 @@
-#' Funciton for concatenating htmlTables
+#' Function for concatenating \code{\link{htmlTable}}s
 #'
-#' @param tables A list of html tables to be concatenated
+#' @param tables A list of \code{\link{htmlTable}}s to be concatenated
 #' @param headers Either a string or a vector of strings that function as
 #'  a header for each table. If none is provided it will use the names of
 #'  the table list or a numeric number.
-#' @return htmlTable class object
+#' @return \code{\link{htmlTable}} class object
 #' @example inst/examples/htmlTable_example.R
 #' @export
-concatHtmlTables <- function(tables, headers) {
+concatHtmlTables <- function(tables, headers = NULL) {
   assert_list(tables)
 
-  if (missing(headers)){
+  if (is.null(headers)) {
     if (!is.null(names(tables))) {
       headers = sprintf("<h1>%s</h1>", names(tables))
     } else {
@@ -32,5 +32,5 @@ concatHtmlTables <- function(tables, headers) {
   # Copy all the attributes from the first table
   attributes(ret) <- attributes(tables[[1]])
   class(ret) <- c('htmlTable', class(tables[[1]]))
-  return (ret)
+  return(ret)
 }

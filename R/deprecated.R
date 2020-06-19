@@ -1,10 +1,13 @@
 # Deprecated function names
 
 #' See \code{\link{txtMergeLines}}
-#' 
+#'
 #' @param ... passed onto \code{\link{txtMergeLines}}
 #' @examples
+#' \dontrun{
+#' # Deprecated function
 #' splitLines4Table("hello", "world")
+#' }
 #' @keywords internal
 #' @export
 splitLines4Table <- function(...){
@@ -17,7 +20,10 @@ splitLines4Table <- function(...){
 #' @param ... Passed to \code{\link{txtInt}}
 #'
 #' @examples
+#' \dontrun{
+#' # Deprecated function
 #' outputInt(123456)
+#' }
 #'
 #' @keywords internal
 #' @export
@@ -30,8 +36,11 @@ outputInt <- function(...){
 #' Deprecated use \code{\link{txtPval}} instead
 #'
 #' @param ... Currently only used for generating warnings of deprecated call
-#' @examples 
+#' @examples
+#' \dontrun{
+#' # Deprecated function
 #' pvalueFormatter(c(0.10234,0.010234, 0.0010234, 0.000010234))
+#' }
 #' @export
 #' @keywords internal
 pvalueFormatter <- function(...){
