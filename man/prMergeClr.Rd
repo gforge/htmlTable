@@ -13,7 +13,7 @@ prMergeClr(clrs)
 \code{character} A hexadecimal color
 }
 \description{
-Uses the \code{\link[grDevices]{colorRampPalette}} for merging colors.
+Uses the \code{\link[grDevices:colorRamp]{colorRampPalette}} for merging colors.
 \emph{Note:} When merging more than 2 colors the order in the color
 presentation matters. Each color is merged with its neigbors before
 merging with next. If there is an uneven number of colors the middle

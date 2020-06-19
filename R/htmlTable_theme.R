@@ -107,7 +107,7 @@ prGetArgumentList <- function(args, skip_elements) {
 
 #' Retrieve the \code{\link{htmlTable}} theme list
 #'
-#' A wrapper for a \code{\link[base]{getOption}("htmlTable.theme")} call that
+#' A wrapper for a \code{\link[base:options]{getOption}("htmlTable.theme")} call that
 #' returns the standard theme unless one is set.
 #'
 #' @return \code{list} with the styles to be applied to the table

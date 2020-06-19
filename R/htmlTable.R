@@ -99,7 +99,7 @@
 #' for compatibility reasons. If you set \code{options(table_counter_roman = TRUE)}
 #' then the table counter will use Roman numerals instead of Arabic.
 #'
-#'@section Empty data frames:
+#' @section Empty data frames:
 #' An empty data frame will result in a warning and output an empty table, provided that
 #' \code{rgroup} and \code{n.rgroup} are not specified. All other row layout options will be ignored.
 #'
@@ -147,9 +147,9 @@
 #'  it takes a string of the class \code{htmlTable} as \code{x} argument.
 #' @param header A vector of character strings specifying column
 #'  header, defaulting to \code{\link[base]{colnames}(x)}
-#' @param rnames Default row names are generated from \code{\link[base]{rownames}(x)}. If you
+#' @param rnames Default row names are generated from \code{\link[base:colnames]{rownames}(x)}. If you
 #'  provide \code{FALSE} then it will skip the row names. \emph{Note:} For \code{data.frames}
-#'  if you do \code{\link[base]{rownames}(my_dataframe) <- NULL} it still has
+#'  if you do \code{\link[base:colnames]{rownames}(my_dataframe) <- NULL} it still has
 #'  row names. Thus you need to use \code{FALSE} if you want to
 #'  supress row names for \code{data.frames}.
 #' @param rowlabel If the table has row names or \code{rnames},
@@ -252,7 +252,7 @@ htmlTable <- function(x,
                       compatibility = getOption("htmlTableCompat", "LibreOffice"),
                       cspan.rgroup = "all",
                       escape.html = FALSE,
-                      ...){
+                      ...) {
   UseMethod("htmlTable")
 }
 
@@ -275,9 +275,9 @@ htmlTable.matrix <- function(x, ...) {
   # Default to a sum-row when provided a table that
   dots <- list(...)
   if (all(class(x) %in% c("table", "matrix", "array")) &&
-      !is.null(rownames(x)) &&
-      grepl("^sum$", tail(rownames(x), 1), ignore.case = TRUE) &&
-      is.null(dots$total)) {
+    !is.null(rownames(x)) &&
+    grepl("^sum$", tail(rownames(x), 1), ignore.case = TRUE) &&
+    is.null(dots$total)) {
     dots$total <- TRUE
   }
   dots$x <- x
@@ -317,16 +317,17 @@ htmlTable.default <- function(x,
                               compatibility = getOption("htmlTableCompat", "LibreOffice"),
                               cspan.rgroup = "all",
                               escape.html = FALSE,
-                              ...)
-{
+                              ...) {
   if (isTRUE(escape.html)) {
     x <- prEscapeHtml(x)
   }
 
   x <- prPrepInputMatrixDimensions(x, header = header)
   dots <- list(...)
-  style_dots <- names(dots) %in% Filter(function(x) !(x %in% c("", "x")),
-                                        formals(addHtmlTableStyle) %>% names)
+  style_dots <- names(dots) %in% Filter(
+    function(x) !(x %in% c("", "x")),
+    formals(addHtmlTableStyle) %>% names()
+  )
   if (sum(style_dots) > 0) {
     style_dots_list <- dots[style_dots]
     dots <- dots[!style_dots]
@@ -335,115 +336,142 @@ htmlTable.default <- function(x,
   }
 
   style_list <- prGetAttrWithDefault(x,
-                                     which = style_attribute_name,
-                                     default = getHtmlTableTheme())
+    which = style_attribute_name,
+    default = getHtmlTableTheme()
+  )
 
   if (is.null(rgroup) && !is.null(n.rgroup)) {
     # Add "" rgroups corresponding to the n.rgroups
-    rgroup = rep("", length.out = length(n.rgroup))
+    rgroup <- rep("", length.out = length(n.rgroup))
   }
 
   # Unfortunately in knitr there seems to be some issue when the
   # rnames is specified immediately as: rnames=rownames(x)
   if (is.null(rnames)) {
-    if (any(is.null(rownames(x)) == FALSE))
+    if (any(is.null(rownames(x)) == FALSE)) {
       rnames <- rownames(x)
+    }
 
     if (any(is.null(rownames(x))) &&
-        !is.null(rgroup)) {
-      warning("You have not specified rnames but you seem to have rgroups.",
-              " If you have the first column as rowname but you want the rgroups",
-              " to result in subhedings with indentation below then, ",
-              " you should change the rnames to the first column and then",
-              " remove it from the table matrix (the x argument object).")
+      !is.null(rgroup)) {
+      warning(
+        "You have not specified rnames but you seem to have rgroups.",
+        " If you have the first column as rowname but you want the rgroups",
+        " to result in subhedings with indentation below then, ",
+        " you should change the rnames to the first column and then",
+        " remove it from the table matrix (the x argument object)."
+      )
     }
   }
 
   if (!is.null(rowlabel) &&
-      prSkipRownames(rnames))
-    stop("You can't have a row label and no rownames.",
-         " Either remove the rowlabel argument",
-         ", set the rnames argument",
-         ", or set the rownames of the x argument.")
+    prSkipRownames(rnames)) {
+    stop(
+      "You can't have a row label and no rownames.",
+      " Either remove the rowlabel argument",
+      ", set the rnames argument",
+      ", or set the rownames of the x argument."
+    )
+  }
 
   if (is.null(header) && !is.null(colnames(x))) {
     header <- colnames(x)
   } else if (!is.null(header)) {
-    if (length(header) != ncol(x))
-      stop("You have a header with ", length(header), " cells",
-           " while your output matrix has only ", ncol(x), " columns")
+    if (length(header) != ncol(x)) {
+      stop(
+        "You have a header with ", length(header), " cells",
+        " while your output matrix has only ", ncol(x), " columns"
+      )
+    }
   }
 
   # Fix alignment to match with the matrix
   style_list$align <- prPrepareAlign(style_list$align, x, rnames)
   style_list$align.header <- prPrepareAlign(style_list$align.header, x, rnames, default_rn = "c")
 
-  if (tolower(compatibility) %in% c("libreoffice", "libre office",
-                                    "open office", "openoffice",
-                                    "word", "ms word", "msword")) {
+  if (tolower(compatibility) %in% c(
+    "libreoffice", "libre office",
+    "open office", "openoffice",
+    "word", "ms word", "msword"
+  )) {
     compatibility <- "LibreOffice"
   }
 
   if (!is.null(rgroup)) {
-    if (is.null(n.rgroup))
+    if (is.null(n.rgroup)) {
       stop("You need to specify the argument n.rgroup if you want to use rgroups")
+    }
 
     if (any(n.rgroup < 1)) {
-      warning("You have provided rgroups with less than 1 elements,",
-              " these will therefore be removed: ",
-              paste(sprintf("'%s' = %d", rgroup, n.rgroup)[n.rgroup < 1],
-                    collapse = ", "))
+      warning(
+        "You have provided rgroups with less than 1 elements,",
+        " these will therefore be removed: ",
+        paste(sprintf("'%s' = %d", rgroup, n.rgroup)[n.rgroup < 1],
+          collapse = ", "
+        )
+      )
       rgroup <- rgroup[n.rgroup >= 1]
       n.rgroup <- n.rgroup[n.rgroup >= 1]
     }
 
     # Sanity check for rgroup
-    if (sum(n.rgroup) >  nrow(x)) {
-      stop("Your rows are fewer than suggested by the n.rgroup,",
-           " i.e. ", sum(n.rgroup) , "(n.rgroup) > ", nrow(x), "(rows in x)")
+    if (sum(n.rgroup) > nrow(x)) {
+      stop(
+        "Your rows are fewer than suggested by the n.rgroup,",
+        " i.e. ", sum(n.rgroup), "(n.rgroup) > ", nrow(x), "(rows in x)"
+      )
     }
 
     if (sum(n.rgroup) < nrow(x) &&
-        (length(n.rgroup) == length(rgroup) - 1 ||
-         length(n.rgroup) == length(rgroup))) {
+      (length(n.rgroup) == length(rgroup) - 1 ||
+        length(n.rgroup) == length(rgroup))) {
       # Add an empty rgroup if missing
-      if (length(n.rgroup) == length(rgroup))
+      if (length(n.rgroup) == length(rgroup)) {
         rgroup <- c(rgroup, "")
+      }
       # Calculate the remaining rows and add those
       n.rgroup <- c(n.rgroup, nrow(x) - sum(n.rgroup))
-    }else if (sum(n.rgroup) != nrow(x)) {
+    } else if (sum(n.rgroup) != nrow(x)) {
       stop("Your n.rgroup doesn't add up")
     }
 
 
     # Sanity checks style_list$css.rgroup and prepares the style
     if (length(style_list$css.rgroup) > 1 &&
-        length(style_list$css.rgroup) != length(rgroup))
-      stop(sprintf("You must provide the same number of styles as the rgroups, %d != %d",
-                   length(style_list$css.rgroup), length(rgroup)))
-    else if (length(style_list$css.rgroup) == 1) {
+      length(style_list$css.rgroup) != length(rgroup)) {
+      stop(sprintf(
+        "You must provide the same number of styles as the rgroups, %d != %d",
+        length(style_list$css.rgroup), length(rgroup)
+      ))
+    } else if (length(style_list$css.rgroup) == 1) {
       style_list$css.rgroup <- prGetStyle(style_list$css.rgroup)
 
-      if (length(rgroup) > 0)
+      if (length(rgroup) > 0) {
         style_list$css.rgroup <- rep(style_list$css.rgroup, length.out = length(rgroup))
+      }
     } else {
-      for (i in 1:length(style_list$css.rgroup))
+      for (i in 1:length(style_list$css.rgroup)) {
         style_list$css.rgroup[i] <- prGetStyle(style_list$css.rgroup[i])
+      }
     }
 
     # Sanity checks style_list$css.rgroup.sep and prepares the style
     if (length(style_list$css.rgroup.sep) > 1 &&
-        length(style_list$css.rgroup.sep) != length(rgroup) - 1)
-      stop(sprintf("You must provide the same number of separators as the rgroups - 1, %d != %d",
-                   length(style_list$css.rgroup.sep), length(rgroup) - 1))
-    else if (length(style_list$css.rgroup.sep) == 1) {
+      length(style_list$css.rgroup.sep) != length(rgroup) - 1) {
+      stop(sprintf(
+        "You must provide the same number of separators as the rgroups - 1, %d != %d",
+        length(style_list$css.rgroup.sep), length(rgroup) - 1
+      ))
+    } else if (length(style_list$css.rgroup.sep) == 1) {
       style_list$css.rgroup.sep <- prAddSemicolon2StrEnd(style_list$css.rgroup.sep)
 
-      if (length(rgroup) > 0)
+      if (length(rgroup) > 0) {
         style_list$css.rgroup.sep <- rep(style_list$css.rgroup.sep, length.out = length(rgroup))
+      }
     } else {
-      for (i in 1:length(style_list$css.rgroup.sep))
+      for (i in 1:length(style_list$css.rgroup.sep)) {
         style_list$css.rgroup.sep[i] <- prAddSemicolon2StrEnd(style_list$css.rgroup.sep[i])
+      }
     }
 
     cspan.rgroup <- rep(cspan.rgroup, length.out = length(rgroup))
@@ -458,33 +486,41 @@ htmlTable.default <- function(x,
 
     # Sanity checks style_list$css.tspanner and prepares the style
     if (length(style_list$css.tspanner) > 1 &&
-        length(style_list$css.tspanner) != length(tspanner))
-      stop(sprintf("You must provide the same number of styles as the tspanners, %d != %d",
-                   length(style_list$css.tspanner), length(tspanner)))
-    else if (length(style_list$css.tspanner) == 1) {
+      length(style_list$css.tspanner) != length(tspanner)) {
+      stop(sprintf(
+        "You must provide the same number of styles as the tspanners, %d != %d",
+        length(style_list$css.tspanner), length(tspanner)
+      ))
+    } else if (length(style_list$css.tspanner) == 1) {
       style_list$css.tspanner <- prAddSemicolon2StrEnd(style_list$css.tspanner)
 
-      if (length(tspanner) > 0)
+      if (length(tspanner) > 0) {
         style_list$css.tspanner <- rep(style_list$css.tspanner, length.out = length(tspanner))
+      }
     } else {
-      for (i in 1:length(style_list$css.tspanner))
+      for (i in 1:length(style_list$css.tspanner)) {
         style_list$css.tspanner[i] <- prAddSemicolon2StrEnd(style_list$css.tspanner[i])
+      }
     }
 
 
     # Sanity checks style_list$css.tspanner.sep and prepares the style
     if (length(style_list$css.tspanner.sep) > 1 &&
-        length(style_list$css.tspanner.sep) != length(tspanner) - 1)
-      stop(sprintf("You must provide the same number of separators as the tspanners - 1, %d != %d",
-                   length(style_list$css.tspanner.sep), length(tspanner) - 1))
-    else if (length(style_list$css.tspanner.sep) == 1) {
+      length(style_list$css.tspanner.sep) != length(tspanner) - 1) {
+      stop(sprintf(
+        "You must provide the same number of separators as the tspanners - 1, %d != %d",
+        length(style_list$css.tspanner.sep), length(tspanner) - 1
+      ))
+    } else if (length(style_list$css.tspanner.sep) == 1) {
       style_list$css.tspanner.sep <- prGetStyle(style_list$css.tspanner.sep)
 
-      if (length(tspanner) > 0)
+      if (length(tspanner) > 0) {
         style_list$css.tspanner.sep <- rep(style_list$css.tspanner.sep, length.out = length(tspanner) - 1)
+      }
     } else {
-      for (i in 1:length(style_list$css.tspanner.sep))
+      for (i in 1:length(style_list$css.tspanner.sep)) {
         style_list$css.tspanner.sep[i] <- prGetStyle(style_list$css.tspanner.sep[i])
+      }
     }
   }
 
@@ -518,7 +554,7 @@ htmlTable.default <- function(x,
         # If this is a addmargins object we shouldn't have the cspanner including the
         # sum marker
         if (!is.null(total) && total &&
-            grepl("^sum$", tail(colnames(x), 1), ignore.case = TRUE)) {
+          grepl("^sum$", tail(colnames(x), 1), ignore.case = TRUE)) {
           cgroup %<>% c("")
           n.cgroup <- c(n.cgroup[1] - 1, 1)
         }
@@ -528,42 +564,51 @@ htmlTable.default <- function(x,
 
   # Sanity check for tspanner
   if (!is.null(tspanner)) {
-    if (is.null(n.tspanner))
+    if (is.null(n.tspanner)) {
       stop("You need to specify the argument n.tspanner if you want to use table spanners")
+    }
 
     if (any(n.tspanner < 1)) {
-      stop("You have  provided invalid number of rows in the n.tspanner argument - minimum is 1, you have: ",
-           vector2string(n.tspanner),
-           " where no. ", vector2string(which(n.tspanner)),
-           " was less than 1")
+      stop(
+        "You have  provided invalid number of rows in the n.tspanner argument - minimum is 1, you have: ",
+        vector2string(n.tspanner),
+        " where no. ", vector2string(which(n.tspanner)),
+        " was less than 1"
+      )
     }
     if (length(n.tspanner) == length(tspanner) - 1) {
       if (is.null(rgroup) || sum(n.tspanner) > length(rgroup)) {
-        n.tspanner = append(n.tspanner, nrow(x) - sum(n.tspanner))
+        n.tspanner <- append(n.tspanner, nrow(x) - sum(n.tspanner))
       } else {
-        n.tspanner = append(n.tspanner, length(rgroup) - sum(n.tspanner))
+        n.tspanner <- append(n.tspanner, length(rgroup) - sum(n.tspanner))
       }
     }
     if (any(n.tspanner < 1)) {
       stop("You have more tspannners than n.tspanner while the number of rows doesn't leave room for more tspanners")
     }
 
-    if (sum(n.tspanner) !=  nrow(x)) {
-      if (is.null(rgroup))
-        stop(sprintf("Your rows don't match in the n.tspanner, i.e. %d != %d",
-                     sum(n.tspanner), nrow(x)))
+    if (sum(n.tspanner) != nrow(x)) {
+      if (is.null(rgroup)) {
+        stop(sprintf(
+          "Your rows don't match in the n.tspanner, i.e. %d != %d",
+          sum(n.tspanner), nrow(x)
+        ))
+      }
 
-      if (sum(n.tspanner) != length(rgroup))
-        stop(sprintf("Your rows don't match either the total number of rows '%d'
+      if (sum(n.tspanner) != length(rgroup)) {
+        stop(sprintf(
+          "Your rows don't match either the total number of rows '%d'
                      or the number of rgroups '%d' the sum of n.tspanner %d",
-                     nrow(x),
-                     length(rgroup),
-                     sum(n.tspanner)))
+          nrow(x),
+          length(rgroup),
+          sum(n.tspanner)
+        ))
+      }
 
       org_nt <- n.tspanner
       for (i in 1:length(n.tspanner)) {
         offset <- sum(org_nt[0:(i - 1)]) + 1
-        n.tspanner[i] = sum(n.rgroup[offset:(offset + org_nt[i] - 1)])
+        n.tspanner[i] <- sum(n.rgroup[offset:(offset + org_nt[i] - 1)])
       }
     }
 
@@ -571,13 +616,16 @@ htmlTable.default <- function(x,
     if (!is.null(n.rgroup)) {
       for (i in 1:length(n.tspanner)) {
         rows <- sum(n.tspanner[1:i])
-        if (!rows %in% cumsum(n.rgroup))
-          stop("There is no splitter that matches the table spanner ",
-               tspanner[i],
-               " (no. ", i, ") with rgroup splits.",
-               " The missing row splitter should be on row number ", rows,
-               " and is not in the n.rgroup list: ", vector2string(n.rgroup),
-               " note, it should match the cumulative sum n.rgroup", vector2string(cumsum(n.rgroup)))
+        if (!rows %in% cumsum(n.rgroup)) {
+          stop(
+            "There is no splitter that matches the table spanner ",
+            tspanner[i],
+            " (no. ", i, ") with rgroup splits.",
+            " The missing row splitter should be on row number ", rows,
+            " and is not in the n.rgroup list: ", vector2string(n.rgroup),
+            " note, it should match the cumulative sum n.rgroup", vector2string(cumsum(n.rgroup))
+          )
+        }
       }
     }
   }
@@ -588,10 +636,12 @@ htmlTable.default <- function(x,
 
   # Sanity check for cgroup
   if (!is.null(cgroup)) {
-    ret <- prPrepareCgroup(x = x,
-                           cgroup = cgroup,
-                           n.cgroup = n.cgroup,
-                           style_list = style_list)
+    ret <- prPrepareCgroup(
+      x = x,
+      cgroup = cgroup,
+      n.cgroup = n.cgroup,
+      style_list = style_list
+    )
 
     cgroup <- ret$cgroup
     n.cgroup <- ret$n.cgroup
@@ -605,10 +655,11 @@ htmlTable.default <- function(x,
   tc <- getOption("table_counter", FALSE)
   if (tc) {
     # Count which table it currently is
-    if (is.numeric(tc))
+    if (is.numeric(tc)) {
       tc <- tc + 1
-    else
+    } else {
       tc <- 1
+    }
     options(table_counter = tc)
   }
 
@@ -616,9 +667,9 @@ htmlTable.default <- function(x,
   table_id <- getOption("table_counter", "")
   if (!is.null(label)) {
     table_id <- sprintf(" id='%s'", label)
-  }else if (is.numeric(table_id)) {
+  } else if (is.numeric(table_id)) {
     table_id <- paste0(" id='table_", table_id, "'")
-  }else if (table_id == FALSE) {
+  } else if (table_id == FALSE) {
     table_id <- ""
   }
 
@@ -627,45 +678,52 @@ htmlTable.default <- function(x,
   if (!is.null(cgroup)) {
     if (!is.matrix(cgroup)) {
       total_columns <- total_columns + length(cgroup) - 1
-    }else{
+    } else {
       total_columns <- total_columns + sum(cgroup_spacer_cells)
     }
   }
 
   if (is.null(total) ||
-      (is.logical(total) &&
-       all(total == FALSE))) {
-    total = c()
-  }else if (is.logical(total)) {
+    (is.logical(total) &&
+      all(total == FALSE))) {
+    total <- c()
+  } else if (is.logical(total)) {
     if (length(total) == 1) {
       total <- nrow(x)
-    }else if (length(total) == nrow(x)) {
+    } else if (length(total) == nrow(x)) {
       total <- which(total)
-    }else if (!is.null(n.tspanner) &&
-              length(total) == length(n.tspanner)) {
+    } else if (!is.null(n.tspanner) &&
+      length(total) == length(n.tspanner)) {
       total <- cumsum(n.tspanner)[total]
-    }else{
-      stop("You have provided an invalid 'total' argument:",
-           " '", paste(total, collapse = "', '"), "'.",
-           " Logical values accepted are either single TRUE elements",
-           ", of the same length as the output matrix (", nrow(x), ")",
-           ", or of the same length as the tspanner (",
-           ifelse(is.null(n.tspanner), "not provided", length(n.tspanner)), ").")
+    } else {
+      stop(
+        "You have provided an invalid 'total' argument:",
+        " '", paste(total, collapse = "', '"), "'.",
+        " Logical values accepted are either single TRUE elements",
+        ", of the same length as the output matrix (", nrow(x), ")",
+        ", or of the same length as the tspanner (",
+        ifelse(is.null(n.tspanner), "not provided", length(n.tspanner)), ")."
+      )
     }
-  }else if (is.numeric(total)) {
-    if (any(!total %in% 1:nrow(x)))
-      stop("You have indicated an invalid row as the total row.",
-           " Valid rows are only 1 to ", nrow(x),
-           " and you have provided invalid row(s): ",
-           "'", paste(total[!total %in% 1:nrow(x)], collapse = "', '"), "'")
-  }else if (all(total == "tspanner")) {
+  } else if (is.numeric(total)) {
+    if (any(!total %in% 1:nrow(x))) {
+      stop(
+        "You have indicated an invalid row as the total row.",
+        " Valid rows are only 1 to ", nrow(x),
+        " and you have provided invalid row(s): ",
+        "'", paste(total[!total %in% 1:nrow(x)], collapse = "', '"), "'"
+      )
+    }
+  } else if (all(total == "tspanner")) {
     total <- cumsum(n.tspanner)
-  }else{
-    stop("You have provided an invalid 'total' argument:",
-         " '", paste(total, collapse = "', '"), "' ",
-         " of the class ", paste(class(total), collapse = " & "), ".",
-         " The function currently only accepts logical or numerical",
-         " values.")
+  } else {
+    stop(
+      "You have provided an invalid 'total' argument:",
+      " '", paste(total, collapse = "', '"), "' ",
+      " of the class ", paste(class(total), collapse = " & "), ".",
+      " The function currently only accepts logical or numerical",
+      " values."
+    )
   }
 
   style_list$css.total <- rep(style_list$css.total, length.out = length(total))
@@ -675,35 +733,39 @@ htmlTable.default <- function(x,
     check_character(style_list$css.cell)
   )
   prepped_cell_css <- prPrepareCss(x,
-                                   css = style_list$css.cell,
-                                   rnames = rnames, header = header,
-                                   style_list = style_list)
+    css = style_list$css.cell,
+    rnames = rnames, header = header,
+    style_list = style_list
+  )
 
   ###############################
   # Start building table string #
   ###############################
-  table_str <- sprintf("<table class='%s' style='border-collapse: collapse; %s' %s>",
-                       paste(style_list$css.class, collapse = ", "),
-                       paste(style_list$css.table, collapse = "; "),
-                       table_id)
+  table_str <- sprintf(
+    "<table class='%s' style='border-collapse: collapse; %s' %s>",
+    paste(style_list$css.class, collapse = ", "),
+    paste(style_list$css.table, collapse = "; "),
+    table_id
+  )
 
   # Theoretically this should be added to the table but the
   # import to word processors works then less well and therefore I've
   # constructed this work-around with borders for the top and bottom cells
-  first_row <- TRUE;
+  first_row <- TRUE
   if (isTRUE(ctable)) {
-    top_row_style = "border-top: 2px solid grey;"
-    bottom_row_style = "border-bottom: 2px solid grey;"
-  } else if (any(ctable %in% c('single', 'double'))) {
+    top_row_style <- "border-top: 2px solid grey;"
+    bottom_row_style <- "border-bottom: 2px solid grey;"
+  } else if (any(ctable %in% c("single", "double"))) {
     ctable <- rep_len(ctable, 2L)
-    ctable[ctable %in% 'single'] <- 'solid'
-    top_row_style = ifelse(ctable[1] ==  'solid', "border-top: 2px solid grey;", "border-top: 4px double grey;")
-    bottom_row_style = ifelse(ctable[2] ==  'solid',
-                              "border-bottom: 2px solid grey;",
-                              "border-bottom: 4px double grey;")
+    ctable[ctable %in% "single"] <- "solid"
+    top_row_style <- ifelse(ctable[1] == "solid", "border-top: 2px solid grey;", "border-top: 4px double grey;")
+    bottom_row_style <- ifelse(ctable[2] == "solid",
+      "border-bottom: 2px solid grey;",
+      "border-bottom: 4px double grey;"
+    )
   } else {
-    top_row_style = "border-top: 4px double grey;"
-    bottom_row_style = "border-bottom: 1px solid grey;"
+    top_row_style <- "border-top: 4px double grey;"
+    bottom_row_style <- "border-bottom: 1px solid grey;"
   }
 
 
@@ -716,7 +778,7 @@ htmlTable.default <- function(x,
       if (style_list$pos.caption %in% c("bottom", "below")) {
         table_str %<>%
           paste0("\n\t<caption style='caption-side: bottom'>")
-      }else{
+      } else {
         table_str %<>%
           paste0("\n\t<caption style='caption-side: top'>")
       }
@@ -727,50 +789,54 @@ htmlTable.default <- function(x,
   }
 
   if (!is.null(header) ||
-      !is.null(cgroup) ||
-      !is.null(caption)) {
-    thead <- prGetThead(x = x,
-                        header = header,
-                        cgroup = cgroup,
-                        n.cgroup = n.cgroup,
-                        caption = caption,
-                        compatibility = compatibility,
-                        total_columns = total_columns,
-                        style_list = style_list,
-                        top_row_style = top_row_style,
-                        rnames = rnames,
-                        rowlabel = rowlabel,
-                        cgroup_spacer_cells = cgroup_spacer_cells,
-                        prepped_cell_css = prepped_cell_css,
-                        cell_style = cell_style)
+    !is.null(cgroup) ||
+    !is.null(caption)) {
+    thead <- prGetThead(
+      x = x,
+      header = header,
+      cgroup = cgroup,
+      n.cgroup = n.cgroup,
+      caption = caption,
+      compatibility = compatibility,
+      total_columns = total_columns,
+      style_list = style_list,
+      top_row_style = top_row_style,
+      rnames = rnames,
+      rowlabel = rowlabel,
+      cgroup_spacer_cells = cgroup_spacer_cells,
+      prepped_cell_css = prepped_cell_css,
+      cell_style = cell_style
+    )
     first_row <- FALSE
     table_str %<>%
       paste0(thead)
-
   }
 
   table_str %<>%
     paste0("\n\t<tbody>")
 
-  if (is.null(rgroup))
+  if (is.null(rgroup)) {
     row_clrs <- style_list$col.rgroup
-  else
+  } else {
     row_clrs <- unlist(attr(style_list$col.rgroup, "group"))
+  }
 
   rgroup_iterator <- 0
   tspanner_iterator <- 0
   if (nrow(x) > 0) {
     for (row_nr in 1:nrow(x)) {
-      rname_style = attr(prepped_cell_css, "rnames")[row_nr]
+      rname_style <- attr(prepped_cell_css, "rnames")[row_nr]
 
       # First check if there is a table spanner that should be applied
       if (!is.null(tspanner) &&
-          (row_nr == 1 ||
-           row_nr > sum(n.tspanner[1:tspanner_iterator]))) {
-        tspanner_iterator = tspanner_iterator + 1
+        (row_nr == 1 ||
+          row_nr > sum(n.tspanner[1:tspanner_iterator]))) {
+        tspanner_iterator <- tspanner_iterator + 1
 
-        rs <- c(rname_style,
-                style_list$css.tspanner[tspanner_iterator])
+        rs <- c(
+          rname_style,
+          style_list$css.tspanner[tspanner_iterator]
+        )
 
         # Use a separator from the one above if this
         # at least the second spanner. Graphically this
@@ -788,11 +854,13 @@ htmlTable.default <- function(x,
         }
 
         table_str %<>%
-          sprintf("%s\n\t<tr><td colspan='%d' style='%s'>%s</td></tr>",
-                  .,
-                  total_columns,
-                  prGetStyle(rs),
-                  tspanner[tspanner_iterator])
+          sprintf(
+            "%s\n\t<tr><td colspan='%d' style='%s'>%s</td></tr>",
+            .,
+            total_columns,
+            prGetStyle(rs),
+            tspanner[tspanner_iterator]
+          )
         first_row <- FALSE
       }
 
@@ -803,50 +871,56 @@ htmlTable.default <- function(x,
       # - the row belongs to the next row group
       rgroup_sep_style <- FALSE
       if (!is.null(rgroup) &&
-          (row_nr == 1 ||
-           row_nr > sum(n.rgroup[1:rgroup_iterator]))) {
-        rgroup_iterator = rgroup_iterator + 1
+        (row_nr == 1 ||
+          row_nr > sum(n.rgroup[1:rgroup_iterator]))) {
+        rgroup_iterator <- rgroup_iterator + 1
 
         rs <- c(rname_style,
-                style_list$css.rgroup[rgroup_iterator],
-                `background-color` = style_list$col.rgroup[rgroup_iterator])
+          style_list$css.rgroup[rgroup_iterator],
+          `background-color` = style_list$col.rgroup[rgroup_iterator]
+        )
 
         # Use a separator from the one above if this
         # at least the second group. Graphically this
         # appears as if underneath the group while it's
         # actually above but this merges into one line
         if (rgroup_iterator > 1) {
-          rs <- c(rs,
-                  style_list$css.rgroup.sep[rgroup_iterator - 1])
+          rs <- c(
+            rs,
+            style_list$css.rgroup.sep[rgroup_iterator - 1]
+          )
         }
 
         # Only add if there is anything in the group
         if (is.na(rgroup[rgroup_iterator]) == FALSE &&
-            rgroup[rgroup_iterator] != "") {
-
+          rgroup[rgroup_iterator] != "") {
           if (first_row) {
-            rs <- c(rs,
-                    top_row_style)
+            rs <- c(
+              rs,
+              top_row_style
+            )
           }
 
-          rgroup_str <- prGetRgroupLine(x = x,
-                                        total_columns = total_columns,
-                                        rgroup = rgroup,
-                                        rgroup_iterator = rgroup_iterator,
-                                        cspan = cspan.rgroup[rgroup_iterator],
-                                        rnames = rnames,
-                                        style = rs,
-                                        cgroup_spacer_cells = cgroup_spacer_cells,
-                                        style_list = style_list,
-                                        prepped_row_css = prepped_cell_css[row_nr,])
+          rgroup_str <- prGetRgroupLine(
+            x = x,
+            total_columns = total_columns,
+            rgroup = rgroup,
+            rgroup_iterator = rgroup_iterator,
+            cspan = cspan.rgroup[rgroup_iterator],
+            rnames = rnames,
+            style = rs,
+            cgroup_spacer_cells = cgroup_spacer_cells,
+            style_list = style_list,
+            prepped_row_css = prepped_cell_css[row_nr, ]
+          )
 
           table_str %<>%
             paste(rgroup_str)
 
           first_row <- FALSE
-        }else if (rgroup_iterator > 1 && style_list$css.rgroup.sep[rgroup_iterator - 1] != "") {
+        } else if (rgroup_iterator > 1 && style_list$css.rgroup.sep[rgroup_iterator - 1] != "") {
           # Add the separator if the rgroup wasn't added so that it's included in the regular cells
-          rgroup_sep_style = style_list$css.rgroup.sep[rgroup_iterator - 1]
+          rgroup_sep_style <- style_list$css.rgroup.sep[rgroup_iterator - 1]
         }
       }
 
@@ -857,7 +931,7 @@ htmlTable.default <- function(x,
           c(top_row_style)
         cell_style %<>%
           c(top_row_style)
-      }else if (rgroup_sep_style != FALSE) {
+      } else if (rgroup_sep_style != FALSE) {
         rs %<>% c(rgroup_sep_style)
       }
       first_row <- FALSE
@@ -875,11 +949,13 @@ htmlTable.default <- function(x,
       if (prGetStyle(rs) == "") {
         table_str %<>%
           paste0("\n\t<tr>")
-      }else{
+      } else {
         table_str %<>%
-          sprintf("%s\n\t<tr style='%s'>",
-                  .,
-                  prGetStyle(rs))
+          sprintf(
+            "%s\n\t<tr style='%s'>",
+            .,
+            prGetStyle(rs)
+          )
       }
 
       if (!prSkipRownames(rnames)) {
@@ -887,9 +963,9 @@ htmlTable.default <- function(x,
         # Minor change from original function. If the group doesn't have
         # a group name then there shouldn't be any indentation
         if (!is.null(rgroup) &&
-            rgroup_iterator > 0 &&
-            is.na(rgroup[rgroup_iterator]) == FALSE &&
-            rgroup[rgroup_iterator] != "") {
+          rgroup_iterator > 0 &&
+          is.na(rgroup[rgroup_iterator]) == FALSE &&
+          rgroup[rgroup_iterator] != "") {
           pdng %<>%
             paste0(style_list$padding.rgroup)
         }
@@ -897,21 +973,26 @@ htmlTable.default <- function(x,
         # The padding doesn't work well with the Word import - well nothing really works well with word...
         # table_str <- sprintf("%s\n\t\t<td style='padding-left: .5em;'>%s</td>", table_str, rnames[row_nr])
         table_str %<>%
-          sprintf("%s\n\t\t<td style='%s'>%s%s</td>",
-                  .,
-                  prGetStyle(c(rname_style, cell_style),
-                             align = prGetAlign(style_list$align, 1)),
-                  pdng,
-                  rnames[row_nr])
+          sprintf(
+            "%s\n\t\t<td style='%s'>%s%s</td>",
+            .,
+            prGetStyle(c(rname_style, cell_style),
+              align = prGetAlign(style_list$align, 1)
+            ),
+            pdng,
+            rnames[row_nr]
+          )
       }
 
-      cell_str <- prAddCells(rowcells = x[row_nr,],
-                             cellcode = "td",
-                             style_list = style_list,
-                             style = cell_style,
-                             cgroup_spacer_cells = cgroup_spacer_cells,
-                             has_rn_col = !prSkipRownames(rnames)*1,
-                             prepped_cell_css = prepped_cell_css[row_nr, ])
+      cell_str <- prAddCells(
+        rowcells = x[row_nr, ],
+        cellcode = "td",
+        style_list = style_list,
+        style = cell_style,
+        cgroup_spacer_cells = cgroup_spacer_cells,
+        has_rn_col = !prSkipRownames(rnames) * 1,
+        prepped_cell_css = prepped_cell_css[row_nr, ]
+      )
       table_str %<>%
         paste0(cell_str, "\n\t</tr>")
     }
@@ -921,22 +1002,25 @@ htmlTable.default <- function(x,
     paste0("\n\t</tbody>")
 
   if (!is.null(caption) &
-      compatibility == "LibreOffice" &
-      style_list$pos.caption %in% c("bottom", "below")) {
-
+    compatibility == "LibreOffice" &
+    style_list$pos.caption %in% c("bottom", "below")) {
     table_str %<>%
-      sprintf("%s\n\t<tr><td colspan='%d' style='text-align: left;'>%s</td></tr>",
-              .,
-              total_columns,
-              caption)
+      sprintf(
+        "%s\n\t<tr><td colspan='%d' style='text-align: left;'>%s</td></tr>",
+        .,
+        total_columns,
+        caption
+      )
   }
 
   # Add footer
   if (!is.null(tfoot)) {
     table_str %<>%
-      sprintf("%s\n\t<tfoot><tr><td colspan='%d'>",
-              .,
-              total_columns)
+      sprintf(
+        "%s\n\t<tfoot><tr><td colspan='%d'>",
+        .,
+        total_columns
+      )
 
     # Add the body
     table_str %<>%
@@ -961,7 +1045,7 @@ htmlTable.default <- function(x,
   attr(table_str, "html") <- TRUE
 
   # Add html class if this is a table inside a notebook for inline output
-  if (!getOption('htmlTable.skip_notebook', FALSE) && prIsNotebook()) {
+  if (!getOption("htmlTable.skip_notebook", FALSE) && prIsNotebook()) {
     class(table_str) <- c("html", class(table_str))
   }
 
