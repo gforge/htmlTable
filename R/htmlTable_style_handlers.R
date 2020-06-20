@@ -179,6 +179,28 @@ appendHtmlTableStyle <- function(x,
   return(x)
 }
 
+#' Check if object has a style set to it
+#'
+#' If the attribute \code{htmlTable.style} is set it will check if
+#' the \code{style_name} exists and return a \code{logical}.
+#'
+#' @param x The object intended for \code{\link{htmlTable}}.
+#' @param style_name A string that contains the style name.
+#' @return \code{logical} \code{TRUE} if the attribute and style is not \code{NULL}
+#' @export
+hasHtmlTableStyle <- function(x, style_name) {
+  style <- attr(x, style_attribute_name, exact = TRUE)
+  if (is.null(style)) {
+    return(FALSE)
+  }
+
+  if (is.null(style[[style_name]])) {
+    return(FALSE)
+  }
+
+  return(TRUE)
+}
+
 style_attribute_name <- "htmlTable.style"
 
 prValidateAndMergeStyles <- function(org_style_list, styles_from_arguments, overwrite) {
