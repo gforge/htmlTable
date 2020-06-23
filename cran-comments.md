@@ -1,7 +1,5 @@
-Fix for R 4.0
-
 ## Test environments
-* Ubuntu install, R 3.6.1
+* Ubuntu install, R 4.0.1
 * Winbuilder
 
 ## R CMD check results

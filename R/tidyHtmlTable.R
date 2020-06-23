@@ -58,18 +58,20 @@
 #'
 #' @section Simple tibble output:
 #'
-#'   The tibble discourages the use of row names. There is therefore a convenience
-#'   option for \code{tidyHtmlTable} where you can use the function just as you
-#'   would with \code{\link{htmlTable}} where \code{rnames} is populated with
-#'   the \code{rnames} argument provided using \code{tidyselect} syntax (defaults to
-#'   the "names" column if present int the input data).
+#'  The tibble discourages the use of row names. There is therefore a convenience
+#'  option for \code{tidyHtmlTable} where you can use the function just as you
+#'  would with \code{\link{htmlTable}} where \code{rnames} is populated with
+#'  the \code{rnames} argument provided using \code{tidyselect} syntax (defaults to
+#'  the "names" column if present int the input data).
 #'
 #' @section Additional dependencies:
 #'
-#'    In order to run this function you also must have \code{\link[dplyr]{dplyr}},
-#'    \code{\link[tidyr]{tidyr}}, \code{\link[tidyselect]{tidyselect}} and
-#'    \code{\link[purrr]{purrr}} packages installed. These have been removed due to
-#'    the additional 20 Mb that these dependencies added (issue #47).
+#'  In order to run this function you also must have \pkg{dplyr},
+#'  \pkg{tidyr}, \pkg{tidyselect} and \pkg{purrr}
+#'  packages installed. These have been removed due to
+#'  the additional 20 Mb that these dependencies added (issue #47).
+#'  \emph{Note:} if you use \pkg{tidyverse} it will already have
+#'  all of these and you do not need to worry.
 #'
 #' @param x Tidy data used to build the \code{htmlTable}
 #' @param value The column containing values filling individual cells of the
