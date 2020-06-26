@@ -244,7 +244,9 @@ txtRound.default = function(x,
       stop("The digits.nonzero should be an integer, you provided: ", digits.nonzero)
     }
     if (digits.nonzero < digits) {
-      stop("The digits.nonzero must be smaller than digits")
+      stop("The digits.nonzero must be larger than digits, as it is used for allowing more 0 when encountering small numbers.",
+           " For instance, if we have 10.123 we rarely need more than 10.1 in form of digits while a for a small number",
+           " such as 0.00123 we may want to report 0.001 (i.e. digits = 1, digits.nonzero = 3)")
     }
   }
 
