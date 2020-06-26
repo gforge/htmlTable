@@ -273,7 +273,7 @@ txtRound.default = function(x,
   }
 
   if (!is.na(digits.nonzero)) {
-    decimal_position <- floor(log10(x))
+    decimal_position <- floor(log10(abs(x)))
     if (decimal_position < -digits && decimal_position >= -digits.nonzero) {
       digits <- -decimal_position
     }
