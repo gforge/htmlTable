@@ -4,12 +4,12 @@
 #' A function for checking, merging, and more
 #' with a variety of different style formats.
 #'
-#' @param styles The styles can be provided as \code{vector},
-#'  \code{named vector}, or \code{string}.
+#' @param styles The styles can be provided as `vector`,
+#'  `named vector`, or `string`.
 #' @param ... All styles here are merged with the first parameter.
-#'  If you provide a name, e.g. \code{styles="background: blue", align="center"}
-#'  the function will convert the \code{align} into proper \code{align: center}.
-#' @return \code{string} Returns the codes merged into one string with
+#'  If you provide a name, e.g. `styles="background: blue", align="center"`
+#'  the function will convert the `align` into proper `align: center`.
+#' @return `string` Returns the codes merged into one string with
 #'  correct CSS ; and : structure.
 #' @keywords internal
 #' @import magrittr

@@ -2,7 +2,7 @@
 % Please edit documentation in R/htmlTable_render_getRgroupLine.R
 \name{prGetRgroupLine}
 \alias{prGetRgroupLine}
-\title{Gets the number of rgroup htmlLine}
+\title{Gets the number of \code{rgroup} HTML line}
 \usage{
 prGetRgroupLine(
   x,
@@ -21,32 +21,32 @@ prGetRgroupLine(
 \item{x}{The matrix/data.frame with the data. For the \code{print} and \code{knit_print}
 it takes a string of the class \code{htmlTable} as \code{x} argument.}
 
-\item{total_columns}{The total number of columns including the rowlabel and the
+\item{total_columns}{The total number of columns including the \code{rowlabel} and the
 spacer cells}
 
 \item{rgroup}{A vector of character strings containing headings for row groups.
 \code{n.rgroup} must be present when \code{rgroup} is given. See
- detailed description in section below.}
+detailed description in section below.}
 
-\item{rgroup_iterator}{An integer indicating the rgroup}
+\item{rgroup_iterator}{An integer indicating the \code{rgroup}}
 
-\item{cspan}{The column span of the current rgroup}
+\item{cspan}{The column span of the current \code{rgroup}}
 
-\item{rnames}{Default row names are generated from \code{\link[base:colnames]{rownames}(x)}. If you
+\item{rnames}{Default row names are generated from \code{\link[base:colnames]{rownames(x)}}. If you
 provide \code{FALSE} then it will skip the row names. \emph{Note:} For \code{data.frames}
-if you do \code{\link[base:colnames]{rownames}(my_dataframe) <- NULL} it still has
+if you do \code{\link[base:colnames]{rownames(my_dataframe) <- NULL}} it still has
 row names. Thus you need to use \code{FALSE} if you want to
 supress row names for \code{data.frames}.}
 
-\item{style}{The css style corresponding to the rgroup css style that includes
-the color specific for the rgroup, i.e. \code{col.rgroup}.}
+\item{style}{The css style corresponding to the \code{rgroup} css style that includes
+the color specific for the \code{rgroup}, i.e. \code{col.rgroup}.}
 
-\item{cgroup_spacer_cells}{The vector indicating the position of the cgroup
+\item{cgroup_spacer_cells}{The vector indicating the position of the \code{cgroup}
 spacer cells}
 
-\item{prepped_row_css}{The css.cell information for this particular row.}
+\item{prepped_row_css}{The \code{css.cell} information for this particular row.}
 }
 \description{
-Gets the number of rgroup htmlLine
+Gets the number of \code{rgroup} HTML line
 }
 \keyword{internal}

@@ -4,7 +4,7 @@
 #' return NULL.
 #'
 #' @param rgroup_iterator The rgroup number of interest
-#' @param no_cols The \code{ncol(x)} of the core htmlTable x argument
+#' @param no_cols The `ncol(x)` of the core htmlTable x argument
 #' @inheritParams htmlTable
 #' @keywords internal
 #' @importFrom stats na.omit

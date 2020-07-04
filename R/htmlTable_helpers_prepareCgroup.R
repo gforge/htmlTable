@@ -5,7 +5,7 @@
 #' some preparation for the cgroup options is required.
 #'
 #' @inheritParams htmlTable
-#' @return \code{list(cgroup, n.cgroup, align.cgroup, cgroup_spacer_cells)}
+#' @return `list(cgroup, n.cgroup, align.cgroup, cgroup_spacer_cells)`
 #' @keywords internal
 #' @family hidden helper functions for htmlTable
 prPrepareCgroup <- function(x, cgroup = NULL, n.cgroup = NULL, style_list){

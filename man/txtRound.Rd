@@ -47,7 +47,7 @@ indicator. The option for this is \code{htmlTable.decimal_marker}.}
 
 \item{scientific}{If the value should be in scientific format.}
 
-\item{txtInt_args}{A list of arguments to pass to \code{\link{txtInt}} if that is to be
+\item{txtInt_args}{A list of arguments to pass to \code{\link[=txtInt]{txtInt()}} if that is to be
 used for large values that may require a thousands separator. The option
 for this is \code{htmlTable.round_int}.}
 

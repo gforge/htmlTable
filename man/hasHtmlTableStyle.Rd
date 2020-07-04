@@ -7,7 +7,7 @@
 hasHtmlTableStyle(x, style_name)
 }
 \arguments{
-\item{x}{The object intended for \code{\link{htmlTable}}.}
+\item{x}{The object intended for \code{\link[=htmlTable]{htmlTable()}}.}
 
 \item{style_name}{A string that contains the style name.}
 }

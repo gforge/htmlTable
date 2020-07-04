@@ -21,7 +21,7 @@ to limit publication associated issues.}
 
 \item{lim.sig}{The significance limit for the less than sign, i.e. the '\code{<}'}
 
-\item{html}{If the less than sign should be \code{<} or \code{&lt;} as needed for HTML output.}
+\item{html}{If the less than sign should be \code{<} or \verb{&lt;} as needed for HTML output.}
 
 \item{...}{Currently only used for generating warnings of deprecated call parameters.}
 }
@@ -34,7 +34,7 @@ you often want \code{0.1234} to be \code{0.12} while also
 having two values up until a limit,
 i.e. \code{0.01234} should be \code{0.012} while
 \code{0.001234} should be \code{0.001}. Furthermore you
-want to have \code{< 0.001} as it becomes ridiculous
+want to have \verb{< 0.001} as it becomes ridiculous
 to report anything below that value.
 }
 \examples{

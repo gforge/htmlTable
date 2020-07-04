@@ -47,3 +47,4 @@ Encoding: UTF-8
 NeedsCompilation: no
 VignetteBuilder: knitr
 RoxygenNote: 7.1.1
+Roxygen: list(markdown = TRUE)

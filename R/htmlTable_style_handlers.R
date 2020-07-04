@@ -1,43 +1,43 @@
 #' Add/set css and other style options
 #'
-#' This function is a preprocessing step before applying the \code{\link{htmlTable}} function.
+#' This function is a preprocessing step before applying the [htmlTable()] function.
 #' You use this to style your tables with HTML cascading style sheet features.
 #'
-#' The function stores the current theme (see \code{\link{setHtmlTableTheme}}) + custom styles
-#' to the provided object as an \code{\link[base]{attributes}}. It is stored under the element
-#' \code{htmlTable.style} in the form of a list object.
+#' The function stores the current theme (see [setHtmlTableTheme()]) + custom styles
+#' to the provided object as an [base::attributes()]. It is stored under the element
+#' `htmlTable.style` in the form of a list object.
 #'
-#' @section The \code{css.cell} argument:
+#' @section The `css.cell` argument:
 #'
-#' The \code{css.cell} parameter allows you to add any possible CSS style
-#' to your table cells.  \code{css.cell} can be either a vector or a matrix.
+#' The `css.cell` parameter allows you to add any possible CSS style
+#' to your table cells.  `css.cell` can be either a vector or a matrix.
 #'
-#' If  \code{css.cell} is a \emph{vector}, it's assumed that the styles should be repeated
+#' If  `css.cell` is a *vector*, it's assumed that the styles should be repeated
 #' throughout the rows (that is, each element in css.cell specifies the style
 #' for a whole column of 'x').
 #'
-#' In the case of  \code{css.cell} being a \emph{matrix} of the same size of the \code{x} argument,
-#' each element of \code{x} gets the style from the corresponding element in css.cell.  Additionally,
-#' the number of rows of \code{css.cell} can be \code{nrow(x) + 1} so the first row of of \code{css.cell}
-#' specifies the style for the header of \code{x}; also the number of columns of \code{css.cell}
-#' can be \code{ncol(x) + 1} to include the specification of style for row names of \code{x}.
+#' In the case of  `css.cell` being a *matrix* of the same size of the `x` argument,
+#' each element of `x` gets the style from the corresponding element in css.cell.  Additionally,
+#' the number of rows of `css.cell` can be `nrow(x) + 1` so the first row of of `css.cell`
+#' specifies the style for the header of `x`; also the number of columns of `css.cell`
+#' can be `ncol(x) + 1` to include the specification of style for row names of `x`.
 #'
-#' Note that the \code{text-align} CSS field in the \code{css.cell} argument will be overriden
-#' by the \code{align} argument.
+#' Note that the `text-align` CSS field in the `css.cell` argument will be overriden
+#' by the `align` argument.
 #'
-#' Excel has a specific css-style, \code{mso-number-format} that can be used for improving the
-#' copy-paste functionality. E.g. the style could be written as: \code{css_matrix <-
-#' matrix( data = "mso-number-format:\"\\@\"", nrow = nrow(df), ncol = ncol(df))}
+#' Excel has a specific css-style, `mso-number-format` that can be used for improving the
+#' copy-paste functionality. E.g. the style could be written as: `css_matrix <-
+#' matrix( data = "mso-number-format:\"\\@\"", nrow = nrow(df), ncol = ncol(df))`
 #'
-#' @param x The object that you later want to pass into \code{\link{htmlTable}}.
-#' @param align A character strings specifying column alignments, defaulting to \code{'c'}
+#' @param x The object that you later want to pass into [htmlTable()].
+#' @param align A character strings specifying column alignments, defaulting to `'c'`
 #'  to center. Valid chars for alignments are l = left, c = center and r = right. You can also specify
-#'  \code{align='c|c'} and other LaTeX tabular formatting. If you want to set the alignment of the
-#'  rownames this string needst to be \code{ncol(x) + 1}, otherwise it automatically
+#'  `align='c|c'` and other LaTeX tabular formatting. If you want to set the alignment of the
+#'  rownames this string needst to be `ncol(x) + 1`, otherwise it automatically
 #'  pads the string with a left alignment for the rownames.
 #' @param align.header A character strings specifying alignment for column header,
-#'  defaulting to centered, i.e. \code{\link[base]{paste}(rep('c',ncol(x)),collapse='')}.
-#' @param align.cgroup The justification of the \code{cgroups}
+#'  defaulting to centered, i.e. `[paste][base::paste](rep('c',ncol(x)),collapse='')`.
+#' @param align.cgroup The justification of the `cgroups`
 #' @param css.rgroup CSS style for the rgroup, if different styles are wanted for each of the
 #'  rgroups you can just specify a vector with the number of elements.
 #' @param css.rgroup.sep The line between different rgroups. The line is set to the TR element
@@ -51,30 +51,30 @@
 #' @param css.cell The css.cell element allows you to add any possible CSS style to your
 #'  table cells. See section below for details.
 #' @param css.header The header style, not including the cgroup style
-#' @param css.header.border_bottom The header bottom-border style, e.g. \code{border-bottom: 1px solid grey}
-#' @param css.cgroup The same as \code{css.class} but for cgroup formatting.
+#' @param css.header.border_bottom The header bottom-border style, e.g. `border-bottom: 1px solid grey`
+#' @param css.cgroup The same as `css.class` but for cgroup formatting.
 #' @param css.class The html CSS class for the table. This allows directing html
-#'  formatting through \href{http://www.w3schools.com/Css/}{CSS}
-#'  directly at all instances of that class. \emph{Note:} unfortunately the
+#'  formatting through [CSS](http://www.w3schools.com/Css/)
+#'  directly at all instances of that class. *Note:* unfortunately the
 #'  CSS is frequently ignored by word processors. This option
 #'  is mostly inteded for web-presentations.
 #' @param css.table You can specify the the style of the table-element using this parameter
-#' @param pos.rowlabel Where the rowlabel should be positioned. This value can be \code{"top"},
-#'  \code{"bottom"}, \code{"header"}, or a integer between \code{1} and \code{nrow(cgroup) + 1}. The options
-#'  \code{"bottom"} and \code{"header"} are the same, where the row label is presented at the same level as
+#' @param pos.rowlabel Where the rowlabel should be positioned. This value can be `"top"`,
+#'  `"bottom"`, `"header"`, or a integer between `1` and `nrow(cgroup) + 1`. The options
+#'  `"bottom"` and `"header"` are the same, where the row label is presented at the same level as
 #'  the header.
-#' @param pos.caption Set to \code{"bottom"} to position a caption below the table
-#'  instead of the default of \code{"top"}.
-#' @param col.rgroup Alternating colors (zebra striping/banded rows) for each \code{rgroup}; one or two colors
+#' @param pos.caption Set to `"bottom"` to position a caption below the table
+#'  instead of the default of `"top"`.
+#' @param col.rgroup Alternating colors (zebra striping/banded rows) for each `rgroup`; one or two colors
 #'  is recommended and will be recycled.
 #' @param col.columns Alternating colors for each column.
-#' @param padding.rgroup Generally two non-breakings spaces, i.e. \code{&nbsp;&nbsp;}, but some
+#' @param padding.rgroup Generally two non-breakings spaces, i.e. `&nbsp;&nbsp;`, but some
 #'  journals only have a bold face for the rgroup and leaves the subelements unindented.
 #' @param padding.tspanner The table spanner is usually without padding but you may specify padding
-#'  similar to \code{padding.rgroup} and it will be added to all elements, including the rgroup elements.
+#'  similar to `padding.rgroup` and it will be added to all elements, including the rgroup elements.
 #'  This allows for a 3-level hierarchy if needed.
 #'
-#' @return \code{x} with the style added as an attribute that the htmlTable then can use for formatting.
+#' @return `x` with the style added as an attribute that the htmlTable then can use for formatting.
 #' @export
 #'
 #' @examples
@@ -181,12 +181,12 @@ appendHtmlTableStyle <- function(x,
 
 #' Check if object has a style set to it
 #'
-#' If the attribute \code{htmlTable.style} is set it will check if
-#' the \code{style_name} exists and return a \code{logical}.
+#' If the attribute `htmlTable.style` is set it will check if
+#' the `style_name` exists and return a `logical`.
 #'
-#' @param x The object intended for \code{\link{htmlTable}}.
+#' @param x The object intended for [htmlTable()].
 #' @param style_name A string that contains the style name.
-#' @return \code{logical} \code{TRUE} if the attribute and style is not \code{NULL}
+#' @return `logical` `TRUE` if the attribute and style is not `NULL`
 #' @export
 hasHtmlTableStyle <- function(x, style_name) {
   style <- attr(x, style_attribute_name, exact = TRUE)

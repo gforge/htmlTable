@@ -2,15 +2,15 @@
 #'
 #' This function helps you to do a table header with multiple lines
 #' in both HTML and in LaTeX. In HTML this isn't that tricky, you just use
-#' the \code{<br />} command but in LaTeX I often find
-#' myself writing \code{vbox}/\code{hbox} stuff and therefore
+#' the `<br />` command but in LaTeX I often find
+#' myself writing `vbox`/`hbox` stuff and therefore
 #' I've created this simple helper function
 #'
 #' @param ... The lines that you want to be joined
-#' @param html If HTML compatible output should be used. If \code{FALSE}
+#' @param html If HTML compatible output should be used. If `FALSE`
 #'  it outputs LaTeX formatting. Note if you set this to 5
-#'  then the HTML5 version of \emph{br} will be used: \code{<br>}
-#'  otherwise it uses the \code{<br />} that is compatible
+#'  then the HTML5 version of *br* will be used: `<br>`
+#'  otherwise it uses the `<br />` that is compatible
 #'  with the XHTML-formatting.
 #' @return string
 #'
@@ -70,9 +70,9 @@ txtMergeLines <- function(..., html = 5){
 #'  interest. Currently only English is distinguished from the ISO
 #'  format using a ',' as the separator.
 #' @param html If the format is used in HTML context
-#'  then the space should be a non-breaking space, \code{&nbsp;}
-#' @param ... Passed to \code{\link[base]{format}}
-#' @return \code{string}
+#'  then the space should be a non-breaking space, `&nbsp;`
+#' @param ... Passed to [base::format()]
+#' @return `string`
 #'
 #' @examples
 #' txtInt(123)
@@ -112,25 +112,25 @@ txtInt <- function(x, language = "en", html = TRUE, ...){
 #' Formats the p-values
 #'
 #' Gets formatted p-values. For instance
-#' you often want \code{0.1234} to be \code{0.12} while also
+#' you often want `0.1234` to be `0.12` while also
 #' having two values up until a limit,
-#' i.e. \code{0.01234} should be \code{0.012} while
-#' \code{0.001234} should be \code{0.001}. Furthermore you
-#' want to have \code{< 0.001} as it becomes ridiculous
+#' i.e. `0.01234` should be `0.012` while
+#' `0.001234` should be `0.001`. Furthermore you
+#' want to have `< 0.001` as it becomes ridiculous
 #' to report anything below that value.
 #'
 #' @param pvalues The p-values
 #' @param lim.2dec The limit for showing two decimals. E.g.
-#'  the p-value may be \code{0.056} and we may want to keep the two decimals in order
-#'  to emphasize the proximity to the all-mighty \code{0.05} p-value and set this to
-#'  \eqn{10^-2}. This allows that a value of \code{0.0056} is rounded to \code{0.006} and this
-#'  makes intuitive sense as the \code{0.0056} level as this is well below
-#'  the \code{0.05} value and thus not as interesting to know the exact proximity to
-#'  \code{0.05}. \emph{Disclaimer:} The \code{0.05}-limit is really silly and debated, unfortunately
+#'  the p-value may be `0.056` and we may want to keep the two decimals in order
+#'  to emphasize the proximity to the all-mighty `0.05` p-value and set this to
+#'  \eqn{10^-2}. This allows that a value of `0.0056` is rounded to `0.006` and this
+#'  makes intuitive sense as the `0.0056` level as this is well below
+#'  the `0.05` value and thus not as interesting to know the exact proximity to
+#'  `0.05`. *Disclaimer:* The `0.05`-limit is really silly and debated, unfortunately
 #'  it remains a standard and this package tries to adapt to the current standards in order
 #'  to limit publication associated issues.
-#' @param lim.sig The significance limit for the less than sign, i.e. the '\code{<}'
-#' @param html If the less than sign should be \code{<} or \code{&lt;} as needed for HTML output.
+#' @param lim.sig The significance limit for the less than sign, i.e. the '`<`'
+#' @param html If the less than sign should be `<` or `&lt;` as needed for HTML output.
 #' @param ... Currently only used for generating warnings of deprecated call parameters.
 #' @return vector
 #'
@@ -180,19 +180,19 @@ txtPval <- function(pvalues,
 #'  zero. Sometimes we have an entire table with large numbers only to have a
 #'  few but interesting observation that are really interesting
 #' @param excl.cols Columns to exclude from the rounding procedure.
-#'  This can be either a number or regular expression. Skipped if \code{x} is a vector.
+#'  This can be either a number or regular expression. Skipped if `x` is a vector.
 #' @param excl.rows Rows to exclude from the rounding procedure.
 #'  This can be either a number or regular expression.
-#' @param txt.NA The string to exchange \code{NA} with
+#' @param txt.NA The string to exchange `NA` with
 #' @param dec The decimal marker. If the text is in non-English decimal
 #'  and string formatted you need to change this to the appropriate decimal
-#'  indicator. The option for this is \code{htmlTable.decimal_marker}.
+#'  indicator. The option for this is `htmlTable.decimal_marker`.
 #' @param scientific If the value should be in scientific format.
-#' @param txtInt_args A list of arguments to pass to \code{\link{txtInt}} if that is to be
+#' @param txtInt_args A list of arguments to pass to [txtInt()] if that is to be
 #'  used for large values that may require a thousands separator. The option
-#'  for this is \code{htmlTable.round_int}.
+#'  for this is `htmlTable.round_int`.
 #' @param ... Passed to next method
-#' @return \code{matrix/data.frame}
+#' @return `matrix/data.frame`
 #'
 #' @examples
 #' mx <- matrix(c(1, 1.11, 1.25,

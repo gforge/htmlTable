@@ -2,7 +2,7 @@
 % Please edit documentation in R/deprecated.R
 \name{pvalueFormatter}
 \alias{pvalueFormatter}
-\title{Deprecated use \code{\link{txtPval}} instead}
+\title{Deprecated use \code{\link[=txtPval]{txtPval()}} instead}
 \usage{
 pvalueFormatter(...)
 }
@@ -10,7 +10,7 @@ pvalueFormatter(...)
 \item{...}{Currently only used for generating warnings of deprecated call}
 }
 \description{
-Deprecated use \code{\link{txtPval}} instead
+Deprecated use \code{\link[=txtPval]{txtPval()}} instead
 }
 \examples{
 \dontrun{

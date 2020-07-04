@@ -4,7 +4,7 @@
 #'  a matrix.
 #' @param name The name of the CSS style that is prepared
 #' @inheritParams htmlTable
-#' @return \code{matrix}
+#' @return `matrix`
 #' @keywords internal
 prPrepareCss <- function(x, css, rnames, header = NULL, name = deparse(substitute(css)), style_list = NULL) {
   if (is.null(style_list)) {

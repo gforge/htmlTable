@@ -1,10 +1,10 @@
-#' Function for concatenating \code{\link{htmlTable}}s
+#' Function for concatenating [htmlTable()]s
 #'
-#' @param tables A list of \code{\link{htmlTable}}s to be concatenated
+#' @param tables A list of [htmlTable()]s to be concatenated
 #' @param headers Either a string or a vector of strings that function as
 #'  a header for each table. If none is provided it will use the names of
 #'  the table list or a numeric number.
-#' @return \code{\link{htmlTable}} class object
+#' @return [htmlTable()] class object
 #' @example inst/examples/htmlTable_example.R
 #' @export
 concatHtmlTables <- function(tables, headers = NULL) {

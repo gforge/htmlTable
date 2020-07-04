@@ -3,13 +3,13 @@
 #' This function wraps the htmlTable and adds JavaScript code for toggling the amount
 #' of text shown in any particular cell.
 #'
-#' @param ... The exact same parameters as \code{\link{htmlTable}} uses
+#' @param ... The exact same parameters as [htmlTable()] uses
 #' @param txt.maxlen The maximum length of a text
 #' @param button Indicator if the cell should be clickable or if a button should appear with a plus/minus
 #' @param minimized.columns Notifies if any particular columns should be collapsed from start
 #' @param js.scripts If you want to add your own JavaScript code you can just add it here.
 #'  All code is merged into one string where each section is wrapped in it's own
-#'  \code{<scrip></script>} element.
+#'  `<scrip></script>` element.
 #' @return An htmlTable with a javascript attribute containing the code that is then printed
 #' @export
 #' @example inst/examples/interactiveTable_example.R

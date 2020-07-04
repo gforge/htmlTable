@@ -4,7 +4,7 @@
 #' @inheritParams prGetCgroupHeader
 #' @param total_columns The total number of columns including the rowlabel and the
 #'  specer cells
-#' @return \code{string} Returns the html string for the \code{<thead>...</thead>} element
+#' @return `string` Returns the html string for the `<thead>...</thead>` element
 #' @keywords internal
 prGetThead <- function(x,
                        header = NULL,

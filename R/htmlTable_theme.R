@@ -1,14 +1,14 @@
-#' Set or update theme for \code{\link{htmlTable}}
+#' Set or update theme for [htmlTable()]
 #'
 #' The theme guides many of the non-data objects visual appearance. The
 #' theme can be over-ridden by settings for each table. Too get a more complete
-#' understanding of the options, see \code{\link{addHtmlTableStyle}}.
+#' understanding of the options, see [addHtmlTableStyle()].
 #'
 #' @section Theme options:
 #'
 #' The styles availabe are:
 #'
-#' * `standard`: The traditional standard style used in \code{\link{htmlTable}} since the early days
+#' * `standard`: The traditional standard style used in [htmlTable()] since the early days
 #' * `Google docs`: A style that is optimized for copy-pasting into documents on Google drive. This
 #'  is geared towards minimal padding and margins so that the table is as dense as possible.
 #' * `blank`: Just as the name suggests the style is completly empty in terms of CSS. Positions
@@ -90,7 +90,6 @@ setHtmlTableTheme <- function(theme = NULL,
   return(invisible(newTheme))
 }
 
-
 prGetArgumentList <- function(args, skip_elements) {
   if (!is.list(args)) {
     args <- as.list(args)
@@ -105,12 +104,12 @@ prGetArgumentList <- function(args, skip_elements) {
   }, args)
 }
 
-#' Retrieve the \code{\link{htmlTable}} theme list
+#' Retrieve the [htmlTable()] theme list
 #'
-#' A wrapper for a \code{\link[base:options]{getOption}("htmlTable.theme")} call that
+#' A wrapper for a [`getOption("htmlTable.theme")()`][base::options] call that
 #' returns the standard theme unless one is set.
 #'
-#' @return \code{list} with the styles to be applied to the table
+#' @return `list` with the styles to be applied to the table
 #' @export
 #'
 #' @examples

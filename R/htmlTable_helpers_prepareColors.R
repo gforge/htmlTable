@@ -4,7 +4,7 @@
 #' @param n The number of rows/columns applicable to the color
 #' @param ng The n.rgroup/n.cgroup argument if applicable
 #' @param gtxt The rgroup/cgroup texts
-#' @return \code{character} A vector containing hexadecimal colors
+#' @return `character` A vector containing hexadecimal colors
 #' @import magrittr
 #' @keywords internal
 #' @importFrom grDevices col2rgb

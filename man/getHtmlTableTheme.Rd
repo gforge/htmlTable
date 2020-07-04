@@ -2,7 +2,7 @@
 % Please edit documentation in R/htmlTable_theme.R
 \name{getHtmlTableTheme}
 \alias{getHtmlTableTheme}
-\title{Retrieve the \code{\link{htmlTable}} theme list}
+\title{Retrieve the \code{\link[=htmlTable]{htmlTable()}} theme list}
 \usage{
 getHtmlTableTheme()
 }
@@ -10,7 +10,7 @@ getHtmlTableTheme()
 \code{list} with the styles to be applied to the table
 }
 \description{
-A wrapper for a \code{\link[base:options]{getOption}("htmlTable.theme")} call that
+A wrapper for a \code{\link[base:options]{getOption("htmlTable.theme")()}} call that
 returns the standard theme unless one is set.
 }
 \examples{

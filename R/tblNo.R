@@ -1,10 +1,10 @@
 #' Gets the last table number
 #'
-#' The function relies on \code{options("table_counter")}
+#' The function relies on `options("table_counter")`
 #' in order to keep track of the last number.
 #'
 #' @param roman Whether or not to use roman numbers instead
-#'  of arabic. Can also be set through \code{options(table_caption_no_roman = TRUE)}
+#'  of arabic. Can also be set through `options(table_caption_no_roman = TRUE)`
 #'
 #' @export
 #' @examples
@@ -34,7 +34,7 @@ tblNoLast <- function(roman = getOption("table_counter_roman",
 
 #' Gets the next table number
 #'
-#' The function relies on \code{options("table_counter")}
+#' The function relies on `options("table_counter")`
 #' in order to keep track of the last number.
 #'
 #' @inheritParams tblNoLast

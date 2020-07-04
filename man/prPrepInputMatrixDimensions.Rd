@@ -11,11 +11,11 @@ prPrepInputMatrixDimensions(x, header = NULL)
 it takes a string of the class \code{htmlTable} as \code{x} argument.}
 
 \item{header}{A vector of character strings specifying column
-header, defaulting to \code{\link[base]{colnames}(x)}}
+header, defaulting to \code{\link[base:colnames]{colnames(x)}}}
 }
 \description{
 Checks and converts dimensions into something the
-\code{\link{htmlTable}} is comfortable with.
+\code{\link[=htmlTable]{htmlTable()}} is comfortable with.
 }
 \seealso{
 Other hidden helper functions for htmlTable: 

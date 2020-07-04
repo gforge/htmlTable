@@ -1,13 +1,13 @@
 #' Merges multiple colors
 #'
-#' Uses the \code{\link[grDevices:colorRamp]{colorRampPalette}} for merging colors.
-#' \emph{Note:} When merging more than 2 colors the order in the color
+#' Uses the [`colorRampPalette()`][grDevices::colorRamp] for merging colors.
+#' *Note:* When merging more than 2 colors the order in the color
 #' presentation matters. Each color is merged with its neigbors before
 #' merging with next. If there is an uneven number of colors the middle
 #' color is mixed with both left and right side.
 #'
 #' @param clrs The colors
-#' @return \code{character} A hexadecimal color
+#' @return `character` A hexadecimal color
 #' @import magrittr
 #' @keywords internal
 #' @importFrom grDevices colorRampPalette

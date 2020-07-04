@@ -5,203 +5,212 @@
 #' into the table and allow for a dense representation of
 #' complex tables. The HTML-output is designed for
 #' maximum compatibility with copy-paste functionality into
-#' word-processors. For adding styles, see \code{\link{addHtmlTableStyle}}
-#' and themes \code{\link{setHtmlTableTheme}}. \emph{Note:} If you are using
+#' word-processors. For adding styles, see [addHtmlTableStyle()]
+#' and themes [setHtmlTableTheme()]. *Note:* If you are using
 #' \pkg{tidyverse} and \pkg{dplyr} you may want to check out
-#' \code{\link{tidyHtmlTable}} that automates many of the arguments
-#' that \code{htmlTable} requires.
+#' [tidyHtmlTable()] that automates many of the arguments
+#' that `htmlTable` requires.
 #'
-#' @section Multiple rows of column spanners \code{cgroup}:
+#' @section Multiple rows of column spanners `cgroup`:
 #'
 #' If you want to have a column spanner in multiple levels you can
-#' set the \code{cgroup} and \code{n.cgroup} arguments to a \code{matrix} or
-#'  \code{list}.
+#' set the `cgroup` and `n.cgroup` arguments to a `matrix` or
+#'  `list`.
 #'
 #' If the different levels have different number of elements and you have
-#' provided a \emph{matrix} you need to set the ones that lack elements to NA. For instance
-#' \code{cgroup = rbind(c("first", "second", NA), c("a", "b", "c"))}.
-#' And the corresponding \code{n.cgroup} would be \code{n.cgroup = rbind(c(1, 2, NA), c(2, 1, 2))}.
+#' provided a *matrix* you need to set the ones that lack elements to NA. For instance
+#' `cgroup = rbind(c("first", "second", NA), c("a", "b", "c"))`.
+#' And the corresponding `n.cgroup` would be `n.cgroup = rbind(c(1, 2, NA), c(2, 1, 2))`.
 #' for a table consisting of 5 columns. The "first" spans the first two columns,
 #' the "second" spans the last three columns, "a" spans the first two, "b"
 #' the middle column, and "c" the last two columns.
 #'
 #' It is recommended to use `list` as you will not have to bother with the `NA`.
 #'
-#' If you want leave a \code{cgroup} empty then simply provide `""` as the \code{cgroup}.
+#' If you want leave a `cgroup` empty then simply provide `""` as the `cgroup`.
 #'
-#' @section The \code{rgroup} argument:
+#' @section The `rgroup` argument:
 #'
-#'  The \code{rgroup} allows you to smoothly group rows. Each row within a group
+#'  The `rgroup` allows you to smoothly group rows. Each row within a group
 #'  receives an indention of two blank spaces and are grouped with their
-#'  corresponding \code{rgroup} element. The \code{sum(n.rgroup)} should always
+#'  corresponding `rgroup` element. The `sum(n.rgroup)` should always
 #'  be equal or less than the matrix rows. If less then it will pad the
-#'  remaining rows with either an empty \code{rgroup}, i.e. an "" or if the
-#'  \code{rgroup} is one longer than the \code{n.rgroup} the last \code{n.rgroup} element will
-#'  be calculated through \code{nrow(x) - sum(n.rgroup)} in order to make
+#'  remaining rows with either an empty `rgroup`, i.e. an "" or if the
+#'  `rgroup` is one longer than the `n.rgroup` the last `n.rgroup` element will
+#'  be calculated through `nrow(x) - sum(n.rgroup)` in order to make
 #'  the table generating smoother.
 #'
-#' @section The add attribute to \code{rgroup}:
+#' @section The add attribute to `rgroup`:
 #'
-#' You can now have an additional element at the \code{rgroup} level by specifying the
-#' \code{attr(rgroup, 'add')}. The value can either be a \code{vector}, a \code{list},
-#' or a \code{matrix}. See \code{vignette("general", package = "htmlTable")} for examples.
-#' \itemize{
-#'  \item{A \code{vector} of either equal number of \code{rgroup}s to the number
-#'   of \code{rgroup}s that aren't empty, i.e. \code{rgroup[rgroup != ""]}. Or a named vector where
-#'   the name must correspond to either an \code{rgroup} or to an \code{rgroup} number.}
-#'  \item{A \code{list} that has exactly the same requirements as the vector.
+#' You can now have an additional element at the `rgroup` level by specifying the
+#' `attr(rgroup, 'add')`. The value can either be a `vector`, a `list`,
+#' or a `matrix`. See `vignette("general", package = "htmlTable")` for examples.
+#'
+#' * A `vector` of either equal number of `rgroup`s to the number
+#'   of `rgroup`s that aren't empty, i.e. `rgroup[rgroup != ""]`. Or a named vector where
+#'   the name must correspond to either an `rgroup` or to an `rgroup` number.
+#' * A `list` that has exactly the same requirements as the vector.
 #'   In addition to the previous we can also have a list with column numbers within
-#'   as names within the list.}
-#'  \item{A \code{matrix} with the dimension \code{nrow(x) x ncol(x)} or
-#'   \code{nrow(x) x 1} where the latter is equivalent to a named vector.
-#'   If you have \code{rownames} these will resolve similarly to the names to the
-#'   \code{list}/\code{vector} arguments. The same thing applies to \code{colnames}.
-#'  }
-#' }
+#'   as names within the list.
+#' * A `matrix` with the dimension `nrow(x) x ncol(x)` or
+#'   `nrow(x) x 1` where the latter is equivalent to a named vector.
+#'   If you have `rownames` these will resolve similarly to the names to the
+#'   `list`/`vector` arguments. The same thing applies to `colnames`.
 #'
 #' @section Important \pkg{knitr}-note:
 #'
-#' This function will only work with \pkg{knitr} outputting \emph{HTML}, i.e.
+#' This function will only work with \pkg{knitr} outputting *HTML*, i.e.
 #' markdown mode. As the function returns raw HTML-code
 #' the compatibility with non-HTML formatting is limited,
-#' even with \href{http://johnmacfarlane.net/pandoc/}{pandoc}.
+#' even with [pandoc](http://johnmacfarlane.net/pandoc/).
 #'
-#' Thanks to the the \code{\link[knitr]{knit_print}} and the
-#' \code{\link[knitr]{asis_output}}
-#' the \code{results='asis'} is \emph{no longer needed} except within for-loops.
-#' If you have a knitr-chunk with a for loop and use \code{print()} to produce
-#' raw HTML you must set the chunk option \code{results='asis'}. \emph{Note}:
-#' the print-function relies on the \code{\link[base]{interactive}()} function
+#' Thanks to the the [knitr::knit_print()] and the [knitr::asis_output()]
+#' the `results='asis'` is *no longer needed* except within for-loops.
+#' If you have a knitr-chunk with a for loop and use `print()` to produce
+#' raw HTML you must set the chunk option `results='asis'`. *Note*:
+#' the print-function relies on the [base::interactive()] function
 #' for determining if the output should be sent to a browser or to the terminal.
 #' In vignettes and other directly knitted documents you may need to either set
-#' \code{useViewer = FALSE} alternatively set \code{options(htmlTable.cat = TRUE)}.
+#' `useViewer = FALSE` alternatively set `options(htmlTable.cat = TRUE)`.
 #'
 #' @section RStudio's notebook:
 #'
 #' RStudio has an interactive notebook that allows output directly into the document.
-#' In order for the output to be properly formatted it needs to have the \code{class}
-#' of \code{html}. The \code{htmlTable} tries to identify if the environment is a
-#' notebook document (uses the \pkg{rstudioapi} and identifies if its a file with and \code{Rmd}
-#' file ending or if there is an element with \code{html_notebook}). If you don't want this
-#' behavior you can remove it using the \code{options(htmlTable.skip_notebook = TRUE)}.
+#' In order for the output to be properly formatted it needs to have the `class`
+#' of `html`. The `htmlTable` tries to identify if the environment is a
+#' notebook document (uses the \pkg{rstudioapi} and identifies if its a file with and `Rmd`
+#' file ending or if there is an element with `html_notebook`). If you don't want this
+#' behavior you can remove it using the `options(htmlTable.skip_notebook = TRUE)`.
 #'
 #' @section Table counter:
 #'
 #' If you set the option table_counter you will get a Table 1,2,3
-#' etc before each table, just set \code{options(table_counter=TRUE)}. If
+#' etc before each table, just set `options(table_counter=TRUE)`. If
 #' you set it to a number then that number will correspond to the start of
-#' the table_counter. The \code{table_counter} option will also contain the number
+#' the table_counter. The `table_counter` option will also contain the number
 #' of the last table, this can be useful when referencing it in text. By
-#' setting the option \code{options(table_counter_str = "<b>Table \%s:</b> ")}
+#' setting the option `options(table_counter_str = "<b>Table %s:</b> ")`
 #' you can manipulate the counter table text that is added prior to the
-#' actual caption. Note, you should use the \code{\link{sprintf}} \code{\%s}
-#' instead of \code{\%d} as the software converts all numbers to characters
-#' for compatibility reasons. If you set \code{options(table_counter_roman = TRUE)}
+#' actual caption. Note, you should use the [sprintf()] `%s`
+#' instead of `%d` as the software converts all numbers to characters
+#' for compatibility reasons. If you set `options(table_counter_roman = TRUE)`
 #' then the table counter will use Roman numerals instead of Arabic.
 #'
 #' @section Empty data frames:
 #' An empty data frame will result in a warning and output an empty table, provided that
-#' \code{rgroup} and \code{n.rgroup} are not specified. All other row layout options will be ignored.
+#' `rgroup` and `n.rgroup` are not specified. All other row layout options will be ignored.
+#'
+#' @section Options:
+#'
+#' There are multiple options that can be set, here is a set of the perhaps most used
+#' * `table_counter` - logical - activates a counter for each table
+#' * `table_counter_roman` - logical - if true the counter is in Roman numbers, i.e. I, II, III, IV...
+#' * `table_counter_str` - string - the string used for generating the table counter text
+#' * `useViewer` - logical - if viewer should be used fro printing the table
+#' * `htmlTable.cat` - logical - if the output should be directly sent to `cat()`
+#' * `htmlTable.skip_notebook` - logical - skips the logic for detecting notebook
+#' * `htmlTable.pretty_indentation` - logical - there was some issues in previous Pandoc versions
+#'  where HTML indentation caused everything to be interpreted as code. This seems to be fixed
+#'  and if you want to look at the raw HTML code it is nice to have this set to `TRUE` so that
+#'  the tags and elements are properly indented.
 #'
 #' @section Other:
 #'
-#' \emph{Copy-pasting:} As you copy-paste results into Word you need to keep
+#' *Copy-pasting:* As you copy-paste results into Word you need to keep
 #' the original formatting. Either right click and choose that paste option or click
 #' on the icon appearing after a paste. Currently the following compatibilities
 #' have been tested with MS Word 2016:
 #'
-#' \itemize{
-#'  \item{\bold{Internet Explorer} (v. 11.20.10586.0) Works perfectly when copy-pasting into Word}
-#'  \item{\bold{RStudio} (v. 0.99.448) Works perfectly when copy-pasting into Word.
-#'        \emph{Note:} can have issues with multi-line \code{cgroup}s -
-#'        see \href{http://code.google.com/p/chromium/issues/detail?id=305130}{bug}}
-#'  \item{\bold{Chrome} (v. 47.0.2526.106) Works perfectly when copy-pasting into Word.
-#'        \emph{Note:} can have issues with multi-line \code{cgroup}s -
-#'        see \href{http://code.google.com/p/chromium/issues/detail?id=305130}{bug}}
-#'  \item{\bold{Firefox} (v. 43.0.3) Works poorly - looses font-styling, lines and general feel}
-#'  \item{\bold{Edge} (v. 25.10586.0.0) Works poorly - looses lines and general feel}
-#' }
+#' * **Internet Explorer** (v. 11.20.10586.0) Works perfectly when copy-pasting into Word
+#' * **RStudio** (v. 0.99.448) Works perfectly when copy-pasting into Word.
+#'   *Note:* can have issues with multi-line `cgroup`s -
+#'   see [bug](http://code.google.com/p/chromium/issues/detail?id=305130)
+#' * **Chrome** (v. 47.0.2526.106) Works perfectly when copy-pasting into Word.
+#'        *Note:* can have issues with multi-line `cgroup`s -
+#'        see [bug](http://code.google.com/p/chromium/issues/detail?id=305130)
+#' * **Firefox** (v. 43.0.3) Works poorly - looses font-styling, lines and general feel
+#' * **Edge** (v. 25.10586.0.0) Works poorly - looses lines and general feel
 #'
-#' \emph{Direct word processor opening:} Opening directly in Libre Office or Word is no longer
+#' *Direct word processor opening:* Opening directly in Libre Office or Word is no longer
 #' recommended. You get much prettier results using the cut-and-paste option.
 #'
-#' Note that when using complex \code{cgroup} alignments with multiple levels
+#' Note that when using complex `cgroup` alignments with multiple levels
 #' not every browser is able to handle this. For instance the RStudio
 #' webkit browser seems to have issues with this and a
-#' \href{http://code.google.com/p/chromium/issues/detail?id=305130}{bug has been filed}.
+#' [bug has been filed](http://code.google.com/p/chromium/issues/detail?id=305130).
 #'
 #' As the table uses HTML for rendering you need to be aware of that headers,
 #' row names, and cell values should try respect this for optimal display. Browsers
 #' try to compensate and frequently the tables still turn out fine but it is
 #' not advised. Most importantly you should try to use
-#' \code{&lt;} instead of \code{<} and
-#' \code{&gt;} instead of \code{>}. You can find a complete list
-#' of HTML characters \href{http://ascii.cl/htmlcodes.htm}{here}.
+#' `&lt;` instead of `<` and
+#' `&gt;` instead of `>`. You can find a complete list
+#' of HTML characters [here](http://ascii.cl/htmlcodes.htm).
 #'
-#' Lastly, I want to mention that function was inspired by the \pkg{Hmisc}
-#' \code{\link[Hmisc]{latex}()} that can be an excellent alternative if you wish
-#' to switch to PDF-output. For the sibling function \code{\link{tidyHtmlTable}}
-#' you can directly switch between the functions.
+#' Lastly, I want to mention that function was inspired by the [Hmisc::latex()]
+#' that can be an excellent alternative if you wish to switch to PDF-output.
+#' For the sibling function [tidyHtmlTable()] you can directly switch between
+#' the two using the `table_fn` argument.
 #'
-#' @param x The matrix/data.frame with the data. For the \code{print} and \code{knit_print}
-#'  it takes a string of the class \code{htmlTable} as \code{x} argument.
+#' @param x The matrix/data.frame with the data. For the `print` and `knit_print`
+#'  it takes a string of the class `htmlTable` as `x` argument.
 #' @param header A vector of character strings specifying column
-#'  header, defaulting to \code{\link[base]{colnames}(x)}
-#' @param rnames Default row names are generated from \code{\link[base:colnames]{rownames}(x)}. If you
-#'  provide \code{FALSE} then it will skip the row names. \emph{Note:} For \code{data.frames}
-#'  if you do \code{\link[base:colnames]{rownames}(my_dataframe) <- NULL} it still has
-#'  row names. Thus you need to use \code{FALSE} if you want to
-#'  supress row names for \code{data.frames}.
-#' @param rowlabel If the table has row names or \code{rnames},
-#'  \code{rowlabel} is a character string containing the
-#'  column heading for the \code{rnames}.
+#'  header, defaulting to [`colnames(x)`][base::colnames]
+#' @param rnames Default row names are generated from [`rownames(x)`][base::colnames]. If you
+#'  provide `FALSE` then it will skip the row names. *Note:* For `data.frames`
+#'  if you do [`rownames(my_dataframe) <- NULL`][base::colnames] it still has
+#'  row names. Thus you need to use `FALSE` if you want to
+#'  supress row names for `data.frames`.
+#' @param rowlabel If the table has row names or `rnames`,
+#'  `rowlabel` is a character string containing the
+#'  column heading for the `rnames`.
 #' @param caption Adds a table caption.
-#' @param tfoot Adds a table footer (uses the \code{<tfoot>} HTML element). The
-#'  output is run through \code{\link{txtMergeLines}} simplifying the generation
+#' @param tfoot Adds a table footer (uses the `<tfoot>` HTML element). The
+#'  output is run through [txtMergeLines()] simplifying the generation
 #'  of multiple lines.
 #' @param label A text string representing a symbolic label for the
 #'  table for referencing as an anchor. All you need to do is to reference the
-#'  table, for instance \code{<a href="#anchor_name">see table 2</a>}. This is
+#'  table, for instance `<a href="#anchor_name">see table 2</a>`. This is
 #'  known as the element's id attribute, i.e. table id, in HTML linguo, and should
-#'  be unique id for an HTML element in contrast to the \code{css.class} element attribute.
+#'  be unique id for an HTML element in contrast to the `css.class` element attribute.
 #' @param rgroup A vector of character strings containing headings for row groups.
-#'  \code{n.rgroup} must be present when \code{rgroup} is given. See
+#'  `n.rgroup` must be present when `rgroup` is given. See
 #'   detailed description in section below.
-#' @param n.rgroup An integer vector giving the number of rows in each grouping. If \code{rgroup}
-#'  is not specified, \code{n.rgroup} is just used to divide off blocks of rows by horizontal
-#'  lines. If \code{rgroup} is given but \code{n.rgroup} is omitted, \code{n.rgroup} will
+#' @param n.rgroup An integer vector giving the number of rows in each grouping. If `rgroup`
+#'  is not specified, `n.rgroup` is just used to divide off blocks of rows by horizontal
+#'  lines. If `rgroup` is given but `n.rgroup` is omitted, `n.rgroup` will
 #'  default so that each row group contains the same number of rows. If you want additional
-#'  rgroup column elements to the cells you can sett the "add" attribute to \code{rgroup} through
-#'  \code{attr(rgroup, "add")}, see below explaining section.
+#'  rgroup column elements to the cells you can sett the "add" attribute to `rgroup` through
+#'  `attr(rgroup, "add")`, see below explaining section.
 #' @param cgroup A vector, matrix or list of character strings defining major column header. The default
-#'  is to have none. These elements are also known as \emph{column spanners}. If you want a column \emph{not}
-#'  to have a spanner then put that column as "". If you pass cgroup and \code{n.crgroup} as
+#'  is to have none. These elements are also known as *column spanners*. If you want a column *not*
+#'  to have a spanner then put that column as "". If you pass cgroup and `n.crgroup` as
 #'  matrices you can have column spanners for several rows. See cgroup section below for details.
 #' @param n.cgroup An integer vector, matrix or list containing the number of columns for which each element in
-#'  cgroup is a heading. For example, specify \code{cgroup=c("Major_1","Major_2")},
-#'  \code{n.cgroup=c(3,3)} if \code{"Major_1"} is to span columns 1-3 and
-#'  \code{"Major_2"} is to span columns 4-6.
-#'  \code{rowlabel} does not count in the column numbers. You can omit \code{n.cgroup}
-#'  if all groups have the same number of columns. If the \code{n.cgroup} is one less than
+#'  cgroup is a heading. For example, specify `cgroup=c("Major_1","Major_2")`,
+#'  `n.cgroup=c(3,3)` if `"Major_1"` is to span columns 1-3 and
+#'  `"Major_2"` is to span columns 4-6.
+#'  `rowlabel` does not count in the column numbers. You can omit `n.cgroup`
+#'  if all groups have the same number of columns. If the `n.cgroup` is one less than
 #'  the number of columns in the matrix/data.frame then it automatically adds those.
 #' @param tspanner The table spanner is somewhat of a table header that
 #'  you can use when you want to join different tables with the same columns.
-#' @param n.tspanner An integer vector with the number of rows or \code{rgroup}s in the original
+#' @param n.tspanner An integer vector with the number of rows or `rgroup`s in the original
 #'  matrix that the table spanner should span. If you have provided one fewer n.tspanner elements
-#'  the last will be imputed from the number of \code{rgroup}s (if you have provided \code{rgroup} and
-#'  \code{sum(n.tspanner) < length(rgroup)}) or the number of rows in the table.
-#' @param cspan.rgroup The number of columns that an \code{rgroup} should span. It spans
+#'  the last will be imputed from the number of `rgroup`s (if you have provided `rgroup` and
+#'  `sum(n.tspanner) < length(rgroup)`) or the number of rows in the table.
+#' @param cspan.rgroup The number of columns that an `rgroup` should span. It spans
 #'  by default all columns but you may want to limit this if you have column colors
 #'  that you want to retain.
 #' @param total The last row is sometimes a row total with a border on top and
-#'  bold fonts. Set this to \code{TRUE} if you are interested in such a row. If you
-#'  want a total row at the end of each table spanner you can set this to \code{"tspanner"}.
-#' @param ... Passed on to \code{print.htmlTable} function and any argument except the
-#'  \code{useViewer} will be passed on to the \code{\link[base]{cat}} functions arguments.
-#'  \emph{Note:} as of version 2.0.0 styling options are still allowed but it is recommended
-#'  to instead preprocess your object with \code{\link{addHtmlTableStyle}}.
+#'  bold fonts. Set this to `TRUE` if you are interested in such a row. If you
+#'  want a total row at the end of each table spanner you can set this to `"tspanner"`.
+#' @param ... Passed on to `print.htmlTable` function and any argument except the
+#'  `useViewer` will be passed on to the [base::cat()] functions arguments.
+#'  *Note:* as of version 2.0.0 styling options are still allowed but it is recommended
+#'  to instead preprocess your object with [addHtmlTableStyle()].
 #' @param ctable If the table should have a double top border or a single a' la LaTeX ctable style
-#' @param compatibility Is default set to \code{LibreOffice} as some
+#' @param compatibility Is default set to `LibreOffice` as some
 #'  settings need to be in old HTML format as Libre Office can't
 #'  handle some commands such as the css caption-alignment. Note: this
 #'  option is not yet fully implemented for all details, in the future
@@ -209,21 +218,21 @@
 #'  at Libre Office compatibility. Word-compatibility is difficult as
 #'  Word ignores most settings and destroys all layout attempts
 #'  (at least that is how my 2010 version behaves). You can additinally use the
-#'  \code{options(htmlTableCompat = "html")} if you want a change to apply
+#'  `options(htmlTableCompat = "html")` if you want a change to apply
 #'  to the entire document.
 #'  MS Excel sometimes misinterprets certain cell data when opening HTML-tables (eg. 1/2 becomes 1. February).
 #'  To avoid this please specify the correct Microsoft Office format for each cell in the table using the css.cell-argument.
 #'  To make MS Excel interpret everything as text use "mso-number-format:\"\\@\"".
 #' @param escape.html logical: should HTML characters be escaped? Defaults to FALSE.
-#' @return \code{string} Returns a string of class \code{htmlTable}
+#' @return `string` Returns a string of class `htmlTable`
 #'
 #' @example inst/examples/htmlTable_example.R
 #'
-#' @seealso \code{\link{addHtmlTableStyle}},
-#'          \code{\link{setHtmlTableTheme}},
-#'          \code{\link{tidyHtmlTable}}.
-#'          \code{\link{txtMergeLines}},
-#'          \code{\link[Hmisc]{latex}}
+#' @seealso [addHtmlTableStyle()],
+#'          [setHtmlTableTheme()],
+#'          [tidyHtmlTable()].
+#'          [txtMergeLines()],
+#'          [Hmisc::latex()]
 #'
 #' @export
 #' @rdname htmlTable

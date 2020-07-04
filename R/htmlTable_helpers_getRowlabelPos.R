@@ -2,8 +2,8 @@
 #' Gets the rowlabel position
 #'
 #' @inheritParams htmlTable
-#' @return \code{integer} Returns the position within the header rows
-#'  to print the \code{rowlabel} argument
+#' @return `integer` Returns the position within the header rows
+#'  to print the `rowlabel` argument
 #' @keywords internal
 #' @family hidden helper functions for htmlTable
 prGetRowlabelPos <- function(cgroup = NULL, pos.rowlabel, header = NULL) {

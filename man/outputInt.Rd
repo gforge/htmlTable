@@ -2,15 +2,15 @@
 % Please edit documentation in R/deprecated.R
 \name{outputInt}
 \alias{outputInt}
-\title{Deprecated use \code{\link{txtInt}} instead.}
+\title{Deprecated use \code{\link[=txtInt]{txtInt()}} instead.}
 \usage{
 outputInt(...)
 }
 \arguments{
-\item{...}{Passed to \code{\link{txtInt}}}
+\item{...}{Passed to \code{\link[=txtInt]{txtInt()}}}
 }
 \description{
-Deprecated use \code{\link{txtInt}} instead.
+Deprecated use \code{\link[=txtInt]{txtInt()}} instead.
 }
 \examples{
 \dontrun{

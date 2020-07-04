@@ -23,33 +23,33 @@ tidyHtmlTable(
 \item{x}{Tidy data used to build the \code{htmlTable}}
 
 \item{value}{The column containing values filling individual cells of the
-output \code{htmlTable}. Defaults to "value" as used by \code{\link[tidyr]{pivot_longer}}.}
+output \code{htmlTable}. Defaults to "value" as used by \code{\link[tidyr:pivot_longer]{tidyr::pivot_longer()}}.}
 
 \item{header}{The column in \code{x} specifying column headings}
 
 \item{rnames}{The column in \code{x} specifying row names. Defaults to "name" as used by
-\code{\link[tidyr]{pivot_longer}}.}
+\code{\link[tidyr:pivot_longer]{tidyr::pivot_longer()}}.}
 
 \item{rgroup}{The column in \code{x} specifying row groups}
 
 \item{hidden_rgroup}{\code{strings} with \code{rgroup} values that will be hidden  (the values will
-still be there but the spanner will be set to "" and thus ignored by \code{\link{htmlTable}}).}
+still be there but the spanner will be set to "" and thus ignored by \code{\link[=htmlTable]{htmlTable()}}).}
 
 \item{cgroup}{The column or columns in \code{x} specifying the column groups}
 
 \item{tspanner}{The column in \code{x} specifying \code{tspanner} groups}
 
 \item{hidden_tspanner}{\code{strings} with \code{tspanner} values that will be hidden (the values will
-still be there but the spanner will be set to "" and thus ignored by \code{\link{htmlTable}}).}
+still be there but the spanner will be set to "" and thus ignored by \code{\link[=htmlTable]{htmlTable()}}).}
 
 \item{skip_removal_warning}{\code{boolean} suppress warning message when removing NA columns.}
 
-\item{table_fn}{The table function that should receive the input, defaults to \code{\link{htmlTable}}
+\item{table_fn}{The table function that should receive the input, defaults to \code{\link[=htmlTable]{htmlTable()}}
 but you can provide any function that uses the same input formatting. This package was inspired
-by the \code{\link[Hmisc]{latex}} function.}
+by the \code{\link[Hmisc:latex]{Hmisc::latex()}} function.}
 
 \item{...}{Additional arguments that will be passed to the inner
-\code{\link{htmlTable}} function}
+\code{\link[=htmlTable]{htmlTable()}} function}
 }
 \value{
 Returns html code that will build a pretty table
@@ -64,78 +64,76 @@ typical use case is when you are using \code{dplyr} together with the
 \section{Column-mapping parameters}{
 
 
-  The \code{tidyHtmlTable} function is designed to work like ggplot2 in that
-  columns from \code{x} are mapped to specific parameters from the
-  \code{htmlTable} function. At minimum, \code{x} must contain the names
-  of columns mapping to \code{rnames}, \code{header}, and \code{rnames}.
-  \code{header} and \code{rnames} retain the same meaning as in the
-  htmlTable function. \code{value} contains the individual values that will
-  be used to fill each cell within the output \code{htmlTable}.
+The \code{tidyHtmlTable} function is designed to work like ggplot2 in that
+columns from \code{x} are mapped to specific parameters from the
+\code{htmlTable} function. At minimum, \code{x} must contain the names
+of columns mapping to \code{rnames}, \code{header}, and \code{rnames}.
+\code{header} and \code{rnames} retain the same meaning as in the
+htmlTable function. \code{value} contains the individual values that will
+be used to fill each cell within the output \code{htmlTable}.
 
-  A full list of parameters from \code{htmlTable} which may be mapped to
-  columns within \code{x} include:
+A full list of parameters from \code{htmlTable} which may be mapped to
+columns within \code{x} include:
+\itemize{
+\item \code{value}
+\item \code{header}
+\item \code{rnames}
+\item \code{rgroup}
+\item \code{cgroup}
+\item \code{tspanner}
+}
 
-  \itemize{
-    \item \code{value}
-    \item \code{header}
-    \item \code{rnames}
-    \item \code{rgroup}
-    \item \code{cgroup}
-    \item \code{tspanner}
-  }
-
-  Also note that the coordinates of each \code{value} within \code{x} must be
-  unambiguously mapped to a position within the output \code{htmlTable}.
-  Therefore, the each row-wise combination the variables specified above
-  contained in \code{x} must be unique.
+Also note that the coordinates of each \code{value} within \code{x} must be
+unambiguously mapped to a position within the output \code{htmlTable}.
+Therefore, the each row-wise combination the variables specified above
+contained in \code{x} must be unique.
 }
 
 \section{Sorting}{
 
 
-  Sorting of rows is as of version 2.0 skipped as we may have situations with
-  repeating inputs and this can easily be performed pre-function by calling
-  \code{\link[dplyr]{arrange}()} prior to \code{tidyHtmlTable}.
+Sorting of rows is as of version 2.0 skipped as we may have situations with
+repeating inputs and this can easily be performed pre-function by calling
+\code{\link[dplyr:arrange]{dplyr::arrange()}} prior to \code{tidyHtmlTable}.
 
-  Columns are sorted by \code{arrange(cgroup, header)} where \code{cgroup} will be
-  expanded to the columns of the \code{cgroup} argument, e.g. \code{cgroup = c(a, b), header = c}
-  will become \code{arrange(a, b, c)}. If you want to sort in non-alphabetic order
-  you can provide a \code{factor} variable and that information will be retained.
+Columns are sorted by \code{arrange(cgroup, header)} where \code{cgroup} will be
+expanded to the columns of the \code{cgroup} argument, e.g. \verb{cgroup = c(a, b), header = c}
+will become \code{arrange(a, b, c)}. If you want to sort in non-alphabetic order
+you can provide a \code{factor} variable and that information will be retained.
 }
 
 \section{Hidden values}{
 
 
-  \code{htmlTable} Allows for some values within \code{rgroup},
-  \code{cgroup}, etc. to be specified as \code{""}. The following parameters
-  allow for specific values to be treated as if they were a string of length
-  zero in the \code{htmlTable} function.
-
-  \itemize{
-    \item \code{hidden_rgroup}
-    \item \code{hidden_tspanner}
-  }
+\code{htmlTable} Allows for some values within \code{rgroup},
+\code{cgroup}, etc. to be specified as \code{""}. The following parameters
+allow for specific values to be treated as if they were a string of length
+zero in the \code{htmlTable} function.
+\itemize{
+\item \code{hidden_rgroup}
+\item \code{hidden_tspanner}
+}
 }
 
 \section{Simple tibble output}{
 
 
- The tibble discourages the use of row names. There is therefore a convenience
- option for \code{tidyHtmlTable} where you can use the function just as you
- would with \code{\link{htmlTable}} where \code{rnames} is populated with
- the \code{rnames} argument provided using \code{tidyselect} syntax (defaults to
- the "names" column if present int the input data).
+The tibble discourages the use of row names. There is therefore a convenience
+option for \code{tidyHtmlTable} where you can use the function just as you
+would with \code{\link[=htmlTable]{htmlTable()}} where \code{rnames} is populated with
+the \code{rnames} argument provided using \code{tidyselect} syntax (defaults to
+the "names" column if present int the input data).
 }
 
 \section{Additional dependencies}{
 
 
- In order to run this function you also must have \pkg{dplyr},
- \pkg{tidyr}, \pkg{tidyselect} and \pkg{purrr}
- packages installed. These have been removed due to
- the additional 20 Mb that these dependencies added (issue #47).
- \emph{Note:} if you use \pkg{tidyverse} it will already have
- all of these and you do not need to worry.
+In order to run this function you also must have \pkg{dplyr},
+\pkg{tidyr}, \pkg{tidyselect} and \pkg{purrr}
+packages installed. These have been removed due to
+the additional 20 Mb that these dependencies added (issue #47).
+\emph{Note:} if you use \pkg{tidyverse} it will already have
+all of these and you do not need to worry.
 }
 
 \examples{
@@ -171,5 +169,5 @@ mtcars \%>\%
     skip_removal_warning = TRUE)
 }
 \seealso{
-\code{\link{htmlTable}}
+\code{\link[=htmlTable]{htmlTable()}}
 }

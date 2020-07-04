@@ -37,8 +37,8 @@ we have this has_rn_col that is either 0 or 1.}
 \code{string} Returns the string with the new cell elements
 }
 \description{
-Adds a row of cells <td>val</td><td>...</td> to a table string for
-\code{\link{htmlTable}}
+Adds a row of cells \verb{<td>val</td><td>...</td>} to a table string for
+\code{\link[=htmlTable]{htmlTable()}}
 }
 \seealso{
 Other hidden helper functions for htmlTable: 
