@@ -297,8 +297,11 @@ txtRound.default = function(x,
   stopifnot(is.list(txtInt_args))
 
   separator <- str_replace(ret, "^[0-9]*([.,])[0-9]*$", "\\1")
+  # There is no decimal
   if (separator == ret) {
-    return(ret)
+    int_section <- as.numeric(ret)
+    txtInt_args$x <- int_section
+    return(do.call(txtInt, txtInt_args))
   }
 
   ret_sections <- str_split(ret, paste0("[", separator, "]"))[[1]]

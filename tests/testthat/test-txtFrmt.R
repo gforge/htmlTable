@@ -48,7 +48,7 @@ test_that("Numerical matrices",{
   test_mx <- matrix(c(1, 1.11, 1.25,
                       2.50, 2.55, 2.45,
                       3.2313, 3, pi),
-                    ncol = 3, byrow=TRUE)
+                    ncol = 3, byrow = TRUE)
   expect_equivalent(txtRound(test_mx, 1),
                     t(apply(test_mx, 1, function(x) sprintf("%.1f", x))))
 
@@ -77,10 +77,10 @@ test_that("Numerical matrices",{
   expect_equivalent(txtRound(test_mx, 1, excl.rows = "a")["c", 3],
                     sprintf("%.1f", test_mx["c", 3]))
 
-  expect_equivalent(txtRound(matrix(c(NA, 2.22), ncol=1), 1)[1,1],
+  expect_equivalent(txtRound(matrix(c(NA, 2.22), ncol = 1), 1)[1,1],
                     "")
 
-  expect_equivalent(txtRound(matrix(c(NA, 2.22), ncol=1), 1, txt.NA = "missing")[1,1],
+  expect_equivalent(txtRound(matrix(c(NA, 2.22), ncol = 1), 1, txt.NA = "missing")[1,1],
                     "missing")
 
   expect_error(txtRound(test_mx, digits = c(2, 3, 4, 5)))
@@ -158,6 +158,9 @@ test_that("The txtRound should apply a txtInt to the integer section when activa
 
   expect_equal(txtRound(123333.123, digits = 1, txtInt_args = list()),
                "123,333.1")
+
+  expect_equal(txtRound(123333, digits = 0, txtInt_args = list()),
+               "123,333")
 })
 
 test_that("Numbers that round to 0 should not have -, i.e. no -0.0",{
