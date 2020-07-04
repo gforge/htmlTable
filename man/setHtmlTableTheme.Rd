@@ -29,7 +29,9 @@ setHtmlTableTheme(
 )
 }
 \arguments{
-\item{theme}{A \code{list} containing all the valid or a \code{string}. See details below.}
+\item{theme}{A \code{list} containing all the styles or a \code{string} that is matched to some of the preset style (See details
+below in the \emph{Theme options} section). \emph{Note}: the full name of the theme is not required as they are matched
+using \code{\link[base:match.arg]{base::match.arg()}}.}
 
 \item{align}{A character strings specifying column alignments, defaulting to \code{'c'}
 to center. Valid chars for alignments are l = left, c = center and r = right. You can also specify
@@ -105,7 +107,7 @@ understanding of the options, see \code{\link[=addHtmlTableStyle]{addHtmlTableSt
 \section{Theme options}{
 
 
-The styles availabe are:
+The styles available are:
 \itemize{
 \item \code{standard}: The traditional standard style used in \code{\link[=htmlTable]{htmlTable()}} since the early days
 \item \verb{Google docs}: A style that is optimized for copy-pasting into documents on Google drive. This
@@ -120,6 +122,6 @@ or just a real css string, \verb{width: 100px; color: red;}.
 
 \examples{
 \dontrun{
-setHtmlTableTheme("standard", css.cell = "padding: 0; margin: 0;")
+setHtmlTableTheme("Google", align = "r")
 }
 }

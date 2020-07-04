@@ -318,7 +318,10 @@ see \href{http://code.google.com/p/chromium/issues/detail?id=305130}{bug}
 \emph{Direct word processor opening:} Opening directly in Libre Office or Word is no longer
 recommended. You get much prettier results using the cut-and-paste option.
 
-Note that when using complex \code{cgroup} alignments with multiple levels
+\emph{Google docs}: Copy-paste directly into a Google docs document is handled rather well. This
+seems to work especially well when the paste comes directly from a Chrome browser.
+
+\emph{Note} that when using complex \code{cgroup} alignments with multiple levels
 not every browser is able to handle this. For instance the RStudio
 webkit browser seems to have issues with this and a
 \href{http://code.google.com/p/chromium/issues/detail?id=305130}{bug has been filed}.

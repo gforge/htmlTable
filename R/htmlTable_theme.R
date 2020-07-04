@@ -6,7 +6,7 @@
 #'
 #' @section Theme options:
 #'
-#' The styles availabe are:
+#' The styles available are:
 #'
 #' * `standard`: The traditional standard style used in [htmlTable()] since the early days
 #' * `Google docs`: A style that is optimized for copy-pasting into documents on Google drive. This
@@ -17,7 +17,9 @@
 #' You can also provide your own style. Each style should be a names vector, e.g. `c(width = "100px", color = "red")`
 #' or just a real css string, `width: 100px; color: red;`.
 #'
-#' @param theme A `list` containing all the valid or a `string`. See details below.
+#' @param theme A `list` containing all the styles or a `string` that is matched to some of the preset style (See details
+#'  below in the *Theme options* section). *Note*: the full name of the theme is not required as they are matched
+#'  using [base::match.arg()].
 #' @inheritParams addHtmlTableStyle
 #'
 #' @return An invisible `list` with the new theme
@@ -26,7 +28,7 @@
 #'
 #' @examples
 #' \dontrun{
-#' setHtmlTableTheme("standard", css.cell = "padding: 0; margin: 0;")
+#' setHtmlTableTheme("Google", align = "r")
 #' }
 setHtmlTableTheme <- function(theme = NULL,
                               align = NULL,
@@ -173,7 +175,7 @@ prGetThemeListObject <- function(theme_name = c("standard", "Google docs", "blan
 
   if (theme_name == "Google docs") {
     doc_theme <- list(
-      css.rgroup = getOption("htmlTable.css.rgroup", default = "font-weight: 900;"),
+      css.rgroup = getOption("htmlTable.css.rgroup", default = "font-weight: normal; margin: 0; padding: 0;"),
       css.rgroup.sep = getOption("htmlTable.css.rgroup.sep", default = ""),
 
       css.tspanner = getOption("htmlTable.css.tspanner",
@@ -188,8 +190,8 @@ prGetThemeListObject <- function(theme_name = c("standard", "Google docs", "blan
       ),
 
       css.cell = getOption("htmlTable.css.cell", default = "margin: 0; padding: 0;"),
-      css.cgroup = getOption("htmlTable.css.cgroup", default = ""),
-      css.header = getOption("htmlTable.css.header", default = "font-weight: 900"),
+      css.cgroup = getOption("htmlTable.css.cgroup", default = "margin: 0; padding: 0;"),
+      css.header = getOption("htmlTable.css.header", default = "margin: 0; padding: 0; font-weight: 900"),
       css.header.border_bottom = getOption("htmlTable.css.header.border_bottom", default = "border-bottom: 1px solid grey"),
 
       css.class = getOption("htmlTable.css.class", default = "gmisc_table"),
