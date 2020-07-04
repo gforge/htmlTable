@@ -192,28 +192,6 @@ tidyHtmlTable.data.frame <- function(x,
   # and indices
   rowRefTbl <- getRowTbl(tidyTableDataList)
 
-  # Hide row groups specified in hidden_rgroup
-  if (!missing(hidden_rgroup)) {
-    rowRefTbl <- rowRefTbl %>%
-      dplyr::mutate_at(
-        rgroup,
-        function(x) {
-          ifelse(x %in% hidden_rgroup, "", x)
-        }
-      )
-  }
-
-  # Hide tspanners specified in hidden_tspanner
-  if (!missing(hidden_tspanner)) {
-    rowRefTbl <- rowRefTbl %>%
-      dplyr::mutate_at(
-        tspanner,
-        function(x) {
-          ifelse(x %in% hidden_tspanner, "", x)
-        }
-      )
-  }
-
   colRefTbl <- getColTbl(tidyTableDataList)
 
   # Format the values for display
@@ -228,6 +206,18 @@ tidyHtmlTable.data.frame <- function(x,
     dplyr::arrange(r_idx) %>%
     tidyr::pivot_wider(names_from = "c_idx") %>%
     dplyr::select(-r_idx)
+
+  # Hide row groups specified in hidden_rgroup
+  if (!missing(hidden_rgroup)) {
+    rowRefTbl <- rowRefTbl %>%
+      dplyr::mutate(rgroup = ifelse(rgroup %in% hidden_rgroup, "", rgroup))
+  }
+
+  # Hide tspanners specified in hidden_tspanner
+  if (!missing(hidden_tspanner)) {
+    rowRefTbl <- rowRefTbl %>%
+      dplyr::mutate(tspanner = ifelse(tspanner %in% hidden_tspanner, "", tspanner))
+  }
 
   # Now order the columns so that cgroup and headers match
   formatted_df <- formatted_df[,order(colnames(formatted_df) %>% as.numeric())]

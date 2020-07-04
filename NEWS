@@ -3,6 +3,7 @@ NEWS for the htmlTable package
 Changes for 2.0.1
 -----------------
 * Fix for txtRound not handling negative numbers (issue #76)
+* Fix bug for hidden_rgroup & hidden_tspanner in `tidyHtmlTable`
 
 Changes for 2.0.0
 ------------------

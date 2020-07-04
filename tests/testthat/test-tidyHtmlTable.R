@@ -63,6 +63,25 @@ test_that("Basic tidyHtmlTable functionality", {
   table_str <- mx %>%
     tidyHtmlTable(header = header,
                   rgroup = rgroup,
+                  hidden_rgroup = "1_rg",
+                  label = "test_table")
+  parsed_table <- readHTMLTable(as.character(table_str))[["test_table"]]
+  expect_equal(ncol(parsed_table), 4)
+  expect_equal(nrow(parsed_table), length(mx$value) + length(mx$rgroup %>% unique) - 1)
+  expect_match(table_str, "2_rg")
+  expect_false(grepl("1_rg", table_str))
+
+  table_str <- mx %>%
+    tidyHtmlTable(header = header,
+                  tspanner = rgroup,
+                  hidden_tspanner = "1_rg",
+                  label = "test_table")
+  expect_match(table_str, "2_rg")
+  expect_false(grepl("1_rg", table_str))
+
+  table_str <- mx %>%
+    tidyHtmlTable(header = header,
+                  rgroup = rgroup,
                   cgroup = cgroup1,
                   label = "test_table")
 
