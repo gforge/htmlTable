@@ -113,6 +113,7 @@
 #'  where HTML indentation caused everything to be interpreted as code. This seems to be fixed
 #'  and if you want to look at the raw HTML code it is nice to have this set to `TRUE` so that
 #'  the tags and elements are properly indented.
+#' * `htmlTableCompat` - string - see parameter description
 #'
 #' @section Other:
 #'

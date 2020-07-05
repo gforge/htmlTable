@@ -4,6 +4,7 @@ Changes for 2.0.1
 -----------------
 * Fix for txtRound not handling negative numbers (issue #76)
 * Fix bug for `hidden.rgroup` & `hidden_tspanner` in `tidyHtmlTable`
+* Documentation improvements & switched to markdown docs
 
 Changes for 2.0.0
 ------------------
