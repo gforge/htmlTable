@@ -1,12 +1,12 @@
 #' Gets the table counter string
 #'
 #' Returns the string used for htmlTable to number the different tables.
-#' Uses options \code{table_counter}, \code{table_counter_str},
-#' and \code{table_counter_roman} to produce the final string. You
-#' can set each option by simply calling \code{options()}.
+#' Uses options `table_counter`, `table_counter_str`,
+#' and `table_counter_roman` to produce the final string. You
+#' can set each option by simply calling `options()`.
 #'
 #' @param caption The caption if any
-#' @return \code{string} Returns a string formatted according to
+#' @return `string` Returns a string formatted according to
 #'  the table_counter_str and table_counter_roman. The number is
 #'  decided by the table_counter variable
 #' @keywords internal

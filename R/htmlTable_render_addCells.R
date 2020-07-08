@@ -1,11 +1,11 @@
 #' Add a cell
 #'
-#' Adds a row of cells <td>val</td><td>...</td> to a table string for
-#' \code{\link{htmlTable}}
+#' Adds a row of cells `<td>val</td><td>...</td>` to a table string for
+#' [htmlTable()]
 #'
 #' @inheritParams htmlTable
 #' @param rowcells The cells with the values that are to be added
-#' @param cellcode Type of cell, can either be \code{th} or \code{td}
+#' @param cellcode Type of cell, can either be `th` or `td`
 #' @param style The cell style
 #' @param cgroup_spacer_cells The number of cells that occur between
 #'  columns due to the cgroup arguments.
@@ -14,7 +14,7 @@
 #'  we have this has_rn_col that is either 0 or 1.
 #' @param offset For rgroup rows there may be an offset != 1
 #' @param style_list The style_list
-#' @return \code{string} Returns the string with the new cell elements
+#' @return `string` Returns the string with the new cell elements
 #' @keywords internal
 #' @family hidden helper functions for htmlTable
 prAddCells <- function(rowcells, cellcode, style_list, style, prepped_cell_css, cgroup_spacer_cells, has_rn_col, offset = 1) {

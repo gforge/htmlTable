@@ -13,7 +13,7 @@ prepGroupCounts(x)
 \code{list(n = rle$lengths, names = rle$values)}
 }
 \description{
-This function is a wrapper to \code{\link[base]{rle}} that
+This function is a wrapper to \code{\link[base:rle]{base::rle()}} that
 does exactly this but is a little too picky about input values.
 }
 \examples{

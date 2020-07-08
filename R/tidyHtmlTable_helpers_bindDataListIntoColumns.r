@@ -1,10 +1,10 @@
 #' Merge columns into a tibble
 #'
-#' Almost the same as \code{\link[tibble]{tibble}} but it solves the issue
+#' Almost the same as [tibble::tibble()] but it solves the issue
 #' with some of the arguments being columns and some just being vectors.
 #'
-#' @param dataList \code{list} with the columns/data.frames
-#' @return \code{data.frame} object
+#' @param dataList `list` with the columns/data.frames
+#' @return `data.frame` object
 prBindDataListIntoColumns <- function(dataList) {
   stopifnot(is.list(dataList))
   dataList %>%

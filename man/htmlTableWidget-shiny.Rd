@@ -13,11 +13,10 @@ renderHtmlTableWidget(expr, env = parent.frame(), quoted = FALSE)
 \arguments{
 \item{outputId}{output variable to read from}
 
-\item{width, height}{Must be a valid CSS unit (like \code{'100\%'},
-\code{'400px'}, \code{'auto'}) or a number, which will be coerced to a
-string and have \code{'px'} appended.}
+\item{width, height}{Must be a valid CSS unit (like \code{'100\%'}, \code{'400px'}, \code{'auto'}) or a number,
+which will be coerced to a string and have \code{'px'} appended.}
 
-\item{expr}{An expression that generates a htmlTableWidget}
+\item{expr}{An expression that generates a \code{\link[=htmlTableWidget]{htmlTableWidget()}}}
 
 \item{env}{The environment in which to evaluate \code{expr}.}
 

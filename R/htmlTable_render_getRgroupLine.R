@@ -1,14 +1,14 @@
-#' Gets the number of rgroup htmlLine
+#' Gets the number of `rgroup` HTML line
 #'
-#' @param total_columns The total number of columns including the rowlabel and the
+#' @param total_columns The total number of columns including the `rowlabel` and the
 #'  spacer cells
-#' @param cspan The column span of the current rgroup
-#' @param style The css style corresponding to the rgroup css style that includes
-#'  the color specific for the rgroup, i.e. \code{col.rgroup}.
-#' @param cgroup_spacer_cells The vector indicating the position of the cgroup
+#' @param cspan The column span of the current `rgroup`
+#' @param style The css style corresponding to the `rgroup` css style that includes
+#'  the color specific for the `rgroup`, i.e. `col.rgroup`.
+#' @param cgroup_spacer_cells The vector indicating the position of the `cgroup`
 #'  spacer cells
-#' @param prepped_row_css The css.cell information for this particular row.
-#' @param rgroup_iterator An integer indicating the rgroup
+#' @param prepped_row_css The `css.cell` information for this particular row.
+#' @param rgroup_iterator An integer indicating the `rgroup`
 #' @inheritParams htmlTable
 #' @keywords internal
 prGetRgroupLine <- function(x,

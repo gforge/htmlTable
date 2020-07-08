@@ -7,7 +7,7 @@
 #' @importFrom htmltools htmlEscape
 #'
 #' @inheritParams htmlTable
-#' @return \code{x} without the html entities
+#' @return `x` without the html entities
 #' @family hidden helper functions for htmlTable
 prEscapeHtml <- function(x) {
   attributes_x <- attributes(x)

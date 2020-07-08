@@ -1,67 +1,63 @@
 #' Generate an htmlTable using tidy data as input
 #'
-#' Builds an \code{htmlTable} by mapping columns from the input data, \code{x},
-#' to elements of an output \code{htmlTable} (e.g. \code{rnames}, \code{header}, etc.). This
+#' Builds an `htmlTable` by mapping columns from the input data, `x`,
+#' to elements of an output `htmlTable` (e.g. `rnames`, `header`, etc.). This
 #' provides a \pkg{ggplot2}-like interface you can pivot rows/columns as required. The
-#' typical use case is when you are using \code{dplyr} together with the
-#' \code{tidyverse} data processing functions, see \code{vignette("tidyHtmlTable")}.
+#' typical use case is when you are using `dplyr` together with the
+#' `tidyverse` data processing functions, see `vignette("tidyHtmlTable")`.
 #'
 #' @section Column-mapping parameters:
 #'
-#'   The \code{tidyHtmlTable} function is designed to work like ggplot2 in that
-#'   columns from \code{x} are mapped to specific parameters from the
-#'   \code{htmlTable} function. At minimum, \code{x} must contain the names
-#'   of columns mapping to \code{rnames}, \code{header}, and \code{rnames}.
-#'   \code{header} and \code{rnames} retain the same meaning as in the
-#'   htmlTable function. \code{value} contains the individual values that will
-#'   be used to fill each cell within the output \code{htmlTable}.
+#'   The `tidyHtmlTable` function is designed to work like ggplot2 in that
+#'   columns from `x` are mapped to specific parameters from the
+#'   `htmlTable` function. At minimum, `x` must contain the names
+#'   of columns mapping to `rnames`, `header`, and `rnames`.
+#'   `header` and `rnames` retain the same meaning as in the
+#'   htmlTable function. `value` contains the individual values that will
+#'   be used to fill each cell within the output `htmlTable`.
 #'
-#'   A full list of parameters from \code{htmlTable} which may be mapped to
-#'   columns within \code{x} include:
+#'   A full list of parameters from `htmlTable` which may be mapped to
+#'   columns within `x` include:
 #'
-#'   \itemize{
-#'     \item \code{value}
-#'     \item \code{header}
-#'     \item \code{rnames}
-#'     \item \code{rgroup}
-#'     \item \code{cgroup}
-#'     \item \code{tspanner}
-#'   }
+#'   * `value`
+#'   * `header`
+#'   * `rnames`
+#'   * `rgroup`
+#'   * `cgroup`
+#'   * `tspanner`
 #'
-#'   Also note that the coordinates of each \code{value} within \code{x} must be
-#'   unambiguously mapped to a position within the output \code{htmlTable}.
+#'   Also note that the coordinates of each `value` within `x` must be
+#'   unambiguously mapped to a position within the output `htmlTable`.
 #'   Therefore, the each row-wise combination the variables specified above
-#'   contained in \code{x} must be unique.
+#'   contained in `x` must be unique.
 #'
 #' @section Sorting:
 #'
 #'   Sorting of rows is as of version 2.0 skipped as we may have situations with
 #'   repeating inputs and this can easily be performed pre-function by calling
-#'   \code{\link[dplyr]{arrange}()} prior to \code{tidyHtmlTable}.
+#'   [dplyr::arrange()] prior to `tidyHtmlTable`.
 #'
-#'   Columns are sorted by \code{arrange(cgroup, header)} where \code{cgroup} will be
-#'   expanded to the columns of the \code{cgroup} argument, e.g. \code{cgroup = c(a, b), header = c}
-#'   will become \code{arrange(a, b, c)}. If you want to sort in non-alphabetic order
-#'   you can provide a \code{factor} variable and that information will be retained.
+#'   Columns are sorted by `arrange(cgroup, header)` where `cgroup` will be
+#'   expanded to the columns of the `cgroup` argument, e.g. `cgroup = c(a, b), header = c`
+#'   will become `arrange(a, b, c)`. If you want to sort in non-alphabetic order
+#'   you can provide a `factor` variable and that information will be retained.
 #'
 #' @section Hidden values:
 #'
-#'   \code{htmlTable} Allows for some values within \code{rgroup},
-#'   \code{cgroup}, etc. to be specified as \code{""}. The following parameters
+#'   `htmlTable` Allows for some values within `rgroup`,
+#'   `cgroup`, etc. to be specified as `""`. The following parameters
 #'   allow for specific values to be treated as if they were a string of length
-#'   zero in the \code{htmlTable} function.
+#'   zero in the `htmlTable` function.
 #'
-#'   \itemize{
-#'     \item \code{hidden_rgroup}
-#'     \item \code{hidden_tspanner}
-#'   }
+#'   * `hidden_rgroup`
+#'   * `hidden_tspanner`
 #'
 #' @section Simple tibble output:
 #'
 #'  The tibble discourages the use of row names. There is therefore a convenience
-#'  option for \code{tidyHtmlTable} where you can use the function just as you
-#'  would with \code{\link{htmlTable}} where \code{rnames} is populated with
-#'  the \code{rnames} argument provided using \code{tidyselect} syntax (defaults to
+#'  option for `tidyHtmlTable` where you can use the function just as you
+#'  would with [htmlTable()] where `rnames` is populated with
+#'  the `rnames` argument provided using `tidyselect` syntax (defaults to
 #'  the "names" column if present int the input data).
 #'
 #' @section Additional dependencies:
@@ -70,31 +66,31 @@
 #'  \pkg{tidyr}, \pkg{tidyselect} and \pkg{purrr}
 #'  packages installed. These have been removed due to
 #'  the additional 20 Mb that these dependencies added (issue #47).
-#'  \emph{Note:} if you use \pkg{tidyverse} it will already have
+#'  *Note:* if you use \pkg{tidyverse} it will already have
 #'  all of these and you do not need to worry.
 #'
-#' @param x Tidy data used to build the \code{htmlTable}
+#' @param x Tidy data used to build the `htmlTable`
 #' @param value The column containing values filling individual cells of the
-#' output \code{htmlTable}. Defaults to "value" as used by \code{\link[tidyr]{pivot_longer}}.
-#' @param header The column in \code{x} specifying column headings
-#' @param rnames The column in \code{x} specifying row names. Defaults to "name" as used by
-#'  \code{\link[tidyr]{pivot_longer}}.
-#' @param rgroup The column in \code{x} specifying row groups
-#' @param hidden_rgroup \code{strings} with \code{rgroup} values that will be hidden  (the values will
-#'  still be there but the spanner will be set to "" and thus ignored by \code{\link{htmlTable}}).
-#' @param cgroup The column or columns in \code{x} specifying the column groups
-#' @param tspanner The column in \code{x} specifying \code{tspanner} groups
-#' @param hidden_tspanner \code{strings} with \code{tspanner} values that will be hidden (the values will
-#'  still be there but the spanner will be set to "" and thus ignored by \code{\link{htmlTable}}).
-#' @param skip_removal_warning \code{boolean} suppress warning message when removing NA columns.
-#' @param table_fn The table function that should receive the input, defaults to \code{\link{htmlTable}}
+#' output `htmlTable`. Defaults to "value" as used by [tidyr::pivot_longer()].
+#' @param header The column in `x` specifying column headings
+#' @param rnames The column in `x` specifying row names. Defaults to "name" as used by
+#'  [tidyr::pivot_longer()].
+#' @param rgroup The column in `x` specifying row groups
+#' @param hidden_rgroup `strings` with `rgroup` values that will be hidden  (the values will
+#'  still be there but the spanner will be set to "" and thus ignored by [htmlTable()]).
+#' @param cgroup The column or columns in `x` specifying the column groups
+#' @param tspanner The column in `x` specifying `tspanner` groups
+#' @param hidden_tspanner `strings` with `tspanner` values that will be hidden (the values will
+#'  still be there but the spanner will be set to "" and thus ignored by [htmlTable()]).
+#' @param skip_removal_warning `boolean` suppress warning message when removing NA columns.
+#' @param table_fn The table function that should receive the input, defaults to [htmlTable()]
 #'  but you can provide any function that uses the same input formatting. This package was inspired
-#'  by the \code{\link[Hmisc]{latex}} function.
+#'  by the [Hmisc::latex()] function.
 #' @param ... Additional arguments that will be passed to the inner
-#' \code{\link{htmlTable}} function
+#' [htmlTable()] function
 #' @return Returns html code that will build a pretty table
 #' @export
-#' @seealso \code{\link{htmlTable}}
+#' @seealso [htmlTable()]
 #' @example inst/examples/tidyHtmlTable_example.R
 tidyHtmlTable <- function(x,
                           value,
@@ -166,7 +162,7 @@ tidyHtmlTable.data.frame <- function(x,
     }
 
     args <- list(...)
-    args$x <- x %>% dplyr::select(-{{orgName}})
+    args$x <- x %>% dplyr::select(-{{ orgName }})
     args$rnames <- x[[as.character(orgName)]]
     if (is.null(args$rowlabel)) {
       args$rowlabel <- as.character(orgName)
@@ -192,33 +188,11 @@ tidyHtmlTable.data.frame <- function(x,
   # and indices
   rowRefTbl <- getRowTbl(tidyTableDataList)
 
-  # Hide row groups specified in hidden_rgroup
-  if (!missing(hidden_rgroup)) {
-    rowRefTbl <- rowRefTbl %>%
-      dplyr::mutate_at(
-        rgroup,
-        function(x) {
-          ifelse(x %in% hidden_rgroup, "", x)
-        }
-      )
-  }
-
-  # Hide tspanners specified in hidden_tspanner
-  if (!missing(hidden_tspanner)) {
-    rowRefTbl <- rowRefTbl %>%
-      dplyr::mutate_at(
-        tspanner,
-        function(x) {
-          ifelse(x %in% hidden_tspanner, "", x)
-        }
-      )
-  }
-
   colRefTbl <- getColTbl(tidyTableDataList)
 
   # Format the values for display
   formatted_df <- tidyTableDataList %>%
-    prBindDataListIntoColumns  %>%
+    prBindDataListIntoColumns() %>%
     innerJoinByCommonCols(colRefTbl) %>%
     innerJoinByCommonCols(rowRefTbl) %>%
     dplyr::select(r_idx, c_idx, value) %>%
@@ -229,8 +203,20 @@ tidyHtmlTable.data.frame <- function(x,
     tidyr::pivot_wider(names_from = "c_idx") %>%
     dplyr::select(-r_idx)
 
+  # Hide row groups specified in hidden_rgroup
+  if (!missing(hidden_rgroup)) {
+    rowRefTbl <- rowRefTbl %>%
+      dplyr::mutate(rgroup = ifelse(rgroup %in% hidden_rgroup, "", rgroup))
+  }
+
+  # Hide tspanners specified in hidden_tspanner
+  if (!missing(hidden_tspanner)) {
+    rowRefTbl <- rowRefTbl %>%
+      dplyr::mutate(tspanner = ifelse(tspanner %in% hidden_tspanner, "", tspanner))
+  }
+
   # Now order the columns so that cgroup and headers match
-  formatted_df <- formatted_df[,order(colnames(formatted_df) %>% as.numeric())]
+  formatted_df <- formatted_df[, order(colnames(formatted_df) %>% as.numeric())]
 
   # Get names and indices for row groups and tspanners
   htmlTable_args <- list(
@@ -280,7 +266,7 @@ tidyHtmlTable.data.frame <- function(x,
       cg$n[[colNo]] <- counts$n
     }
 
-    maxLen <- sapply(cg$names, length) %>% max
+    maxLen <- sapply(cg$names, length) %>% max()
     for (colNo in 1:length(cg$names)) {
       missingNA <- maxLen - length(cg$names[[colNo]])
       if (missingNA > 0) {

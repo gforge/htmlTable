@@ -31,7 +31,7 @@ interactiveTable(
 \arguments{
 \item{x}{The interactive table that is to be printed}
 
-\item{...}{The exact same parameters as \code{\link{htmlTable}} uses}
+\item{...}{The exact same parameters as \code{\link[=htmlTable]{htmlTable()}} uses}
 
 \item{txt.maxlen}{The maximum length of a text}
 
@@ -41,12 +41,12 @@ interactiveTable(
 
 \item{js.scripts}{If you want to add your own JavaScript code you can just add it here.
 All code is merged into one string where each section is wrapped in it's own
-\code{<scrip></script>} element.}
+\verb{<scrip></script>} element.}
 
 \item{tbl}{An htmlTable object can be directly passed into the function}
 
 \item{useViewer}{If you are using RStudio there is a viewer thar can render
-the table within that is envoced if in \code{\link[base]{interactive}} mode.
+the table within that is envoced if in \code{\link[base:interactive]{base::interactive()}} mode.
 Set this to \code{FALSE} if you want to remove that  functionality. You can
 also force the function to call a specific viewer by setting this to a
 viewer function, e.g. \code{useViewer = utils::browseURL} if you want to
@@ -54,7 +54,7 @@ override the default RStudio viewer. Another option that does the same is to
 set the \code{options(viewer=utils::browseURL)} and it will default to that
 particular viewer (this is how RStudio decides on a viewer).
 \emph{Note:} If you want to force all output to go through the
-\code{\link[base]{cat}()} the set \code{\link[base]{options}(htmlTable.cat = TRUE)}.}
+\code{\link[base:cat]{base::cat()}} the set \verb{[options][base::options](htmlTable.cat = TRUE)}.}
 }
 \value{
 An htmlTable with a javascript attribute containing the code that is then printed

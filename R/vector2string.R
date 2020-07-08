@@ -6,7 +6,7 @@
 #' @param x The vector to collapse
 #' @param collapse The string that separates each element
 #' @param quotation_mark The type of quote to use
-#' @return A string with \code{', '} separation
+#' @return A string with `', '` separation
 #' @importFrom stringr str_replace_all
 #' @examples
 #' vector2string(1:4)

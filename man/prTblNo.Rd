@@ -11,8 +11,8 @@ prTblNo(caption = NULL)
 }
 \value{
 \code{string} Returns a string formatted according to
- the table_counter_str and table_counter_roman. The number is
- decided by the table_counter variable
+the table_counter_str and table_counter_roman. The number is
+decided by the table_counter variable
 }
 \description{
 Returns the string used for htmlTable to number the different tables.

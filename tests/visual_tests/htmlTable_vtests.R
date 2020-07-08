@@ -1,10 +1,13 @@
-mx <- matrix(1:6, ncol=3)
+options(htmlTable.pretty_indentation = TRUE)
+mx <- matrix(1:6, ncol = 3)
 colnames(mx) <- c("A", "B", "C")
 rownames(mx) <- letters[1:2]
 ## col.rgroup does not break css.group
-htmlTable(mx, n.rgroup=c(2), rgroup=c("Nice!"),
-          n.cgroup=c(2,1), cgroup=c("First", "Second"),
-          css.group = "font-weight:900; background-color:#f2f2f2;")
+setHtmlTableTheme(theme = "Google")
+mx %>%
+  htmlTable(n.rgroup = c(2), rgroup = c("Nice!"),
+            n.cgroup = c(2,1), cgroup = c("First", "Second"),
+            css.group = "font-weight:900; background-color:#f2f2f2;")
 
 
 colnames(mx) <- NULL
@@ -130,11 +133,37 @@ rbind(
   }) %>%
   t %>%
   htmlTable(header = c("Total", rep(c("No", "(%)"), times = 2)),
-            n.cgroup=list(c(1,2,2)),
-            cgroup=list(c("", "Cases", "Controls")),
+            n.cgroup = list(c(1, 2, 2)),
+            cgroup = list(c("", "Cases", "Controls")),
             rgroup = rep(c("Aspirin", "Intermittent compression"), times = 2),
             n.rgroup = rep(2, times = 4),
             tspanner = c("First experiment", "Second experiment"),
             n.tspanner = c(2),
             align = "r",
             caption = "Extremely fake data")
+
+
+library(tidyverse)
+mtcars %>%
+  as_tibble(rownames = "rnames") %>%
+  pivot_longer(names_to = "per_metric",
+               cols = c(hp, mpg, qsec)) %>%
+  group_by(cyl, gear, per_metric) %>%
+  summarise(Mean = round(mean(value), 1),
+            SD = round(sd(value), 1),
+            Min = round(min(value), 1),
+            Max = round(max(value), 1),
+            .groups = 'drop') %>%
+  pivot_longer(names_to = "summary_stat",
+               cols = c(Mean, SD, Min, Max)) %>%
+  ungroup() %>%
+  mutate(gear = paste(gear, "Gears"),
+         cyl = paste(cyl, "Cylinders")) %>%
+  arrange(per_metric, summary_stat) %>%
+  addHtmlTableStyle(align = "r") %>%
+  tidyHtmlTable(header = gear,
+                cgroup = cyl,
+                rnames = summary_stat,
+                rgroup = per_metric,
+                skip_removal_warning = TRUE,
+                caption = "A full example of how to apply the tidyverse workflow to generate a table")

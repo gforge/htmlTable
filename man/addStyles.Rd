@@ -54,7 +54,7 @@ appendHtmlTableStyle(
 )
 }
 \arguments{
-\item{x}{The object that you later want to pass into \code{\link{htmlTable}}.}
+\item{x}{The object that you later want to pass into \code{\link[=htmlTable]{htmlTable()}}.}
 
 \item{align}{A character strings specifying column alignments, defaulting to \code{'c'}
 to center. Valid chars for alignments are l = left, c = center and r = right. You can also specify
@@ -63,7 +63,7 @@ rownames this string needst to be \code{ncol(x) + 1}, otherwise it automatically
 pads the string with a left alignment for the rownames.}
 
 \item{align.header}{A character strings specifying alignment for column header,
-defaulting to centered, i.e. \code{\link[base]{paste}(rep('c',ncol(x)),collapse='')}.}
+defaulting to centered, i.e. \verb{[paste][base::paste](rep('c',ncol(x)),collapse='')}.}
 
 \item{align.cgroup}{The justification of the \code{cgroups}}
 
@@ -89,7 +89,7 @@ table cells. See section below for details.}
 
 \item{css.header}{The header style, not including the cgroup style}
 
-\item{css.header.border_bottom}{The header bottom-border style, e.g. \code{border-bottom: 1px solid grey}}
+\item{css.header.border_bottom}{The header bottom-border style, e.g. \verb{border-bottom: 1px solid grey}}
 
 \item{css.class}{The html CSS class for the table. This allows directing html
 formatting through \href{http://www.w3schools.com/Css/}{CSS}
@@ -112,7 +112,7 @@ is recommended and will be recycled.}
 
 \item{col.columns}{Alternating colors for each column.}
 
-\item{padding.rgroup}{Generally two non-breakings spaces, i.e. \code{&nbsp;&nbsp;}, but some
+\item{padding.rgroup}{Generally two non-breakings spaces, i.e. \verb{&nbsp;&nbsp;}, but some
 journals only have a bold face for the rgroup and leaves the subelements unindented.}
 
 \item{padding.tspanner}{The table spanner is usually without padding but you may specify padding
@@ -123,12 +123,12 @@ This allows for a 3-level hierarchy if needed.}
 \code{x} with the style added as an attribute that the htmlTable then can use for formatting.
 }
 \description{
-This function is a preprocessing step before applying the \code{\link{htmlTable}} function.
+This function is a preprocessing step before applying the \code{\link[=htmlTable]{htmlTable()}} function.
 You use this to style your tables with HTML cascading style sheet features.
 }
 \details{
-The function stores the current theme (see \code{\link{setHtmlTableTheme}}) + custom styles
-to the provided object as an \code{\link[base]{attributes}}. It is stored under the element
+The function stores the current theme (see \code{\link[=setHtmlTableTheme]{setHtmlTableTheme()}}) + custom styles
+to the provided object as an \code{\link[base:attributes]{base::attributes()}}. It is stored under the element
 \code{htmlTable.style} in the form of a list object.
 }
 \section{The \code{css.cell} argument}{
@@ -151,8 +151,7 @@ Note that the \code{text-align} CSS field in the \code{css.cell} argument will b
 by the \code{align} argument.
 
 Excel has a specific css-style, \code{mso-number-format} that can be used for improving the
-copy-paste functionality. E.g. the style could be written as: \code{css_matrix <-
-matrix( data = "mso-number-format:\"\\@\"", nrow = nrow(df), ncol = ncol(df))}
+copy-paste functionality. E.g. the style could be written as: \verb{css_matrix <- matrix( data = "mso-number-format:\\"\\\\@\\"", nrow = nrow(df), ncol = ncol(df))}
 }
 
 \examples{

@@ -23,23 +23,23 @@ prGetCgroupHeader(
 \item{x}{The matrix/data.frame with the data. For the \code{print} and \code{knit_print}
 it takes a string of the class \code{htmlTable} as \code{x} argument.}
 
-\item{cgroup_vec}{The cgroup may be a matrix, this is
-just one row of that matrix}
+\item{cgroup_vec}{The \code{cgroup} may be a \code{matrix}, this is
+just one row of that \code{matrix}}
 
 \item{n.cgroup_vec}{The same as above but for the counter}
 
-\item{cgroup_vec.just}{The same as above bot for the justificaiton}
+\item{cgroup_vec.just}{The same as above bot for the justification}
 
-\item{row_no}{The row number within the header group. Useful for multirow
-headers when we need to output the rowlabel at the \code{pos.rowlabel}
+\item{row_no}{The row number within the header group. Useful for multi-row
+headers when we need to output the \code{rowlabel} at the \code{pos.rowlabel}
 level.}
 
 \item{top_row_style}{The top row has a special style depending on
 the \code{ctable} option in the \code{htmlTable} call.}
 
-\item{rnames}{Default row names are generated from \code{\link[base:colnames]{rownames}(x)}. If you
+\item{rnames}{Default row names are generated from \code{\link[base:colnames]{rownames(x)}}. If you
 provide \code{FALSE} then it will skip the row names. \emph{Note:} For \code{data.frames}
-if you do \code{\link[base:colnames]{rownames}(my_dataframe) <- NULL} it still has
+if you do \code{\link[base:colnames]{rownames(my_dataframe) <- NULL}} it still has
 row names. Thus you need to use \code{FALSE} if you want to
 supress row names for \code{data.frames}.}
 
@@ -59,8 +59,8 @@ and 0 if there is no cgroup element between.}
 }
 \description{
 This function retrieves a header row, i.e. a row
-within the <th> elements on top of the table. Used by
-\code{\link{htmlTable}}.
+within the \verb{<th>} elements on top of the table. Used by
+\code{\link[=htmlTable]{htmlTable()}}.
 }
 \seealso{
 Other hidden helper functions for htmlTable: 

@@ -9,7 +9,7 @@ prAttr4RgroupAdd(rgroup, rgroup_iterator, no_cols)
 \arguments{
 \item{rgroup}{A vector of character strings containing headings for row groups.
 \code{n.rgroup} must be present when \code{rgroup} is given. See
- detailed description in section below.}
+detailed description in section below.}
 
 \item{rgroup_iterator}{The rgroup number of interest}
 

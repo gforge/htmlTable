@@ -2,7 +2,7 @@
 % Please edit documentation in R/htmlTable_theme.R
 \name{setHtmlTableTheme}
 \alias{setHtmlTableTheme}
-\title{Set or update theme for \code{\link{htmlTable}}}
+\title{Set or update theme for \code{\link[=htmlTable]{htmlTable()}}}
 \usage{
 setHtmlTableTheme(
   theme = NULL,
@@ -29,7 +29,9 @@ setHtmlTableTheme(
 )
 }
 \arguments{
-\item{theme}{A \code{list} containing all the valid or a \code{string}. See details below.}
+\item{theme}{A \code{list} containing all the styles or a \code{string} that is matched to some of the preset style (See details
+below in the \emph{Theme options} section). \emph{Note}: the full name of the theme is not required as they are matched
+using \code{\link[base:match.arg]{base::match.arg()}}.}
 
 \item{align}{A character strings specifying column alignments, defaulting to \code{'c'}
 to center. Valid chars for alignments are l = left, c = center and r = right. You can also specify
@@ -38,7 +40,7 @@ rownames this string needst to be \code{ncol(x) + 1}, otherwise it automatically
 pads the string with a left alignment for the rownames.}
 
 \item{align.header}{A character strings specifying alignment for column header,
-defaulting to centered, i.e. \code{\link[base]{paste}(rep('c',ncol(x)),collapse='')}.}
+defaulting to centered, i.e. \verb{[paste][base::paste](rep('c',ncol(x)),collapse='')}.}
 
 \item{align.cgroup}{The justification of the \code{cgroups}}
 
@@ -64,7 +66,7 @@ table cells. See section below for details.}
 
 \item{css.header}{The header style, not including the cgroup style}
 
-\item{css.header.border_bottom}{The header bottom-border style, e.g. \code{border-bottom: 1px solid grey}}
+\item{css.header.border_bottom}{The header bottom-border style, e.g. \verb{border-bottom: 1px solid grey}}
 
 \item{css.class}{The html CSS class for the table. This allows directing html
 formatting through \href{http://www.w3schools.com/Css/}{CSS}
@@ -87,7 +89,7 @@ is recommended and will be recycled.}
 
 \item{col.columns}{Alternating colors for each column.}
 
-\item{padding.rgroup}{Generally two non-breakings spaces, i.e. \code{&nbsp;&nbsp;}, but some
+\item{padding.rgroup}{Generally two non-breakings spaces, i.e. \verb{&nbsp;&nbsp;}, but some
 journals only have a bold face for the rgroup and leaves the subelements unindented.}
 
 \item{padding.tspanner}{The table spanner is usually without padding but you may specify padding
@@ -100,14 +102,14 @@ An invisible \code{list} with the new theme
 \description{
 The theme guides many of the non-data objects visual appearance. The
 theme can be over-ridden by settings for each table. Too get a more complete
-understanding of the options, see \code{\link{addHtmlTableStyle}}.
+understanding of the options, see \code{\link[=addHtmlTableStyle]{addHtmlTableStyle()}}.
 }
 \section{Theme options}{
 
 
-The styles availabe are:
+The styles available are:
 \itemize{
-\item \code{standard}: The traditional standard style used in \code{\link{htmlTable}} since the early days
+\item \code{standard}: The traditional standard style used in \code{\link[=htmlTable]{htmlTable()}} since the early days
 \item \verb{Google docs}: A style that is optimized for copy-pasting into documents on Google drive. This
 is geared towards minimal padding and margins so that the table is as dense as possible.
 \item \code{blank}: Just as the name suggests the style is completly empty in terms of CSS. Positions
@@ -120,6 +122,6 @@ or just a real css string, \verb{width: 100px; color: red;}.
 
 \examples{
 \dontrun{
-setHtmlTableTheme("standard", css.cell = "padding: 0; margin: 0;")
+setHtmlTableTheme("Google", align = "r")
 }
 }

@@ -13,11 +13,11 @@ to have a spanner then put that column as "". If you pass cgroup and \code{n.crg
 matrices you can have column spanners for several rows. See cgroup section below for details.}
 
 \item{header}{A vector of character strings specifying column
-header, defaulting to \code{\link[base]{colnames}(x)}}
+header, defaulting to \code{\link[base:colnames]{colnames(x)}}}
 }
 \value{
 \code{integer} Returns the position within the header rows
- to print the \code{rowlabel} argument
+to print the \code{rowlabel} argument
 }
 \description{
 Gets the rowlabel position

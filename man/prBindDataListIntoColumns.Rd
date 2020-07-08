@@ -13,6 +13,6 @@ prBindDataListIntoColumns(dataList)
 \code{data.frame} object
 }
 \description{
-Almost the same as \code{\link[tibble]{tibble}} but it solves the issue
+Almost the same as \code{\link[tibble:tibble]{tibble::tibble()}} but it solves the issue
 with some of the arguments being columns and some just being vectors.
 }

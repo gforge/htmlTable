@@ -1,8 +1,8 @@
 # Deprecated function names
 
-#' See \code{\link{txtMergeLines}}
+#' See [txtMergeLines()]
 #'
-#' @param ... passed onto \code{\link{txtMergeLines}}
+#' @param ... passed onto [txtMergeLines()]
 #' @examples
 #' \dontrun{
 #' # Deprecated function
@@ -15,9 +15,9 @@ splitLines4Table <- function(...){
   txtMergeLines(...)
 }
 
-#' Deprecated use \code{\link{txtInt}} instead.
+#' Deprecated use [txtInt()] instead.
 #'
-#' @param ... Passed to \code{\link{txtInt}}
+#' @param ... Passed to [txtInt()]
 #'
 #' @examples
 #' \dontrun{
@@ -33,7 +33,7 @@ outputInt <- function(...){
 }
 
 
-#' Deprecated use \code{\link{txtPval}} instead
+#' Deprecated use [txtPval()] instead
 #'
 #' @param ... Currently only used for generating warnings of deprecated call
 #' @examples

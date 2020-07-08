@@ -1,10 +1,10 @@
 #' Retrieves counts for rgroup, cgroup, & tspanner arguments
 #'
-#' This function is a wrapper to \code{\link[base]{rle}} that
+#' This function is a wrapper to [base::rle()] that
 #' does exactly this but is a little too picky about input values.
 #'
 #' @param x The vector to process
-#' @return \code{list(n = rle$lengths, names = rle$values)}
+#' @return `list(n = rle$lengths, names = rle$values)`
 #' @export
 #' @examples
 #' prepGroupCounts(c(1:3, 3:1))

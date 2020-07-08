@@ -10,9 +10,9 @@ prPrepareAlign(align, x, rnames, default_rn = "l")
 \item{x}{The matrix/data.frame with the data. For the \code{print} and \code{knit_print}
 it takes a string of the class \code{htmlTable} as \code{x} argument.}
 
-\item{rnames}{Default row names are generated from \code{\link[base:colnames]{rownames}(x)}. If you
+\item{rnames}{Default row names are generated from \code{\link[base:colnames]{rownames(x)}}. If you
 provide \code{FALSE} then it will skip the row names. \emph{Note:} For \code{data.frames}
-if you do \code{\link[base:colnames]{rownames}(my_dataframe) <- NULL} it still has
+if you do \code{\link[base:colnames]{rownames(my_dataframe) <- NULL}} it still has
 row names. Thus you need to use \code{FALSE} if you want to
 supress row names for \code{data.frames}.}
 

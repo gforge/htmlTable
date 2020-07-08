@@ -1,24 +1,24 @@
 #' Retrieve a header row
 #'
 #' This function retrieves a header row, i.e. a row
-#' within the <th> elements on top of the table. Used by
-#' \code{\link{htmlTable}}.
+#' within the `<th>` elements on top of the table. Used by
+#' [htmlTable()].
 #'
-#' @param cgroup_vec The cgroup may be a matrix, this is
-#'  just one row of that matrix
+#' @param cgroup_vec The `cgroup` may be a `matrix`, this is
+#'  just one row of that `matrix`
 #' @param n.cgroup_vec The same as above but for the counter
-#' @param cgroup_vec.just The same as above bot for the justificaiton
-#' @param row_no The row number within the header group. Useful for multirow
-#'  headers when we need to output the rowlabel at the \code{pos.rowlabel}
+#' @param cgroup_vec.just The same as above bot for the justification
+#' @param row_no The row number within the header group. Useful for multi-row
+#'  headers when we need to output the `rowlabel` at the `pos.rowlabel`
 #'  level.
 #' @param style_list The list with all the styles
 #' @param top_row_style The top row has a special style depending on
-#'  the \code{ctable} option in the \code{htmlTable} call.
+#'  the `ctable` option in the `htmlTable` call.
 #' @param cgroup_spacer_cells The spacer cells due to the multiple cgroup levels.
 #'  With multiple rows in cgroup we need to keep track of how many spacer cells
-#'  occur between the columns. This variable contains is of the size \code{ncol(x)-1}
+#'  occur between the columns. This variable contains is of the size `ncol(x)-1`
 #'  and 0 if there is no cgroup element between.
-#' @return \code{string}
+#' @return `string`
 #' @keywords internal
 #' @inheritParams htmlTable
 #' @family hidden helper functions for htmlTable

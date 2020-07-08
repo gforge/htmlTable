@@ -14,9 +14,9 @@ interest. Currently only English is distinguished from the ISO
 format using a ',' as the separator.}
 
 \item{html}{If the format is used in HTML context
-then the space should be a non-breaking space, \code{&nbsp;}}
+then the space should be a non-breaking space, \verb{&nbsp;}}
 
-\item{...}{Passed to \code{\link[base]{format}}}
+\item{...}{Passed to \code{\link[base:format]{base::format()}}}
 }
 \value{
 \code{string}

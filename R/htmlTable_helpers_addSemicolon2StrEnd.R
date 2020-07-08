@@ -5,7 +5,7 @@
 #' and remove multiple semicolon if such exist
 #'
 #' @param my_str The string that is to be processed
-#' @return \code{string}
+#' @return `string`
 #' @keywords internal
 #' @family hidden helper functions for htmlTable
 #' @importFrom utils tail

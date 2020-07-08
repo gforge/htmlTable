@@ -1,7 +1,7 @@
 #' Makes sure the input is correct
 #'
 #' Checks and converts dimensions into something the
-#' \code{\link{htmlTable}} is comfortable with.
+#' [htmlTable()] is comfortable with.
 #'
 #' @inheritParams htmlTable
 #' @keywords internal

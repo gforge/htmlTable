@@ -2,15 +2,15 @@
 % Please edit documentation in R/deprecated.R
 \name{splitLines4Table}
 \alias{splitLines4Table}
-\title{See \code{\link{txtMergeLines}}}
+\title{See \code{\link[=txtMergeLines]{txtMergeLines()}}}
 \usage{
 splitLines4Table(...)
 }
 \arguments{
-\item{...}{passed onto \code{\link{txtMergeLines}}}
+\item{...}{passed onto \code{\link[=txtMergeLines]{txtMergeLines()}}}
 }
 \description{
-See \code{\link{txtMergeLines}}
+See \code{\link[=txtMergeLines]{txtMergeLines()}}
 }
 \examples{
 \dontrun{
