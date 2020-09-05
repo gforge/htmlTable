@@ -1,11 +1,15 @@
 #' Gets alignment
 #'
 #' @param index The index of the align parameter of interest
-#' @param emptyCell We don't want two borders when encontering an empty cgroup filler cell
 #' @family hidden helper functions for
 #' @keywords internal
 #' @inheritParams addHtmlTableStyle
-prGetAlign <- function(align, index, emptyCell = FALSE) {
+prGetAlign <- function(align,
+                       index,
+                       style_list = NULL,
+                       spacerCell = FALSE,
+                       followed_by_spacer_cell = FALSE,
+                       previous_was_spacer_cell = FALSE) {
   segm_rgx <- "[^lrc]*[rlc][^lrc]*"
 
   res_align <- align
@@ -22,20 +26,34 @@ prGetAlign <- function(align, index, emptyCell = FALSE) {
   }
 
   styles <- c()
-  if (!emptyCell) {
-    if (grepl("^[|]", lrc_data)) {
-      styles["border-left"] <- getOption("htmlTable.css.border-left",
-        default = getOption("htmlTable.css.border",
-          default = "1px solid black"
-        )
-      )
-    }
-    if (grepl("[|]$", lrc_data)) {
-      styles["border-right"] <- getOption("htmlTable.css.border-right",
-        default = getOption("htmlTable.css.border",
-          default = "1px solid black"
-        )
-      )
+  border_in_spacer_cell <- FALSE
+  if (!is.null(style_list) && style_list$spacer.celltype == "double_cell") {
+    border_in_spacer_cell = TRUE
+  }
+
+  border_position <- NULL
+  if (grepl("^\\|", lrc_data)) {
+    border_position <- "left"
+  }
+
+  if (grepl("\\|$", lrc_data)) {
+    border_position <- c(border_position, "right")
+  }
+
+  border_style <- list(default = getOption("htmlTable.css.border", default = "1px solid black"))
+
+  if (!is.null(border_position)) {
+    for (pos in border_position) {
+      border_name <- paste0("border-", pos)
+      border_style[[pos]] <- getOption(paste0("htmlTable.css.", border_name),
+                                       default = border_style$default)
+
+      if (!spacerCell &&
+          (!border_in_spacer_cell ||
+           (!followed_by_spacer_cell && pos == "right") ||
+           (!previous_was_spacer_cell && pos == "left"))) {
+        styles[border_name] <- border_style[[pos]]
+      }
     }
   }
 
@@ -49,5 +67,8 @@ prGetAlign <- function(align, index, emptyCell = FALSE) {
     styles["text-align"] <- "right"
   }
 
-  return(styles)
+  return(structure(styles,
+                   has_border = !is.null(border_position),
+                   border_position = border_position,
+                   border_style = border_style))
 }

@@ -61,7 +61,11 @@ setHtmlTableTheme <- function(theme = NULL,
 
                               # More alternatives
                               padding.rgroup = NULL,
-                              padding.tspanner = NULL) {
+                              padding.tspanner = NULL,
+                              spacer.celltype = NULL,
+                              spacer.css.cgroup.bottom.border = NULL,
+                              spacer.css = NULL,
+                              spacer.content = NULL) {
   if (!is.null(theme)) {
     if (is.character(theme)) {
       newTheme <- prGetThemeListObject(theme_name = theme)
@@ -135,7 +139,11 @@ prGetThemeListObject <- function(theme_name = c("standard", "Google docs", "blan
 
     # More alternatives
     padding.rgroup = "&nbsp;&nbsp;",
-    padding.tspanner = ""
+    padding.tspanner = "",
+    spacer.celltype = "single_empty",
+    spacer.css.cgroup.bottom.border = "none",
+    spacer.css = "",
+    spacer.content = "&nbsp;"
   )
 
   if (theme_name == "standard") {

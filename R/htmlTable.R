@@ -692,7 +692,7 @@ htmlTable.default <- function(x,
     if (!is.matrix(cgroup)) {
       total_columns <- total_columns + length(cgroup) - 1
     } else {
-      total_columns <- total_columns + sum(cgroup_spacer_cells)
+      total_columns <- total_columns + sum(cgroup_spacer_cells) * prGetEmptySpacerCellSize(style_list = style_list)
     }
   }
 
@@ -985,16 +985,12 @@ htmlTable.default <- function(x,
 
         # The padding doesn't work well with the Word import - well nothing really works well with word...
         # table_str <- sprintf("%s\n\t\t<td style='padding-left: .5em;'>%s</td>", table_str, rnames[row_nr])
-        table_str %<>%
-          sprintf(
-            "%s\n\t\t<td style='%s'>%s%s</td>",
-            .,
-            prGetStyle(c(rname_style, cell_style),
-              align = prGetAlign(style_list$align, 1)
-            ),
-            pdng,
-            rnames[row_nr]
-          )
+        table_str %<>% paste(str_interp("<td style='${STYLE}'>${PADDING}${NAME}</td>",
+                                        list(STYLE = prGetStyle(c(rname_style, cell_style),
+                                                              align = prGetAlign(style_list$align, index = 1, style_list = style_list)),
+                                             PADDING = pdng,
+                                             NAME = rnames[row_nr])),
+                             sep = "\n\t\t")
       }
 
       cell_str <- prAddCells(

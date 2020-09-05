@@ -1,5 +1,9 @@
 NEWS for the htmlTable package
 
+Changes fro 2.1.0
+-----------------
+* Added options for how the empty spacer cell appears (see addHtmlTableStyle spacer.* options)
+
 Changes for 2.0.1
 -----------------
 * Fix for txtRound not handling negative numbers (issue #76)

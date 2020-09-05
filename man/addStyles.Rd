@@ -26,7 +26,11 @@ addHtmlTableStyle(
   col.rgroup = NULL,
   col.columns = NULL,
   padding.rgroup = NULL,
-  padding.tspanner = NULL
+  padding.tspanner = NULL,
+  spacer.celltype = NULL,
+  spacer.css.cgroup.bottom.border = NULL,
+  spacer.css = NULL,
+  spacer.content = NULL
 )
 
 appendHtmlTableStyle(
@@ -50,7 +54,11 @@ appendHtmlTableStyle(
   col.rgroup = NULL,
   col.columns = NULL,
   padding.rgroup = NULL,
-  padding.tspanner = NULL
+  padding.tspanner = NULL,
+  spacer.celltype = NULL,
+  spacer.css.cgroup.bottom.border = NULL,
+  spacer.css = NULL,
+  spacer.content = NULL
 )
 }
 \arguments{
@@ -118,6 +126,25 @@ journals only have a bold face for the rgroup and leaves the subelements uninden
 \item{padding.tspanner}{The table spanner is usually without padding but you may specify padding
 similar to \code{padding.rgroup} and it will be added to all elements, including the rgroup elements.
 This allows for a 3-level hierarchy if needed.}
+
+\item{spacer.celltype}{When using cgroup the table headers are separated through a empty
+HTML cell that is by default filled with \verb{&nbsp;} (no-breaking-space) that prevents the cell
+from collapsing. The purpose of this is to prevent the headers underline to bleed into one
+as the underline is for the entire cell. You can alter this behavior by changing this option,
+valid options are \code{single_empty}, \code{skip}, \code{double_cell}. The \code{single_empty} is the default,
+the \code{skip} lets the header bleed into one and skips entirely, \code{double_cell} is for having
+two cells so that a vertical border ends up centered (specified using the \code{align} option).
+The arguments are matched internally using \link[base:match.arg]{base::match.arg} so you can specify only a part
+of the name, e.g. \code{"sk"} will match \code{"skip"}.}
+
+\item{spacer.css.cgroup.bottom.border}{Defaults to \code{none} and used for separating cgroup headers.
+Due to a browser bug this is sometimes ignored and you may therefore need to set this
+to \verb{1px solid white} to enforce a white border.}
+
+\item{spacer.css}{If you want the spacer cells to share settings you can set it here}
+
+\item{spacer.content}{Defaults to \verb{&nbsp;} as this guarantees that the cell is not collapsed
+and is highly compatible when copy-pasting to word processors.}
 }
 \value{
 \code{x} with the style added as an attribute that the htmlTable then can use for formatting.
@@ -159,5 +186,9 @@ library(magrittr)
 matrix(1:4, ncol = 2) \%>\%
   addHtmlTableStyle(align = "c", css.cell = "background-color: orange;") \%>\%
   htmlTable(caption = "A simple style example")
+}
+\seealso{
+Other htmlTableStyle: 
+\code{\link{hasHtmlTableStyle}()}
 }
 \concept{htmlTableStyle}

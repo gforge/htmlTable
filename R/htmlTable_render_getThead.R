@@ -82,7 +82,7 @@ prGetThead <- function(x,
           style_list$css.header[1],
           ts,
           attr(prepped_cell_css, "rnames")[1],
-          align = prGetAlign(style_list$align.header, 1)
+          align = prGetAlign(style_list$align.header, 1, style_list = style_list)
         ),
         rowlabel
       )

@@ -293,6 +293,7 @@ There are multiple options that can be set, here is a set of the perhaps most us
 where HTML indentation caused everything to be interpreted as code. This seems to be fixed
 and if you want to look at the raw HTML code it is nice to have this set to \code{TRUE} so that
 the tags and elements are properly indented.
+\item \code{htmlTableCompat} - string - see parameter description
 }
 }
 

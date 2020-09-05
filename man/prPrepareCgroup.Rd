@@ -33,6 +33,7 @@ some preparation for the cgroup options is required.
 \seealso{
 Other hidden helper functions for htmlTable: 
 \code{\link{prAddCells}()},
+\code{\link{prAddEmptySpacerCell}()},
 \code{\link{prAddSemicolon2StrEnd}()},
 \code{\link{prEscapeHtml}()},
 \code{\link{prGetCgroupHeader}()},

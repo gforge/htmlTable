@@ -42,6 +42,7 @@ Adds a row of cells \verb{<td>val</td><td>...</td>} to a table string for
 }
 \seealso{
 Other hidden helper functions for htmlTable: 
+\code{\link{prAddEmptySpacerCell}()},
 \code{\link{prAddSemicolon2StrEnd}()},
 \code{\link{prEscapeHtml}()},
 \code{\link{prGetCgroupHeader}()},
