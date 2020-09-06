@@ -12,7 +12,8 @@ prAddCells(
   prepped_cell_css,
   cgroup_spacer_cells,
   has_rn_col,
-  offset = 1
+  offset = 1,
+  style_list_align_key = "align"
 )
 }
 \arguments{

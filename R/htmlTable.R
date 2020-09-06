@@ -399,8 +399,8 @@ htmlTable.default <- function(x,
   }
 
   # Fix alignment to match with the matrix
-  style_list$align <- prPrepareAlign(style_list$align, x, rnames)
-  style_list$align.header <- prPrepareAlign(style_list$align.header, x, rnames, default_rn = "c")
+  style_list$align <- prPrepareAlign(style_list$align, x = x, rnames = rnames)
+  style_list$align.header <- prPrepareAlign(style_list$align.header,x = x, rnames = rnames, default_rn = "c")
 
   if (tolower(compatibility) %in% c(
     "libreoffice", "libre office",
@@ -754,12 +754,10 @@ htmlTable.default <- function(x,
   ###############################
   # Start building table string #
   ###############################
-  table_str <- sprintf(
-    "<table class='%s' style='border-collapse: collapse; %s' %s>",
-    paste(style_list$css.class, collapse = ", "),
-    paste(style_list$css.table, collapse = "; "),
-    table_id
-  )
+  table_str <- str_interp("<table class='${CLASS_NAME}' style='border-collapse: collapse; ${TABLE_CSS}' ${TABLE_ID}>",
+                          list(CLASS_NAME = paste(style_list$css.class, collapse = ", "),
+                               TABLE_CSS =  paste(style_list$css.table, collapse = "; "),
+                               TABLE_ID = table_id))
 
   # Theoretically this should be added to the table but the
   # import to word processors works then less well and therefore I've
@@ -789,15 +787,12 @@ htmlTable.default <- function(x,
 
     if (compatibility != "LibreOffice") {
       if (style_list$pos.caption %in% c("bottom", "below")) {
-        table_str %<>%
-          paste0("\n\t<caption style='caption-side: bottom'>")
+        table_str %<>% paste0("\n\t<caption style='caption-side: bottom'>")
       } else {
-        table_str %<>%
-          paste0("\n\t<caption style='caption-side: top'>")
+        table_str %<>% paste0("\n\t<caption style='caption-side: top'>")
       }
 
-      table_str %<>%
-        paste0(caption, "</caption>")
+      table_str %<>% paste0(caption, "</caption>")
     }
   }
 

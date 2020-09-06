@@ -31,6 +31,8 @@ I developed the `htmlTable` in order to get tables matching those available in t
 library(htmlTable)
 library(magrittr)
 
+setHtmlTableTheme(theme = "Google docs")
+
 output <- 
   matrix(paste("Content", LETTERS[1:16]), 
          ncol = 4, byrow = TRUE)
@@ -176,7 +178,8 @@ In order to increase the readability we may want to separate the Sweden columns 
 ```{r}
 mx %>% 
   txtRound(digits = 1) %>% 
-  addHtmlTableStyle(align = "rrrr|r") %>% 
+  addHtmlTableStyle(align = "rrrr|r",
+                    spacer.celltype = "double_cell") %>% 
   htmlTable(cgroup = cgroup,
             n.cgroup = n.cgroup,
             rgroup = c("First period", 
@@ -193,6 +196,7 @@ If we still feel that we want more separation it is always possible to add color
 mx %>% 
   txtRound(digits = 1) %>% 
   addHtmlTableStyle(align = "rrrr|r",
+                    align.header = "c",
                     col.columns = c(rep("#E6E6F0", 4),
                           rep("none", ncol(mx) - 4))) %>% 
   htmlTable(cgroup = cgroup,
@@ -211,6 +215,7 @@ If we add a color to the row group and restrict the rgroup spanner we may even h
 mx %>% 
   txtRound(digits = 1) %>% 
   addHtmlTableStyle(align = "rrrr|r",
+                    align.header = "c",
                     col.columns = c(rep("#E6E6F0", 4),
                           rep("none", ncol(mx) - 4)),
                     col.rgroup = c("none", "#FFFFCC")) %>% 
@@ -251,6 +256,7 @@ for (col in cols_2_clr) {
 
 out_mx %>% 
   addHtmlTableStyle(align = "rrrr|r",
+                    align.header = "cccc|c",
                     pos.rowlabel = "bottom", 
                     col.rgroup = c("none", "#FFFFCC"),
                     col.columns = c(rep("#EFEFF0", 4),

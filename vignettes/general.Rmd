@@ -342,7 +342,9 @@ rgroup = paste("Group", LETTERS[1:3])
 attr(rgroup, "add") <- list(`3` = "Group p-value < 0.001")
 
 mx %>% 
-  addHtmlTableStyle(align = "r",
+  addHtmlTableStyle(align = "rr|r",
+                    align.header = "cc|c",
+                    spacer.celltype = "double_cell",
                     col.columns = c(rep("none", 2),
                                     rep("#F5FBFF", 4)),
                     col.rgroup = c("none", "#F7F7F7"),

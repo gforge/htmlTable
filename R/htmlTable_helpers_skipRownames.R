@@ -3,7 +3,7 @@
 #' @inheritParams htmlTable
 #' @keywords internal
 prSkipRownames <- function(rnames) {
-  if (missing(rnames) || is.null(rnames)) {
+  if (missing(rnames) || is.null(rnames) || length(rnames) == 0) {
     return(TRUE)
   }
 

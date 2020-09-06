@@ -18,7 +18,7 @@ mx %>%
                           c("2:1-2", "2:3")))
 
 mx %>%
-  addHtmlTableStyle(css.cgroup = "font-weight:900; background-color:#f2f2f2;",
+  addHtmlTableStyle(css.cgroup = "font-weight:900; background-color:#f2f2f2; vertical-align:middle;",
                     align = "|l|r|c|r|",
                     spacer.celltype = "single_empty") %>%
   htmlTable(n.rgroup = c(2),
@@ -30,12 +30,26 @@ mx %>%
 
 mx %>%
   addHtmlTableStyle(align = "|l|r|c|r|",
+                    align.header = "|c|c|c|",
                     spacer.celltype = "double") %>%
   htmlTable(n.rgroup = c(2),
             rgroup = c("Nice!"),
             n.cgroup = list(c(1, 2),
                             c(2,1)),
             cgroup = list(c("1:1", "1:2-3"),
+                          c("2:1-2", "2:3")))
+
+
+mx %>%
+  set_colnames(c("A<br />first", "B", "C") %>%
+                 paste("header", .)) %>%
+  addHtmlTableStyle(align = "|l|r|c|r|",
+                    spacer.celltype = "double") %>%
+  htmlTable(n.rgroup = c(2),
+            rgroup = c("Vertical alignment in header check"),
+            n.cgroup = list(c(1, 2),
+                            c(2,1)),
+            cgroup = list(c("1:1<br />vertical check", "1:2-3"),
                           c("2:1-2", "2:3")))
 
 colnames(mx) <- NULL

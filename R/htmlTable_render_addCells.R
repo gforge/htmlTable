@@ -17,7 +17,8 @@
 #' @return `string` Returns the string with the new cell elements
 #' @keywords internal
 #' @family hidden helper functions for htmlTable
-prAddCells <- function(rowcells, cellcode, style_list, style, prepped_cell_css, cgroup_spacer_cells, has_rn_col, offset = 1) {
+#' @importFrom stringr str_interp
+prAddCells <- function(rowcells, cellcode, style_list, style, prepped_cell_css, cgroup_spacer_cells, has_rn_col, offset = 1, style_list_align_key = "align") {
   cell_str <- ""
   style <- prAddSemicolon2StrEnd(style)
 
@@ -33,7 +34,7 @@ prAddCells <- function(rowcells, cellcode, style_list, style, prepped_cell_css, 
       nr <= length(cgroup_spacer_cells) &&
       cgroup_spacer_cells[nr] > 0
 
-    align_style <- prGetAlign(style_list$align,
+    align_style <- prGetAlign(style_list[[style_list_align_key]],
                               index = nr + has_rn_col,
                               style_list = style_list,
                               followed_by_spacer_cell = followed_by_spacer_cell,
@@ -46,20 +47,17 @@ prAddCells <- function(rowcells, cellcode, style_list, style, prepped_cell_css, 
         c(`background-color` = style_list$col.columns[nr])
     }
 
-    cell_str %<>%
-      sprintf(
-        "%s\n\t\t<%s style='%s'>%s</%s>",
-        .,
-        cellcode,
-        prGetStyle(cell_style,
-                   align_style),
-        cell_value,
-        cellcode
-      )
+
+    cell_str %<>% paste(str_interp("<${CELL_TAG} style='${STYLE}'>${CONTENT}</${CELL_TAG}>",
+                                   list(CELL_TAG = cellcode,
+                                        STYLE = prGetStyle(cell_style,
+                                                           align_style),
+                                        CONTENT = cell_value)),
+                        sep = "\n\t\t")
 
     # Add empty cell if not last column
     if (followed_by_spacer_cell) {
-      align_style <- prGetAlign(style_list$align,
+      align_style <- prGetAlign(style_list[[style_list_align_key]],
                                 index = nr + has_rn_col,
                                 style_list = style_list,
                                 spacerCell = TRUE,

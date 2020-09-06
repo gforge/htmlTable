@@ -328,11 +328,14 @@ test_that("has header elements", {
     ))
   )
   expect_warning({
-    table_str <-
-      htmlTable(empty_dataframe)
+    table_str <- htmlTable(empty_dataframe)
   })
 
-  expect_match(table_str, "<thead>[^<]*<tr>[^>]+>[^<]+</th>[^>]+>a</th>[^>]+>b</th>[^<]+</tr>")
+  th_cell_regex <- function(content) str_interp("[^<]*<th[^>]*>${CONTENT}</th>", list(CONTENT = content))
+  expect_match(table_str,
+               str_interp("<thead>[^<]*<tr>${CELL1}${CELL2}[^<]*</tr>",
+                          list(CELL1 = th_cell_regex("a"),
+                               CELL2 = th_cell_regex("b"))))
   expect_match(table_str, "<tbody>[^<]+</tbody>")
 
   expect_warning({
@@ -350,7 +353,11 @@ test_that("has header elements", {
     )
   })
 
-  expect_match(table_str, "[^<]*<tr>[^>]+>[^<]+</th>[^>]+>a</th>[^>]+>b</th>[^<]+</tr>")
+  expect_match(table_str,
+               str_interp("<tr>${CELL_LABEL}${CELL1}${CELL2}[^<]*</tr>",
+                          list(CELL_LABEL = th_cell_regex("Row number"),
+                               CELL1 = th_cell_regex("a"),
+                               CELL2 = th_cell_regex("b"))))
   expect_match(table_str, "<tbody>[^<]+</tbody>")
   expect_match(table_str, "<tfoot><tr><td[^>]+>\\s*This is a footnote</td></tr>", perl = TRUE)
   expect_match(table_str, "<tr><td[^>]+>\\s*This is a caption</td></tr>", perl = TRUE)
