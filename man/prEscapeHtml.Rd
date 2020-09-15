@@ -21,6 +21,7 @@ issue.
 \seealso{
 Other hidden helper functions for htmlTable: 
 \code{\link{prAddCells}()},
+\code{\link{prAddEmptySpacerCell}()},
 \code{\link{prAddSemicolon2StrEnd}()},
 \code{\link{prGetCgroupHeader}()},
 \code{\link{prGetRowlabelPos}()},

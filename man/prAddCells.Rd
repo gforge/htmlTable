@@ -12,7 +12,8 @@ prAddCells(
   prepped_cell_css,
   cgroup_spacer_cells,
   has_rn_col,
-  offset = 1
+  offset = 1,
+  style_list_align_key = "align"
 )
 }
 \arguments{
@@ -42,6 +43,7 @@ Adds a row of cells \verb{<td>val</td><td>...</td>} to a table string for
 }
 \seealso{
 Other hidden helper functions for htmlTable: 
+\code{\link{prAddEmptySpacerCell}()},
 \code{\link{prAddSemicolon2StrEnd}()},
 \code{\link{prEscapeHtml}()},
 \code{\link{prGetCgroupHeader}()},

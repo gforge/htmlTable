@@ -17,7 +17,7 @@ prPrepInputMatrixDimensions <- function(x, header = NULL) {
     return(x)
   }
 
-  preset_styles <- attr(x, style_attribute_name)
+  preset_styles <- getHtmlTableStyle(x)
 
   if (!is.numeric(x) && !is.character(x)) {
     x <- as.character(x)

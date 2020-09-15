@@ -61,7 +61,11 @@ setHtmlTableTheme <- function(theme = NULL,
 
                               # More alternatives
                               padding.rgroup = NULL,
-                              padding.tspanner = NULL) {
+                              padding.tspanner = NULL,
+                              spacer.celltype = NULL,
+                              spacer.css.cgroup.bottom.border = NULL,
+                              spacer.css = NULL,
+                              spacer.content = NULL) {
   if (!is.null(theme)) {
     if (is.character(theme)) {
       newTheme <- prGetThemeListObject(theme_name = theme)
@@ -135,7 +139,11 @@ prGetThemeListObject <- function(theme_name = c("standard", "Google docs", "blan
 
     # More alternatives
     padding.rgroup = "&nbsp;&nbsp;",
-    padding.tspanner = ""
+    padding.tspanner = "",
+    spacer.celltype = "single_empty",
+    spacer.css.cgroup.bottom.border = "none",
+    spacer.css = "",
+    spacer.content = "&nbsp;"
   )
 
   if (theme_name == "standard") {
@@ -190,12 +198,17 @@ prGetThemeListObject <- function(theme_name = c("standard", "Google docs", "blan
       ),
 
       css.cell = getOption("htmlTable.css.cell", default = "margin: 0; padding: 0;"),
-      css.cgroup = getOption("htmlTable.css.cgroup", default = "margin: 0; padding: 0;"),
-      css.header = getOption("htmlTable.css.header", default = "margin: 0; padding: 0; font-weight: 900"),
+      css.cgroup = getOption("htmlTable.css.cgroup", default = "margin: 0; padding: 0; vertical-align: middle;"),
+      css.header = getOption("htmlTable.css.header", default = "margin: 0; padding: 0; font-weight: 900; vertical-align: middle;"),
       css.header.border_bottom = getOption("htmlTable.css.header.border_bottom", default = "border-bottom: 1px solid grey"),
 
       css.class = getOption("htmlTable.css.class", default = "gmisc_table"),
       css.table = getOption("htmlTable.css.table", default = "margin-top: 1em; margin-bottom: 1em;"),
+
+      spacer.celltype = "double_cell",
+      spacer.css.cgroup.bottom.border = "1px solid white",
+      spacer.content = "",
+      spacer.css = "width: 2px;",
 
       # Positions
       pos.rowlabel = "bottom",

@@ -399,8 +399,8 @@ htmlTable.default <- function(x,
   }
 
   # Fix alignment to match with the matrix
-  style_list$align <- prPrepareAlign(style_list$align, x, rnames)
-  style_list$align.header <- prPrepareAlign(style_list$align.header, x, rnames, default_rn = "c")
+  style_list$align <- prPrepareAlign(style_list$align, x = x, rnames = rnames)
+  style_list$align.header <- prPrepareAlign(style_list$align.header,x = x, rnames = rnames, default_rn = "c")
 
   if (tolower(compatibility) %in% c(
     "libreoffice", "libre office",
@@ -692,7 +692,7 @@ htmlTable.default <- function(x,
     if (!is.matrix(cgroup)) {
       total_columns <- total_columns + length(cgroup) - 1
     } else {
-      total_columns <- total_columns + sum(cgroup_spacer_cells)
+      total_columns <- total_columns + sum(cgroup_spacer_cells) * prGetEmptySpacerCellSize(style_list = style_list)
     }
   }
 
@@ -754,12 +754,10 @@ htmlTable.default <- function(x,
   ###############################
   # Start building table string #
   ###############################
-  table_str <- sprintf(
-    "<table class='%s' style='border-collapse: collapse; %s' %s>",
-    paste(style_list$css.class, collapse = ", "),
-    paste(style_list$css.table, collapse = "; "),
-    table_id
-  )
+  table_str <- str_interp("<table class='${CLASS_NAME}' style='border-collapse: collapse; ${TABLE_CSS}' ${TABLE_ID}>",
+                          list(CLASS_NAME = paste(style_list$css.class, collapse = ", "),
+                               TABLE_CSS =  paste(style_list$css.table, collapse = "; "),
+                               TABLE_ID = table_id))
 
   # Theoretically this should be added to the table but the
   # import to word processors works then less well and therefore I've
@@ -789,15 +787,12 @@ htmlTable.default <- function(x,
 
     if (compatibility != "LibreOffice") {
       if (style_list$pos.caption %in% c("bottom", "below")) {
-        table_str %<>%
-          paste0("\n\t<caption style='caption-side: bottom'>")
+        table_str %<>% paste0("\n\t<caption style='caption-side: bottom'>")
       } else {
-        table_str %<>%
-          paste0("\n\t<caption style='caption-side: top'>")
+        table_str %<>% paste0("\n\t<caption style='caption-side: top'>")
       }
 
-      table_str %<>%
-        paste0(caption, "</caption>")
+      table_str %<>% paste0(caption, "</caption>")
     }
   }
 
@@ -985,16 +980,12 @@ htmlTable.default <- function(x,
 
         # The padding doesn't work well with the Word import - well nothing really works well with word...
         # table_str <- sprintf("%s\n\t\t<td style='padding-left: .5em;'>%s</td>", table_str, rnames[row_nr])
-        table_str %<>%
-          sprintf(
-            "%s\n\t\t<td style='%s'>%s%s</td>",
-            .,
-            prGetStyle(c(rname_style, cell_style),
-              align = prGetAlign(style_list$align, 1)
-            ),
-            pdng,
-            rnames[row_nr]
-          )
+        table_str %<>% paste(str_interp("<td style='${STYLE}'>${PADDING}${NAME}</td>",
+                                        list(STYLE = prGetStyle(c(rname_style, cell_style),
+                                                              align = prGetAlign(style_list$align, index = 1, style_list = style_list)),
+                                             PADDING = pdng,
+                                             NAME = rnames[row_nr])),
+                             sep = "\n\t\t")
       }
 
       cell_str <- prAddCells(
