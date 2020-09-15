@@ -4,6 +4,7 @@ Changes fro 2.1.0
 -----------------
 * Added options for how the empty spacer cell appears (see `addHtmlTableStyle()` spacer.* options)
 * Fixed ignored `align.header`
+* Fix for wrapped styles (issue #80)
 
 Changes for 2.0.1
 -----------------

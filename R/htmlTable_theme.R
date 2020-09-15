@@ -104,7 +104,18 @@ prGetArgumentList <- function(args, skip_elements) {
   args <- args[Filter(function(x) !(x %in% skip_elements | x == ""), names(args))]
   Map(function(arg) {
     if (is.language(arg)) {
-      return(eval(arg))
+      value <- tryCatch(eval(arg),
+                        error = function(e) {
+                          for (i in 1:sys.nframe()) {
+                            value <- tryCatch(eval(arg, envir = parent.frame(n = i)),
+                                              error = function(x) NULL)
+                            if (!is.null(value)) return(value)
+                          }
+                        })
+      if (is.null(value)) {
+        stop("Could not find argument: ", as.character(arg))
+      }
+      return(value)
     }
     return(arg)
   }, args)
