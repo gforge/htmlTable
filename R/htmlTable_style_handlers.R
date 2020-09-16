@@ -54,7 +54,7 @@
 #' @param css.header.border_bottom The header bottom-border style, e.g. `border-bottom: 1px solid grey`
 #' @param css.cgroup The same as `css.class` but for cgroup formatting.
 #' @param css.class The html CSS class for the table. This allows directing html
-#'  formatting through [CSS](http://www.w3schools.com/Css/)
+#'  formatting through [CSS](https://www.w3schools.com/Css/)
 #'  directly at all instances of that class. *Note:* unfortunately the
 #'  CSS is frequently ignored by word processors. This option
 #'  is mostly inteded for web-presentations.

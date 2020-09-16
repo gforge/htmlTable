@@ -62,7 +62,7 @@
 #' This function will only work with \pkg{knitr} outputting *HTML*, i.e.
 #' markdown mode. As the function returns raw HTML-code
 #' the compatibility with non-HTML formatting is limited,
-#' even with [pandoc](http://johnmacfarlane.net/pandoc/).
+#' even with [pandoc](https://pandoc.org/).
 #'
 #' Thanks to the the [knitr::knit_print()] and the [knitr::asis_output()]
 #' the `results='asis'` is *no longer needed* except within for-loops.
@@ -125,10 +125,10 @@
 #' * **Internet Explorer** (v. 11.20.10586.0) Works perfectly when copy-pasting into Word
 #' * **RStudio** (v. 0.99.448) Works perfectly when copy-pasting into Word.
 #'   *Note:* can have issues with multi-line `cgroup`s -
-#'   see [bug](http://code.google.com/p/chromium/issues/detail?id=305130)
+#'   see [bug](https://bugs.chromium.org/p/chromium/issues/detail?id=305130)
 #' * **Chrome** (v. 47.0.2526.106) Works perfectly when copy-pasting into Word.
 #'        *Note:* can have issues with multi-line `cgroup`s -
-#'        see [bug](http://code.google.com/p/chromium/issues/detail?id=305130)
+#'        see [bug](https://bugs.chromium.org/p/chromium/issues/detail?id=305130)
 #' * **Firefox** (v. 43.0.3) Works poorly - looses font-styling, lines and general feel
 #' * **Edge** (v. 25.10586.0.0) Works poorly - looses lines and general feel
 #'
@@ -141,7 +141,7 @@
 #' *Note* that when using complex `cgroup` alignments with multiple levels
 #' not every browser is able to handle this. For instance the RStudio
 #' webkit browser seems to have issues with this and a
-#' [bug has been filed](http://code.google.com/p/chromium/issues/detail?id=305130).
+#' [bug has been filed](https://bugs.chromium.org/p/chromium/issues/detail?id=305130).
 #'
 #' As the table uses HTML for rendering you need to be aware of that headers,
 #' row names, and cell values should try respect this for optimal display. Browsers
@@ -149,7 +149,7 @@
 #' not advised. Most importantly you should try to use
 #' `&lt;` instead of `<` and
 #' `&gt;` instead of `>`. You can find a complete list
-#' of HTML characters [here](http://ascii.cl/htmlcodes.htm).
+#' of HTML characters [here](https://ascii.cl/htmlcodes.htm).
 #'
 #' Lastly, I want to mention that function was inspired by the [Hmisc::latex()]
 #' that can be an excellent alternative if you wish to switch to PDF-output.
