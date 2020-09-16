@@ -4,7 +4,7 @@
 Basics
 ======
 
-The **htmlTable** package is intended for generating tables using [HTML](http://en.wikipedia.org/wiki/HTML) formatting. This format is compatible with [Markdown](http://rmarkdown.rstudio.com/) when used for HTML-output. The most basic table can easily be created by just passing a `matrix` or a `data.frame` to the `htmlTable`-function:
+The **htmlTable** package is intended for generating tables using [HTML](https://en.wikipedia.org/wiki/HTML) formatting. This format is compatible with [Markdown](https://rmarkdown.rstudio.com/) when used for HTML-output. The most basic table can easily be created by just passing a `matrix` or a `data.frame` to the `htmlTable`-function:
 
 
 ```r
