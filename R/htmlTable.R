@@ -62,7 +62,7 @@
 #' This function will only work with \pkg{knitr} outputting *HTML*, i.e.
 #' markdown mode. As the function returns raw HTML-code
 #' the compatibility with non-HTML formatting is limited,
-#' even with [pandoc](http://johnmacfarlane.net/pandoc/).
+#' even with [pandoc](https://pandoc.org/).
 #'
 #' Thanks to the the [knitr::knit_print()] and the [knitr::asis_output()]
 #' the `results='asis'` is *no longer needed* except within for-loops.
@@ -125,10 +125,10 @@
 #' * **Internet Explorer** (v. 11.20.10586.0) Works perfectly when copy-pasting into Word
 #' * **RStudio** (v. 0.99.448) Works perfectly when copy-pasting into Word.
 #'   *Note:* can have issues with multi-line `cgroup`s -
-#'   see [bug](http://code.google.com/p/chromium/issues/detail?id=305130)
+#'   see [bug](https://bugs.chromium.org/p/chromium/issues/detail?id=305130)
 #' * **Chrome** (v. 47.0.2526.106) Works perfectly when copy-pasting into Word.
 #'        *Note:* can have issues with multi-line `cgroup`s -
-#'        see [bug](http://code.google.com/p/chromium/issues/detail?id=305130)
+#'        see [bug](https://bugs.chromium.org/p/chromium/issues/detail?id=305130)
 #' * **Firefox** (v. 43.0.3) Works poorly - looses font-styling, lines and general feel
 #' * **Edge** (v. 25.10586.0.0) Works poorly - looses lines and general feel
 #'
@@ -141,7 +141,7 @@
 #' *Note* that when using complex `cgroup` alignments with multiple levels
 #' not every browser is able to handle this. For instance the RStudio
 #' webkit browser seems to have issues with this and a
-#' [bug has been filed](http://code.google.com/p/chromium/issues/detail?id=305130).
+#' [bug has been filed](https://bugs.chromium.org/p/chromium/issues/detail?id=305130).
 #'
 #' As the table uses HTML for rendering you need to be aware of that headers,
 #' row names, and cell values should try respect this for optimal display. Browsers
@@ -149,7 +149,7 @@
 #' not advised. Most importantly you should try to use
 #' `&lt;` instead of `<` and
 #' `&gt;` instead of `>`. You can find a complete list
-#' of HTML characters [here](http://ascii.cl/htmlcodes.htm).
+#' of HTML characters [here](https://ascii.cl/htmlcodes.htm).
 #'
 #' Lastly, I want to mention that function was inspired by the [Hmisc::latex()]
 #' that can be an excellent alternative if you wish to switch to PDF-output.
@@ -399,8 +399,8 @@ htmlTable.default <- function(x,
   }
 
   # Fix alignment to match with the matrix
-  style_list$align <- prPrepareAlign(style_list$align, x, rnames)
-  style_list$align.header <- prPrepareAlign(style_list$align.header, x, rnames, default_rn = "c")
+  style_list$align <- prPrepareAlign(style_list$align, x = x, rnames = rnames)
+  style_list$align.header <- prPrepareAlign(style_list$align.header,x = x, rnames = rnames, default_rn = "c")
 
   if (tolower(compatibility) %in% c(
     "libreoffice", "libre office",
@@ -692,7 +692,7 @@ htmlTable.default <- function(x,
     if (!is.matrix(cgroup)) {
       total_columns <- total_columns + length(cgroup) - 1
     } else {
-      total_columns <- total_columns + sum(cgroup_spacer_cells)
+      total_columns <- total_columns + sum(cgroup_spacer_cells) * prGetEmptySpacerCellSize(style_list = style_list)
     }
   }
 
@@ -754,12 +754,10 @@ htmlTable.default <- function(x,
   ###############################
   # Start building table string #
   ###############################
-  table_str <- sprintf(
-    "<table class='%s' style='border-collapse: collapse; %s' %s>",
-    paste(style_list$css.class, collapse = ", "),
-    paste(style_list$css.table, collapse = "; "),
-    table_id
-  )
+  table_str <- str_interp("<table class='${CLASS_NAME}' style='border-collapse: collapse; ${TABLE_CSS}' ${TABLE_ID}>",
+                          list(CLASS_NAME = paste(style_list$css.class, collapse = ", "),
+                               TABLE_CSS =  paste(style_list$css.table, collapse = "; "),
+                               TABLE_ID = table_id))
 
   # Theoretically this should be added to the table but the
   # import to word processors works then less well and therefore I've
@@ -789,15 +787,12 @@ htmlTable.default <- function(x,
 
     if (compatibility != "LibreOffice") {
       if (style_list$pos.caption %in% c("bottom", "below")) {
-        table_str %<>%
-          paste0("\n\t<caption style='caption-side: bottom'>")
+        table_str %<>% paste0("\n\t<caption style='caption-side: bottom'>")
       } else {
-        table_str %<>%
-          paste0("\n\t<caption style='caption-side: top'>")
+        table_str %<>% paste0("\n\t<caption style='caption-side: top'>")
       }
 
-      table_str %<>%
-        paste0(caption, "</caption>")
+      table_str %<>% paste0(caption, "</caption>")
     }
   }
 
@@ -985,16 +980,12 @@ htmlTable.default <- function(x,
 
         # The padding doesn't work well with the Word import - well nothing really works well with word...
         # table_str <- sprintf("%s\n\t\t<td style='padding-left: .5em;'>%s</td>", table_str, rnames[row_nr])
-        table_str %<>%
-          sprintf(
-            "%s\n\t\t<td style='%s'>%s%s</td>",
-            .,
-            prGetStyle(c(rname_style, cell_style),
-              align = prGetAlign(style_list$align, 1)
-            ),
-            pdng,
-            rnames[row_nr]
-          )
+        table_str %<>% paste(str_interp("<td style='${STYLE}'>${PADDING}${NAME}</td>",
+                                        list(STYLE = prGetStyle(c(rname_style, cell_style),
+                                                              align = prGetAlign(style_list$align, index = 1, style_list = style_list)),
+                                             PADDING = pdng,
+                                             NAME = rnames[row_nr])),
+                             sep = "\n\t\t")
       }
 
       cell_str <- prAddCells(

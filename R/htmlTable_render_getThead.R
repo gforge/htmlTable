@@ -6,6 +6,7 @@
 #'  specer cells
 #' @return `string` Returns the html string for the `<thead>...</thead>` element
 #' @keywords internal
+#' @importFrom stringr str_interp
 prGetThead <- function(x,
                        header = NULL,
                        cgroup = NULL, n.cgroup = NULL,
@@ -27,13 +28,10 @@ prGetThead <- function(x,
   if (!is.null(caption) &
     compatibility == "LibreOffice" &
     !style_list$pos.caption %in% c("bottom", "below")) {
-    head_str %<>%
-      sprintf(
-        "%s\n\t<tr><td colspan='%d' style='text-align: left;'>%s</td></tr>",
-        .,
-        total_columns,
-        caption
-      )
+    head_str %<>% paste(str_interp("<tr><td colspan='${COLSPAN}' style='text-align: left;'>${CONTENT}</td></tr>",
+                                   list(COLSPAN = total_columns,
+                                        CONTENT = caption)),
+                        sep = "\n\t")
   }
 
   # Add the cgroup table header
@@ -62,40 +60,29 @@ prGetThead <- function(x,
 
   # Add the header
   if (!is.null(header)) {
-    # The bottom border was ment to be here but it doesn't
-    # work that well in the export
-    head_str %<>%
-      paste0("\n\t<tr>")
-
-    no_cgroup_rows <-
-      ifelse(!is.null(cgroup),
-        nrow(cgroup),
-        0
-      )
+    header_rowlabel_str <- NA
+    no_cgroup_rows <- ifelse(!is.null(cgroup), nrow(cgroup), 0)
     ts <- ifelse(no_cgroup_rows > 0, "", top_row_style)
+
+    header_list <- NULL
     if (!is.null(rowlabel) && style_list$pos.rowlabel == no_cgroup_rows + 1) {
-      head_str %<>% sprintf(
-        "%s\n\t\t<th style='%s'>%s</th>",
-        .,
-        prGetStyle(
-          style_list$css.header.border_bottom,
-          style_list$css.header[1],
-          ts,
-          attr(prepped_cell_css, "rnames")[1],
-          align = prGetAlign(style_list$align.header, 1)
-        ),
-        rowlabel
-      )
+      header_list <- list(STYLE = prGetStyle(style_list$css.header.border_bottom,
+                                             style_list$css.header[1],
+                                             ts,
+                                             attr(prepped_cell_css, "rnames")[1],
+                                             align = prGetAlign(style_list$align.header, 1, style_list = style_list)),
+                          CONTENT = rowlabel)
     } else if (!prSkipRownames(rnames)) {
-      head_str %<>% sprintf(
-        "%s\n\t\t<th style='%s'> </th>",
-        .,
-        prGetStyle(
-          style_list$css.header.border_bottom,
-          ts
-        )
-      )
+      header_list <- list(STYLE = prGetStyle(style_list$css.header.border_bottom,
+                                             ts),
+                          CONTENT = "")
     }
+
+    if (!is.null(header_list)) {
+      header_rowlabel_str <- paste(str_interp("<th style='${STYLE}'>${CONTENT}</th>", header_list),
+                            sep = "\n\t\t")
+    }
+
 
     cell_style <- c(style_list$css.header.border_bottom)
     if (first_row) {
@@ -109,10 +96,23 @@ prGetThead <- function(x,
       style = cell_style,
       cgroup_spacer_cells = cgroup_spacer_cells,
       has_rn_col = !prSkipRownames(rnames) * 1,
-      prepped_cell_css = attr(prepped_cell_css, "header")
+      prepped_cell_css = attr(prepped_cell_css, "header"),
+      style_list_align_key = "align.header"
     )
-    head_str %<>%
-      paste0(cell_str, "\n\t</tr>")
+
+    # The bottom border was ment to be here but it doesn't
+    # work that well in the export
+    if (is.na(header_rowlabel_str)) {
+      head_str %<>% paste(paste0("<tr>", cell_str),
+                          "</tr>",
+                          sep = "\n\t")
+
+    } else {
+      head_str %<>% paste(paste0("<tr>", header_rowlabel_str, cell_str),
+                          "</tr>",
+                          sep = "\n\t")
+    }
+
     first_row <- FALSE
   }
 

@@ -7,7 +7,7 @@
 \description{
 For the vignettes there is a dataset downloaded by using the
 \code{get_pxweb_data()} call. The data is from
-SCB (\href{http://scb.se/}{Statistics Sweden}) and downloaded
+SCB (\href{https://scb.se/}{Statistics Sweden}) and downloaded
 using the \href{https://github.com/rOpenGov/pxweb}{pxweb package}:
 }
 \examples{
@@ -43,7 +43,7 @@ save(SCB, file = "data/SCB.rda")
 }
 }
 \references{
-\url{http://scb.se}
+\url{https://scb.se}
 }
 \author{
 Max Gordon \email{max@gforge.se}

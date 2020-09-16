@@ -20,6 +20,7 @@ and remove multiple semicolon if such exist
 \seealso{
 Other hidden helper functions for htmlTable: 
 \code{\link{prAddCells}()},
+\code{\link{prAddEmptySpacerCell}()},
 \code{\link{prEscapeHtml}()},
 \code{\link{prGetCgroupHeader}()},
 \code{\link{prGetRowlabelPos}()},

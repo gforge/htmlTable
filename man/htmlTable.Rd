@@ -233,7 +233,7 @@ If you have \code{rownames} these will resolve similarly to the names to the
 This function will only work with \pkg{knitr} outputting \emph{HTML}, i.e.
 markdown mode. As the function returns raw HTML-code
 the compatibility with non-HTML formatting is limited,
-even with \href{http://johnmacfarlane.net/pandoc/}{pandoc}.
+even with \href{https://pandoc.org/}{pandoc}.
 
 Thanks to the the \code{\link[knitr:knit_print]{knitr::knit_print()}} and the \code{\link[knitr:asis_output]{knitr::asis_output()}}
 the \code{results='asis'} is \emph{no longer needed} except within for-loops.
@@ -293,6 +293,7 @@ There are multiple options that can be set, here is a set of the perhaps most us
 where HTML indentation caused everything to be interpreted as code. This seems to be fixed
 and if you want to look at the raw HTML code it is nice to have this set to \code{TRUE} so that
 the tags and elements are properly indented.
+\item \code{htmlTableCompat} - string - see parameter description
 }
 }
 
@@ -307,10 +308,10 @@ have been tested with MS Word 2016:
 \item \strong{Internet Explorer} (v. 11.20.10586.0) Works perfectly when copy-pasting into Word
 \item \strong{RStudio} (v. 0.99.448) Works perfectly when copy-pasting into Word.
 \emph{Note:} can have issues with multi-line \code{cgroup}s -
-see \href{http://code.google.com/p/chromium/issues/detail?id=305130}{bug}
+see \href{https://bugs.chromium.org/p/chromium/issues/detail?id=305130}{bug}
 \item \strong{Chrome} (v. 47.0.2526.106) Works perfectly when copy-pasting into Word.
 \emph{Note:} can have issues with multi-line \code{cgroup}s -
-see \href{http://code.google.com/p/chromium/issues/detail?id=305130}{bug}
+see \href{https://bugs.chromium.org/p/chromium/issues/detail?id=305130}{bug}
 \item \strong{Firefox} (v. 43.0.3) Works poorly - looses font-styling, lines and general feel
 \item \strong{Edge} (v. 25.10586.0.0) Works poorly - looses lines and general feel
 }
@@ -324,7 +325,7 @@ seems to work especially well when the paste comes directly from a Chrome browse
 \emph{Note} that when using complex \code{cgroup} alignments with multiple levels
 not every browser is able to handle this. For instance the RStudio
 webkit browser seems to have issues with this and a
-\href{http://code.google.com/p/chromium/issues/detail?id=305130}{bug has been filed}.
+\href{https://bugs.chromium.org/p/chromium/issues/detail?id=305130}{bug has been filed}.
 
 As the table uses HTML for rendering you need to be aware of that headers,
 row names, and cell values should try respect this for optimal display. Browsers
@@ -332,7 +333,7 @@ try to compensate and frequently the tables still turn out fine but it is
 not advised. Most importantly you should try to use
 \verb{&lt;} instead of \code{<} and
 \verb{&gt;} instead of \code{>}. You can find a complete list
-of HTML characters \href{http://ascii.cl/htmlcodes.htm}{here}.
+of HTML characters \href{https://ascii.cl/htmlcodes.htm}{here}.
 
 Lastly, I want to mention that function was inspired by the \code{\link[Hmisc:latex]{Hmisc::latex()}}
 that can be an excellent alternative if you wish to switch to PDF-output.

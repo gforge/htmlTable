@@ -112,8 +112,7 @@ prGetRgroupLine <- function(x,
     }
 
     true_span <- cspan +
-      sum(cgroup_spacer_cells[0:(cspan -
-        1 * !prSkipRownames(rnames))])
+      sum(cgroup_spacer_cells[0:(cspan - 1 * !prSkipRownames(rnames))]) * prGetEmptySpacerCellSize(style_list = style_list)
     ret_str %<>%
       sprintf(
         "%s\n\t<tr><td colspan='%d' style='%s'>%s</td>",

@@ -1,13 +1,11 @@
 library(testthat)
 library(XML)
 
-context("htmlTable - the cgroup")
-
 test_that("Check that dimensions are correct with cgroup usage",{
-  mx <- matrix(1:6, ncol=3)
+  mx <- matrix(1:6, ncol = 3)
   colnames(mx) <- sprintf("Col %s", LETTERS[1:NCOL(mx)])
   table_str <- htmlTable(mx,
-                         cgroup=c("a", "b"),
+                         cgroup = c("a", "b"),
                          n.cgroup=c(1, 2))
   parsed_table <- readHTMLTable(as.character(table_str))[[1]]
   expect_equal(ncol(parsed_table), ncol(mx) + 1,

@@ -65,6 +65,7 @@ within the \verb{<th>} elements on top of the table. Used by
 \seealso{
 Other hidden helper functions for htmlTable: 
 \code{\link{prAddCells}()},
+\code{\link{prAddEmptySpacerCell}()},
 \code{\link{prAddSemicolon2StrEnd}()},
 \code{\link{prEscapeHtml}()},
 \code{\link{prGetRowlabelPos}()},

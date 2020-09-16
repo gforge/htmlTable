@@ -22,6 +22,7 @@
 #' @keywords internal
 #' @inheritParams htmlTable
 #' @family hidden helper functions for htmlTable
+#' @importFrom stringr str_interp
 prGetCgroupHeader <- function(x,
                               cgroup_vec,
                               n.cgroup_vec,
@@ -78,8 +79,7 @@ prGetCgroupHeader <- function(x,
       # 10 3-1
       # 0 0 1
       colspan <- n.cgroup_vec[i] +
-        ifelse(start_column > length(cgroup_spacer_cells) ||
-          n.cgroup_vec[i] == 1,
+        ifelse(start_column > length(cgroup_spacer_cells) || n.cgroup_vec[i] == 1,
         0,
         ifelse(start_column == 1,
           sum(cgroup_spacer_cells[1:(n.cgroup_vec[i] - 1)]),
@@ -87,44 +87,44 @@ prGetCgroupHeader <- function(x,
             sum(cgroup_spacer_cells[start_column:length(cgroup_spacer_cells)]),
             sum(cgroup_spacer_cells[start_column:((start_column - 1) + (n.cgroup_vec[i] - 1))])
           )
-        )
+        ) * prGetEmptySpacerCellSize(style_list = style_list)
         )
 
+
+      header_align <- prGetAlign(cgroup_vec.just,
+                                 index = i,
+                                 style_list = style_list)
       if (nchar(cgroup_vec[i]) == 0) { # Removed as this may now be on purpose || is.na(cgroup_vec[i]))
-        header_str %<>% sprintf(
-          "%s\n\t\t<th colspan='%d' style='%s'></th>",
-          .,
-          colspan,
-          prGetStyle(c(`font-weight` = 900),
-            ts,
-            align = prGetAlign(cgroup_vec.just, i),
-            css_4_cgroup_vec[i]
-          )
-        )
+        header_values <- list(COLSPAN = colspan,
+                              STYLE = prGetStyle(c(`font-weight` = 900),
+                                                 ts,
+                                                 header_align,
+                                                 css_4_cgroup_vec[i]),
+                              CONTENT = "")
       } else {
-        header_str %<>% sprintf(
-          "%s\n\t\t<th colspan='%d' style='%s'>%s</th>",
-          .,
-          colspan,
-          prGetStyle(c(
-            `font-weight` = 900,
-            `border-bottom` = "1px solid grey"
-          ),
-          ts,
-          align = prGetAlign(cgroup_vec.just, i),
-          css_4_cgroup_vec[i]
-          ),
-          cgroup_vec[i]
-        )
+        header_values <- list(COLSPAN = colspan,
+                              STYLE = prGetStyle(c(`font-weight` = 900,
+                                                   `border-bottom` = "1px solid grey"),
+                                                 ts,
+                                                 header_align,
+                                                 css_4_cgroup_vec[i]),
+                              CONTENT = cgroup_vec[i])
       }
+
+      header_str %<>% paste(str_interp("<th colspan='${COLSPAN}' style='${STYLE}'>${CONTENT}</th>",
+                                       header_values),
+                            sep = "\n\t\t")
 
       # If not last then add a filler cell between the row categories
       # this is also the reason that we need the cgroup_spacer_cells
       if (i != sum(!is.na(cgroup_vec))) {
-        header_str %<>% sprintf(
-          "%s<th style='%s; border-bottom: hidden;'>&nbsp;</th>",
-          ., ts
-        )
+        bottom_border_style = str_interp("border-bottom: ${STYLE};",
+                                         list(STYLE = style_list$spacer.css.cgroup.bottom.border))
+        header_str %<>% prAddEmptySpacerCell(style_list = style_list,
+                                             cell_style = prGetStyle(bottom_border_style,
+                                                                     ts),
+                                             align_style = header_align,
+                                             cell_tag = "th")
       }
     }
   }
