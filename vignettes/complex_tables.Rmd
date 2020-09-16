@@ -20,12 +20,12 @@ Tables are an essential part of publishing, well... anything. I therefore want t
 1. Markdown tables
 2. HTML tables
 
-As the `htmlTable`-package is all about [HTML](http://en.wikipedia.org/wiki/HTML) tables we will work only with that output option. The core idea is that HTML is ubiquitous and that most word-processors will have to support copy-pasting tables and by providing simple simple CSS-formatting we are able to maximize this compatibility. *Note* CSS is today an extremely complex topic and it is no surprise that word-processors may have difficulty importing tables that have lots of advanced syntax, htmlTable tries to avoid all of that by putting the style close to each element, often at the cell-level.
+As the `htmlTable`-package is all about [HTML](https://en.wikipedia.org/wiki/HTML) tables we will work only with that output option. The core idea is that HTML is ubiquitous and that most word-processors will have to support copy-pasting tables and by providing simple simple CSS-formatting we are able to maximize this compatibility. *Note* CSS is today an extremely complex topic and it is no surprise that word-processors may have difficulty importing tables that have lots of advanced syntax, htmlTable tries to avoid all of that by putting the style close to each element, often at the cell-level.
 
 Basics
 ======
 
-I developed the `htmlTable` in order to get tables matching those available in top medical journals. After finding no HTML-alternative to the `Hmisc::latex` function on [Stack Overflow](http://stackoverflow.com/questions/11950703/html-with-multicolumn-table-in-markdown-using-knitr) I wrote a basic function allowing column spanners and row groups. Below is a basic example on these two:
+I developed the `htmlTable` in order to get tables matching those available in top medical journals. After finding no HTML-alternative to the `Hmisc::latex` function on [Stack Overflow](https://stackoverflow.com/questions/11950703/html-with-multicolumn-table-in-markdown-using-knitr) I wrote a basic function allowing column spanners and row groups. Below is a basic example on these two:
 
 ```{r}
 library(htmlTable)
@@ -280,4 +280,4 @@ out_mx %>%
 
 Although a graph most likely does the visualization task better, tables are good at conveying detailed information. It is in my mind without doubt easier in the latest version to find the pattern in the data.
 
-Lastly I would like to thank [Stephen Few](http://www.amazon.com/Show-Me-Numbers-Designing-Enlighten/dp/0970601999), [ThinkUI](http://www.thinkui.co.uk/resources/effective-design-of-data-tables/), [ACAPS](https://www.acaps.org/sites/acaps/files/resources/files/table_design_september_2012.pdf), and [LabWrite](http://www.ncsu.edu/labwrite/res/gh/gh-tables.html) for inspiration.
+Lastly I would like to thank [Stephen Few](https://www.amazon.com/Show-Me-Numbers-Designing-Enlighten/dp/0970601999), [ThinkUI](http://www.thinkui.co.uk/resources/effective-design-of-data-tables/), [ACAPS](https://www.acaps.org/sites/acaps/files/resources/files/table_design_september_2012.pdf), and [LabWrite](https://www.ncsu.edu/labwrite/res/gh/gh-tables.html) for inspiration.
