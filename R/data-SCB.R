@@ -10,6 +10,6 @@
 #' @name SCB
 #' @docType data
 #' @author Max Gordon \email{max@@gforge.se}
-#' @references <http://scb.se>
+#' @references <https://scb.se>
 #' @keywords data
 NULL

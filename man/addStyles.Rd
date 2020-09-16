@@ -100,7 +100,7 @@ table cells. See section below for details.}
 \item{css.header.border_bottom}{The header bottom-border style, e.g. \verb{border-bottom: 1px solid grey}}
 
 \item{css.class}{The html CSS class for the table. This allows directing html
-formatting through \href{http://www.w3schools.com/Css/}{CSS}
+formatting through \href{https://www.w3schools.com/Css/}{CSS}
 directly at all instances of that class. \emph{Note:} unfortunately the
 CSS is frequently ignored by word processors. This option
 is mostly inteded for web-presentations.}
