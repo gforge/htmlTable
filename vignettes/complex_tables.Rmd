@@ -280,4 +280,4 @@ out_mx %>%
 
 Although a graph most likely does the visualization task better, tables are good at conveying detailed information. It is in my mind without doubt easier in the latest version to find the pattern in the data.
 
-Lastly I would like to thank [Stephen Few](https://www.amazon.com/Show-Me-Numbers-Designing-Enlighten/dp/0970601999), [ThinkUI](http://www.thinkui.co.uk/resources/effective-design-of-data-tables/), [ACAPS](https://www.acaps.org/sites/acaps/files/resources/files/table_design_september_2012.pdf), and [LabWrite](https://www.ncsu.edu/labwrite/res/gh/gh-tables.html) for inspiration.
+Lastly I would like to thank [Stephen Few](https://www.amazon.com/Show-Me-Numbers-Designing-Enlighten/dp/0970601999), [ThinkUI](http://www.thinkui.co.uk/resources/effective-design-of-data-tables/), [ACAPS](https://www.acaps.org/sites/acaps/files/resources/files/table_design_september_2012.pdf), and [LabWrite](https://projects.ncsu.edu/labwrite//res/gh/gh-tables.html) for inspiration.

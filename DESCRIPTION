@@ -14,7 +14,7 @@ Description: Tables with state-of-the-art layout elements such as row spanners,
     also contains a few text formatting functions that help outputting text
     compatible with HTML/LaTeX.
 License: GPL (>= 3)
-URL: http://gforge.se/packages/
+URL: https://gforge.se/packages/
 BugReports: https://github.com/gforge/htmlTable/issues
 Biarch: yes
 Imports:
