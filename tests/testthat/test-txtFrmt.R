@@ -163,6 +163,15 @@ test_that("The txtRound should apply a txtInt to the integer section when activa
 
   expect_equal(txtRound(123333, digits = 0, txtInt_args = list()),
                "123,333")
+
+  expect_equal(txtRound(123333, digits = 0, txtInt_args = list()),
+               "123,333")
+
+  expect_equal(txtRound(123333, digits = 0, txtInt_args = list(language = "sv", html = FALSE)),
+               "123 333")
+
+  expect_equal(txtRound(c(1, 1e4, 2e5), digits = 0, txtInt_args = list(language = "sv", html = FALSE)),
+               c("1", "10 000", "200 000"))
 })
 
 test_that("Numbers that round to 0 should not have -, i.e. no -0.0",{
