@@ -1,5 +1,9 @@
 NEWS for the htmlTable package
 
+Changes fro 2.2.1
+-----------------
+* The `txtInt` handles `NA` more gracefully.
+
 Changes fro 2.2.0
 -----------------
 * Added `htmlTable_args` attribute for making modifications to the final table easier

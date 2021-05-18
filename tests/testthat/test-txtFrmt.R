@@ -21,24 +21,26 @@ test_that("Add zero", {
                dim(int_mtrx))
   expect_equal(int_mtrx[3,1],
                txtInt(mtrx[3,1]))
+
+  expect_equal(txtInt(NA), "")
 })
 
 
 test_that("Throw nsmall warning", {
   expect_warning(txtInt(.5), regexp = "The function can only be served integers")
-  expect_silent(txtInt(.5, nsmall=1))
+  expect_silent(txtInt(.5, nsmall = 1))
   expect_warning(txtInt(c(.5, .5)), regexp = "The function can only be served integers")
-  expect_silent(txtInt(c(.5, .5), nsmall=2))
+  expect_silent(txtInt(c(.5, .5), nsmall = 2))
 })
 
 context('txtPval')
 
 test_that("Add zero", {
-  expect_equal(txtPval(.5, lim.2dec=10^-1), "0.50")
-  expect_equal(txtPval(.06, lim.2dec=10^-1), "0.06")
-  expect_equal(txtPval(.06, lim.2dec=10^-2), "0.060")
-  expect_equal(txtPval(.06451, lim.2dec=10^-3), "0.065")
-  expect_equal(txtPval(.00006451, lim.sig=10^-3), "&lt; 0.001")
+  expect_equal(txtPval(.5, lim.2dec = 10^-1), "0.50")
+  expect_equal(txtPval(.06, lim.2dec = 10^-1), "0.06")
+  expect_equal(txtPval(.06, lim.2dec = 10^-2), "0.060")
+  expect_equal(txtPval(.06451, lim.2dec = 10^-3), "0.065")
+  expect_equal(txtPval(.00006451, lim.sig = 10^-3), "&lt; 0.001")
   expect_warning(txtPval("a", lim.sig = 10^-3))
 })
 
