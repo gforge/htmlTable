@@ -28,9 +28,12 @@ form 10e+? is furthermore avoided.
 }
 \examples{
 txtInt(123)
-txtInt(1234)
-txtInt(12345)
-txtInt(123456)
+
+# Supplying a matrix
+txtInt(matrix(c(1234, 12345, 123456, 1234567), ncol = 2))
+
+# Missing are returned as empty strings, i.e. ""
+txtInt(c(NA, 1e7))
 
 }
 \seealso{

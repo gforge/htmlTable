@@ -287,7 +287,10 @@ tidyHtmlTable.data.frame <- function(x,
   if (!is.null(style_list)) {
     attr(htmlTable_args[[1]], style_attribute_name) <- style_list
   }
-  do.call(table_fn, htmlTable_args)
+
+  ret <- do.call(table_fn, htmlTable_args)
+  attr(ret, "htmlTable_args") <- htmlTable_args
+  return(ret)
 }
 
 `c_idx` <- "Fix no visible binding"
