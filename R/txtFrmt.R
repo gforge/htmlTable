@@ -239,6 +239,7 @@ txtRound.default = function(x,
                   digits.nonzero = digits.nonzero,
                   txt.NA = txt.NA,
                   dec = dec,
+                  txtInt_args = txtInt_args,
                   ...))
   }
 
