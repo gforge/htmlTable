@@ -1,5 +1,5 @@
 Package: htmlTable
-Version: 2.2.1
+Version: 2.3.0
 Title: Advanced Tables for Markdown/HTML
 Authors@R: c(
   person("Max", "Gordon", email = "max@gforge.se",
@@ -45,5 +45,5 @@ Suggests:
 Encoding: UTF-8
 NeedsCompilation: no
 VignetteBuilder: knitr
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
 Roxygen: list(markdown = TRUE)
