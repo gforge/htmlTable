@@ -15,7 +15,7 @@ tidyHtmlTable(
   tspanner,
   hidden_tspanner,
   skip_removal_warning = getOption("htmlTable.skip_removal_warning", FALSE),
-  skip_check_uniqueness = getOption("htmlTable.skip_check_uniqueness", FALSE),
+  rnames_unique,
   table_fn = htmlTable,
   ...
 )
@@ -45,8 +45,8 @@ still be there but the spanner will be set to "" and thus ignored by \code{\link
 
 \item{skip_removal_warning}{\code{boolean} suppress warning message when removing NA columns.}
 
-\item{skip_check_uniqueness}{\code{boolean} skip the cheking of the uniqueness of a row as selected
-by the select statement. See section below on \emph{Row uniqueness}.}
+\item{rnames_unique}{Similar to \code{rnames}  where we have issues with the uniqueness of a
+row as selected by the select statement. See section below on \emph{Row uniqueness}.}
 
 \item{table_fn}{The table function that should receive the input, defaults to \code{\link[=htmlTable]{htmlTable()}}
 but you can provide any function that uses the same input formatting. This package was inspired
@@ -171,9 +171,8 @@ we could therefore like to simplify the names to:
 }
 
 And still retain the ability to follow what row corresponds to a given class. To
-do this you need to set the parameter \code{skip_check_uniqueness} to \code{TRUE} or for all
-tables just set the option at the beginning like this:
-\code{options("htmlTable.skip_check_uniqueness" = TRUE)}
+do this you need to provide the original unique name in the parameter \code{rnames_unique}
+as tidyHtmlTable otherwise will merge rows not intended for merging.
 
 \emph{Note} it is recommended that you verify with the full names just to make sure that
 any unexpected row order change has happened in the underlying pivot functions.

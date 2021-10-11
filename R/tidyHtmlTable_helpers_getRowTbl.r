@@ -1,6 +1,6 @@
 getRowTbl <- function(x) {
   out <- prExtractElementsAndConvertToTbl(x,
-    elements = c("tspanner", "rgroup", "rnames")
+    elements = c("tspanner", "rgroup", "rnames", "rnames_unique")
   ) %>%
     dplyr::arrange() %>%
     # This is necessary in order to not generate NA values when setting

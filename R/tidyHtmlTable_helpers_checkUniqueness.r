@@ -4,12 +4,14 @@ checkUniqueness <- function(tidyTableDataList) {
   tidyTableData <- do.call(cbind, tidyTableDataList)
   dupes <- tidyTableData %>% duplicated()
   if (sum(dupes) != 0) {
-    stop(paste0(
-      "The input parameters ",
-      paste(paste0("\"", names(tidyTableData), "\""), collapse = ", "),
-      " do not specify unique rows. The following rows ",
-      "are duplicated: ",
-      paste(which(dupes), collapse = ", ")
-    ))
+    core_msg <- paste0("The input parameters ",
+                       paste(paste0("\"", names(tidyTableData), "\""), collapse = ", "),
+                       " do not specify unique rows, have you forgotten one?.")
+    duplicated_rows <- paste0("The following rows are duplicated: ", paste(which(dupes), collapse = ", "))
+    if (is.null(tidyTableDataList$rnames_unique)) {
+      core_msg <- paste(core_msg,
+                        "Check if you intended to provide the rnames_unique (see the help page).")
+    }
+    stop(core_msg, "\n", duplicated_rows)
   }
 }

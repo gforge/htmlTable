@@ -2,7 +2,7 @@ NEWS for the htmlTable package
 
 Changes for 2.3.0
 -----------------
-* Added `skip_check_uniqueness` parameter to tidyHtmlTable
+* Added `rnames_unique` parameter to tidyHtmlTable so that rows can have non-unique names
 
 Changes for 2.2.1
 -----------------

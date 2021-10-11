@@ -97,9 +97,8 @@
 #' - ...
 #'
 #' And still retain the ability to follow what row corresponds to a given class. To
-#' do this you need to set the parameter `skip_check_uniqueness` to `TRUE` or for all
-#' tables just set the option at the beginning like this:
-#'  `options("htmlTable.skip_check_uniqueness" = TRUE)`
+#' do this you need to provide the original unique name in the parameter `rnames_unique`
+#' as tidyHtmlTable otherwise will merge rows not intended for merging.
 #'
 #' *Note* it is recommended that you verify with the full names just to make sure that
 #' any unexpected row order change has happened in the underlying pivot functions.
@@ -118,8 +117,8 @@
 #' @param hidden_tspanner `strings` with `tspanner` values that will be hidden (the values will
 #'  still be there but the spanner will be set to "" and thus ignored by [htmlTable()]).
 #' @param skip_removal_warning `boolean` suppress warning message when removing NA columns.
-#' @param skip_check_uniqueness `boolean` skip the cheking of the uniqueness of a row as selected
-#'  by the select statement. See section below on *Row uniqueness*.
+#' @param rnames_unique Similar to `rnames`  where we have issues with the uniqueness of a
+#'  row as selected by the select statement. See section below on *Row uniqueness*.
 #' @param table_fn The table function that should receive the input, defaults to [htmlTable()]
 #'  but you can provide any function that uses the same input formatting. This package was inspired
 #'  by the [Hmisc::latex()] function.
@@ -139,7 +138,7 @@ tidyHtmlTable <- function(x,
                           tspanner,
                           hidden_tspanner,
                           skip_removal_warning = getOption("htmlTable.skip_removal_warning", FALSE),
-                          skip_check_uniqueness = getOption("htmlTable.skip_check_uniqueness", FALSE),
+                          rnames_unique,
                           table_fn = htmlTable,
                           ...) {
   UseMethod("tidyHtmlTable")
@@ -156,7 +155,7 @@ tidyHtmlTable.default <- function(x,
                                   tspanner,
                                   hidden_tspanner,
                                   skip_removal_warning = getOption("htmlTable.skip_removal_warning", FALSE),
-                                  skip_check_uniqueness = getOption("htmlTable.skip_check_uniqueness", FALSE),
+                                  rnames_unique,
                                   table_fn = htmlTable,
                                   ...) {
   stop("x must be of class data.frame")
@@ -173,7 +172,7 @@ tidyHtmlTable.data.frame <- function(x,
                                      tspanner,
                                      hidden_tspanner,
                                      skip_removal_warning = FALSE,
-                                     skip_check_uniqueness = getOption("htmlTable.skip_check_uniqueness", FALSE),
+                                     rnames_unique,
                                      table_fn = htmlTable,
                                      ...) {
   # You need the suggested package for this function
@@ -214,16 +213,14 @@ tidyHtmlTable.data.frame <- function(x,
     value = prAssertAndRetrieveValue(x, value),
     header = prAssertAndRetrieveValue(x, header),
     rnames = prAssertAndRetrieveValue(x, rnames, name = "name"),
+    rnames_unique = prAssertAndRetrieveValue(x, rnames_unique, optional = TRUE),
     rgroup = prAssertAndRetrieveValue(x, rgroup, optional = TRUE),
     cgroup = prAssertAndRetrieveValue(x, cgroup, optional = TRUE, maxCols = getOption("htmlTabl.tidyHtmlTable.maxCols", default = 5)),
     tspanner = prAssertAndRetrieveValue(x, tspanner, optional = TRUE)
   ) %>%
     purrr::keep(~ !is.null(.))
 
-  if (!skip_check_uniqueness) {
-    checkUniqueness(tidyTableDataList)
-  }
-
+  checkUniqueness(tidyTableDataList)
 
   tidyTableDataList %<>% removeRowsWithNA(skip_removal_warning = skip_removal_warning)
 
