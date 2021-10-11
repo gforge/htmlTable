@@ -15,6 +15,7 @@ tidyHtmlTable(
   tspanner,
   hidden_tspanner,
   skip_removal_warning = getOption("htmlTable.skip_removal_warning", FALSE),
+  skip_check_uniqueness = getOption("htmlTable.skip_check_uniqueness", FALSE),
   table_fn = htmlTable,
   ...
 )
@@ -43,6 +44,9 @@ still be there but the spanner will be set to "" and thus ignored by \code{\link
 still be there but the spanner will be set to "" and thus ignored by \code{\link[=htmlTable]{htmlTable()}}).}
 
 \item{skip_removal_warning}{\code{boolean} suppress warning message when removing NA columns.}
+
+\item{skip_check_uniqueness}{\code{boolean} skip the cheking of the uniqueness of a row as selected
+by the select statement. See section below on \emph{Row uniqueness}.}
 
 \item{table_fn}{The table function that should receive the input, defaults to \code{\link[=htmlTable]{htmlTable()}}
 but you can provide any function that uses the same input formatting. This package was inspired
@@ -134,6 +138,45 @@ packages installed. These have been removed due to
 the additional 20 Mb that these dependencies added (issue #47).
 \emph{Note:} if you use \pkg{tidyverse} it will already have
 all of these and you do not need to worry.
+}
+
+\section{Row uniqueness}{
+
+
+Usually each row should have a unique combination of \code{rnames}, \code{header}, \code{crgroup}, ...
+Sometimes though rows come in a distinct order and the order identifies
+the row more than the name. If we are identifying bone fractures using the
+AO-classification we will have classes ranging in the form of:
+\itemize{
+\item A
+\item A1
+\item A1.1
+\item A2
+\item A2.1
+\item A2.2
+\item B
+\item ...
+}
+
+we could therefore like to simplify the names to:
+\itemize{
+\item A
+\item .1
+\item ...1
+\item .2
+\item ...1
+\item ...2
+\item B
+\item ...
+}
+
+And still retain the ability to follow what row corresponds to a given class. To
+do this you need to set the parameter \code{skip_check_uniqueness} to \code{TRUE} or for all
+tables just set the option at the beginning like this:
+\code{options("htmlTable.skip_check_uniqueness" = TRUE)}
+
+\emph{Note} it is recommended that you verify with the full names just to make sure that
+any unexpected row order change has happened in the underlying pivot functions.
 }
 
 \examples{

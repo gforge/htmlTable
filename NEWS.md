@@ -1,6 +1,10 @@
 NEWS for the htmlTable package
 
-Changes fro 2.2.1
+Changes for 2.3.0
+-----------------
+* Added `skip_check_uniqueness` parameter to tidyHtmlTable
+
+Changes for 2.2.1
 -----------------
 * The `txtInt` handles `NA` more gracefully.
 
