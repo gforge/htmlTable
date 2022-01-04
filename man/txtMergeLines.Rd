@@ -16,7 +16,7 @@ otherwise it uses the \verb{<br />} that is compatible
 with the XHTML-formatting.}
 }
 \value{
-string
+\code{string} with \code{asis_output} wrapping if html output is activated
 }
 \description{
 This function helps you to do a table header with multiple lines
