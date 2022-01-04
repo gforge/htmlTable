@@ -5,7 +5,7 @@
 #'  a header for each table. If none is provided it will use the names of
 #'  the table list or a numeric number.
 #' @return [htmlTable()] class object
-#' @example inst/examples/htmlTable_example.R
+#' @example inst/examples/concatHtmlTables_example.R
 #' @export
 concatHtmlTables <- function(tables, headers = NULL) {
   assert_list(tables)
