@@ -10,3 +10,4 @@
 ^Meta$
 .lintr
 .vscode
+^CRAN-SUBMISSION$
