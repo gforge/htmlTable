@@ -4,7 +4,12 @@
 \alias{txtInt}
 \title{SI or English formatting of an integer}
 \usage{
-txtInt(x, language = "en", html = TRUE, ...)
+txtInt(
+  x,
+  language = getOption("htmlTable.language", default = "en"),
+  html = getOption("htmlTable.html", default = TRUE),
+  ...
+)
 }
 \arguments{
 \item{x}{The integer variable}
