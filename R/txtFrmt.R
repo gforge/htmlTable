@@ -12,7 +12,7 @@
 #'  then the HTML5 version of *br* will be used: `<br>`
 #'  otherwise it uses the `<br />` that is compatible
 #'  with the XHTML-formatting.
-#' @return string
+#' @return `string` with `asis_output` wrapping if html output is activated
 #'
 #' @examples
 #' txtMergeLines("hello", "world")
@@ -21,23 +21,29 @@
 #'
 #' @family text formatters
 #' @export
+#' @importFrom knitr asis_output
 txtMergeLines <- function(..., html = 5){
   strings <- c()
   for (i in list(...)) {
     if (is.list(i)) {
       for (c in i)
         strings <- append(strings, i)
-    }else{
+    } else{
       strings <- append(strings, i)
     }
-
   }
+
   if (length(strings) == 0) {
     return("")
+  } else if (length(strings) == 1) {
+    # Split multi-line strings
+    strings <- strsplit(strings, "\n[ ]*")[[1]]
   }
 
   if (length(strings) == 1) {
-    strings <- gsub("\n", ifelse(html == 5, "<br>\n", "<br />\n"), strings)
+    if (html) {
+      return(asis_output(strings))
+    }
     return(strings)
   }
 
@@ -54,9 +60,11 @@ txtMergeLines <- function(..., html = 5){
                                 sprintf("\\hbox{\\strut %s}", line)))
     first <- FALSE
   }
-  ret <- ifelse(html, ret, paste0(ret, "}"))
+  if (html) {
+    return(asis_output(ret))
+  }
 
-  return(ret)
+  paste0(ret, "}")
 }
 
 #' SI or English formatting of an integer

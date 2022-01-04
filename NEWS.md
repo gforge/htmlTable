@@ -5,6 +5,8 @@ Changes for 2.4.0
 * The `txtRound.data.frame` converted all data to a matrix before rounding all elements. Changed
   to only convert numeric variables and also added tidy-select syntax. The function now returns
   the entire input `data.frame` with rounded elements as requested.
+* The `txtMergeLines` now returns an `knitr::asis_output` if html mode is activated. Fixed also
+  multiline strings conversion into latex/html format.
 
 Changes for 2.3.0
 -----------------
