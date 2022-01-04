@@ -1,6 +1,7 @@
 library(testthat)
 library(XML)
 library(tibble)
+library(magrittr)
 context("htmlTable")
 
 # A simple example
@@ -308,13 +309,16 @@ test_that("Handling data.frames with factors", {
   expect_true(grepl("Unique_Factor_1", str))
 
   tmp <- data.frame(
-    a = 1,
+    a = 1.23,
     b = factor(
       x = 1,
       labels = c("1.2")
     )
-  )
-  expect_true(txtRound(tmp)$b == 1)
+  ) %>%
+    txtRound()
+
+  expect_true(tmp$a == "1",
+              tmp$b == "1.2")
 })
 
 context("htmlTable - empty table")

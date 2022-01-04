@@ -121,12 +121,12 @@ test_that("Supplying a data.frame",{
     as.data.frame()
   test_df$text = LETTERS[1:nrow(test_df)]
 
-  expect_equal(dim(txtRound(test_df, 1)),
+  expect_equal(dim(txtRound(test_df, digits = 1)),
                dim(test_df))
-  expect_equivalent(as.matrix(txtRound(test_df, 1)[,1:3]),
+  expect_equivalent(as.matrix(txtRound(test_df, digits = 1)[,1:3]),
                     t(apply(test_df[,1:3], 1, function(x) sprintf("%.1f", x))))
 
-  expect_equal(txtRound(test_df, 1)$text,
+  expect_equal(txtRound(test_df, digits = 1)$text,
                test_df$text)
 })
 

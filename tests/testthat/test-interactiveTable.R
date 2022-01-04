@@ -5,7 +5,7 @@ context('interactiveTable')
 # A simple example
 test_that("With empty rownames(mx) it should skip those",
 {
-  mx <- matrix(1:6, ncol=3)
+  mx <- matrix(1:6, ncol = 3)
   table_str <- interactiveTable(mx)
   expect_false(grepl("</th>", table_str))
   expect_false(grepl("<tr>[^>]+>NA</td>", table_str))
@@ -19,7 +19,7 @@ test_that("With empty rownames(mx) it should skip those",
 
 test_that("Empty cell names should be replaced with ''",
 {
-  mx <- matrix(1:6, ncol=3)
+  mx <- matrix(1:6, ncol = 3)
   mx[1,1] <- NA
   table_str <- interactiveTable(mx)
   expect_false(grepl("<tr>[^>]+>NA</td>", table_str))
@@ -27,7 +27,7 @@ test_that("Empty cell names should be replaced with ''",
 
 test_that("The variable name should not be in the tables first row if no rownames(mx)",
 {
-  mx <- matrix(1:6, ncol=3)
+  mx <- matrix(1:6, ncol = 3)
   colnames(mx) <- sprintf("Col %s", LETTERS[1:NCOL(mx)])
   table_str <- interactiveTable(mx)
   expect_false(grepl("<thead>[^<]*<tr>[^>]+>mx</th>", table_str))
@@ -35,15 +35,15 @@ test_that("The variable name should not be in the tables first row if no rowname
 
 test_that("A rowlabel without rownames indicates some kind of error and should throw an error",
 {
-  mx <- matrix(1:6, ncol=3)
+  mx <- matrix(1:6, ncol = 3)
   colnames(mx) <- sprintf("Col %s", LETTERS[1:NCOL(mx)])
-  expect_error(interactiveTable(mx, rowlabel="not_mx"))
+  expect_error(interactiveTable(mx, rowlabel = "not_mx"))
 })
 
 # Add rownames
 test_that("The rowname should appear",
 {
-  mx <- matrix(1:6, ncol=3)
+  mx <- matrix(1:6, ncol = 3)
   colnames(mx) <- sprintf("Col %s", LETTERS[1:NCOL(mx)])
   rownames(mx) <- LETTERS[1:NROW(mx)]
   table_str <- interactiveTable(mx)
@@ -56,22 +56,22 @@ test_that("The rowname should appear",
 
 test_that("Check that basic output are the same as the provided matrix",
 {
-  mx <- matrix(1:6, ncol=3)
+  mx <- matrix(1:6, ncol = 3)
   colnames(mx) <- sprintf("Col %s", LETTERS[1:NCOL(mx)])
   table_str <- interactiveTable(mx)
   class(table_str) <- "character"
   parsed_table <- readHTMLTable(table_str)[[1]]
-  expect_equal(ncol(parsed_table), ncol(mx), info="Cols did not match")
-  expect_equal(nrow(parsed_table), nrow(mx), info="Rows did not match")
+  expect_equal(ncol(parsed_table), ncol(mx), info = "Cols did not match")
+  expect_equal(nrow(parsed_table), nrow(mx), info = "Rows did not match")
   expect_true(all(mx == parsed_table),
-              info="Some cells don't match the inputted cells")
+              info = "Some cells don't match the inputted cells")
 })
 
 
 
 test_that("rnames = FALSE it should skip those",
 {
-  mx <- matrix(1:6, ncol=3)
+  mx <- matrix(1:6, ncol = 3)
   rownames(mx) <- c("Row A", "Row B")
   table_str <- interactiveTable(mx, rnames = FALSE)
   expect_false(grepl("FALSE", table_str))
@@ -79,29 +79,29 @@ test_that("rnames = FALSE it should skip those",
 })
 
 test_that("Test align functions", {
-  expect_equivalent(nchar(prPrepareAlign("lr", x = matrix(1, ncol=10))),
+  expect_equivalent(nchar(prPrepareAlign("lr", x = matrix(1, ncol = 10))),
                     10)
-  expect_equivalent(nchar(prPrepareAlign("lr", x = matrix(1, ncol=2))),
+  expect_equivalent(nchar(prPrepareAlign("lr", x = matrix(1, ncol = 2))),
                     2)
-  expect_equivalent(nchar(prPrepareAlign("lr", x = matrix(1, ncol=2), rnames = TRUE)),
+  expect_equivalent(nchar(prPrepareAlign("lr", x = matrix(1, ncol = 2), rnames = TRUE)),
                     3)
-  expect_equivalent(nchar(prPrepareAlign("l", x = matrix(1, ncol=2), rnames = TRUE)),
+  expect_equivalent(nchar(prPrepareAlign("l", x = matrix(1, ncol = 2), rnames = TRUE)),
                     3)
-  expect_equivalent(nchar(prPrepareAlign("", x = matrix(1, ncol=2, nrow=2), rnames = TRUE)),
+  expect_equivalent(nchar(prPrepareAlign("", x = matrix(1, ncol = 2, nrow = 2), rnames = TRUE)),
                     3)
 
-  expect_equivalent(attr(prPrepareAlign("r|rlt|r|", x = matrix(1, ncol=2, nrow=2), rnames = TRUE), "n"),
+  expect_equivalent(attr(prPrepareAlign("r|rlt|r|", x = matrix(1, ncol = 2, nrow = 2), rnames = TRUE), "n"),
                     3)
 
   expect_equivalent(attr(prPrepareAlign("r|rcl|lt|r|", x = matrix(1, ncol=5, nrow=2), rnames = TRUE), "n"),
                     6)
-  expect_match(prPrepareAlign("r|rcl|lt|r|", x = matrix(1, ncol=5, nrow=2), rnames = TRUE),
+  expect_match(prPrepareAlign("r|rcl|lt|r|", x = matrix(1, ncol = 5, nrow = 2), rnames = TRUE),
                "^r")
 
-  expect_match(prPrepareAlign("l|r|", x = matrix(1, ncol=3, nrow=2), rnames = TRUE),
+  expect_match(prPrepareAlign("l|r|", x = matrix(1, ncol = 3, nrow = 2), rnames = TRUE),
                "^l|r|r|$")
 
-  align_str <- prPrepareAlign("r|rcl|lt|r|", x = matrix(1, ncol=5, nrow=2), rnames = TRUE)
+  align_str <- prPrepareAlign("r|rcl|lt|r|", x = matrix(1, ncol = 5, nrow = 2), rnames = TRUE)
   expect_true("right" %in% prGetAlign(align_str, 1))
   expect_true("right" %in% prGetAlign(align_str, 2))
   expect_true("center" %in% prGetAlign(align_str, 3))
@@ -118,12 +118,12 @@ test_that("Test align functions", {
   expect_equivalent(length(prGetAlign(align_str, 2)), 1)
   expect_equivalent(length(prGetAlign(align_str, 6)), 2)
 
-  align_str <- prPrepareAlign("|c|rc", x = matrix(1, ncol=2, nrow=2), rnames = TRUE)
+  align_str <- prPrepareAlign("|c|rc", x = matrix(1, ncol = 2, nrow = 2), rnames = TRUE)
   expect_true("border-right" %in% names(prGetAlign(align_str, 1)))
   expect_true("border-left" %in% names(prGetAlign(align_str, 1)))
   expect_true("center" %in% prGetAlign(align_str, 1))
 
-  mx <- matrix(1:6, ncol=3)
+  mx <- matrix(1:6, ncol = 3)
   rownames(mx) <- c("Row A", "Row B")
   table_str <- interactiveTable(mx, rname = FALSE)
   expect_match(table_str, "text-align: center;[^>]*>1")
@@ -136,13 +136,13 @@ test_that("Test align functions", {
   expect_match(table_str, "text-align: center;[^>]*>3")
   expect_match(table_str, "text-align: center;[^>]*>5")
 
-  table_str <- interactiveTable(mx, align="r")
+  table_str <- interactiveTable(mx, align = "r")
   expect_match(table_str, "text-align: left;[^>]*>Ro")
   expect_match(table_str, "text-align: right;[^>]*>1")
   expect_match(table_str, "text-align: right;[^>]*>3")
   expect_match(table_str, "text-align: right;[^>]*>5")
 
-  table_str <- interactiveTable(mx, align="|ll|r|r|")
+  table_str <- interactiveTable(mx, align = "|ll|r|r|")
   expect_match(table_str, "text-align: left;[^>]*>Ro")
   expect_match(table_str, "text-align: left;[^>]*>1")
   expect_match(table_str, "text-align: right;[^>]*>3")
@@ -246,16 +246,11 @@ test_that("Handling data.frames with factors",{
 
   str <- interactiveTable(tmp)
   expect_true(grepl("Unique_Factor_1", str))
-
-  tmp <- data.frame(a = 1,
-                    b = factor(x = 1,
-                               labels = c("1.2")))
-  expect_true(txtRound(tmp)$b == 1)
 })
 
 
 test_that("Check Javascript string",{
-  js <- prGetScriptString(structure(1:3, javascript= c("a", "B")))
+  js <- prGetScriptString(structure(1:3, javascript = c("a", "B")))
   expect_gt(length(strsplit(js, "<script")[[1]]),
             1)
   expect_error(prGetScriptString(1:3))
