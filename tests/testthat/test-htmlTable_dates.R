@@ -7,6 +7,8 @@ context('dates within htmlTable')
 
 # A simple example
 test_that("should be converted into strings (if fails check availability of chron package)", {
+  skip_if_not_installed("lubridate")
+  skip_if_not_installed("chron")
 
   # Below example is created using lemna's example:
   # library(lubridate)
