@@ -1,6 +1,6 @@
 dependencies:
   - name: jquery
-    version: 3.1.1
+    version: 3.6.0
     src: "htmlwidgets/lib/jquery"
     script: jquery.min.js
   - name: table_pagination
