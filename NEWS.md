@@ -1,5 +1,9 @@
 NEWS for the htmlTable package
 
+Changes for 2.4.1
+-----------------
+* Updated JQuery dependency in interactiveTable (issue #85)
+
 Changes for 2.4.0
 -----------------
 * The `txtRound.data.frame` converted all data to a matrix before rounding all elements. Changed
