@@ -29,7 +29,6 @@ I developed the `htmlTable` in order to get tables matching those available in t
 
 ```{r}
 library(htmlTable)
-library(magrittr)
 
 setHtmlTableTheme(theme = "Google docs")
 
@@ -37,7 +36,7 @@ output <-
   matrix(paste("Content", LETTERS[1:16]), 
          ncol = 4, byrow = TRUE)
 
-output %>% 
+output |>
   htmlTable(header =  paste(c("1st", "2nd", "3rd", "4th"), "header"),
             rnames = paste(c("1st", "2nd", "3rd", "4th"), "row"),
             rgroup = c("Group A", "Group B"),
@@ -52,8 +51,8 @@ We can modify all our tables by using the `setHtmlTableTemplate()` and we also d
 ```{r}
 setHtmlTableTheme(pos.caption = "bottom")
 
-output %>% 
-  addHtmlTableStyle(css.rgroup = "font-style: italic") %>%
+output |>
+  addHtmlTableStyle(css.rgroup = "font-style: italic") |>
   htmlTable(header =  paste(c("1st", "2nd", "3rd", "4th"), "header"),
             rnames = paste(c("1st", "2nd", "3rd", "4th"), "row"),
             rgroup = c("Group A", "Group B", ""),
@@ -67,7 +66,7 @@ output %>%
 
 The basic principles are:
 
-* use the `%>%` pipe as much as possible
+* use the `|>` pipe as much as possible
 * build complexity stepwise through passing `addHtmlTableStyle()` function
 * keep arguments to a minimum through templating and autocalculation
 
@@ -81,19 +80,20 @@ The dataset has been downloaded from Statistics Sweden and is attached to the ht
 ```{r, results='markup', message=FALSE, warning=FALSE}
 data(SCB)
 
-# The SCB has three other coulmns and one value column
-library(reshape)
-SCB$region <- relevel(SCB$region, "Sweden")
-SCB <- cast(SCB, year ~ region + sex, value = "values")
+# The SCB has three other columns and one value column
+prepped_scb <- SCB |>
+  dplyr::mutate(region = relevel(SCB$region, "Sweden")) |> 
+  dplyr::select(year, region, sex, values) |> 
+  tidyr::pivot_wider(names_from = c(region, sex), values_from = values)
 
 # Set rownames to be year
-rownames(SCB) <- SCB$year
-SCB$year <- NULL
+rownames(prepped_scb) <- prepped_scb$year
+prepped_scb$year <- NULL
 
 # The dataset now has the rows
-names(SCB)
+names(prepped_scb)
 # and the dimensions
-dim(SCB)
+dim(prepped_scb)
 ```
 
 The next step is to calculate two new columns:
@@ -118,41 +118,41 @@ To convey all these layers of information will create a table with multiple leve
 
 ```{r}
 mx <- NULL
-for (n in names(SCB)) {
+for (n in names(prepped_scb)) {
   tmp <- paste0("Sweden_", strsplit(n, "_")[[1]][2])
   mx <- cbind(mx,
-              cbind(SCB[[n]], 
-                    SCB[[n]] - SCB[[n]][1],
-                    SCB[[n]] - SCB[[tmp]]))
+              cbind(prepped_scb[[n]], 
+                    prepped_scb[[n]] - prepped_scb[[n]][1],
+                    prepped_scb[[n]] - prepped_scb[[tmp]]))
 }
-rownames(mx) <- rownames(SCB)
+rownames(mx) <- rownames(prepped_scb)
 colnames(mx) <- rep(c("Age", 
                       "&Delta;<sub>int</sub>",
                       "&Delta;<sub>std</sub>"), 
-                    times = ncol(SCB))
+                    times = ncol(prepped_scb))
 mx <- mx[,c(-3, -6)]
 
 # This automated generation of cgroup elements is 
 # somewhat of an overkill
 cgroup <- 
-  unique(sapply(names(SCB), 
+  unique(sapply(names(prepped_scb), 
                 function(x) strsplit(x, "_")[[1]][1], 
                 USE.NAMES = FALSE))
 n.cgroup <- 
   sapply(cgroup, 
-         function(x) sum(grepl(paste0("^", x), names(SCB))), 
+         function(x) sum(grepl(paste0("^", x), names(prepped_scb))), 
          USE.NAMES = FALSE)*3
 n.cgroup[cgroup == "Sweden"] <-
   n.cgroup[cgroup == "Sweden"] - 2
 
 cgroup <- 
-  rbind(c(cgroup, rep(NA, ncol(SCB) - length(cgroup))),
+  rbind(c(cgroup, rep(NA, ncol(prepped_scb) - length(cgroup))),
         Hmisc::capitalize(
-          sapply(names(SCB), 
+          sapply(names(prepped_scb), 
                  function(x) strsplit(x, "_")[[1]][2],
                  USE.NAMES = FALSE)))
 n.cgroup <- 
-  rbind(c(n.cgroup, rep(NA, ncol(SCB) - length(n.cgroup))),
+  rbind(c(n.cgroup, rep(NA, ncol(prepped_scb) - length(n.cgroup))),
         c(2,2, rep(3, ncol(cgroup) - 2)))
 
 print(cgroup)
@@ -176,10 +176,10 @@ htmlTable(txtRound(mx, 1),
 In order to increase the readability we may want to separate the Sweden columns from the county columns, one way is to use the align option with a |. Note that in 1.0 the function continues with the same alignment until the end, i.e. you no longer need count to have the exact right number of columns in your alignment argument.
 
 ```{r}
-mx %>% 
-  txtRound(digits = 1) %>% 
+mx |>
+  txtRound(digits = 1) |>
   addHtmlTableStyle(align = "rrrr|r",
-                    spacer.celltype = "double_cell") %>% 
+                    spacer.celltype = "double_cell") |>
   htmlTable(cgroup = cgroup,
             n.cgroup = n.cgroup,
             rgroup = c("First period", 
@@ -193,12 +193,12 @@ mx %>%
 If we still feel that we want more separation it is always possible to add colors.
 
 ```{r}
-mx %>% 
-  txtRound(digits = 1) %>% 
+mx |>
+  txtRound(digits = 1) |>
   addHtmlTableStyle(align = "rrrr|r",
                     align.header = "c",
                     col.columns = c(rep("#E6E6F0", 4),
-                          rep("none", ncol(mx) - 4))) %>% 
+                          rep("none", ncol(mx) - 4))) |>
   htmlTable(cgroup = cgroup,
             n.cgroup = n.cgroup,
             rgroup = c("First period", 
@@ -212,13 +212,13 @@ mx %>%
 If we add a color to the row group and restrict the rgroup spanner we may even have a more visual aid.
 
 ```{r}
-mx %>% 
-  txtRound(digits = 1) %>% 
+mx |>
+  txtRound(digits = 1) |>
   addHtmlTableStyle(align = "rrrr|r",
                     align.header = "c",
                     col.columns = c(rep("#E6E6F0", 4),
                           rep("none", ncol(mx) - 4)),
-                    col.rgroup = c("none", "#FFFFCC")) %>% 
+                    col.rgroup = c("none", "#FFFFCC")) |>
   htmlTable(cgroup = cgroup,
             n.cgroup = n.cgroup,
             # I use the &nbsp; - the no breaking space as I don't want to have a
@@ -254,13 +254,13 @@ for (col in cols_2_clr) {
     USE.NAMES = FALSE)
 }
 
-out_mx %>% 
+out_mx |>
   addHtmlTableStyle(align = "rrrr|r",
                     align.header = "cccc|c",
                     pos.rowlabel = "bottom", 
                     col.rgroup = c("none", "#FFFFCC"),
                     col.columns = c(rep("#EFEFF0", 4),
-                                    rep("none", ncol(mx) - 4))) %>% 
+                                    rep("none", ncol(mx) - 4))) |>
   htmlTable(caption = "Average age in Sweden counties over a period of
                      15 years. The Norbotten county is typically known
                      for having a negative migration pattern compared to

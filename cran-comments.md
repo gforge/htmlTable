@@ -1,5 +1,5 @@
 ## Test environments
-* Ubuntu install, R 4.0.2
+* Ubuntu install, 4.3.1
 * Winbuilder
 
 ## R CMD check results

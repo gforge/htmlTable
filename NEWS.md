@@ -1,5 +1,9 @@
 NEWS for the htmlTable package
 
+Changes for 2.4.2
+-----------------
+* Dropped reshape in favor of pivot_wider (issue #88)
+
 Changes for 2.4.1
 -----------------
 * Updated JQuery dependency in interactiveTable (issue #85)

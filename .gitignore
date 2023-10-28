@@ -18,3 +18,5 @@ doc
 Meta
 *.tex
 revdep
+/doc/
+/Meta/
