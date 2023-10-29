@@ -12,12 +12,13 @@ interactiveTable(
   ...,
   txt.maxlen = 20,
   button = getOption("htmlTable.interactiveTable.button", default = FALSE),
-  minimized.columns,
+  minimized.columns = NULL,
   js.scripts = c()
 )
 
 \method{interactiveTable}{htmlTable}(
-  tbl,
+  x,
+  ...,
   txt.maxlen = 20,
   button = getOption("htmlTable.interactiveTable.button", default = FALSE),
   minimized.columns = NULL,
@@ -29,7 +30,7 @@ interactiveTable(
 \method{print}{interactiveTable}(x, useViewer, ...)
 }
 \arguments{
-\item{x}{The interactive table that is to be printed}
+\item{x}{The table to be printed}
 
 \item{...}{The exact same parameters as \code{\link[=htmlTable]{htmlTable()}} uses}
 
@@ -42,8 +43,6 @@ interactiveTable(
 \item{js.scripts}{If you want to add your own JavaScript code you can just add it here.
 All code is merged into one string where each section is wrapped in it's own
 \verb{<scrip></script>} element.}
-
-\item{tbl}{An htmlTable object can be directly passed into the function}
 
 \item{useViewer}{If you are using RStudio there is a viewer thar can render
 the table within that is envoced if in \code{\link[base:interactive]{base::interactive()}} mode.

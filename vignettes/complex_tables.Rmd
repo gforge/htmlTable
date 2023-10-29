@@ -2,7 +2,7 @@
 title: "Building a complex table"
 author: "Max Gordon"
 date: "`r Sys.Date()`"
-output: 
+output:
   rmarkdown::html_vignette:
     toc: true
     css: custom.css
@@ -12,18 +12,16 @@ vignette: >
   %\usepackage[utf8]{inputenc}
 ---
 
-Introduction
-============
+# Introduction
 
 Tables are an essential part of publishing, well... anything. I therefore want to explore the options available for generating these in knitr. It is important to remember that there are two ways of generating tables in markdown:
 
 1. Markdown tables
 2. HTML tables
 
-As the `htmlTable`-package is all about [HTML](https://en.wikipedia.org/wiki/HTML) tables we will work only with that output option. The core idea is that HTML is ubiquitous and that most word-processors will have to support copy-pasting tables and by providing simple simple CSS-formatting we are able to maximize this compatibility. *Note* CSS is today an extremely complex topic and it is no surprise that word-processors may have difficulty importing tables that have lots of advanced syntax, htmlTable tries to avoid all of that by putting the style close to each element, often at the cell-level.
+As the `htmlTable`-package is all about [HTML](https://en.wikipedia.org/wiki/HTML) tables we will work only with that output option. The core idea is that HTML is ubiquitous and that most word-processors will have to support copy-pasting tables and by providing simple simple CSS-formatting we are able to maximize this compatibility. _Note_ CSS is today an extremely complex topic and it is no surprise that word-processors may have difficulty importing tables that have lots of advanced syntax, htmlTable tries to avoid all of that by putting the style close to each element, often at the cell-level.
 
-Basics
-======
+# Basics
 
 I developed the `htmlTable` in order to get tables matching those available in top medical journals. After finding no HTML-alternative to the `Hmisc::latex` function on [Stack Overflow](https://stackoverflow.com/questions/11950703/html-with-multicolumn-table-in-markdown-using-knitr) I wrote a basic function allowing column spanners and row groups. Below is a basic example on these two:
 
@@ -32,8 +30,8 @@ library(htmlTable)
 
 setHtmlTableTheme(theme = "Google docs")
 
-output <- 
-  matrix(paste("Content", LETTERS[1:16]), 
+output <-
+  matrix(paste("Content", LETTERS[1:16]),
          ncol = 4, byrow = TRUE)
 
 output |>
@@ -42,10 +40,11 @@ output |>
             rgroup = c("Group A", "Group B"),
             n.rgroup = c(2, 2),
             cgroup = c("Cgroup 1", "Cgroup 2&dagger;"),
-            n.cgroup = c(2, 2), 
+            n.cgroup = c(2, 2),
             caption = "Basic table with both column spanners (groups) and row groups",
             tfoot = "&dagger; A table footer commment")
 ```
+
 We can modify all our tables by using the `setHtmlTableTemplate()` and we also don't have to set the exact span of each group as it can be assumed from the data.
 
 ```{r}
@@ -58,20 +57,18 @@ output |>
             rgroup = c("Group A", "Group B", ""),
             n.rgroup = c(1, 2),
             cgroup = c("Cgroup 1", "Cgroup 2&dagger;"),
-            n.cgroup = 3, 
+            n.cgroup = 3,
             caption = "A slightly differnt table with a bottom caption",
             tfoot = "&dagger; A table footer commment")
 ```
 
-
 The basic principles are:
 
-* use the `|>` pipe as much as possible
-* build complexity stepwise through passing `addHtmlTableStyle()` function
-* keep arguments to a minimum through templating and autocalculation
+- use the `|>` pipe as much as possible
+- build complexity stepwise through passing `addHtmlTableStyle()` function
+- keep arguments to a minimum through templating and autocalculation
 
-Example based upon Swedish statistics
-=====================================
+# Example based upon Swedish statistics
 
 In order to make a more interesting example we will try to look at how the average age changes between Swedish counties the last 15 years. **Goal: visualize migration patterns**.
 
@@ -82,8 +79,8 @@ data(SCB)
 
 # The SCB has three other columns and one value column
 prepped_scb <- SCB |>
-  dplyr::mutate(region = relevel(SCB$region, "Sweden")) |> 
-  dplyr::select(year, region, sex, values) |> 
+  dplyr::mutate(region = relevel(SCB$region, "Sweden")) |>
+  dplyr::select(year, region, sex, values) |>
   tidyr::pivot_wider(names_from = c(region, sex), values_from = values)
 
 # Set rownames to be year
@@ -98,8 +95,8 @@ dim(prepped_scb)
 
 The next step is to calculate two new columns:
 
-* &Delta;<sub>int</sub> = The change within each group since the start of the observation.
-* &Delta;<sub>std</sub> = The change in relation to the overall age change in Sweden.
+- &Delta;<sub>int</sub> = The change within each group since the start of the observation.
+- &Delta;<sub>std</sub> = The change in relation to the overall age change in Sweden.
 
 To convey all these layers of information will create a table with multiple levels of column spanners:
 
@@ -121,37 +118,37 @@ mx <- NULL
 for (n in names(prepped_scb)) {
   tmp <- paste0("Sweden_", strsplit(n, "_")[[1]][2])
   mx <- cbind(mx,
-              cbind(prepped_scb[[n]], 
+              cbind(prepped_scb[[n]],
                     prepped_scb[[n]] - prepped_scb[[n]][1],
                     prepped_scb[[n]] - prepped_scb[[tmp]]))
 }
 rownames(mx) <- rownames(prepped_scb)
-colnames(mx) <- rep(c("Age", 
+colnames(mx) <- rep(c("Age",
                       "&Delta;<sub>int</sub>",
-                      "&Delta;<sub>std</sub>"), 
+                      "&Delta;<sub>std</sub>"),
                     times = ncol(prepped_scb))
 mx <- mx[,c(-3, -6)]
 
-# This automated generation of cgroup elements is 
+# This automated generation of cgroup elements is
 # somewhat of an overkill
-cgroup <- 
-  unique(sapply(names(prepped_scb), 
-                function(x) strsplit(x, "_")[[1]][1], 
+cgroup <-
+  unique(sapply(names(prepped_scb),
+                function(x) strsplit(x, "_")[[1]][1],
                 USE.NAMES = FALSE))
-n.cgroup <- 
-  sapply(cgroup, 
-         function(x) sum(grepl(paste0("^", x), names(prepped_scb))), 
+n.cgroup <-
+  sapply(cgroup,
+         function(x) sum(grepl(paste0("^", x), names(prepped_scb))),
          USE.NAMES = FALSE)*3
 n.cgroup[cgroup == "Sweden"] <-
   n.cgroup[cgroup == "Sweden"] - 2
 
-cgroup <- 
+cgroup <-
   rbind(c(cgroup, rep(NA, ncol(prepped_scb) - length(cgroup))),
         Hmisc::capitalize(
-          sapply(names(prepped_scb), 
+          sapply(names(prepped_scb),
                  function(x) strsplit(x, "_")[[1]][2],
                  USE.NAMES = FALSE)))
-n.cgroup <- 
+n.cgroup <-
   rbind(c(n.cgroup, rep(NA, ncol(prepped_scb) - length(n.cgroup))),
         c(2,2, rep(3, ncol(cgroup) - 2)))
 
@@ -162,10 +159,10 @@ print(n.cgroup)
 Next step is to output the table after rounding to the correct number of decimals. The `txtRound` function helps with this, as it uses the `sprintf` function instead of the `round` the resulting strings have the correct number of decimals, i.e. 1.02 will by round become 1 while we want it to retain the last decimal, i.e. be shown as 1.0.
 
 ```{r}
-htmlTable(txtRound(mx, 1), 
+htmlTable(txtRound(mx, 1),
           cgroup = cgroup,
           n.cgroup = n.cgroup,
-          rgroup = c("First period", 
+          rgroup = c("First period",
                      "Second period",
                      "Third period"),
           n.rgroup = rep(5, 3),
@@ -182,7 +179,7 @@ mx |>
                     spacer.celltype = "double_cell") |>
   htmlTable(cgroup = cgroup,
             n.cgroup = n.cgroup,
-            rgroup = c("First period", 
+            rgroup = c("First period",
                        "Second period",
                        "Third period"),
             n.rgroup = rep(5, 3),
@@ -201,7 +198,7 @@ mx |>
                           rep("none", ncol(mx) - 4))) |>
   htmlTable(cgroup = cgroup,
             n.cgroup = n.cgroup,
-            rgroup = c("First period", 
+            rgroup = c("First period",
                        "Second period",
                        "Third period"),
             n.rgroup = rep(5, 3),
@@ -224,7 +221,7 @@ mx |>
             # I use the &nbsp; - the no breaking space as I don't want to have a
             # row break in the row group. This adds a little space in the table
             # when used together with the cspan.rgroup=1.
-            rgroup = c("1st&nbsp;period", 
+            rgroup = c("1st&nbsp;period",
                        "2nd&nbsp;period",
                        "3rd&nbsp;period"),
             n.rgroup = rep(5, 3),
@@ -242,14 +239,14 @@ cols_2_clr <- grep("&Delta;<sub>std</sub>", colnames(mx))
 out_mx <- txtRound(mx, 1)
 
 min_delta <- min(mx[,cols_2_clr])
-span_delta <- max(mx[,cols_2_clr]) - min(mx[,cols_2_clr]) 
+span_delta <- max(mx[,cols_2_clr]) - min(mx[,cols_2_clr])
 for (col in cols_2_clr) {
   out_mx[, col] <- mapply(function(val, strength)
-    paste0("<span style='font-weight: 900; color: ", 
+    paste0("<span style='font-weight: 900; color: ",
            colorRampPalette(c("#009900", "#000000", "#990033"))(101)[strength],
            "'>",
-           val, "</span>"), 
-    val = out_mx[,col], 
+           val, "</span>"),
+    val = out_mx[,col],
     strength = round((mx[,col] - min_delta)/span_delta*100 + 1),
     USE.NAMES = FALSE)
 }
@@ -257,19 +254,19 @@ for (col in cols_2_clr) {
 out_mx |>
   addHtmlTableStyle(align = "rrrr|r",
                     align.header = "cccc|c",
-                    pos.rowlabel = "bottom", 
+                    pos.rowlabel = "bottom",
                     col.rgroup = c("none", "#FFFFCC"),
                     col.columns = c(rep("#EFEFF0", 4),
                                     rep("none", ncol(mx) - 4))) |>
   htmlTable(caption = "Average age in Sweden counties over a period of
                      15 years. The Norbotten county is typically known
                      for having a negative migration pattern compared to
-                     Stockholm, while Uppsala has a proportionally large 
+                     Stockholm, while Uppsala has a proportionally large
                      population of students.",
             rowlabel = "Year",
             cgroup = cgroup,
             n.cgroup = n.cgroup,
-            rgroup = c("1st&nbsp;period", 
+            rgroup = c("1st&nbsp;period",
                        "2nd&nbsp;period",
                        "3rd&nbsp;period"),
             n.rgroup = rep(5, 3),
@@ -280,4 +277,4 @@ out_mx |>
 
 Although a graph most likely does the visualization task better, tables are good at conveying detailed information. It is in my mind without doubt easier in the latest version to find the pattern in the data.
 
-Lastly I would like to thank [Stephen Few](https://www.amazon.com/Show-Me-Numbers-Designing-Enlighten/dp/0970601999), [ThinkUI](http://www.thinkui.co.uk/resources/effective-design-of-data-tables/), [ACAPS](https://www.acaps.org/sites/acaps/files/resources/files/table_design_september_2012.pdf), and [LabWrite](https://projects.ncsu.edu/labwrite//res/gh/gh-tables.html) for inspiration.
+Lastly I would like to thank [Stephen Few](https://www.amazon.com/Show-Me-Numbers-Designing-Enlighten/dp/0970601999), [ThinkUI](http://www.thinkui.co.uk/resources/effective-design-of-data-tables/), and [LabWrite](https://labwrite.ncsu.edu/res/gh/gh-tables.html) for inspiration.

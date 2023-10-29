@@ -1,11 +1,8 @@
-[![Build Status](https://travis-ci.org/gforge/htmlTable.svg?branch=master)](https://travis-ci.org/gforge/htmlTable)
-[![](https://cranlogs.r-pkg.org/badges/htmlTable)](https://cran.r-project.org/package=htmlTable)
+[![Downloads](https://cranlogs.r-pkg.org/badges/htmlTable)](https://cran.r-project.org/package=htmlTable)
 
-Basics
-======
+# Basics
 
 The **htmlTable** package is intended for generating tables using [HTML](https://en.wikipedia.org/wiki/HTML) formatting. This format is compatible with [Markdown](https://rmarkdown.rstudio.com/) when used for HTML-output. The most basic table can easily be created by just passing a `matrix` or a `data.frame` to the `htmlTable`-function:
-
 
 ```r
 library(magrittr)
@@ -45,13 +42,13 @@ If you are using `dplyr` and `tidyverse` a convenient wrapper is the `tidyHtmlTa
 library(tidyverse)
 library(glue)
 mtcars %>%
-  as_tibble(rownames = "rnames") %>% 
-  filter(cyl == 6 & qsec < 18) %>% 
-  pivot_longer(names_to = "per_metric", 
-               cols = c(hp, mpg, qsec)) %>% 
-  arrange(gear, rnames) %>% 
-  mutate(gear = glue("{gear} gears")) %>% 
-  addHtmlTableStyle(align = "r") %>% 
+  as_tibble(rownames = "rnames") %>%
+  filter(cyl == 6 & qsec < 18) %>%
+  pivot_longer(names_to = "per_metric",
+               cols = c(hp, mpg, qsec)) %>%
+  arrange(gear, rnames) %>%
+  mutate(gear = glue("{gear} gears")) %>%
+  addHtmlTableStyle(align = "r") %>%
   tidyHtmlTable(header = per_metric, rnames = rnames, rgroup = gear,
                 caption = "A simple <code>tidyHtmlTable</code> example using <code>mtcars</code>")
 ```
@@ -68,7 +65,7 @@ mtcars %>%
 		<th style='font-weight: 900; border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: right;'>qsec</th>
 	</tr>
 	</thead>
-	<tbody> 
+	<tbody>
 	<tr><td colspan='4' style='font-weight: 900;'>4 gears</td></tr>
 	<tr>
 		<td style='text-align: left;'>&nbsp;&nbsp;Mazda RX4</td>
@@ -81,7 +78,7 @@ mtcars %>%
 		<td style='text-align: right;'>110</td>
 		<td style='text-align: right;'>21</td>
 		<td style='text-align: right;'>17.02</td>
-	</tr> 
+	</tr>
 	<tr><td colspan='4' style='font-weight: 900;'>5 gears</td></tr>
 	<tr>
 		<td style='border-bottom: 2px solid grey; text-align: left;'>&nbsp;&nbsp;Ferrari Dino</td>
@@ -92,19 +89,18 @@ mtcars %>%
 	</tbody>
 </table>
 
-Advanced
-========
+# Advanced
 
 While it may be sufficient for basic tables a more advanced layout is often needed in medical publications with elements such as:
 
-* row groups
-* column spanners
-* table spanners
-* caption
-* table footer
-* zebra coloring (also know as *banding*):
-  + rows
-  + columns
+- row groups
+- column spanners
+- table spanners
+- caption
+- table footer
+- zebra coloring (also know as _banding_):
+  - rows
+  - columns
 
 As many journals require that a MS Word-document is submitted it is furthermore also important that the table imports correctly to a word processor, i.e. that the table doesn't only look nice in a web browser but also in the final document. The `htmlTable`-function is written for all these purposes.
 
@@ -112,17 +108,16 @@ As many journals require that a MS Word-document is submitted it is furthermore 
 
 For demonstration purposes we will setup a basic matrix:
 
-
 ```r
 mx <-
-  matrix(ncol=6, nrow=8) %>% 
+  matrix(ncol=6, nrow=8) %>%
   set_rownames(paste(c("1st", "2nd", "3rd",
                        paste0(4:8, "th")),
-                     "row")) %>% 
-  set_colnames(paste(c("1st", "2nd", "3rd", 
+                     "row")) %>%
+  set_colnames(paste(c("1st", "2nd", "3rd",
                        paste0(4:6, "th")),
                      "hdr"))
-                     
+
 for (nr in 1:nrow(mx)){
   for (nc in 1:ncol(mx)){
     mx[nr, nc] <-
@@ -131,14 +126,12 @@ for (nr in 1:nrow(mx)){
 }
 ```
 
-Row groups
-----------
+## Row groups
 
 The purpose of the row groups is to group variables that belong to the same group, e.g. a factored variable with more than two levels often benefit from grouping variables together.
 
-
 ```r
-htmlTable(mx, 
+htmlTable(mx,
           rgroup = paste("Group", LETTERS[1:3]),
           n.rgroup = c(2,4,nrow(mx) - 6))
 ```
@@ -235,9 +228,8 @@ htmlTable(mx,
 
 We can easily mix row groups with regular variables by having an empty row group name `""`:
 
-
 ```r
-htmlTable(mx, 
+htmlTable(mx,
           rgroup = c(paste("Group", LETTERS[1:2]), ""),
           n.rgroup = c(2,4,nrow(mx) - 6))
 ```
@@ -335,8 +327,8 @@ When mixing row groups with variables without row groups we may want to omit the
 you can separate the css styling using `addHtmlTableStyle`:
 
 ```r
-mx %>% 
-  addHtmlTableStyle(css.rgroup = "") %>% 
+mx %>%
+  addHtmlTableStyle(css.rgroup = "") %>%
   htmlTable(rgroup = c(paste("Group", LETTERS[1:2]), ""),
             n.rgroup = c(2,4,nrow(mx) - 6))
 ```
@@ -430,11 +422,9 @@ mx %>%
 	</tbody>
 </table>
 
-Column spanners
----------------
+## Column spanners
 
 A column spanner spans 2 or more columns:
-
 
 ```r
 htmlTable(mx,
@@ -544,7 +534,6 @@ htmlTable(mx,
 </table>
 
 It can sometimes be convenient to have column spanners in multiple levels:
-
 
 ```r
 htmlTable(mx,
@@ -671,7 +660,6 @@ htmlTable(mx,
 </table>
 
 Above example allows the column spanner to be a sum of the underlying cgroups (see n.cgroup), this is not required by the function:
-
 
 ```r
 htmlTable(mx,
@@ -806,14 +794,12 @@ htmlTable(mx,
 	</tbody>
 </table>
 
-Table spanners
---------------
+## Table spanners
 
 A table spanner is similar to rgroup but has the primary purpose of combining 2 or more tables with the same columns into one:
 
-
 ```r
-htmlTable(mx, 
+htmlTable(mx,
           tspanner = paste("Spanner", LETTERS[1:3]),
           n.tspanner = c(2,4,nrow(mx) - 6))
 ```
@@ -908,14 +894,12 @@ htmlTable(mx,
 	</tbody>
 </table>
 
-Table caption
--------------
+## Table caption
 
 The table caption is simply the table description and can be either located above or below the table:
 
-
 ```r
-htmlTable(mx[1:2,1:2], 
+htmlTable(mx[1:2,1:2],
           caption="A table caption above")
 ```
 
@@ -942,10 +926,9 @@ htmlTable(mx[1:2,1:2],
 	</tbody>
 </table>
 
-
 ```r
-mx[1:2,1:2] %>% 
-  addHtmlTableStyle(pos.caption = "bottom") %>% 
+mx[1:2,1:2] %>%
+  addHtmlTableStyle(pos.caption = "bottom") %>%
   htmlTable(caption="A table caption below")
 ```
 
@@ -974,14 +957,12 @@ mx[1:2,1:2] %>%
 
 A more interesting detail that the function allows for is table numbering, initialized by:
 
-
 ```r
 options(table_counter = TRUE)
 ```
 
-
 ```r
-htmlTable(mx[1:2,1:2], 
+htmlTable(mx[1:2,1:2],
           caption="A table caption with a numbering")
 ```
 
@@ -1010,7 +991,6 @@ htmlTable(mx[1:2,1:2],
 
 As we often want to reference the table number in the text there are two associated functions:
 
-
 ```r
 tblNoLast()
 ```
@@ -1027,14 +1007,12 @@ tblNoNext()
 ## [1] 2
 ```
 
-Table footer
-------------
+## Table footer
 
 The footer usually contains specifics regarding variables and is always located at the foot of the table:
 
-
 ```r
-htmlTable(mx[1:2,1:2], 
+htmlTable(mx[1:2,1:2],
           tfoot="A table footer")
 ```
 
@@ -1061,19 +1039,16 @@ htmlTable(mx[1:2,1:2],
 	A table footer</td></tr></tfoot>
 </table>
 
-
-Putting it all together
------------------------
+## Putting it all together
 
 Now if we want to do everything in one table it may look like this:
 
-
 ```r
-mx %>% 
+mx %>%
   addHtmlTableStyle(col.columns = c(rep("none", 2), rep("#F5FBFF", 4)),
                     col.rgroup = c("none", "#F7F7F7"),
                     css.cell = "padding-left: .5em; padding-right: .2em;",
-                    align="r") %>% 
+                    align="r") %>%
   htmlTable(rgroup = paste("Group", LETTERS[1:3]),
             n.rgroup = c(2, 4),
             cgroup = rbind(c("", "Column spanners", NA),
@@ -1227,4 +1202,3 @@ mx %>%
 	<tfoot><tr><td colspan='9'>
 	&dagger; A table footer comment</td></tr></tfoot>
 </table>
-

@@ -7,12 +7,9 @@
 prGetStyle(...)
 }
 \arguments{
-\item{...}{All styles here are merged with the first parameter.
-If you provide a name, e.g. \verb{styles="background: blue", align="center"}
+\item{...}{Styles can be provided as \code{vector}, \verb{named vector}, or \code{string}.
+If you provide a name, e.g. \code{background: blue}, \code{align="center"},
 the function will convert the \code{align} into proper \code{align: center}.}
-
-\item{styles}{The styles can be provided as \code{vector},
-\verb{named vector}, or \code{string}.}
 }
 \value{
 \code{string} Returns the codes merged into one string with

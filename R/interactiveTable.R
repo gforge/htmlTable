@@ -3,6 +3,7 @@
 #' This function wraps the htmlTable and adds JavaScript code for toggling the amount
 #' of text shown in any particular cell.
 #'
+#' @param x The table to be printed
 #' @param ... The exact same parameters as [htmlTable()] uses
 #' @param txt.maxlen The maximum length of a text
 #' @param button Indicator if the cell should be clickable or if a button should appear with a plus/minus
@@ -14,10 +15,11 @@
 #' @export
 #' @example inst/examples/interactiveTable_example.R
 #' @rdname interactiveTable
-interactiveTable <- function(x, ...,
+interactiveTable <- function(x,
+                             ...,
                              txt.maxlen = 20,
                              button = getOption("htmlTable.interactiveTable.button", default = FALSE),
-                             minimized.columns,
+                             minimized.columns = NULL,
                              js.scripts = c()) {
   UseMethod("interactiveTable")
 }
@@ -34,7 +36,9 @@ getButtonDiv <- function(sign = "-") {
 }
 
 #' @export
-interactiveTable.default <- function(x, ...,
+#' @method interactiveTable default
+interactiveTable.default <- function(x,
+                                     ...,
                                      txt.maxlen = 20,
                                      button = getOption("htmlTable.interactiveTable.button", default = FALSE),
                                      minimized.columns = NULL,
@@ -101,9 +105,11 @@ interactiveTable.default <- function(x, ...,
   ))
 }
 
-#' @param tbl An htmlTable object can be directly passed into the function
+#' @method interactiveTable htmlTable
 #' @rdname interactiveTable
-interactiveTable.htmlTable <- function(tbl,
+#' @export
+interactiveTable.htmlTable <- function(x,
+                                       ...,
                                        txt.maxlen = 20,
                                        button = getOption("htmlTable.interactiveTable.button", default = FALSE),
                                        minimized.columns = NULL,
@@ -115,7 +121,7 @@ interactiveTable.htmlTable <- function(tbl,
     )
   }
 
-  class(tbl) <- c("interactiveTable", class(tbl))
+  class(x) <- c("interactiveTable", class(x))
   if (button) {
     template <- system.file("javascript/button.js", package = "htmlTable")
     if (template == "") {
@@ -123,7 +129,7 @@ interactiveTable.htmlTable <- function(tbl,
     }
     template <- readChar(template, nchars = file.info(template)$size)
 
-    attr(tbl, "javascript") <- c(
+    attr(x, "javascript") <- c(
       js.scripts,
       template %>%
         gsub("%txt.maxlen%", txt.maxlen, .) %>%
@@ -136,14 +142,14 @@ interactiveTable.htmlTable <- function(tbl,
     }
     template <- readChar(template, nchars = file.info(template)$size)
 
-    attr(tbl, "javascript") <- c(
+    attr(x, "javascript") <- c(
       js.scripts,
       template %>%
         gsub("%txt.maxlen%", txt.maxlen, .)
     )
   }
 
-  return(tbl)
+  return(x)
 }
 
 #' @rdname interactiveTable
@@ -194,7 +200,6 @@ prGetScriptString <- function(x) {
 }
 
 #' @rdname interactiveTable
-#' @param x The interactive table that is to be printed
 #' @inheritParams htmlTable
 #' @export
 print.interactiveTable <- function(x, useViewer, ...) {
@@ -232,7 +237,7 @@ print.interactiveTable <- function(x, useViewer, ...) {
     htmlPage <- paste("<html>",
       "<head>",
       "<meta http-equiv=\"Content-type\" content=\"text/html; charset=UTF-8\">",
-      "<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js\"></script>",
+      "<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js\"></script>",
       "</head>",
       "<body>",
       "<div style=\"margin: 0 auto; display: table; margin-top: 1em;\">",
