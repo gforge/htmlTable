@@ -194,7 +194,7 @@ For an empty \code{cgroup}, use \code{""}.
 
 The \code{rgroup} groups rows seamlessly. Each row in a group is indented by two
 spaces (unless the rgroup is \code{""}) and grouped by its rgroup element. The \code{sum(n.rgroup)}
-should be ≤ matrix rows. If fewer, remaining rows are padded with an empty rgroup (\code{""}). If \code{rgroup}
+should be zr3ywKOjLZACY4j7TuGXu4v6I8wVWuKy-\eqn{\leq} matrix rows. If fewer, remaining rows are padded with an empty rgroup (\code{""}). If \code{rgroup}
 has one more element than \code{n.rgroup}, the last \code{n.rgroup} is computed as \code{nrow(x) - sum(n.rgroup)}
 for a smoother table generation.
 }

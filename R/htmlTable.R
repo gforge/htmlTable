@@ -28,7 +28,7 @@
 #'
 #'  The `rgroup` groups rows seamlessly. Each row in a group is indented by two
 #'  spaces (unless the rgroup is `""`) and grouped by its rgroup element. The `sum(n.rgroup)`
-#'  should be ≤ matrix rows. If fewer, remaining rows are padded with an empty rgroup (`""`). If `rgroup`
+#'  should be \if{html}{\out{≤}}\eqn{\leq} matrix rows. If fewer, remaining rows are padded with an empty rgroup (`""`). If `rgroup`
 #'  has one more element than `n.rgroup`, the last `n.rgroup` is computed as `nrow(x) - sum(n.rgroup)`
 #'  for a smoother table generation.
 #'
