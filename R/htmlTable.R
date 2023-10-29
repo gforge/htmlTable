@@ -1,49 +1,41 @@
 #' Output an HTML table
 #'
-#' This is a function for outputting a more advanced
-#' tables using HTML. The core philosophy is to bring column and row groups
-#' into the table and allow for a dense representation of
-#' complex tables. The HTML-output is designed for
-#' maximum compatibility with copy-paste functionality into
-#' word-processors. For adding styles, see [addHtmlTableStyle()]
-#' and themes [setHtmlTableTheme()]. *Note:* If you are using
-#' \pkg{tidyverse} and \pkg{dplyr} you may want to check out
-#' [tidyHtmlTable()] that automates many of the arguments
+#' Generates advanced HTML tables with column and row groups
+#' for a dense representation of complex data. Designed for
+#' maximum compatibility with copy-paste into word processors.
+#' For styling, see [addHtmlTableStyle()] and [setHtmlTableTheme()].
+#' *Note:* If you are using \pkg{tidyverse} and \pkg{dplyr} you may
+#' want to check out [tidyHtmlTable()] that automates many of the arguments
 #' that `htmlTable` requires.
 #'
 #' @section Multiple rows of column spanners `cgroup`:
 #'
-#' If you want to have a column spanner in multiple levels you can
-#' set the `cgroup` and `n.cgroup` arguments to a `matrix` or
-#'  `list`.
+#' If you want to have a column spanner in multiple levels (rows) you can
+#' set the `cgroup` and `n.cgroup` arguments to a `matrix` or `list`.
 #'
-#' If the different levels have different number of elements and you have
-#' provided a *matrix* you need to set the ones that lack elements to NA. For instance
+#' For different level elements, set absent ones to NA in a matrix. For example,
 #' `cgroup = rbind(c("first", "second", NA), c("a", "b", "c"))`.
 #' And the corresponding `n.cgroup` would be `n.cgroup = rbind(c(1, 2, NA), c(2, 1, 2))`.
 #' for a table consisting of 5 columns. The "first" spans the first two columns,
 #' the "second" spans the last three columns, "a" spans the first two, "b"
 #' the middle column, and "c" the last two columns.
 #'
-#' It is recommended to use `list` as you will not have to bother with the `NA`.
+#' Using a list is recommended to avoid handling `NA`s.
 #'
-#' If you want leave a `cgroup` empty then simply provide `""` as the `cgroup`.
+#' For an empty `cgroup`, use `""`.
 #'
 #' @section The `rgroup` argument:
 #'
-#'  The `rgroup` allows you to smoothly group rows. Each row within a group
-#'  receives an indention of two blank spaces and are grouped with their
-#'  corresponding `rgroup` element. The `sum(n.rgroup)` should always
-#'  be equal or less than the matrix rows. If less then it will pad the
-#'  remaining rows with either an empty `rgroup`, i.e. an "" or if the
-#'  `rgroup` is one longer than the `n.rgroup` the last `n.rgroup` element will
-#'  be calculated through `nrow(x) - sum(n.rgroup)` in order to make
-#'  the table generating smoother.
+#'  The `rgroup` groups rows seamlessly. Each row in a group is indented by two
+#'  spaces (unless the rgroup is `""`) and grouped by its rgroup element. The `sum(n.rgroup)`
+#'  should be ≤ matrix rows. If fewer, remaining rows are padded with an empty rgroup (`""`). If `rgroup`
+#'  has one more element than `n.rgroup`, the last `n.rgroup` is computed as `nrow(x) - sum(n.rgroup)`
+#'  for a smoother table generation.
 #'
 #' @section The add attribute to `rgroup`:
 #'
-#' You can now have an additional element at the `rgroup` level by specifying the
-#' `attr(rgroup, 'add')`. The value can either be a `vector`, a `list`,
+#' To add an extra element at the `rgroup` level/row, use `attr(rgroup, 'add')`.
+#' The value can either be a `vector`, a `list`,
 #' or a `matrix`. See `vignette("general", package = "htmlTable")` for examples.
 #'
 #' * A `vector` of either equal number of `rgroup`s to the number
@@ -228,7 +220,7 @@
 #'  To avoid this please specify the correct Microsoft Office format for each cell in the table using the css.cell-argument.
 #'  To make MS Excel interpret everything as text use "mso-number-format:\"\\@\"".
 #' @param escape.html logical: should HTML characters be escaped? Defaults to FALSE.
-#' @return `string` Returns a string of class `htmlTable`
+#' @return Returns a formatted string representing an HTML table of class `htmlTable`.
 #'
 #' @example inst/examples/htmlTable_example.R
 #'
@@ -248,19 +240,14 @@ htmlTable <- function(x,
                       caption = NULL,
                       tfoot = NULL,
                       label = NULL,
-
                       # Grouping
                       rgroup = NULL,
                       n.rgroup = NULL,
-
                       cgroup = NULL,
                       n.cgroup = NULL,
-
                       tspanner = NULL,
                       n.tspanner = NULL,
-
                       total = NULL,
-
                       ctable = TRUE,
                       compatibility = getOption("htmlTableCompat", "LibreOffice"),
                       cspan.rgroup = "all",
@@ -313,19 +300,14 @@ htmlTable.default <- function(x,
                               caption = NULL,
                               tfoot = NULL,
                               label = NULL,
-
                               # Grouping
                               rgroup = NULL,
                               n.rgroup = NULL,
-
                               cgroup = NULL,
                               n.cgroup = NULL,
-
                               tspanner = NULL,
                               n.tspanner = NULL,
-
                               total = NULL,
-
                               ctable = TRUE,
                               compatibility = getOption("htmlTableCompat", "LibreOffice"),
                               cspan.rgroup = "all",
@@ -400,7 +382,7 @@ htmlTable.default <- function(x,
 
   # Fix alignment to match with the matrix
   style_list$align <- prPrepareAlign(style_list$align, x = x, rnames = rnames)
-  style_list$align.header <- prPrepareAlign(style_list$align.header,x = x, rnames = rnames, default_rn = "c")
+  style_list$align.header <- prPrepareAlign(style_list$align.header, x = x, rnames = rnames, default_rn = "c")
 
   if (tolower(compatibility) %in% c(
     "libreoffice", "libre office",
@@ -754,10 +736,14 @@ htmlTable.default <- function(x,
   ###############################
   # Start building table string #
   ###############################
-  table_str <- str_interp("<table class='${CLASS_NAME}' style='border-collapse: collapse; ${TABLE_CSS}' ${TABLE_ID}>",
-                          list(CLASS_NAME = paste(style_list$css.class, collapse = ", "),
-                               TABLE_CSS =  paste(style_list$css.table, collapse = "; "),
-                               TABLE_ID = table_id))
+  table_str <- str_interp(
+    "<table class='${CLASS_NAME}' style='border-collapse: collapse; ${TABLE_CSS}' ${TABLE_ID}>",
+    list(
+      CLASS_NAME = paste(style_list$css.class, collapse = ", "),
+      TABLE_CSS = paste(style_list$css.table, collapse = "; "),
+      TABLE_ID = table_id
+    )
+  )
 
   # Theoretically this should be added to the table but the
   # import to word processors works then less well and therefore I've
@@ -980,12 +966,18 @@ htmlTable.default <- function(x,
 
         # The padding doesn't work well with the Word import - well nothing really works well with word...
         # table_str <- sprintf("%s\n\t\t<td style='padding-left: .5em;'>%s</td>", table_str, rnames[row_nr])
-        table_str %<>% paste(str_interp("<td style='${STYLE}'>${PADDING}${NAME}</td>",
-                                        list(STYLE = prGetStyle(c(rname_style, cell_style),
-                                                              align = prGetAlign(style_list$align, index = 1, style_list = style_list)),
-                                             PADDING = pdng,
-                                             NAME = rnames[row_nr])),
-                             sep = "\n\t\t")
+        table_str %<>% paste(str_interp(
+          "<td style='${STYLE}'>${PADDING}${NAME}</td>",
+          list(
+            STYLE = prGetStyle(c(rname_style, cell_style),
+              align = prGetAlign(style_list$align, index = 1, style_list = style_list)
+            ),
+            PADDING = pdng,
+            NAME = rnames[row_nr]
+          )
+        ),
+        sep = "\n\t\t"
+        )
       }
 
       cell_str <- prAddCells(

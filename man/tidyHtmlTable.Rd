@@ -23,61 +23,42 @@ tidyHtmlTable(
 \arguments{
 \item{x}{Tidy data used to build the \code{htmlTable}}
 
-\item{value}{The column containing values filling individual cells of the
-output \code{htmlTable}. Defaults to "value" as used by \code{\link[tidyr:pivot_longer]{tidyr::pivot_longer()}}.}
+\item{value}{Column containing values for individual table cells. Defaults to "value" (same as \link[tidyr:pivot_wider]{tidyr::pivot_wider}).}
 
-\item{header}{The column in \code{x} specifying column headings}
+\item{header}{Column in \code{x} specifying column headings}
 
-\item{rnames}{The column in \code{x} specifying row names. Defaults to "name" as used by
-\code{\link[tidyr:pivot_longer]{tidyr::pivot_longer()}}.}
+\item{rnames}{Column in \code{x} specifying row names. Defaults to "name" (same as \code{\link[tidyr:pivot_wider]{tidyr::pivot_wider()}}).}
 
-\item{rgroup}{The column in \code{x} specifying row groups}
+\item{rgroup}{Column in \code{x} specifying row groups.}
 
-\item{hidden_rgroup}{\code{strings} with \code{rgroup} values that will be hidden  (the values will
-still be there but the spanner will be set to "" and thus ignored by \code{\link[=htmlTable]{htmlTable()}}).}
+\item{hidden_rgroup}{Strings indicating \code{rgroup} values to be hidden.}
 
-\item{cgroup}{The column or columns in \code{x} specifying the column groups}
+\item{cgroup}{Columns in \code{x} specifying the column groups.}
 
-\item{tspanner}{The column in \code{x} specifying \code{tspanner} groups}
+\item{tspanner}{Column in \code{x} specifying \code{tspanner} groups.}
 
-\item{hidden_tspanner}{\code{strings} with \code{tspanner} values that will be hidden (the values will
-still be there but the spanner will be set to "" and thus ignored by \code{\link[=htmlTable]{htmlTable()}}).}
+\item{hidden_tspanner}{Strings indicating \code{tspanner} values to be hidden.}
 
-\item{skip_removal_warning}{\code{boolean} suppress warning message when removing NA columns.}
+\item{skip_removal_warning}{Boolean to suppress warnings when removing \code{NA} columns.}
 
-\item{rnames_unique}{Similar to \code{rnames}  where we have issues with the uniqueness of a
-row as selected by the select statement. See section below on \emph{Row uniqueness}.}
+\item{rnames_unique}{Designates unique row names when regular names lack uniqueness.}
 
-\item{table_fn}{The table function that should receive the input, defaults to \code{\link[=htmlTable]{htmlTable()}}
-but you can provide any function that uses the same input formatting. This package was inspired
-by the \code{\link[Hmisc:latex]{Hmisc::latex()}} function.}
+\item{table_fn}{Function to format the table, defaults to \code{\link[=htmlTable]{htmlTable()}}.}
 
-\item{...}{Additional arguments that will be passed to the inner
-\code{\link[=htmlTable]{htmlTable()}} function}
+\item{...}{Additional arguments passed to \code{\link[=htmlTable]{htmlTable()}}.}
 }
 \value{
-Returns html code that will build a pretty table
+Returns the HTML code that, when rendered, displays a formatted table.
 }
 \description{
-Builds an \code{htmlTable} by mapping columns from the input data, \code{x},
-to elements of an output \code{htmlTable} (e.g. \code{rnames}, \code{header}, etc.). This
-provides a \pkg{ggplot2}-like interface you can pivot rows/columns as required. The
-typical use case is when you are using \code{dplyr} together with the
-\code{tidyverse} data processing functions, see \code{vignette("tidyHtmlTable")}.
+This function maps columns from the input data, \code{x}, to \code{\link[=htmlTable]{htmlTable()}} parameters.
+It's designed to provide a fluent interface for those familiar with the \code{tidyverse} ecosystem.
 }
-\section{Column-mapping parameters}{
+\section{Column-mapping}{
 
 
-The \code{tidyHtmlTable} function is designed to work like ggplot2 in that
-columns from \code{x} are mapped to specific parameters from the
-\code{htmlTable} function. At minimum, \code{x} must contain the names
-of columns mapping to \code{rnames}, \code{header}, and \code{rnames}.
-\code{header} and \code{rnames} retain the same meaning as in the
-htmlTable function. \code{value} contains the individual values that will
-be used to fill each cell within the output \code{htmlTable}.
-
-A full list of parameters from \code{htmlTable} which may be mapped to
-columns within \code{x} include:
+Columns from \code{x} are mapped (transformed) to specific parameters of the \code{\link[=htmlTable]{htmlTable()}}
+The following columns are converted to match the intended input structure:
 \itemize{
 \item \code{value}
 \item \code{header}
@@ -87,23 +68,53 @@ columns within \code{x} include:
 \item \code{tspanner}
 }
 
-Also note that the coordinates of each \code{value} within \code{x} must be
-unambiguously mapped to a position within the output \code{htmlTable}.
-Therefore, the each row-wise combination the variables specified above
-contained in \code{x} must be unique.
+Each combination of the variables in \code{x} should be unique to map correctly to the output table.
+}
+
+\section{Row uniqueness}{
+
+
+Usually each row should have a unique combination of the mappers.
+Sometimes though rows come in a distinct order and the order identifies
+the row more than the name. E.g. if we are identifying bone fractures using the
+AO-classification we will have classes ranging in the form of:
+\itemize{
+\item A
+\item A1
+\item A1.1
+\item A2
+\item A2.1
+\item A2.2
+\item B
+\item ...
+}
+
+we can simplify the names while retaining the key knowledge to:
+\itemize{
+\item A
+\item .1
+\item ...1
+\item .2
+\item ...1
+\item ...2
+\item B
+\item ...
+}
+
+This will though result in non-unique rows and thus we need to provide the original
+names in addition to the \code{rnames} argument. To do this we have \code{rnames_unique} as a parameter,
+without this \code{tidyHtmlTable} we risk unintended merging of cells, generating > 1 value per cell.
+
+\emph{Note} it is recommended that you verify with the full names just to make sure that
+any unexpected row order change has happened in the underlying pivot functions.
 }
 
 \section{Sorting}{
 
 
-Sorting of rows is as of version 2.0 skipped as we may have situations with
-repeating inputs and this can easily be performed pre-function by calling
-\code{\link[dplyr:arrange]{dplyr::arrange()}} prior to \code{tidyHtmlTable}.
-
-Columns are sorted by \code{arrange(cgroup, header)} where \code{cgroup} will be
-expanded to the columns of the \code{cgroup} argument, e.g. \verb{cgroup = c(a, b), header = c}
-will become \code{arrange(a, b, c)}. If you want to sort in non-alphabetic order
-you can provide a \code{factor} variable and that information will be retained.
+Rows can be pre-sorted using \code{\link[dplyr:arrange]{dplyr::arrange()}} before passing to \code{tidyHtmlTable}.
+Column sorting is based on \code{arrange(cgroup, header)}. If you want to sort in non-alphabetic
+order you can provide a factor variable and that information will be retained.
 }
 
 \section{Hidden values}{
@@ -138,44 +149,6 @@ packages installed. These have been removed due to
 the additional 20 Mb that these dependencies added (issue #47).
 \emph{Note:} if you use \pkg{tidyverse} it will already have
 all of these and you do not need to worry.
-}
-
-\section{Row uniqueness}{
-
-
-Usually each row should have a unique combination of \code{rnames}, \code{header}, \code{crgroup}, ...
-Sometimes though rows come in a distinct order and the order identifies
-the row more than the name. If we are identifying bone fractures using the
-AO-classification we will have classes ranging in the form of:
-\itemize{
-\item A
-\item A1
-\item A1.1
-\item A2
-\item A2.1
-\item A2.2
-\item B
-\item ...
-}
-
-we could therefore like to simplify the names to:
-\itemize{
-\item A
-\item .1
-\item ...1
-\item .2
-\item ...1
-\item ...2
-\item B
-\item ...
-}
-
-And still retain the ability to follow what row corresponds to a given class. To
-do this you need to provide the original unique name in the parameter \code{rnames_unique}
-as tidyHtmlTable otherwise will merge rows not intended for merging.
-
-\emph{Note} it is recommended that you verify with the full names just to make sure that
-any unexpected row order change has happened in the underlying pivot functions.
 }
 
 \examples{

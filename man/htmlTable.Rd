@@ -160,58 +160,50 @@ particular viewer (this is how RStudio decides on a viewer).
 \code{\link[base:cat]{base::cat()}} the set \verb{[options][base::options](htmlTable.cat = TRUE)}.}
 }
 \value{
-\code{string} Returns a string of class \code{htmlTable}
+Returns a formatted string representing an HTML table of class \code{htmlTable}.
 }
 \description{
-This is a function for outputting a more advanced
-tables using HTML. The core philosophy is to bring column and row groups
-into the table and allow for a dense representation of
-complex tables. The HTML-output is designed for
-maximum compatibility with copy-paste functionality into
-word-processors. For adding styles, see \code{\link[=addHtmlTableStyle]{addHtmlTableStyle()}}
-and themes \code{\link[=setHtmlTableTheme]{setHtmlTableTheme()}}. \emph{Note:} If you are using
-\pkg{tidyverse} and \pkg{dplyr} you may want to check out
-\code{\link[=tidyHtmlTable]{tidyHtmlTable()}} that automates many of the arguments
+Generates advanced HTML tables with column and row groups
+for a dense representation of complex data. Designed for
+maximum compatibility with copy-paste into word processors.
+For styling, see \code{\link[=addHtmlTableStyle]{addHtmlTableStyle()}} and \code{\link[=setHtmlTableTheme]{setHtmlTableTheme()}}.
+\emph{Note:} If you are using \pkg{tidyverse} and \pkg{dplyr} you may
+want to check out \code{\link[=tidyHtmlTable]{tidyHtmlTable()}} that automates many of the arguments
 that \code{htmlTable} requires.
 }
 \section{Multiple rows of column spanners \code{cgroup}}{
 
 
-If you want to have a column spanner in multiple levels you can
-set the \code{cgroup} and \code{n.cgroup} arguments to a \code{matrix} or
-\code{list}.
+If you want to have a column spanner in multiple levels (rows) you can
+set the \code{cgroup} and \code{n.cgroup} arguments to a \code{matrix} or \code{list}.
 
-If the different levels have different number of elements and you have
-provided a \emph{matrix} you need to set the ones that lack elements to NA. For instance
+For different level elements, set absent ones to NA in a matrix. For example,
 \code{cgroup = rbind(c("first", "second", NA), c("a", "b", "c"))}.
 And the corresponding \code{n.cgroup} would be \code{n.cgroup = rbind(c(1, 2, NA), c(2, 1, 2))}.
 for a table consisting of 5 columns. The "first" spans the first two columns,
 the "second" spans the last three columns, "a" spans the first two, "b"
 the middle column, and "c" the last two columns.
 
-It is recommended to use \code{list} as you will not have to bother with the \code{NA}.
+Using a list is recommended to avoid handling \code{NA}s.
 
-If you want leave a \code{cgroup} empty then simply provide \code{""} as the \code{cgroup}.
+For an empty \code{cgroup}, use \code{""}.
 }
 
 \section{The \code{rgroup} argument}{
 
 
-The \code{rgroup} allows you to smoothly group rows. Each row within a group
-receives an indention of two blank spaces and are grouped with their
-corresponding \code{rgroup} element. The \code{sum(n.rgroup)} should always
-be equal or less than the matrix rows. If less then it will pad the
-remaining rows with either an empty \code{rgroup}, i.e. an "" or if the
-\code{rgroup} is one longer than the \code{n.rgroup} the last \code{n.rgroup} element will
-be calculated through \code{nrow(x) - sum(n.rgroup)} in order to make
-the table generating smoother.
+The \code{rgroup} groups rows seamlessly. Each row in a group is indented by two
+spaces (unless the rgroup is \code{""}) and grouped by its rgroup element. The \code{sum(n.rgroup)}
+should be ≤ matrix rows. If fewer, remaining rows are padded with an empty rgroup (\code{""}). If \code{rgroup}
+has one more element than \code{n.rgroup}, the last \code{n.rgroup} is computed as \code{nrow(x) - sum(n.rgroup)}
+for a smoother table generation.
 }
 
 \section{The add attribute to \code{rgroup}}{
 
 
-You can now have an additional element at the \code{rgroup} level by specifying the
-\code{attr(rgroup, 'add')}. The value can either be a \code{vector}, a \code{list},
+To add an extra element at the \code{rgroup} level/row, use \code{attr(rgroup, 'add')}.
+The value can either be a \code{vector}, a \code{list},
 or a \code{matrix}. See \code{vignette("general", package = "htmlTable")} for examples.
 \itemize{
 \item A \code{vector} of either equal number of \code{rgroup}s to the number

@@ -1,79 +1,41 @@
 #' Generate an htmlTable using tidy data as input
 #'
-#' Builds an `htmlTable` by mapping columns from the input data, `x`,
-#' to elements of an output `htmlTable` (e.g. `rnames`, `header`, etc.). This
-#' provides a \pkg{ggplot2}-like interface you can pivot rows/columns as required. The
-#' typical use case is when you are using `dplyr` together with the
-#' `tidyverse` data processing functions, see `vignette("tidyHtmlTable")`.
+#' This function maps columns from the input data, `x`, to [htmlTable()] parameters.
+#' It's designed to provide a fluent interface for those familiar with the `tidyverse` ecosystem.
 #'
-#' @section Column-mapping parameters:
+#' @param x Tidy data used to build the `htmlTable`
+#' @param value Column containing values for individual table cells. Defaults to "value" (same as [tidyr::pivot_wider]).
+#' @param header Column in `x` specifying column headings
+#' @param rnames Column in `x` specifying row names. Defaults to "name" (same as [tidyr::pivot_wider()]).
+#' @param rgroup Column in `x` specifying row groups.
+#' @param hidden_rgroup Strings indicating `rgroup` values to be hidden.
+#' @param cgroup Columns in `x` specifying the column groups.
+#' @param tspanner Column in `x` specifying `tspanner` groups.
+#' @param hidden_tspanner Strings indicating `tspanner` values to be hidden.
+#' @param skip_removal_warning Boolean to suppress warnings when removing `NA` columns.
+#' @param rnames_unique Designates unique row names when regular names lack uniqueness.
+#' @param table_fn Function to format the table, defaults to [htmlTable()].
+#' @param ... Additional arguments passed to [htmlTable()].
 #'
-#'   The `tidyHtmlTable` function is designed to work like ggplot2 in that
-#'   columns from `x` are mapped to specific parameters from the
-#'   `htmlTable` function. At minimum, `x` must contain the names
-#'   of columns mapping to `rnames`, `header`, and `rnames`.
-#'   `header` and `rnames` retain the same meaning as in the
-#'   htmlTable function. `value` contains the individual values that will
-#'   be used to fill each cell within the output `htmlTable`.
+#' @section Column-mapping:
 #'
-#'   A full list of parameters from `htmlTable` which may be mapped to
-#'   columns within `x` include:
+#' Columns from `x` are mapped (transformed) to specific parameters of the [htmlTable()]
+#' The following columns are converted to match the intended input structure:
 #'
-#'   * `value`
-#'   * `header`
-#'   * `rnames`
-#'   * `rgroup`
-#'   * `cgroup`
-#'   * `tspanner`
+#' * `value`
+#' * `header`
+#' * `rnames`
+#' * `rgroup`
+#' * `cgroup`
+#' * `tspanner`
 #'
-#'   Also note that the coordinates of each `value` within `x` must be
-#'   unambiguously mapped to a position within the output `htmlTable`.
-#'   Therefore, the each row-wise combination the variables specified above
-#'   contained in `x` must be unique.
-#'
-#' @section Sorting:
-#'
-#'   Sorting of rows is as of version 2.0 skipped as we may have situations with
-#'   repeating inputs and this can easily be performed pre-function by calling
-#'   [dplyr::arrange()] prior to `tidyHtmlTable`.
-#'
-#'   Columns are sorted by `arrange(cgroup, header)` where `cgroup` will be
-#'   expanded to the columns of the `cgroup` argument, e.g. `cgroup = c(a, b), header = c`
-#'   will become `arrange(a, b, c)`. If you want to sort in non-alphabetic order
-#'   you can provide a `factor` variable and that information will be retained.
-#'
-#' @section Hidden values:
-#'
-#'   `htmlTable` Allows for some values within `rgroup`,
-#'   `cgroup`, etc. to be specified as `""`. The following parameters
-#'   allow for specific values to be treated as if they were a string of length
-#'   zero in the `htmlTable` function.
-#'
-#'   * `hidden_rgroup`
-#'   * `hidden_tspanner`
-#'
-#' @section Simple tibble output:
-#'
-#'  The tibble discourages the use of row names. There is therefore a convenience
-#'  option for `tidyHtmlTable` where you can use the function just as you
-#'  would with [htmlTable()] where `rnames` is populated with
-#'  the `rnames` argument provided using `tidyselect` syntax (defaults to
-#'  the "names" column if present int the input data).
-#'
-#' @section Additional dependencies:
-#'
-#'  In order to run this function you also must have \pkg{dplyr},
-#'  \pkg{tidyr}, \pkg{tidyselect} and \pkg{purrr}
-#'  packages installed. These have been removed due to
-#'  the additional 20 Mb that these dependencies added (issue #47).
-#'  *Note:* if you use \pkg{tidyverse} it will already have
-#'  all of these and you do not need to worry.
+#' Each combination of the variables in `x` should be unique to map correctly to the output table.
 #'
 #' @section Row uniqueness:
 #'
-#' Usually each row should have a unique combination of `rnames`, `header`, `crgroup`, ...
+#' Usually each row should have a unique combination of the mappers.
 #' Sometimes though rows come in a distinct order and the order identifies
-#' the row more than the name. If we are identifying bone fractures using the
+#' the row more than the name. E.g. if we are identifying bone fractures using the
 #' AO-classification we will have classes ranging in the form of:
 #'
 #' - A
@@ -85,7 +47,7 @@
 #' - B
 #' - ...
 #'
-#' we could therefore like to simplify the names to:
+#' we can simplify the names while retaining the key knowledge to:
 #'
 #' - A
 #' - .1
@@ -96,35 +58,48 @@
 #' - B
 #' - ...
 #'
-#' And still retain the ability to follow what row corresponds to a given class. To
-#' do this you need to provide the original unique name in the parameter `rnames_unique`
-#' as tidyHtmlTable otherwise will merge rows not intended for merging.
+#' This will though result in non-unique rows and thus we need to provide the original
+#' names in addition to the `rnames` argument. To do this we have `rnames_unique` as a parameter,
+#' without this `tidyHtmlTable` we risk unintended merging of cells, generating > 1 value per cell.
 #'
 #' *Note* it is recommended that you verify with the full names just to make sure that
 #' any unexpected row order change has happened in the underlying pivot functions.
 #'
-#' @param x Tidy data used to build the `htmlTable`
-#' @param value The column containing values filling individual cells of the
-#' output `htmlTable`. Defaults to "value" as used by [tidyr::pivot_longer()].
-#' @param header The column in `x` specifying column headings
-#' @param rnames The column in `x` specifying row names. Defaults to "name" as used by
-#'  [tidyr::pivot_longer()].
-#' @param rgroup The column in `x` specifying row groups
-#' @param hidden_rgroup `strings` with `rgroup` values that will be hidden  (the values will
-#'  still be there but the spanner will be set to "" and thus ignored by [htmlTable()]).
-#' @param cgroup The column or columns in `x` specifying the column groups
-#' @param tspanner The column in `x` specifying `tspanner` groups
-#' @param hidden_tspanner `strings` with `tspanner` values that will be hidden (the values will
-#'  still be there but the spanner will be set to "" and thus ignored by [htmlTable()]).
-#' @param skip_removal_warning `boolean` suppress warning message when removing NA columns.
-#' @param rnames_unique Similar to `rnames`  where we have issues with the uniqueness of a
-#'  row as selected by the select statement. See section below on *Row uniqueness*.
-#' @param table_fn The table function that should receive the input, defaults to [htmlTable()]
-#'  but you can provide any function that uses the same input formatting. This package was inspired
-#'  by the [Hmisc::latex()] function.
-#' @param ... Additional arguments that will be passed to the inner
-#' [htmlTable()] function
-#' @return Returns html code that will build a pretty table
+#' @section Sorting:
+#'
+#' Rows can be pre-sorted using [dplyr::arrange()] before passing to `tidyHtmlTable`.
+#' Column sorting is based on `arrange(cgroup, header)`. If you want to sort in non-alphabetic
+#' order you can provide a factor variable and that information will be retained.
+#'
+#' @section Hidden values:
+#'
+#' `htmlTable` Allows for some values within `rgroup`,
+#' `cgroup`, etc. to be specified as `""`. The following parameters
+#' allow for specific values to be treated as if they were a string of length
+#' zero in the `htmlTable` function.
+#'
+#' * `hidden_rgroup`
+#' * `hidden_tspanner`
+#'
+#' @section Simple tibble output:
+#'
+#' The tibble discourages the use of row names. There is therefore a convenience
+#' option for `tidyHtmlTable` where you can use the function just as you
+#' would with [htmlTable()] where `rnames` is populated with
+#' the `rnames` argument provided using `tidyselect` syntax (defaults to
+#' the "names" column if present int the input data).
+#'
+#' @section Additional dependencies:
+#'
+#' In order to run this function you also must have \pkg{dplyr},
+#' \pkg{tidyr}, \pkg{tidyselect} and \pkg{purrr}
+#' packages installed. These have been removed due to
+#' the additional 20 Mb that these dependencies added (issue #47).
+#' *Note:* if you use \pkg{tidyverse} it will already have
+#' all of these and you do not need to worry.
+#'
+#'
+#' @return Returns the HTML code that, when rendered, displays a formatted table.
 #' @export
 #' @seealso [htmlTable()]
 #' @example inst/examples/tidyHtmlTable_example.R
