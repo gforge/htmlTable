@@ -8,6 +8,8 @@ library(xml2)
 library(stringr)
 
 test_that("Correct table sort", {
+  skip_if_not_installed("tidyr")
+
   mtcatr_proc_data <- structure(
     list(cyl = c("4 Cylinders", "4 Cylinders", "4 Cylinders",
                  "4 Cylinders", "4 Cylinders", "4 Cylinders", "4 Cylinders", "4 Cylinders",

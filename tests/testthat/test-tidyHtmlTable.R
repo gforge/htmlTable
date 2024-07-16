@@ -9,6 +9,8 @@ library(stringr)
 
 # Add row names
 test_that("Basic tidyHtmlTable functionality", {
+  skip_if_not_installed("tidyr")
+
   mx <- tribble(~value, ~header, ~name, ~rgroup, ~cgroup1, ~cgroup2,
                      1,       2,     3,       1,        1,        3,
                      2,       3,     4,       1,        2,        3,
