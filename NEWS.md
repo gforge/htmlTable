@@ -1,5 +1,8 @@
 NEWS for the htmlTable package
 
+## Changes for 2.5.0
+- Minor test improvement (PR #89)
+
 ## Changes for 2.4.2
 
 - Updated JQuery dependency in interactiveTable to 3.7.1

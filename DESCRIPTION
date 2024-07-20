@@ -1,5 +1,5 @@
 Package: htmlTable
-Version: 2.4.2
+Version: 2.4.3
 Title: Advanced Tables for Markdown/HTML
 Authors@R: c(
   person("Max", "Gordon", email = "max@gforge.se",
