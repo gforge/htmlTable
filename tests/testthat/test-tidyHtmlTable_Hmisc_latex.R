@@ -82,6 +82,8 @@ test_that("Works with Hmisc::latex", {
     class = c("tbl_df", "tbl", "data.frame"),
     row.names = c(NA, -96L))
 
+  skip_if_not_installed("tidyr")
+  skip_if_not_installed("Hmisc")
   expect_output(mtcatr_proc_data  %>%
                   arrange(desc(cyl), gear) %>%
                   mutate(per_metric = factor(per_metric, levels = c("qsec", "hp", "mpg"))) %>%

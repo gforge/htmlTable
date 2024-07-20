@@ -114,6 +114,8 @@ test_that("Character matrices",{
 })
 
 test_that("Supplying a data.frame",{
+  skip_if_not_installed("tidyselect")
+
   test_df <- matrix(c(1, 1.11, 1.25,
                       2.50, 2.55, 2.45,
                       3.2313, 3, pi),
