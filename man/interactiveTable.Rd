@@ -41,8 +41,8 @@ interactiveTable(
 \item{minimized.columns}{Notifies if any particular columns should be collapsed from start}
 
 \item{js.scripts}{If you want to add your own JavaScript code you can just add it here.
-All code is merged into one string where each section is wrapped in it's own
-\verb{<scrip></script>} element.}
+All code is merged into one string where each section is wrapped in its own
+\verb{<script></script>} element.}
 
 \item{useViewer}{If you are using RStudio there is a viewer thar can render
 the table within that is envoced if in \code{\link[base:interactive]{base::interactive()}} mode.
@@ -63,7 +63,6 @@ This function wraps the htmlTable and adds JavaScript code for toggling the amou
 of text shown in any particular cell.
 }
 \examples{
-library(magrittr)
 # A simple output
 long_txt <- "Lorem ipsum dolor sit amet, consectetur adipiscing elit,
 sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
@@ -73,11 +72,13 @@ in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur
 sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
 mollit anim id est laborum"
 short_txt <- gsub("(^[^.]+).*", "\\\\1", long_txt)
+tbl_input <- cbind(rep(short_txt, 2), rep(long_txt, 2))
 
-cbind(rep(short_txt, 2),
-      rep(long_txt, 2)) \%>\%
-  addHtmlTableStyle(col.rgroup = c("#FFF", "#EEF")) \%>\%
-  interactiveTable(minimized.columns = ncol(.),
-                   header = c("Short", "Long"),
-                   rnames = c("First", "Second"))
+tbl_input |>
+  addHtmlTableStyle(col.rgroup = c("#FFF", "#EEF")) |>
+  interactiveTable(
+    minimized.columns = ncol(tbl_input),
+    header = c("Short", "Long"),
+    rnames = c("First", "Second")
+  )
 }

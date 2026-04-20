@@ -87,7 +87,7 @@
 #' option for `tidyHtmlTable` where you can use the function just as you
 #' would with [htmlTable()] where `rnames` is populated with
 #' the `rnames` argument provided using `tidyselect` syntax (defaults to
-#' the "names" column if present int the input data).
+#' the "name" column if present in the input data).
 #'
 #' @section Additional dependencies:
 #'
@@ -176,7 +176,7 @@ tidyHtmlTable.data.frame <- function(x,
     }
 
     args <- list(...)
-    args$x <- x %>% dplyr::select(-{{ orgName }})
+    args$x <- x |> dplyr::select(-{{ orgName }})
     args$rnames <- x[[as.character(orgName)]]
     if (is.null(args$rowlabel)) {
       args$rowlabel <- as.character(orgName)
@@ -192,12 +192,15 @@ tidyHtmlTable.data.frame <- function(x,
     rgroup = prAssertAndRetrieveValue(x, rgroup, optional = TRUE),
     cgroup = prAssertAndRetrieveValue(x, cgroup, optional = TRUE, maxCols = getOption("htmlTabl.tidyHtmlTable.maxCols", default = 5)),
     tspanner = prAssertAndRetrieveValue(x, tspanner, optional = TRUE)
-  ) %>%
-    purrr::keep(~ !is.null(.))
+  ) |>
+    purrr::keep(function(x) !is.null(x))
 
   checkUniqueness(tidyTableDataList)
 
-  tidyTableDataList %<>% removeRowsWithNA(skip_removal_warning = skip_removal_warning)
+  tidyTableDataList <- removeRowsWithNA(
+    tidyTableDataList,
+    skip_removal_warning = skip_removal_warning
+  )
 
   # Create tables from which to gather row, column, and tspanner names
   # and indices
@@ -206,63 +209,63 @@ tidyHtmlTable.data.frame <- function(x,
   colRefTbl <- getColTbl(tidyTableDataList)
 
   # Format the values for display
-  formatted_df <- tidyTableDataList %>%
-    prBindDataListIntoColumns() %>%
-    innerJoinByCommonCols(colRefTbl) %>%
-    innerJoinByCommonCols(rowRefTbl) %>%
-    dplyr::select(r_idx, c_idx, value) %>%
-    dplyr::mutate_at(dplyr::vars(value), as.character) %>%
+  formatted_df <- tidyTableDataList |>
+    prBindDataListIntoColumns() |>
+    innerJoinByCommonCols(colRefTbl) |>
+    innerJoinByCommonCols(rowRefTbl) |>
+    dplyr::select(r_idx, c_idx, value) |>
+    dplyr::mutate_at(dplyr::vars(value), as.character) |>
     # It is important to sort the rows as below or the data won't be properly
     # displayed, i.e. there will be primarily be a mismatch between columns
-    dplyr::arrange(r_idx) %>%
-    tidyr::pivot_wider(names_from = "c_idx") %>%
+    dplyr::arrange(r_idx) |>
+    tidyr::pivot_wider(names_from = "c_idx") |>
     dplyr::select(-r_idx)
 
   # Hide row groups specified in hidden_rgroup
   if (!missing(hidden_rgroup)) {
-    rowRefTbl <- rowRefTbl %>%
+    rowRefTbl <- rowRefTbl |>
       dplyr::mutate(rgroup = ifelse(rgroup %in% hidden_rgroup, "", rgroup))
   }
 
   # Hide tspanners specified in hidden_tspanner
   if (!missing(hidden_tspanner)) {
-    rowRefTbl <- rowRefTbl %>%
+    rowRefTbl <- rowRefTbl |>
       dplyr::mutate(tspanner = ifelse(tspanner %in% hidden_tspanner, "", tspanner))
   }
 
   # Now order the columns so that cgroup and headers match
-  formatted_df <- formatted_df[, order(colnames(formatted_df) %>% as.numeric())]
+  formatted_df <- formatted_df[, order(colnames(formatted_df) |> as.numeric())]
 
   # Get names and indices for row groups and tspanners
   htmlTable_args <- list(
     formatted_df, # Skip names for direct compatibility with Hmisc::latex
-    rnames = rowRefTbl %>% dplyr::pull(rnames),
-    header = colRefTbl %>% dplyr::pull(header),
+    rnames = rowRefTbl |> dplyr::pull(rnames),
+    header = colRefTbl |> dplyr::pull(header),
     ...
   )
 
   if (!missing(rgroup)) {
     # This will take care of a problem in which adjacent row groups
     # with the same value will cause rgroup and tspanner collision
-    comp_val <- rowRefTbl %>% dplyr::pull(rgroup)
+    comp_val <- rowRefTbl |> dplyr::pull(rgroup)
 
     if (!missing(tspanner)) {
       comp_val <- paste0(
         comp_val,
-        rowRefTbl %>% dplyr::pull(tspanner)
+        rowRefTbl |> dplyr::pull(tspanner)
       )
     }
 
     rcnts <- prepGroupCounts(comp_val)
-    htmlTable_args$rgroup <- rowRefTbl %>%
-      dplyr::slice(rcnts$idx) %>%
+    htmlTable_args$rgroup <- rowRefTbl |>
+      dplyr::slice(rcnts$idx) |>
       dplyr::pull(rgroup)
 
     htmlTable_args$n.rgroup <- rcnts$n
   }
 
   if (!missing(tspanner)) {
-    tcnt <- prepGroupCounts(rowRefTbl %>% dplyr::pull(tspanner))
+    tcnt <- prepGroupCounts(rowRefTbl |> dplyr::pull(tspanner))
     htmlTable_args$tspanner <- tcnt$names
     htmlTable_args$n.tspanner <- tcnt$n
   }
@@ -276,12 +279,12 @@ tidyHtmlTable.data.frame <- function(x,
     }
 
     for (colNo in 1:noCgroup) {
-      counts <- prepGroupCounts(colRefTbl %>% dplyr::pull(colNo))
+      counts <- prepGroupCounts(colRefTbl |> dplyr::pull(colNo))
       cg$names[[colNo]] <- counts$names
       cg$n[[colNo]] <- counts$n
     }
 
-    maxLen <- sapply(cg$names, length) %>% max()
+    maxLen <- max(sapply(cg$names, length))
     for (colNo in 1:length(cg$names)) {
       missingNA <- maxLen - length(cg$names[[colNo]])
       if (missingNA > 0) {

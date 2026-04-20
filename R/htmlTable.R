@@ -152,9 +152,9 @@
 #'  it takes a string of the class `htmlTable` as `x` argument.
 #' @param header A vector of character strings specifying column
 #'  header, defaulting to [`colnames(x)`][base::colnames]
-#' @param rnames Default row names are generated from [`rownames(x)`][base::colnames]. If you
+#' @param rnames Default row names are generated from [`rownames(x)`][base::rownames]. If you
 #'  provide `FALSE` then it will skip the row names. *Note:* For `data.frames`
-#'  if you do [`rownames(my_dataframe) <- NULL`][base::colnames] it still has
+#'  if you do [`rownames(my_dataframe) <- NULL`][base::rownames] it still has
 #'  row names. Thus you need to use `FALSE` if you want to
 #'  supress row names for `data.frames`.
 #' @param rowlabel If the table has row names or `rnames`,
@@ -322,7 +322,7 @@ htmlTable.default <- function(x,
   dots <- list(...)
   style_dots <- names(dots) %in% Filter(
     function(x) !(x %in% c("", "x")),
-    formals(addHtmlTableStyle) %>% names()
+    names(formals(addHtmlTableStyle))
   )
   if (sum(style_dots) > 0) {
     style_dots_list <- dots[style_dots]

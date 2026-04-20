@@ -9,14 +9,13 @@
 #' @examples
 #'
 #' # Using a data.frame directly
-#' library(magrittr)
 #' data("mtcars")
 #' # If we want to round all the numerical values
-#' mtcars %>%
+#' mtcars |>
 #'   txtRound(digits = 1)
 #'
 #' # If we want only want to round some columns
-#' mtcars %>%
+#' mtcars |>
 #'   txtRound(wt, qsec_txt = qsec, digits = 1)
 #' @importFrom methods formalArgs
 txtRound.data.frame <- function(x, ..., digits = 0L){

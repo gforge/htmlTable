@@ -109,10 +109,9 @@ txtRound.default = function(x,
     # Select the first occurring number
     # remove any spaces indicating thousands
     # and convert to numeric
-    x <-
-      sub(dec_str, "\\1", x) %>%
-      gsub(" ", "", .) %>%
-      as.numeric
+    x <- sub(dec_str, "\\1", x)
+    x <- gsub(" ", "", x)
+    x <- as.numeric(x)
   }
 
   if (!is.na(digits.nonzero)) {

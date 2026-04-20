@@ -67,8 +67,7 @@ prGetStyle <- function(...) {
           )
         }
       }
-      styles %<>%
-        c(element)
+      styles <- c(styles, element)
     } else {
       if (!is.null(names(element))) {
         element <- mergeNames(element)

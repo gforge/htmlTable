@@ -17,11 +17,9 @@ A wrap around the \code{\link[base:attr]{base::attr()}} that retrieves the style
 attribute used by \code{\link[=htmlTable]{htmlTable()}} (\code{htmlTable.style}).
 }
 \examples{
-library(magrittr)
-
 mx <- matrix(1:4, ncol = 2)
 colnames(mx) <- LETTERS[1:2]
-mx \%>\%
-  addHtmlTableStyle(align = "l|r") \%>\%
+mx |>
+  addHtmlTableStyle(align = "l|r") |>
   getHtmlTableStyle()
 }

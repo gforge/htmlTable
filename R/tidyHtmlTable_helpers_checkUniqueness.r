@@ -2,7 +2,7 @@
 # uniquely specify a given value
 checkUniqueness <- function(tidyTableDataList) {
   tidyTableData <- do.call(cbind, tidyTableDataList)
-  dupes <- tidyTableData %>% duplicated()
+  dupes <- duplicated(tidyTableData)
   if (sum(dupes) != 0) {
     core_msg <- paste0("The input parameters ",
                        paste(paste0("\"", names(tidyTableData), "\""), collapse = ", "),

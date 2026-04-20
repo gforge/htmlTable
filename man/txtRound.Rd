@@ -101,14 +101,13 @@ txtRound(mx, digits = 1)
 #> [3,] "3.2" "3.0" "3.1"
 
 # Using a data.frame directly
-library(magrittr)
 data("mtcars")
 # If we want to round all the numerical values
-mtcars \%>\%
+mtcars |>
   txtRound(digits = 1)
 
 # If we want only want to round some columns
-mtcars \%>\%
+mtcars |>
   txtRound(wt, qsec_txt = qsec, digits = 1)
 }
 \seealso{

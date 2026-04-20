@@ -41,7 +41,7 @@ prAddEmptySpacerCell <- function(x,
                     COLSPAN = colspan,
                     CONTENT = style_list$spacer.content,
                     CELL_STYLE_BORDER = border_style)
-  str_to_append %<>% str_interp(variables)
+  str_to_append <- str_interp(str_to_append, variables)
 
   paste0(x, str_to_append)
 }

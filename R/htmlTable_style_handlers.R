@@ -93,9 +93,8 @@
 #' @export
 #'
 #' @examples
-#' library(magrittr)
-#' matrix(1:4, ncol = 2) %>%
-#'   addHtmlTableStyle(align = "c", css.cell = "background-color: orange;") %>%
+#' matrix(1:4, ncol = 2) |>
+#'   addHtmlTableStyle(align = "c", css.cell = "background-color: orange;") |>
 #'   htmlTable(caption = "A simple style example")
 #' @rdname addStyles
 #' @family htmlTableStyle
@@ -211,12 +210,10 @@ appendHtmlTableStyle <- function(x,
 #' @return A `list` if the attribute exists, otherwise `NULL`
 #' @export
 #' @examples
-#' library(magrittr)
-#'
 #' mx <- matrix(1:4, ncol = 2)
 #' colnames(mx) <- LETTERS[1:2]
-#' mx %>%
-#'   addHtmlTableStyle(align = "l|r") %>%
+#' mx |>
+#'   addHtmlTableStyle(align = "l|r") |>
 #'   getHtmlTableStyle()
 getHtmlTableStyle <- function(x) {
   attr(x, style_attribute_name, exact = TRUE)
@@ -233,12 +230,10 @@ getHtmlTableStyle <- function(x) {
 #' @export
 #' @family htmlTableStyle
 #' @examples
-#' library(magrittr)
-#'
 #' mx <- matrix(1:4, ncol = 2)
 #' colnames(mx) <- LETTERS[1:2]
-#' mx %>%
-#'   addHtmlTableStyle(align = "l|r") %>%
+#' mx |>
+#'   addHtmlTableStyle(align = "l|r") |>
 #'   hasHtmlTableStyle("align")
 hasHtmlTableStyle <- function(x, style_name) {
   style <- getHtmlTableStyle(x)
@@ -446,9 +441,9 @@ prValidateAndMergeStyles <- function(org_style_list, styles_from_arguments, over
       tryCatch({
         style_list[[n]] <- match.arg(arg = styles_from_arguments[[n]], choices = default_args[[n]])
       }, error = function(x) {
-        x %>%
-          extract2("message") %>%
-          str_replace("^'arg'", sprintf("'%s'", argument_name = n)) %>%
+        x |>
+          extract2("message") |>
+          str_replace("^'arg'", sprintf("'%s'", argument_name = n)) |>
           stop()
       })
     } else {

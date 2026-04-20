@@ -1,8 +1,9 @@
 getRowTbl <- function(x) {
-  out <- prExtractElementsAndConvertToTbl(x,
+  out <- prExtractElementsAndConvertToTbl(
+    x,
     elements = c("tspanner", "rgroup", "rnames", "rnames_unique")
-  ) %>%
-    dplyr::arrange() %>%
+  ) |>
+    dplyr::arrange() |>
     # This is necessary in order to not generate NA values when setting
     # hidden elements to "" and this can't be in prExtractElementsAndConvertToTbl
     # as we need to be able to sort according to the column in getColTbl

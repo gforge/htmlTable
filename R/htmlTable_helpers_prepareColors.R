@@ -14,21 +14,20 @@ prPrepareColors <- function(clr, n = NULL, ng = NULL, gtxt) {
       return(a_clr)
     }
     if (grepl("^#[0-9ABCDEFabcdef]{3,3}$", a_clr)) {
-      a_clr %<>%
-        substring(first = 2) %>%
-        strsplit(split = "") %>%
-        unlist() %>%
-        sapply(FUN = rep, times = 2) %>%
-        paste(collapse = "") %>%
-        tolower() %>%
-        paste0("#", .)
+      hex <- a_clr |>
+        substring(first = 2) |>
+        strsplit(split = "") |>
+        unlist()
+      hex <- sapply(hex, FUN = rep, times = 2)
+      hex <- paste(hex, collapse = "") |> tolower()
+      paste0("#", hex)
     } else {
-      a_clr %<>%
-        col2rgb %>%
-        as.hexmode() %>%
-        as.character() %>%
-        paste(collapse = "") %>%
-        paste0("#", .)
+      hex <- a_clr |>
+        col2rgb() |>
+        as.hexmode() |>
+        as.character() |>
+        paste(collapse = "")
+      paste0("#", hex)
     }
   }, USE.NAMES = FALSE)
 

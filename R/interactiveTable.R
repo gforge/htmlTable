@@ -9,8 +9,8 @@
 #' @param button Indicator if the cell should be clickable or if a button should appear with a plus/minus
 #' @param minimized.columns Notifies if any particular columns should be collapsed from start
 #' @param js.scripts If you want to add your own JavaScript code you can just add it here.
-#'  All code is merged into one string where each section is wrapped in it's own
-#'  `<scrip></script>` element.
+#'  All code is merged into one string where each section is wrapped in its own
+#'  `<script></script>` element.
 #' @return An htmlTable with a javascript attribute containing the code that is then printed
 #' @export
 #' @example inst/examples/interactiveTable_example.R
@@ -31,8 +31,9 @@ getButtonDiv <- function(sign = "-") {
   }
 
   template <- readChar(template, nchars = file.info(template)$size)
-  gsub("%sign%", sign, template) %>%
-    gsub("[\n\r]", " ", .)
+  template |>
+    (\(x) gsub("%sign%", sign, x, fixed = TRUE))() |>
+    (\(x) gsub("[\n\r]", " ", x))()
 }
 
 #' @export
@@ -131,9 +132,9 @@ interactiveTable.htmlTable <- function(x,
 
     attr(x, "javascript") <- c(
       js.scripts,
-      template %>%
-        gsub("%txt.maxlen%", txt.maxlen, .) %>%
-        gsub("%btn%", getButtonDiv(), .)
+      template |>
+        (\(x) gsub("%txt.maxlen%", txt.maxlen, x, fixed = TRUE))() |>
+        (\(x) gsub("%btn%", getButtonDiv(), x, fixed = TRUE))()
     )
   } else {
     template <- system.file("javascript/toggler.js", package = "htmlTable")
@@ -144,8 +145,8 @@ interactiveTable.htmlTable <- function(x,
 
     attr(x, "javascript") <- c(
       js.scripts,
-      template %>%
-        gsub("%txt.maxlen%", txt.maxlen, .)
+      template |>
+        (\(x) gsub("%txt.maxlen%", txt.maxlen, x, fixed = TRUE))()
     )
   }
 
@@ -170,7 +171,7 @@ knit_print.interactiveTable <- function(x, ...) {
 
 #' Gets a string with all the scripts merged into one script tag
 #'
-#' Each element has it's own script tags in otherwise an error will cause
+#' Each element has its own script tags; otherwise an error will cause
 #' all the scripts to fail.
 #'
 #' @param x An interactiveTable
@@ -195,7 +196,7 @@ prGetScriptString <- function(x) {
         "</script>"
       )
     }
-  ) %>%
+  ) |>
     paste(collapse = "\n\n <!-- *** Next script group *** !-->\n")
 }
 

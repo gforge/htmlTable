@@ -13,7 +13,7 @@ prGetScriptString(x)
 string
 }
 \description{
-Each element has it's own script tags in otherwise an error will cause
+Each element has its own script tags; otherwise an error will cause
 all the scripts to fail.
 }
 \keyword{internal}

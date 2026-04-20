@@ -78,13 +78,15 @@ prAddCells <- function(rowcells, cellcode, style_list, style, prepped_cell_css, 
         }
       }
 
-      cell_str %<>%
-        paste("\n\t\t") %>%
-        prAddEmptySpacerCell(style_list = style_list,
-                             cell_style = prGetStyle(cell_style, spanner_style),
-                             colspan = cgroup_spacer_cells[nr],
-                             cell_tag = cellcode,
-                             align_style = align_style)
+      cell_str <- cell_str |>
+        paste("\n\t\t") |>
+        prAddEmptySpacerCell(
+          style_list = style_list,
+          cell_style = prGetStyle(cell_style, spanner_style),
+          colspan = cgroup_spacer_cells[nr],
+          cell_tag = cellcode,
+          align_style = align_style
+        )
     }
 
     previous_was_spacer_cell <- followed_by_spacer_cell
