@@ -189,6 +189,7 @@ matrix(1:4, ncol = 2) \%>\%
 }
 \seealso{
 Other htmlTableStyle: 
-\code{\link{hasHtmlTableStyle}()}
+\code{\link{hasHtmlTableStyle}()},
+\code{\link{highlightRow}()}
 }
 \concept{htmlTableStyle}

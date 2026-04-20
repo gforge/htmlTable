@@ -176,6 +176,24 @@ htmlTable(mx,
           n.rgroup = c(2,4,nrow(mx) - 6))
 ```
 
+Row highlighting
+----------------
+
+If you want to highlight an entire row based on a condition, use `highlightRow()` before `htmlTable()`. The condition is evaluated against the table columns, and you can also use `.rowname`:
+
+```{r}
+df <- data.frame(
+  Name = c("Max", "Eva", "Nils"),
+  Score = c(10, 20, 30),
+  stringsAsFactors = FALSE
+)
+
+df |>
+  highlightRow(Name == "Max", style = "warning") |>
+  highlightRow(.rowname == "3", style = "background-color: #d1ecf1; color: #0c5460;") |>
+  htmlTable(rnames = FALSE)
+```
+
 
 Column spanners
 ---------------
@@ -362,4 +380,3 @@ mx %>%
             tfoot = "&dagger; A table footer commment",
             cspan.rgroup = 2)
 ```
-

@@ -29,6 +29,7 @@ mx \%>\%
 }
 \seealso{
 Other htmlTableStyle: 
-\code{\link{addHtmlTableStyle}()}
+\code{\link{addHtmlTableStyle}()},
+\code{\link{highlightRow}()}
 }
 \concept{htmlTableStyle}

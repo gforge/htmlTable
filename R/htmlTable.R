@@ -317,6 +317,7 @@ htmlTable.default <- function(x,
     x <- prEscapeHtml(x)
   }
 
+  x_orig <- x
   x <- prPrepInputMatrixDimensions(x, header = header)
   dots <- list(...)
   style_dots <- names(dots) %in% Filter(
@@ -368,6 +369,12 @@ htmlTable.default <- function(x,
       ", or set the rownames of the x argument."
     )
   }
+
+  row_highlight <- prEvalRowHighlights(
+    x = x_orig,
+    rnames = rnames,
+    row_highlight_rules = style_list$row.highlight
+  )
 
   if (is.null(header) && !is.null(colnames(x))) {
     header <- colnames(x)
@@ -820,6 +827,7 @@ htmlTable.default <- function(x,
   if (nrow(x) > 0) {
     for (row_nr in 1:nrow(x)) {
       rname_style <- attr(prepped_cell_css, "rnames")[row_nr]
+      highlight_style <- row_highlight[row_nr]
 
       # First check if there is a table spanner that should be applied
       if (!is.null(tspanner) &&
@@ -920,6 +928,10 @@ htmlTable.default <- function(x,
 
 
       cell_style <- rs <- paste("background-color:", row_clrs[row_nr])
+      if (!is.null(highlight_style) && highlight_style != "") {
+        rs <- c(rs, highlight_style)
+        cell_style <- c(cell_style, highlight_style)
+      }
       if (first_row) {
         rs %<>%
           c(top_row_style)

@@ -1,5 +1,8 @@
 NEWS for the htmlTable package
 
+## Changes for 2.5.0
+- Added `highlightRow()` for matching-based row highlighting with preset, color, and raw CSS styles.
+
 ## Changes for 2.4.3
 - Minor test improvement (PR #89)
 

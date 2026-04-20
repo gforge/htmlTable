@@ -253,7 +253,174 @@ hasHtmlTableStyle <- function(x, style_name) {
   return(TRUE)
 }
 
+#' Highlight matching rows
+#'
+#' Adds a row highlight rule to an object that will later be rendered with
+#' [htmlTable()]. The `condition` is evaluated against the table columns and
+#' a `.rowname` variable containing the row names.
+#'
+#' The `style` argument accepts:
+#' * a preset name such as `"warning"`, `"info"`, `"success"`, or `"muted"`
+#' * a bare color value, which becomes `background-color: ...`
+#' * raw CSS fragments, including named vectors such as `c(color = "white")`
+#'
+#' @param x A matrix or data.frame that will later be passed to [htmlTable()].
+#' @param condition A logical expression or logical vector used to select rows.
+#' @param style The CSS style to apply to matched rows.
+#' @return `x` with a row highlight rule stored in its `htmlTable.style` attribute.
+#' @export
+#' @aliases highlight_row
+#' @family htmlTableStyle
+highlightRow <- function(x, condition, style = "warning") {
+  style_list <- prGetAttrWithDefault(x,
+    which = style_attribute_name,
+    default = getHtmlTableTheme()
+  )
+
+  rule <- list(
+    condition = substitute(condition),
+    env = parent.frame(),
+    style = prNormalizeHighlightStyle(style)
+  )
+
+  if (is.null(style_list$row.highlight)) {
+    style_list$row.highlight <- list(rule)
+  } else {
+    style_list$row.highlight <- c(style_list$row.highlight, list(rule))
+  }
+
+  attr(x, style_attribute_name) <- style_list
+  return(x)
+}
+
 style_attribute_name <- "htmlTable.style"
+
+prNormalizeHighlightStyle <- function(style) {
+  preset_styles <- list(
+    warning = "background-color: #fff3cd; color: #856404;",
+    info = "background-color: #d1ecf1; color: #0c5460;",
+    success = "background-color: #d4edda; color: #155724;",
+    muted = "background-color: #f8f9fa; color: #6c757d;"
+  )
+
+  if (is.null(style) || length(style) == 0) {
+    return("")
+  }
+
+  fragments <- c()
+  style_names <- names(style)
+  if (is.null(style_names)) {
+    style_names <- rep("", length(style))
+  }
+
+  for (i in seq_along(style)) {
+    style_i <- style[[i]]
+    style_name <- style_names[[i]]
+
+    if (is.null(style_i) || length(style_i) == 0 || is.na(style_i) || style_i == "") {
+      next
+    }
+
+    if (is.character(style_i) &&
+      length(style_i) == 1 &&
+      grepl(";", style_i, fixed = TRUE)) {
+      fragments <- c(
+        fragments,
+        prGetStyle(unlist(strsplit(style_i, "\\b;(\\b|\\W+)", perl = TRUE)))
+      )
+      next
+    }
+
+    if (is.character(style_i) && length(style_i) == 1 && !grepl(":", style_i, fixed = TRUE)) {
+      preset_key <- tolower(style_i)
+      if (style_i == "none") {
+        next
+      }
+      if (style_name != "") {
+        fragments <- c(fragments, paste0(style_name, ": ", style_i))
+      } else if (preset_key %in% names(preset_styles)) {
+        fragments <- c(fragments, preset_styles[[preset_key]])
+      } else {
+        fragments <- c(fragments, paste0("background-color: ", style_i))
+      }
+    } else if (is.character(style_i) && length(style_i) == 1 && style_name != "") {
+      fragments <- c(fragments, paste0(style_name, ": ", style_i))
+    } else {
+      fragments <- c(fragments, prGetStyle(style_i))
+    }
+  }
+
+  prMergeHighlightCss(fragments)
+}
+
+prMergeHighlightCss <- function(...) {
+  fragments <- unlist(list(...), use.names = FALSE)
+  if (length(fragments) == 0) {
+    return("")
+  }
+
+  fragments <- unlist(strsplit(fragments, "\\b;(\\b|\\W+)", perl = TRUE), use.names = FALSE)
+  fragments <- trimws(fragments)
+  fragments <- fragments[nzchar(fragments) & !is.na(fragments)]
+  if (length(fragments) == 0) {
+    return("")
+  }
+
+  style_names <- sub("^([^:]+).+", "\\1", fragments)
+  fragments <- fragments[!duplicated(style_names, fromLast = TRUE)]
+  fragments <- sapply(fragments, prAddSemicolon2StrEnd, USE.NAMES = FALSE)
+  paste(fragments, collapse = " ")
+}
+
+prEvalRowHighlights <- function(x, rnames, row_highlight_rules) {
+  if (is.null(row_highlight_rules) || length(row_highlight_rules) == 0) {
+    return(rep("", times = nrow(x)))
+  }
+
+  row_df <- as.data.frame(x, stringsAsFactors = FALSE, check.names = FALSE)
+  row_df$.rowname <- if (!prSkipRownames(rnames) && length(rnames) == nrow(x)) {
+    rnames
+  } else if (!is.null(rownames(x))) {
+    rownames(x)
+  } else {
+    as.character(seq_len(nrow(x)))
+  }
+
+  row_styles <- rep("", times = nrow(x))
+  for (rule in row_highlight_rules) {
+    rule_env <- list2env(row_df, parent = rule$env)
+    condition <- eval(rule$condition, envir = rule_env)
+
+    if (!is.logical(condition)) {
+      stop("highlightRow condition must evaluate to a logical vector")
+    }
+
+    if (length(condition) == 1) {
+      condition <- rep(condition, times = nrow(x))
+    }
+
+    if (length(condition) != nrow(x)) {
+      stop(
+        "highlightRow condition must evaluate to length 1 or nrow(x) (",
+        nrow(x), "), not ", length(condition)
+      )
+    }
+
+    if (anyNA(condition)) {
+      stop("highlightRow condition must not contain NA values")
+    }
+
+    row_styles[condition] <- vapply(
+      row_styles[condition],
+      function(existing) {
+        prMergeHighlightCss(existing, rule$style)
+      },
+      character(1)
+    )
+  }
+
+  row_styles
+}
 
 #' @importFrom stringr str_replace
 prValidateAndMergeStyles <- function(org_style_list, styles_from_arguments, overwrite) {
