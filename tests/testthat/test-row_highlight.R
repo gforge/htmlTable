@@ -32,6 +32,41 @@ test_that("highlightRow applies preset, color, and raw CSS styles", {
   expect_match(css_out, "color: white;", fixed = TRUE)
 })
 
+test_that("highlightRow works with vector inputs", {
+  x <- c("alpha", "beta", "gamma")
+
+  out <- x %>%
+    highlightRow(.rowname == "1", style = "info") %>%
+    htmlTable(rnames = FALSE)
+
+  expect_match(out, "background-color: #d1ecf1;", fixed = TRUE)
+  expect_match(out, "color: #0c5460;", fixed = TRUE)
+  expect_match(out, "<tr style='[^']*background-color: #d1ecf1;", perl = TRUE)
+  expect_match(out, "<td[^>]*>alpha</td>", perl = TRUE)
+  expect_match(out, "<td[^>]*>beta</td>", perl = TRUE)
+  expect_match(out, "<td[^>]*>gamma</td>", perl = TRUE)
+})
+
+test_that("highlightRow works with matrix inputs", {
+  mx <- matrix(
+    c("alpha", "beta", "gamma", "delta"),
+    nrow = 2,
+    byrow = TRUE
+  )
+  rownames(mx) <- c("row-1", "row-2")
+
+  out <- mx %>%
+    highlightRow(.rowname == "row-2", style = "info") %>%
+    htmlTable()
+
+  expect_match(out, "background-color: #d1ecf1;", fixed = TRUE)
+  expect_match(out, "color: #0c5460;", fixed = TRUE)
+  expect_match(out, "<tr style='[^']*background-color: #d1ecf1;", perl = TRUE)
+  expect_match(out, "row-2", fixed = TRUE)
+  expect_match(out, "gamma", fixed = TRUE)
+  expect_match(out, "delta", fixed = TRUE)
+})
+
 test_that("Later row highlights override earlier ones", {
   df <- data.frame(
     Name = c("Max", "Eva"),

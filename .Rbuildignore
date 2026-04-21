@@ -11,3 +11,4 @@
 .lintr
 .vscode
 ^CRAN-SUBMISSION$
+.codex

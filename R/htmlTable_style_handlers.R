@@ -368,20 +368,22 @@ prMergeHighlightCss <- function(...) {
 }
 
 prEvalRowHighlights <- function(x, rnames, row_highlight_rules) {
+  n_rows <- NROW(x)
+
   if (is.null(row_highlight_rules) || length(row_highlight_rules) == 0) {
-    return(rep("", times = nrow(x)))
+    return(rep("", times = n_rows))
   }
 
   row_df <- as.data.frame(x, stringsAsFactors = FALSE, check.names = FALSE)
-  row_df$.rowname <- if (!prSkipRownames(rnames) && length(rnames) == nrow(x)) {
+  row_df$.rowname <- if (!prSkipRownames(rnames) && length(rnames) == n_rows) {
     rnames
   } else if (!is.null(rownames(x))) {
     rownames(x)
   } else {
-    as.character(seq_len(nrow(x)))
+    as.character(seq_len(n_rows))
   }
 
-  row_styles <- rep("", times = nrow(x))
+  row_styles <- rep("", times = n_rows)
   for (rule in row_highlight_rules) {
     rule_env <- list2env(row_df, parent = rule$env)
     condition <- eval(rule$condition, envir = rule_env)
@@ -391,13 +393,13 @@ prEvalRowHighlights <- function(x, rnames, row_highlight_rules) {
     }
 
     if (length(condition) == 1) {
-      condition <- rep(condition, times = nrow(x))
+      condition <- rep(condition, times = n_rows)
     }
 
-    if (length(condition) != nrow(x)) {
+    if (length(condition) != n_rows) {
       stop(
         "highlightRow condition must evaluate to length 1 or nrow(x) (",
-        nrow(x), "), not ", length(condition)
+        n_rows, "), not ", length(condition)
       )
     }
 
